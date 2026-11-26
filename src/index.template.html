@@ -239,26 +239,27 @@
   /* ---- Ra ngoài hẻm (Vi 26/11) */
   #mapbtn { position: absolute; right: 3.2%; top: 2.6%; width: 11%; aspect-ratio: 126 / 97; border-radius: 30%; z-index: 5; cursor: pointer;
     border: 1.5px solid var(--paper-line); background: var(--paper); box-shadow: 0 2px 6px rgba(60,35,20,.25); font-size: clamp(14px, 2.6vh, 22px); padding: 0; }
-  #mapbtn.news::after, .spot-b.news::after { content: ''; position: absolute; right: -6%; top: -10%; width: 34%; aspect-ratio: 1; border-radius: 50%;
+  #mapbtn.news::after { content: ''; position: absolute; right: -6%; top: -10%; width: 34%; aspect-ratio: 1; border-radius: 50%;
     background: radial-gradient(circle, #ffe9a8 30%, rgba(249,199,79,0) 70%); animation: breathe 1.8s ease-in-out infinite; }
   #amap, #mbox, #pcw { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(31,29,43,.4);
     opacity: 0; pointer-events: none; transition: opacity .4s ease; }
   #amap { z-index: 11; } #mbox { z-index: 12; } #pcw { z-index: 13; flex-direction: column; gap: .8em; }
   #amap.show, #mbox.show, #pcw.show { opacity: 1; pointer-events: auto; }
-  .amap-card { position: relative; width: 78%; max-width: 380px; aspect-ratio: 3 / 4.2; background: #F5EFE0; border-radius: 18px; border: 2px dashed #C9A982;
-    box-shadow: 0 14px 40px rgba(40,25,10,.35); transform: translateY(12px) rotate(.8deg); transition: transform .5s cubic-bezier(.2,1.2,.4,1);
-    background-image: radial-gradient(rgba(200,160,110,.18) 1px, transparent 1.4px); background-size: 14px 14px; }
-  #amap.show .amap-card { transform: rotate(.8deg); }
-  .amap-card h3 { margin: 0; padding-top: 5%; text-align: center; font: 500 clamp(18px, 3vh, 24px) 'Lora', serif; color: var(--ink); }
-  .amap-path { position: absolute; left: 0; top: 10%; width: 100%; height: 78%; }
-  .amap-path path { fill: none; stroke: #C9A982; stroke-width: 1.4; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
-  .spot-b { position: absolute; left: 50%; transform: translateX(-50%); width: 46%; background: none; border: 0; cursor: pointer; padding: 0;
-    display: flex; flex-direction: column; align-items: center; font: 600 clamp(12px, 1.9vh, 15px) 'Quicksand', sans-serif; color: var(--ink); margin-top: 6%; }
-  .spot-b img, .spot-b .home { width: 56%; aspect-ratio: 1; object-fit: contain; display: block; filter: drop-shadow(0 3px 4px rgba(60,35,20,.3)); }
-  .spot-b .home { border-radius: 50%; background: #E8D8B8; border: 3px solid #fffaf0; display: flex; align-items: center; justify-content: center; font-size: 2.2em; font-style: normal; }
-  .spot-b span { background: rgba(255,250,240,.9); border-radius: 999px; padding: .15em .7em; margin-top: .2em; white-space: nowrap; }
+  .amap-card { position: relative; height: min(86vh, 160vw); aspect-ratio: 714 / 1280; border-radius: 16px; overflow: visible;
+    background: #F5EFE0 center / 100% 100% no-repeat; border: 3px solid #fffaf0;
+    box-shadow: 0 14px 40px rgba(40,25,10,.35); transform: translateY(12px) rotate(.6deg); transition: transform .5s cubic-bezier(.2,1.2,.4,1); }
+  #amap.show .amap-card { transform: rotate(.6deg); }
+  .amap-card h3 { position: absolute; left: 3%; top: 2.5%; margin: 0; padding: .15em .7em; border-radius: 999px; background: rgba(255,250,240,.88);
+    font: 500 clamp(15px, 2.4vh, 20px) 'Lora', serif; color: var(--ink); box-shadow: 0 2px 6px rgba(60,35,20,.15); }
+  .spot-b { position: absolute; background: none; border: 0; cursor: pointer; padding: 0; border-radius: 22px;
+    font: 600 clamp(12px, 1.8vh, 15px) 'Quicksand', sans-serif; color: var(--ink); -webkit-tap-highlight-color: transparent; }
+  .spot-b:active { background: rgba(255,240,200,.25); }
+  .spot-b span { position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 40%); background: rgba(255,250,240,.94); border-radius: 999px;
+    padding: .2em .8em; white-space: nowrap; box-shadow: 0 2px 6px rgba(60,35,20,.22); border: 1.5px solid #C9A982; }
+  .spot-b.news span { animation: spotGlow 1.6s ease-in-out infinite; }
   .spot-b.news span::before { content: '🦋 '; }
-  .amap-card > small { position: absolute; bottom: 3%; left: 0; right: 0; text-align: center; font: .72em 'Quicksand', sans-serif; color: #a08a72; }
+  @keyframes spotGlow { 50% { box-shadow: 0 0 0 5px rgba(249,199,79,.45), 0 2px 6px rgba(60,35,20,.22); } }
+  .amap-card > small { position: absolute; bottom: -2.2em; left: 0; right: 0; text-align: center; font: .78em 'Quicksand', sans-serif; color: #fffaf0; }
   .mb-card { width: 90%; max-width: 390px; border-radius: 20px; border: 2px solid #C9A982; overflow: hidden; background: var(--paper);
     box-shadow: 0 14px 40px rgba(40,25,10,.35); transform: translateY(14px); transition: transform .5s cubic-bezier(.2,1.2,.4,1); }
   #mbox.show .mb-card { transform: none; }
@@ -424,12 +425,11 @@
   </div>
   <div id="note-wrap"><div id="note"></div></div>
   <div id="amap" role="dialog" aria-label="Bản đồ Hẻm Hoa Giấy">
-    <div class="amap-card">
+    <div class="amap-card" data-bg="alley_map">
+      <button class="spot-b" data-go="home" style="left:28%;top:1%;width:58%;height:28%"><span>Căn Gác Nhỏ</span></button>
+      <button class="spot-b" data-go="mail" style="left:31%;top:35%;width:54%;height:25%"><span>Hòm Thư Chân Cầu Thang</span></button>
+      <button class="spot-b" data-go="shop" style="left:6%;top:68%;width:52%;height:25%"><span>Tiệm Hoa Đầu Hẻm</span></button>
       <h3>Hẻm Hoa Giấy</h3>
-      <svg class="amap-path" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="M50 18 C 20 40, 80 55, 50 72 S 22 105, 50 122" /></svg>
-      <button class="spot-b" data-go="home" style="top:4%"><b class="home">🏠</b><span>Căn Gác Nhỏ</span></button>
-      <button class="spot-b" data-go="mail" style="top:38%"><img data-img="badge_mailbox" alt=""><span>Hòm Thư Chân Cầu Thang</span></button>
-      <button class="spot-b" data-go="shop" style="top:72%"><img data-img="badge_shop" alt=""><span>Tiệm Hoa Đầu Hẻm</span></button>
       <small>Chạm ra ngoài để đóng</small>
     </div>
   </div>

@@ -387,6 +387,7 @@ const COMPASS = ['Kim la bàn khẽ rung rồi dừng về phía cửa sổ: hô
   'Kim dừng ở hướng chậu cây: tưới thêm chút nước, mọi thứ rồi sẽ nở đúng mùa.'];
 
 document.querySelectorAll('[data-img]').forEach(im => { im.src = ITEM_IMG[im.dataset.img]; });
+document.querySelectorAll('[data-bg]').forEach(el => { el.style.backgroundImage = `url(${ITEM_IMG[el.dataset.bg]})`; });
 
 // ---------- radio channels: Tần Số Hẻm Hoa Giấy (94.2 FM, DJ at night) ↔ the cassette "Gió Đồi Thông" (rain on pines)
 let pineSrc = null;

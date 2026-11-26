@@ -86,3 +86,11 @@ for y in range(15, 60):                              # row-wise fill from the cl
         im[y, x, 3] = max(im[y, x0, 3], im[y, x1, 3]) if y >= 16 else 0
 cv2.imwrite(f'{A}/empty0.png', im)
 print('empty pot ok')
+
+# ---- alley map (Vi 27/11): remove the generator sparkle at the bottom right
+mp = cv2.imread(f'{G}/src/vi_1127/alley_map.jpg')
+g = cv2.cvtColor(mp, cv2.COLOR_BGR2GRAY)
+circ = np.zeros(g.shape, np.uint8); cv2.circle(circ, (662, 1233), 22, 1, -1)
+mk = cv2.dilate(((g > 200) & (circ > 0)).astype(np.uint8) * 255, np.ones((5, 5), np.uint8))
+cv2.imwrite(f'{A}/alley_map.png', cv2.inpaint(mp, mk, 4, cv2.INPAINT_TELEA))
+print('alley map ok')
