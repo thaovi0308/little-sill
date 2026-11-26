@@ -88,3 +88,20 @@ Art received: src/vi_1126/ (minh_tet_sheet.jpg, minh_tet_items2.jpg, tet_items.j
 - Wayfinding: when the mailbox has a new postcard or a shop pot needs care, a small yellow butterfly / firefly glow sits on the corner of [🗺️ Con Hẻm]; on the map the same glow sits on the matching place.
 - Sound: map + mailbox popups keep the room music/ambience at ~70% volume. Entering the shop: room audio fades out 0.8 s, alley chime + sparrows (+ light guitar) fade in 0.8 s; back home reverses it.
 - Checklist (Vi): from the shop one tap goes straight home (no map in between); the weather buttons stay in the shop and share the room's weather; seeds from the shop and postcards/gifts from the mailbox go straight into the keepsake box / seed bag, no manual storing.
+
+## Mailbox popup wireframe (Vi 26/11)
+- Over the alley map (map dimmed 60%). Card width 90%, max 390 px, radius 20 px, border #C9A982. Header "📮 HÒM THƯ CHÂN CẦU THANG" + [✕] on cream #FDF8EE.
+- Top 62% = picture (one background ~4:3: wooden stairs rising diagonally on the left with fallen bougainvillea petals, plain cream-yellow wall right). Bottom 38% = cream paper for the speech line / buttons (text never covers faces or the box).
+- Layers: mailbox top 22% left 34% (tap 1 = open Minh's postcard); butterfly top 15% left 48% flapping + a white envelope corner in the slot when mail is new; landlady (waist up, basket + keys) bottom 0 right 4% when she shows up (tap 2 = talk / cookie gift; changes the bottom text).
+- Postcard: child modal, landscape card, front = picture; tap = flip animation to the back (stamp, postmark, handwriting, signed Minh) with [Lưu vào Album 📖] / [Gửi lại Cỏ Bốn Lá ✉️].
+- Empty mailbox: bottom text "Bên trong chỉ có vài cánh hoa giấy khô..." line.
+- Art still needed: the 4:3 stairs + wall background.
+
+## Story fixes approved by Vi (26/11, "Ok hết")
+1. Shop shows the Cỏ Bốn Lá packet only AFTER Minh's postcard 1. Thảo: "Nghe nói em có người bạn gửi cỏ bốn lá về hả? Chị cũng để dành một túi nè, trồng thêm chậu nữa cho may mắn nhân đôi."
+2. First time helping water at the shop -> Thảo gives a 2nd small pot on the other side of the sill (2 plants grow at once).
+3. Once the cassette arrives, the radio gets a channel switch: Tần Số Hẻm Hoa Giấy <-> Gió Đồi Thông (Minh ch4 needs night + Gió Đồi Thông).
+4. Landlady's shop introduction (alley map + stairs) only while the shop was never visited; after that: "Hôm nay con bé Thảo có khoe với bà là em phụ tưới cây giỏ lắm đấy."
+5. Florist ch2 sunflower seeds: add "…không phải để trồng đâu, rắc lên đĩa cho bạn sóc nhé!"
+6. Minh epilogue a few days after ch5: a 2nd teacup + a backpack against the wall, note "Mình về rồi nè, ra hòm thư xem quà nha!" -> mailbox gives the postcard album signed by Minh.
+7. "Không Khí Tết" toggle unlocks after 1 finished route; from 25 Chạp it turns on for everyone automatically.

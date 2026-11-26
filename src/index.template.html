@@ -92,7 +92,7 @@
     transition: left .5s cubic-bezier(.4,1.4,.6,1); }
 
   /* paper note */
-  #note-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  #note-wrap { position: absolute; inset: 0; z-index: 9; display: flex; align-items: center; justify-content: center;
     background: rgba(31,29,43,.35); opacity: 0; pointer-events: none; transition: opacity .4s ease; }
   #note-wrap.show { opacity: 1; pointer-events: auto; }
   #note { width: 78%; max-width: 420px; background: var(--paper); border-radius: 16px;
@@ -236,7 +236,120 @@
   .breath .dot0 { width: 4.2em; height: 4.2em; border-radius: 50%; background: radial-gradient(circle, #ffe7b8, #f4c58c);
     box-shadow: 0 0 30px rgba(244,197,140,.7); transform: scale(.7); transition: transform 4s ease-in-out; }
   .breath p { margin: 0; font-family: 'Lora', serif; font-style: italic; font-size: 1.25em; min-height: 1.5em; text-align: center; }
+  /* ---- Ra ngoài hẻm (Vi 26/11) */
+  #mapbtn { position: absolute; right: 3.2%; top: 2.6%; width: 11%; aspect-ratio: 126 / 97; border-radius: 30%; z-index: 5; cursor: pointer;
+    border: 1.5px solid var(--paper-line); background: var(--paper); box-shadow: 0 2px 6px rgba(60,35,20,.25); font-size: clamp(14px, 2.6vh, 22px); padding: 0; }
+  #mapbtn.news::after, .spot-b.news::after { content: ''; position: absolute; right: -6%; top: -10%; width: 34%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle, #ffe9a8 30%, rgba(249,199,79,0) 70%); animation: breathe 1.8s ease-in-out infinite; }
+  #amap, #mbox, #pcw { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(31,29,43,.4);
+    opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+  #amap { z-index: 11; } #mbox { z-index: 12; } #pcw { z-index: 13; flex-direction: column; gap: .8em; }
+  #amap.show, #mbox.show, #pcw.show { opacity: 1; pointer-events: auto; }
+  .amap-card { position: relative; width: 78%; max-width: 380px; aspect-ratio: 3 / 4.2; background: #F5EFE0; border-radius: 18px; border: 2px dashed #C9A982;
+    box-shadow: 0 14px 40px rgba(40,25,10,.35); transform: translateY(12px) rotate(.8deg); transition: transform .5s cubic-bezier(.2,1.2,.4,1);
+    background-image: radial-gradient(rgba(200,160,110,.18) 1px, transparent 1.4px); background-size: 14px 14px; }
+  #amap.show .amap-card { transform: rotate(.8deg); }
+  .amap-card h3 { margin: 0; padding-top: 5%; text-align: center; font: 500 clamp(18px, 3vh, 24px) 'Lora', serif; color: var(--ink); }
+  .amap-path { position: absolute; left: 0; top: 10%; width: 100%; height: 78%; }
+  .amap-path path { fill: none; stroke: #C9A982; stroke-width: 1.4; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+  .spot-b { position: absolute; left: 50%; transform: translateX(-50%); width: 46%; background: none; border: 0; cursor: pointer; padding: 0;
+    display: flex; flex-direction: column; align-items: center; font: 600 clamp(12px, 1.9vh, 15px) 'Quicksand', sans-serif; color: var(--ink); margin-top: 6%; }
+  .spot-b img, .spot-b .home { width: 56%; aspect-ratio: 1; object-fit: contain; display: block; filter: drop-shadow(0 3px 4px rgba(60,35,20,.3)); }
+  .spot-b .home { border-radius: 50%; background: #E8D8B8; border: 3px solid #fffaf0; display: flex; align-items: center; justify-content: center; font-size: 2.2em; font-style: normal; }
+  .spot-b span { background: rgba(255,250,240,.9); border-radius: 999px; padding: .15em .7em; margin-top: .2em; white-space: nowrap; }
+  .spot-b.news span::before { content: '🦋 '; }
+  .amap-card > small { position: absolute; bottom: 3%; left: 0; right: 0; text-align: center; font: .72em 'Quicksand', sans-serif; color: #a08a72; }
+  .mb-card { width: 90%; max-width: 390px; border-radius: 20px; border: 2px solid #C9A982; overflow: hidden; background: var(--paper);
+    box-shadow: 0 14px 40px rgba(40,25,10,.35); transform: translateY(14px); transition: transform .5s cubic-bezier(.2,1.2,.4,1); }
+  #mbox.show .mb-card { transform: none; }
+  .mb-head { position: relative; padding: .55em 2.4em .5em 1em; font: 600 clamp(12px, 1.9vh, 15px) 'Quicksand', sans-serif; color: var(--ink); letter-spacing: .04em; background: #F5EFE0; }
+  #mb-x { position: absolute; right: .5em; top: 50%; transform: translateY(-50%); border: 0; background: none; font-size: 1.2em; color: var(--ink); cursor: pointer; }
+  .mb-pic { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+  .mb-bg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #mb-box { position: absolute; left: 47%; top: 20%; width: 17%; border: 0; padding: 0; background: none; cursor: pointer; }
+  #mb-box img { width: 100%; display: block; filter: drop-shadow(0 4px 4px rgba(60,35,20,.3)); }
+  #mb-box .env { position: absolute; left: 30%; top: 50%; width: 42%; height: 13%; background: #fbf3e2; border: 1px solid #c9a982; border-radius: 2px;
+    transform: rotate(-8deg); display: none; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  #mbox.mail #mb-box .env { display: block; }
+  #mb-fly { position: absolute; left: 55%; top: 12%; width: 8%; pointer-events: none; animation: flutter 1.6s ease-in-out infinite; transform-origin: 50% 80%; }
+  #mbox:not(.mail) #mb-fly { left: 72%; top: 6%; opacity: .85; animation-duration: 2.6s; }
+  @keyframes flutter { 0%,100% { transform: scaleX(1) translateY(0); } 50% { transform: scaleX(.55) translateY(-6%); } }
+  #mb-lady { position: absolute; right: 2%; bottom: -2%; height: 84%; border: 0; padding: 0; background: none; cursor: pointer; }
+  #mb-lady img { height: 100%; width: auto; display: block; filter: drop-shadow(0 4px 6px rgba(60,35,20,.3)); }
+  #mb-text { min-height: 7.5em; padding: .8em 1.1em 1em; font: clamp(14px, 2.2vh, 17px)/1.5 'Patrick Hand', 'Quicksand', cursive; color: #5b4330; }
+  #mb-text p { margin: 0 0 .4em; }
+  .pc { width: 84%; max-width: 380px; aspect-ratio: 3 / 2; perspective: 1200px; cursor: pointer; position: relative; }
+  .pc-in { position: absolute; inset: 0; transition: transform .7s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+  .pc.flip .pc-in { transform: rotateY(180deg); }
+  .pc-f, .pc-b { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 6px; overflow: hidden;
+    background: #fbf6ea; box-shadow: 0 10px 30px rgba(30,20,10,.4); }
+  .pc-f img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pc-b { transform: rotateY(180deg); padding: 6% 7%; font: clamp(13px, 2.1vh, 17px)/1.45 'Patrick Hand', cursive; color: #4a3525; text-align: left;
+    background-image: linear-gradient(transparent 95%, rgba(150,120,90,.18) 95%); background-size: 100% 1.45em; overflow-y: auto; }
+  .pc-b p { margin: 0 22% 0 0; } .pc-b i { display: block; text-align: right; margin-top: .4em; }
+  .pc-stamp { position: absolute; right: 5%; top: 6%; width: 15%; transform: rotate(6deg); }
+  .pm2 { position: absolute; right: 3%; top: 32%; font: 700 .5em 'Quicksand', sans-serif; color: rgba(200,55,45,.7); border: 1.5px solid rgba(200,55,45,.6); border-radius: 50%; padding: .5em .3em; transform: rotate(-14deg); }
+  .pc-env { position: absolute; inset: 0; background: #f3e6cc; display: flex; align-items: center; justify-content: center; }
+  .pc-env::before { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, transparent 49.5%, rgba(150,120,80,.35) 50%, transparent 51%), linear-gradient(20deg, transparent 49.5%, rgba(150,120,80,.35) 50%, transparent 51%); }
+  .pc-env img { width: 34%; position: relative; transform: rotate(-10deg); }
+  .pc-env .pm { position: absolute; right: 6%; top: 8%; font: 700 .55em 'Quicksand', sans-serif; color: #c8372d; border: 2px solid #c8372d; border-radius: 50%; padding: 1em .5em; transform: rotate(-12deg); }
+  .pc-hint { color: #fff6e0; font: .8em 'Quicksand', sans-serif; transition: opacity .4s; }
+  .pc-btns { width: 84%; max-width: 380px; } .pc-btns .reply { text-align: center; background: var(--paper); }
+  .postmark { position: absolute; right: 8%; top: 10%; font: 700 clamp(10px, 1.6vh, 13px)/1.2 'Quicksand', sans-serif; color: #c8372d; border: 3px double #c8372d; border-radius: 50%;
+    padding: 1.2em .6em; text-align: center; opacity: 0; transform: scale(2) rotate(-30deg); }
+  .postmark.on { animation: stampIn .35s ease-out forwards; }
+  .pc.fly { transition: transform 1s ease-in, opacity 1s ease-in; transform: translate(30%, -120%) rotate(18deg) scale(.4); opacity: 0; }
+  #fade { position: absolute; inset: 0; background: #1f1a14; opacity: 0; pointer-events: none; transition: opacity .4s ease; z-index: 15; }
+  #fade.on { opacity: 1; pointer-events: auto; }
+  #shop { position: absolute; inset: 0; z-index: 7; display: none; background: center / 100% 100% no-repeat; overflow: hidden; }
+  #shop.show { display: block; animation: fadeIn .4s ease; }
+  #shop > img, #shop .spot { position: absolute; pointer-events: none; }
+  #shop .spot { background-repeat: no-repeat; transition: filter 1.2s ease; -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent); mask-image: radial-gradient(closest-side, #000 70%, transparent); }
+  #shop .spot.dry { filter: saturate(.25) sepia(.45) brightness(.92); }
+  #shop .spot.dry::after { content: '💧'; position: absolute; left: 50%; top: 4%; transform: translateX(-50%); font-size: clamp(10px, 1.8vh, 16px); animation: breathe 2s ease-in-out infinite; }
+  #shop .hit { z-index: 2; }
+  #shop::after { content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; transition: background-color 1.2s ease; }
+  #shop[data-w="night"]::after { background-color: rgba(70,70,125,.55); }
+  #shop[data-w="rain"]::after { background-color: rgba(160,168,196,.38); }
+  .shop-glow { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.2s ease; z-index: 1; mix-blend-mode: screen;
+    background: radial-gradient(9% 6% at 5% 27%, rgba(249,199,79,.9), rgba(249,199,79,0)), radial-gradient(9% 6% at 94% 27%, rgba(249,199,79,.9), rgba(249,199,79,0)),
+      radial-gradient(40% 18% at 50% 30%, rgba(255,210,140,.35), rgba(255,210,140,0)); }
+  #shop[data-w="night"] .shop-glow, #shop[data-w="rain"] .shop-glow { opacity: 1; }
+  .shop-rain { position: absolute; left: 0; right: 0; top: 0; height: 22%; pointer-events: none; opacity: 0; z-index: 1;
+    background: repeating-linear-gradient(105deg, rgba(220,230,255,0) 0 9px, rgba(220,230,255,.45) 9px 10px); background-size: 60px 60px; animation: rainfall .5s linear infinite; }
+  #shop[data-w="rain"] .shop-rain { opacity: 1; }
+  @keyframes rainfall { to { background-position: -12px 60px; } }
+  .shop-top { position: absolute; left: 50%; top: 1.6%; transform: translateX(-50%); display: flex; gap: 2%; width: 52%; z-index: 3; }
+  .sw { flex: 1; border: 0; padding: 0; background: none; cursor: pointer; border-radius: 40%; }
+  .sw img { width: 100%; display: block; }
+  .sw.on { box-shadow: 0 0 0 3px rgba(255,255,255,.85); }
+  .shop-bar { position: absolute; left: 0; right: 0; bottom: 2.4%; display: flex; justify-content: center; gap: 4%; z-index: 3; }
+  .shop-bar button { border: 0; border-radius: 999px; padding: .6em 1.3em; font: 600 clamp(13px, 2.1vh, 17px) 'Quicksand', sans-serif; cursor: pointer; box-shadow: 0 3px 8px rgba(30,20,10,.3); }
+  .shop-bar .sb { background: #4A3525; color: #FDF8EE; } .shop-bar .sb2 { background: #FDF8EE; color: #4A3525; }
+  #shop-say { position: absolute; left: 7%; right: 7%; top: 67%; z-index: 4; background: rgba(253,248,238,.96); border-radius: 18px; padding: .8em 1em;
+    font: clamp(14px, 2.2vh, 18px)/1.45 'Patrick Hand', cursive; color: #5b4330; box-shadow: 0 6px 18px rgba(40,25,10,.25); border: 1.5px solid #C9A982;
+    opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; pointer-events: none; }
+  #shop-say.show { opacity: 1; transform: none; pointer-events: auto; }
+  #shop-say::after { content: ''; position: absolute; left: 62%; top: -10px; border: 10px solid transparent; border-top: 0; border-bottom-color: rgba(253,248,238,.96); }
+  #shop-say small { display: block; font-size: .75em; }
+  .trade { display: flex; gap: .8em; align-items: flex-start; border: 1.5px solid var(--paper-line); background: #fffdf7; border-radius: 12px; padding: .7em .8em; margin: .5em 0; }
+  .trade > img { width: 3.6em; height: auto; object-fit: contain; flex: none; }
+  .trade b { display: block; } .trade p { margin: .3em 0; font-size: .86em; line-height: 1.4; }
+  .trade .cost { display: block; color: #c9772f; font-size: .85em; font-weight: 600; } .trade .care { display: block; color: #8a735c; font-size: .8em; }
+  .trade .reply { text-align: center; } .trade .reply[disabled] { opacity: .6; cursor: default; } .trade .reply[data-no] { opacity: .75; }
+  #beam { position: absolute; width: 46%; height: 5%; transform-origin: 0 50%; pointer-events: none; opacity: 0; z-index: 1; transition: opacity 1.5s;
+    background: linear-gradient(to right, rgba(255,232,160,.55), rgba(255,232,160,0)); clip-path: polygon(0 45%, 100% 0, 100% 100%, 0 55%); mix-blend-mode: screen; }
+  #beam.on { opacity: 1; animation: sweep 9s ease-in-out infinite; }
+  @keyframes sweep { 0%,100% { transform: translateY(-50%) rotate(195deg); } 50% { transform: translateY(-50%) rotate(235deg); } }
+  #p-plant2, #p-lighthouse { transition: opacity .6s; }
+  .album { display: grid; grid-template-columns: 1fr 1fr; gap: .7em; }
+  .alb { border: 0; background: none; padding: 0; cursor: pointer; font: inherit; color: inherit; text-align: center; }
+  .alb > span { display: block; position: relative; aspect-ratio: 3 / 2; border-radius: 4px; overflow: hidden; box-shadow: 0 3px 8px rgba(60,35,20,.25); transform: rotate(-1.5deg); }
+  .alb:nth-child(even) > span { transform: rotate(1.5deg); }
+  .alb > span > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .alb b { display: block; font-size: .78em; font-weight: 600; margin-top: .35em; line-height: 1.3; }
   @media (prefers-reduced-motion: reduce) {
+    #beam.on, #mb-fly, .shop-rain { animation: none !important; }
     #p-radio.on, .wiggle, .press, #intro .tap { animation: none !important; }
   }
 </style>
@@ -281,6 +394,9 @@
   <img id="p-tea" class="prop" src="{{PROP_tea}}" alt="" style="opacity:0">
   <img id="p-sparrow" class="prop visitor" src="{{PROP_sparrow}}" alt="">
   <img id="p-incense" class="prop" src="{{PROP_candle_on}}" alt="">
+  <img id="p-plant2" class="prop" alt="" style="display:none">
+  <img id="p-lighthouse" class="prop" alt="" style="display:none">
+  <img id="p-tea2" class="prop" src="{{PROP_tea}}" alt="" style="opacity:0;transition:opacity .8s">
 
   <div id="tint" class="layer masked-room"></div>
   <div id="glow" class="layer"></div>
@@ -288,11 +404,49 @@
   <div id="wring"></div>
   <div id="hits"></div>
   <button id="mute" aria-label="Tắt / bật âm thanh">♪</button>
+  <div id="beam"></div>
+  <button id="mapbtn" aria-label="Bản đồ Hẻm Hoa Giấy" style="display:none"><span>🗺️</span></button>
   <div id="vbub" aria-live="polite"></div>
   <div id="dj" aria-live="polite"><img alt=""><div><small>📻 Tần Số Hẻm Hoa Giấy</small><span></span></div></div>
   <div id="toast"></div>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="lt-sunset" color-interpolation-filters="sRGB"><feFlood flood-color="#F4A261" result="f"/><feBlend in="f" in2="SourceGraphic" mode="multiply" result="m"/><feComposite in="m" in2="SourceGraphic" operator="arithmetic" k2="0.15" k3="0.85" result="x"/><feComposite in="x" in2="SourceGraphic" operator="in"/></filter><filter id="lt-night" color-interpolation-filters="sRGB"><feFlood flood-color="#243B55" result="f"/><feBlend in="f" in2="SourceGraphic" mode="multiply" result="m"/><feComposite in="m" in2="SourceGraphic" operator="arithmetic" k2="0.25" k3="0.75" result="x"/><feComposite in="x" in2="SourceGraphic" operator="in"/></filter></svg>
+  <div id="shop" aria-label="Tiệm hoa đầu hẻm">
+    <img id="shop-florist" alt="Chị Thảo chủ tiệm hoa">
+    <img id="shop-front" alt="">
+    <div class="shop-glow"></div><div class="shop-rain"></div>
+    <div class="shop-top">
+      <button class="sw" data-s="w" data-w="sunset" aria-label="Nắng chiều"><img src="{{PROP_w_sunset}}" alt=""></button>
+      <button class="sw" data-s="w" data-w="rain" aria-label="Mưa rào"><img src="{{PROP_w_rain}}" alt=""></button>
+      <button class="sw" data-s="w" data-w="night" aria-label="Đêm sao"><img src="{{PROP_w_night}}" alt=""></button>
+    </div>
+    <div id="shop-say" aria-live="polite"></div>
+    <div class="shop-bar"><button data-s="map" class="sb2">🗺️ Bản đồ</button><button data-s="home" class="sb">🏠 Về Gác</button></div>
+  </div>
   <div id="note-wrap"><div id="note"></div></div>
+  <div id="amap" role="dialog" aria-label="Bản đồ Hẻm Hoa Giấy">
+    <div class="amap-card">
+      <h3>Hẻm Hoa Giấy</h3>
+      <svg class="amap-path" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="M50 18 C 20 40, 80 55, 50 72 S 22 105, 50 122" /></svg>
+      <button class="spot-b" data-go="home" style="top:4%"><b class="home">🏠</b><span>Căn Gác Nhỏ</span></button>
+      <button class="spot-b" data-go="mail" style="top:38%"><img data-img="badge_mailbox" alt=""><span>Hòm Thư Chân Cầu Thang</span></button>
+      <button class="spot-b" data-go="shop" style="top:72%"><img data-img="badge_shop" alt=""><span>Tiệm Hoa Đầu Hẻm</span></button>
+      <small>Chạm ra ngoài để đóng</small>
+    </div>
+  </div>
+  <div id="mbox" role="dialog" aria-label="Hòm thư chân cầu thang">
+    <div class="mb-card">
+      <div class="mb-head">📮 HÒM THƯ CHÂN CẦU THANG <button id="mb-x" aria-label="Đóng">✕</button></div>
+      <div class="mb-pic">
+        <img class="mb-bg" data-img="stairs_scene" alt="">
+        <button id="mb-box" aria-label="Hộp thư gỗ"><img data-img="mailbox2" alt=""><i class="env"></i></button>
+        <img id="mb-fly" data-img="butterfly" alt="">
+        <button id="mb-lady" aria-label="Bà chủ nhà"><img data-img="landlady" alt=""></button>
+      </div>
+      <div id="mb-text"></div>
+    </div>
+  </div>
+  <div id="pcw"></div>
+  <div id="fade"></div>
   <div id="intro" role="button" aria-label="Chạm để mở cửa sổ">
     <img class="cover" src="{{COVER}}" alt="Bên Khung Cửa Nhỏ — Little Sill">
     <div class="tap">Mở khung cửa nhỏ</div>
@@ -356,6 +510,12 @@ const PLANTS = {
               care: 'Tưới nước + gặp trời mưa 1 lần', need: [{ water: 1 }, { water: 1, rain: 1 }] },
   pothos:   { name: 'Trầu Bà', hours: 10, icon: '🍃', gift: 'Lá trầu bà hình trái tim', meaning: 'Niềm hy vọng',
               care: 'Tưới nước + thắp đèn lồng 1 lần', need: [{ water: 1 }, { water: 1, light: 1 }] },
+  forget:   { name: 'Hoa Lưu Ly', hours: 10, icon: '💙', gift: 'Nhành lưu ly ép khô', meaning: 'Kỷ niệm dịu dàng không quên', lock: 1,
+              care: 'Tưới nước 2 lần + nghe nhạc radio', need: [{ water: 1 }, { water: 2, music: 1 }] },
+  hydrangea:{ name: 'Cẩm Tú Cầu Mini', hours: 14, icon: '🌸', gift: 'Chùm cẩm tú cầu khô', meaning: 'Lòng biết ơn chân thành', lock: 1,
+              care: 'Tưới nước 2 lần + gặp mưa 1 lần', need: [{ water: 1 }, { water: 2, rain: 1 }] },
+  clover:   { name: 'Cỏ Bốn Lá', hours: 8, icon: '🍀', gift: 'Lá cỏ bốn lá ép', meaning: 'Niềm vui bất ngờ, may mắn', lock: 1,
+              care: 'Tưới nước 1 lần + nắng chiều', need: [{ water: 1 }, { water: 1, sun: 1 }] },
 };
 const PLANT_IMG = {{PLANT_IMG}};
 if (S.leaves) { S.keep = Object.assign({}, S.keep, { leaf: S.leaves }); delete S.leaves; }
@@ -438,6 +598,8 @@ const HITS = {
   rabbit: { box: [246, 800, 96, 120], label: 'Chú thỏ trắng' },
   pin:    { box: [92, 556, 88, 80], label: 'Tranh dán trên khung cửa' },
   bouquet:{ box: [644, 800, 54, 98], label: 'Bó hoa khô' },
+  plant2: { box: [630, 1000, 70, 118], label: 'Chậu cây nhỏ trên bàn' },
+  lighthouse: { box: [590, 920, 52, 84], label: 'Hải đăng gỗ mini' },
 };
 const hitsEl = $('#hits');
 for (const [id, h] of Object.entries(HITS)) {
@@ -498,11 +660,19 @@ function applyFood() { $('#p-cookies').style.opacity = S.food === 'milk' ? 1 : 0
   $('#p-plate').style.visibility = S.food === 'seeds' ? 'hidden' : ''; }
 place($('#p-seeds'), 242, 845, 98, 59);
 function applyTea() { $('#p-tea').style.opacity = S.tea ? 1 : 0; HITS.cup.el.style.display = S.tea ? '' : 'none'; }
-function updatePlant(grew) {
-  const el = $('#p-plant'), g = S.garden;
-  const key = g ? g.type + g.stage : 'daisy0';
-  const P = PLANT_IMG[key]; el.src = P.src; place(el, ...P.box); place(HITS.plant.el, ...P.box);
-  HITS.plant.box = P.box;
+const POT2 = [664, 1118, 0.5];   // second pot: centre x, bottom y, scale (on the desk, by the candle)
+const gardenAt = i => i ? S.garden2 : S.garden;
+const allGardens = () => [S.garden, S.garden2].filter(Boolean);
+function setGardenAt(i, g) { if (i) S.garden2 = g; else S.garden = g; }
+function updatePlant(grew, i = 0) {
+  const el = $(i ? '#p-plant2' : '#p-plant'), H = i ? HITS.plant2 : HITS.plant;
+  if (i && S.garden2 === undefined) { el.style.display = 'none'; H.el.style.display = 'none'; return; }
+  const g = gardenAt(i);
+  const key = g ? g.type + g.stage : (i ? 'empty0' : 'daisy0');
+  const P = PLANT_IMG[key]; let box = P.box;
+  if (i) { const [cx, by, k] = POT2; box = [cx + (box[0] - 180) * k, by - box[3] * k, box[2] * k, box[3] * k]; el.style.display = ''; H.el.style.display = ''; }
+  el.src = P.src; place(el, ...box); place(H.el, ...box);
+  H.box = box;
   if (grew) { bump(el, 'press'); SFX.sparkle(); }
 }
 function resize() {
@@ -851,6 +1021,7 @@ function scheduleBeat(t, i) {
     noiseBurst(t + Math.random() * BEAT, 0.004, 2000 + Math.random() * 4000, 0, 2, 0.04 + Math.random() * 0.05, radioBus);
 }
 function radioTick() {
+  if (S.radioCh === 'pine') { nextBeatTime = AC.currentTime + 0.3; return; }
   while (nextBeatTime < AC.currentTime + 0.25) {
     scheduleBeat(nextBeatTime, beatIndex); nextBeatTime += BEAT; beatIndex++;
     if (S.radio) fxSpawnNote();
@@ -883,7 +1054,7 @@ function djSay(text) {
 }
 function djStop() { clearTimeout(DJ.timer); clearInterval(DJ.typing); $('#dj').classList.remove('show'); DJ.said = false; }
 function djNext(first) {
-  clearTimeout(DJ.timer);
+  clearTimeout(DJ.timer); if (S.radioCh === 'pine') { djStop(); return; }
   if (!djOn()) { djStop(); return; }
   DJ.timer = setTimeout(() => {
     if (!djOn()) return;
@@ -900,7 +1071,7 @@ function djNext(first) {
 function setRadio(on) {
   if (on && !S.radioOnce) { S.radioOnce = 1; if (S.story.old === 0) setTimeout(() => { sparrowOn = true; }, 4000); }
   if (on) floHint();
-  S.radio = on; if (on && S.garden && S.garden.stage < 2) { S.garden.music = 1; setTimeout(growthCheck, 1500); } save();
+  S.radio = on; if (on) { allGardens().forEach(g => { if (g.stage < 2) g.music = 1; }); setTimeout(growthCheck, 1500); } save();
   if (on && S.weather === 'night') djNext(true); else if (!on) djStop();
   $('#p-radio').classList.toggle('on', on);
   if (!AC) return;
@@ -942,9 +1113,10 @@ $('#glow').style.background =
   'radial-gradient(42% 26% at 16% 74%, rgba(255,214,140,.85), rgba(255,190,110,.35) 45%, rgba(255,170,90,0) 100%)';
 function setWeather(w) {
   if (w === S.weather) return;
-  S.weather = w; if (w === 'rain' && S.garden) S.garden.rain = 1; save(); applyLook(); setAmbience(w); setTimeout(growthCheck, 1500);
+  S.weather = w; allGardens().forEach(g => { if (w === 'rain') g.rain = 1; if (w === 'sunset') g.sun = 1; }); save(); applyLook(); setAmbience(w); setTimeout(growthCheck, 1500);
   if (S.radio && w === 'night') djNext(true); else if (w !== 'night') djStop();
   if (typeof applyTT === 'function') setTimeout(applyTT, 600);
+  applyLighthouse(); applyShop();
   sky.wind = 0; toast({ rain: 'Mưa rào', sunset: 'Nắng chiều', night: 'Đêm đầy sao' }[w]);
 }
 
@@ -1128,7 +1300,7 @@ function stageReveal(modalAfter) {
 let storyLast = 0; const storyShown = new Set();
 function storyGate(id) {
   if (storyShown.has(id)) return true;
-  if (!started || $('#note-wrap').classList.contains('show') || Date.now() - storyLast < 45000) return false;
+  if (!started || $('#note-wrap').classList.contains('show') || outsideOpen() || Date.now() - storyLast < 45000) return false;
   storyShown.add(id); storyLast = Date.now(); return true;
 }
 function closeNote() {
@@ -1482,6 +1654,10 @@ function useItem(k, row) {
     S.pin = S.pin === k ? null : k; save(); applyPin(); openKeepsakes(); SFX.paper();
     toast(S.pin ? 'Dán lên khung cửa sổ rồi 📌' : 'Gỡ xuống, cất lại vào hộp kỷ vật', 2400); return;
   }
+  if (k === 'k_cassette') { closeNote(); if (!S.radio) setRadio(true); setChannel('pine'); return; }
+  if (k === 'k_compass') { SFX.click(); toast(COMPASS[Math.floor(Math.random() * COMPASS.length)], 4200); return; }
+  if (k === 'k_lighthouse') { S.lighthouseOut = !S.lighthouseOut; save(); applyLighthouse(); openKeepsakes(); SFX.paper(); toast(S.lighthouseOut ? 'Đặt hải đăng gỗ lên kệ tường 🗼' : 'Cất hải đăng vào hộp kỷ vật', 2400); return; }
+  if (k === 'k_album') { closeNote(); openAlbum(); return; }
   if (k === 'bouquet') { S.bouquetOut = !S.bouquetOut; save(); applyBouquet(); openKeepsakes(); SFX.paper(); if (S.bouquetOut) { showFlavor('bouquet'); sparkles(); } return; }
 }
 $('#note').addEventListener('click', e => {
@@ -1496,62 +1672,70 @@ function fmtLeft(ms) {
   const h = ms / HOUR;
   return h >= 1 ? `khoảng ${Math.ceil(h)} giờ` : `khoảng ${Math.max(1, Math.ceil(h * 60))} phút`;
 }
-function growthCheck() {
-  const g = S.garden; if (!g) return;
+function growthCheck() { growthCheckAt(0); growthCheckAt(1); }
+function growTime(g, P) { return g.planted + (g.stage + 1) / 2 * P.hours * HOUR * (S.keep.k_can ? 0.8 : 1) * (g.fert ? 0.75 : 1); }
+function growthCheckAt(i) {
+  const g = gardenAt(i); if (!g) return;
   const P = PLANTS[g.type];
   while (g.stage < 2) {
-    const need = P.need[g.stage], at = g.planted + (g.stage + 1) / 2 * P.hours * HOUR * (S.keep.k_can ? 0.8 : 1);
-    if (Date.now() >= at && g.water >= need.water && g.music >= (need.music || 0) && (g.rain || 0) >= (need.rain || 0) && (g.light || 0) >= (need.light || 0)) {
-      g.stage++; save(); updatePlant(true);
+    const need = P.need[g.stage], at = growTime(g, P);
+    if (Date.now() >= at && g.water >= need.water && g.music >= (need.music || 0) && (g.rain || 0) >= (need.rain || 0) && (g.light || 0) >= (need.light || 0) && (g.sun || 0) >= (need.sun || 0)) {
+      g.stage++; save(); updatePlant(true, i);
       toast(g.stage === 2 ? `${P.name} đã nở hoa ${P.icon} Chạm để hái nhé` : `${P.name} vừa lớn thêm một chút 🌱`, 3200);
     } else break;
   }
 }
-function plantStatus() {
-  const g = S.garden, P = PLANTS[g.type];
+function plantStatus(i = 0) {
+  const g = gardenAt(i), P = PLANTS[g.type];
   if (g.stage === 2) return `${P.name} đang nở hoa ${P.icon}`;
-  const need = P.need[g.stage], left = g.planted + (g.stage + 1) / 2 * P.hours * HOUR * (S.keep.k_can ? 0.8 : 1) - Date.now();
+  const need = P.need[g.stage], left = growTime(g, P) - Date.now();
   if (g.water < need.water) return `${P.name}: tưới thêm nước nhé 💧`;
   if (g.music < (need.music || 0)) return `${P.name} muốn nghe nhạc 📻`;
   if ((g.rain || 0) < (need.rain || 0)) return `${P.name} đang chờ một cơn mưa 🌧️`;
   if ((g.light || 0) < (need.light || 0)) return `${P.name} đang chờ ánh đèn lồng 🏮`;
+  if ((g.sun || 0) < (need.sun || 0)) return `${P.name} đang chờ chút nắng chiều 🌇`;
   return `${P.name} đang lớn, ${fmtLeft(left)} nữa 🌱`;
 }
-function tapPlant() {
-  const g = S.garden;
-  if (!g) { openSeedPicker(); return; }
+function tapPlant(i = 0) {
+  const g = gardenAt(i), el = $(i ? '#p-plant2' : '#p-plant');
+  if (!g) { openSeedPicker(i); return; }
   const P = PLANTS[g.type];
   if (g.stage === 2) {
-    S.keep[g.type] = (S.keep[g.type] || 0) + 1; S.harvested[g.type] = 1; S.garden = null; save();
-    SFX.sparkle(); bump($('#p-plant'), 'wiggle');
+    S.keep[g.type] = (S.keep[g.type] || 0) + 1; S.harvested[g.type] = 1; setGardenAt(i, null); save();
+    if (i) updatePlant(false, 1);
+    SFX.sparkle(); bump(el, 'wiggle');
     toast(`Hái ${P.gift.toLowerCase()} cất vào hộp kỷ vật ${P.icon}`, 2600);
-    setTimeout(openSeedPicker, 1600); return;
+    setTimeout(() => openSeedPicker(i), 1600); return;
   }
-  bump($('#p-plant'), 'wiggle'); waterDrops(); SFX.water(); if (!S.watered) { S.watered = 1; save(); setTimeout(applyBag, 2500); }
+  bump(el, 'wiggle'); waterDrops(i); SFX.water(); if (!S.watered) { S.watered = 1; save(); setTimeout(applyBag, 2500); }
   if (Date.now() - g.lastWater >= HOUR || !g.lastWater) {
     g.water++; g.lastWater = Date.now(); save();
-    setTimeout(() => { toast(plantStatus(), 2600); growthCheck(); }, 900);
+    setTimeout(() => { toast(plantStatus(i), 2600); growthCheck(); }, 900);
   } else toast('Đất còn ẩm rồi, lát nữa tưới tiếp nhé 💧', 2400);
 }
-function openSeedPicker() {
-  openPanel(`<h3>Gieo hạt mới</h3>` + Object.entries(PLANTS).map(([k, P]) =>
+function openSeedPicker(i = 0) {
+  const other = gardenAt(1 - i);
+  openPanel(`<h3>Gieo hạt mới</h3>` + Object.entries(PLANTS).filter(([k, P]) => !P.lock || S.seedsGot[k]).map(([k, P]) =>
     `<button class="seed" data-seed="${k}"><img src="${ITEM_IMG['seed_' + k] || PLANT_IMG[k + '2'].src}" alt=""><div><b>${P.name}</b>
      <span>${P.meaning} · ${P.hours} giờ · ${P.care}</span></div></button>`).join(''), true);
   document.querySelectorAll('.seed').forEach(b => b.addEventListener('click', e => {
     e.stopPropagation();
-    S.garden = { type: b.dataset.seed, stage: 0, planted: Date.now(), water: 0, music: S.radio ? 1 : 0, lastWater: 0, rain: S.weather === 'rain' ? 1 : 0, light: S.lantern ? 1 : 0 };
-    save(); updatePlant(true); $('#note-wrap').classList.remove('show'); SFX.paper();
+    const fert = S.fert ? 1 : 0; if (fert) S.fert = 0;
+    setGardenAt(i, { type: b.dataset.seed, stage: 0, planted: Date.now(), water: 0, music: S.radio ? 1 : 0, lastWater: 0, rain: S.weather === 'rain' ? 1 : 0, light: S.lantern ? 1 : 0, sun: S.weather === 'sunset' ? 1 : 0, fert });
+    if (b.dataset.seed === 'clover') S.story.cloverPlanted = S.story.cloverPlanted || Date.now();
+    save(); updatePlant(true, i); $('#note-wrap').classList.remove('show'); SFX.paper();
     toast(`Đã gieo hạt ${PLANTS[b.dataset.seed].name}. Nhớ tưới nước nhé 💧`, 2800);
   }));
 }
-const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2' };
+const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2', clover: 'pf_clover', forget: 'seed_forget', hydrangea: 'seed_hydrangea' };
 // ---------------------------------------------------------------- route 4: the florist at the head of the alley (lines by Vi)
 // a cloth bag on a pulley rope comes to the window; a small bell rings when it carries a note
 const FLO = [
   { t: 'Nhành Hoa Ủ Rũ', b: ['Chào người hàng xóm mới nhé! Chị là chủ tiệm hoa ở đầu hẻm. Dạo này khách ít ghé, mấy chậu hoa ngoài sạp của chị cũng ủ rũ theo...',
     'Ngước lên thấy bệ cửa nhà em xanh mướt, chị ngưỡng mộ lắm. Em có bí quyết gì thì gửi một nhánh oải hương hoặc trầu bà vào túi vải chia sẻ với chị nha!'] },
   { t: 'Hạt Giống Nắng Mai', b: ['Cảm ơn nhánh cây xanh mướt của em nhé! Hóa ra hoa cũng cần được nghe nhạc và thắp đèn ấm mới vui vẻ trở lại.',
-    'Chị gửi tặng em túi hạt giống hướng dương này. Rắc lên đĩa ngoài bệ cửa, biết đâu sẽ có bạn sóc nhỏ ghé thăm đấy!'], gift: 'k_sunseed' },
+    'Chị gửi tặng em túi hạt giống hướng dương này, không phải để trồng đâu, rắc lên đĩa cho bạn sóc nhé!',
+    'P.S. Giờ em biết đường xuống đầu hẻm rồi, rảnh thì ghé thẳng tiệm hoa chơi với chị cho vui nha!'], gift: 'k_sunseed' },
   { t: 'Chiếc Bình Đồng Cũ', b: ['Nhờ áp dụng cách của em mà sạp hoa đầu hẻm hôm nay tươi tắn hẳn lên, khách đi ngang cũng dừng lại ngắm nhiều hơn.',
     'Chị tặng em bình tưới nước bằng đồng và một bó hoa khô thơm dịu. Có chiếc bình này, mấy chậu cây của em sẽ lớn nhanh hơn một chút đấy!'], gift: 'k_can' },
   { t: 'Hương Nến Đêm Gió', b: ['Tối qua trời trở gió lạnh, hương thơm dịu nhẹ từ ngọn nến thơm nhà em bay xuống tận đầu hẻm làm chị thấy ấm lòng lạ thường.',
@@ -1832,14 +2016,18 @@ function openKeepsakes() {
     ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', pinHint('na_window')],
     ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của chị bán hoa. Rắc lên đĩa để mời bạn sóc'], ['bouquet', 'Bó hoa khô thơm dịu', S.bouquetOut ? 'Đang đặt trên bệ cửa, chạm để cất' : 'Chạm để đặt lên bệ cửa sổ'], ['k_can', 'Bình tưới bằng đồng', 'Quà của chị bán hoa. Cây lớn nhanh hơn một chút'],
     ['k_ttlantern', 'Đèn lồng kéo quân', 'Quà Trung Thu của bà chủ nhà'],
-    ['k_flowerchime', 'Chuông gió thủy tinh vẽ hoa', 'Chọn ở hàng chuông gió phía trên']]
+    ['k_flowerchime', 'Chuông gió thủy tinh vẽ hoa', 'Chọn ở hàng chuông gió phía trên'],
+    ['k_cassette', 'Băng cassette “Gió Đồi Thông”', S.radio && S.radioCh === 'pine' ? 'Đang phát trên radio' : 'Chạm để bỏ vào radio'],
+    ['k_compass', 'La bàn đồng của Minh', 'Chạm để xem kim chỉ về đâu'],
+    ['k_lighthouse', 'Hải đăng gỗ mini', S.lighthouseOut ? 'Đang đặt trên kệ, chạm để cất' : 'Chạm để đặt lên kệ tường'],
+    ['k_album', 'Album Bưu Thiếp Phương Xa', 'Có chữ ký của Minh, chạm để xem']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
       `<div class="keep" data-item="${k}"><span>${ITEM_IMG[k] ? `<img src="${ITEM_IMG[k]}" alt="">` : '<b style="font-size:1.6em;width:1.6em;display:inline-block;text-align:center">🪴</b>'}${name}<span class="hint">${hint}</span></span></div>`);
   const rows = story.concat([['leaf', 'Lá phong khô (Sóc tặng)', '🍂']].concat(Object.entries(PLANTS).map(([k, P]) => [k, P.gift, P.icon]))
     .filter(([k]) => S.keep[k]).map(([k, name, icon]) => {
       const pic = KEEP_ICON[k] ? `<img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">` : icon + ' ';
       const use = { daisy: 'Gửi bé Na qua ruy băng của Bánh Quy', cactus: 'Sửa hộp nhạc kẹt của bác', lavender: 'Kẹp vào máy bay giấy gửi cậu họa sĩ',
-        fern: 'Lót gói quà gửi chị bán hoa, hoặc kẹp máy bay giấy', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', leaf: 'Quà của bạn sóc. Mở con dấu lá phong trong sổ tay' }[k];
+        fern: 'Lót gói quà gửi chị bán hoa, hoặc kẹp máy bay giấy', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', clover: 'Gửi Minh qua hòm thư chân cầu thang', leaf: 'Quà của bạn sóc. Mở con dấu lá phong trong sổ tay' }[k];
       return `<div class="keep"><span>${pic}${name}${use ? `<span class="hint">${use}</span>` : ''}</span><b>× ${S.keep[k]}</b></div>`;
     }));
   const chimes = '<div class="chimes">' + Object.entries(CHIMES).filter(([, c]) => !c.need || S.keep[c.need]).map(([k, c]) =>
@@ -1890,10 +2078,10 @@ function hearts() {
   for (let i = 0; i < 3; i++) spawn({ kind: 'heart', x: catPose === 'sit' ? rnd(430, 500) : rnd(440, 540), y: catPose === 'sit' ? rnd(690, 712) : rnd(770, 795), vx: rnd(-10, 10),
     vy: rnd(-34, -24), life: 2.2, t: -i * 0.25, size: rnd(14, 20) });
 }
-function waterDrops() {
-  const b = HITS.plant.box;
-  for (let i = 0; i < 14; i++) spawn({ kind: 'drop', x: rnd(145, 215), y: b[1] - rnd(10, 30), vx: 0, vy: rnd(120, 180),
-    life: 1.4, t: -i * 0.05, floor: rnd(800, 815) });
+function waterDrops(slot = 0) {
+  const b = slot ? HITS.plant2.box : HITS.plant.box, cx = b[0] + b[2] / 2, w = slot ? 18 : 35, fl = slot ? POT2[1] - 50 : 800;
+  for (let i = 0; i < 14; i++) spawn({ kind: 'drop', x: rnd(cx - w, cx + w), y: b[1] - rnd(10, 30), vx: 0, vy: rnd(120, 180),
+    life: 1.4, t: -i * 0.05, floor: rnd(fl, fl + 15) });
 }
 const fireflies = [];
 function releaseFireflies() {
@@ -2091,7 +2279,9 @@ function act(id) {
   switch (id) {
     case 'sunset': case 'rain': case 'night': setWeather(id); SFX.click(); break;
     case 'chime': pushChime((Math.random() < 0.5 ? -1 : 1) * rnd(120, 170)); if (Math.random() < 0.5) catAct('play', 3.5); break;
-    case 'plant': tapPlant(); break;
+    case 'plant': tapPlant(0); break;
+    case 'plant2': tapPlant(1); break;
+    case 'lighthouse': bump($('#p-lighthouse'), 'wig'); SFX.chime(0.25); toast(S.weather === 'sunset' ? 'Ngọn hải đăng gỗ của Minh. Tối nay đèn sẽ quét một vòng vàng ấm 🗼' : 'Ngọn hải đăng nhỏ quét ánh vàng qua căn gác, như đang chỉ đường về 🗼', 3000); break;
     case 'rabbit': tapRabbit(); break;
     case 'pin': if (S.pin) { const ni = { na_cat: 0, na_friends: 2, na_window: 4 }[S.pin]; if (ni !== undefined) showNaNote(ni, true); else { openKeepsakes(); showFlavor(S.pin); } } break;
     case 'bouquet': bump($('#p-bouquet'), 'wiggle'); sparkles(); SFX.chime(0.25); toast(flavor('bouquet'), 3600); break;
@@ -2113,7 +2303,10 @@ function act(id) {
     case 'nanote': { const i = naChapter(); if (i !== null) showNaNote(i); break; }
     case 'jar': releaseFireflies(); SFX.sparkle(); setTimeout(() => catAct('play', 5), 500); sayAt(HITS.jar.box, flavor('jar')); break;
     case 'lamp': S.lamp = !S.lamp; save(); SFX.click(); bump($('#p-lamp')); applyLook(); break;
-    case 'radio': bump($('#p-radio')); setRadio(!S.radio); toast(S.radio ? (S.weather === 'night' ? 'Tần Số Hẻm Hoa Giấy · 94.2 FM 📻' : 'Radio 94.2 FM 📻 (ban đêm có DJ trò chuyện)') : 'Tắt radio', 2600); break;
+    case 'radio': bump($('#p-radio'));
+      if (S.keep.k_cassette && S.radio && S.radioCh !== 'pine') { setChannel('pine'); break; }
+      if (S.radio && S.radioCh === 'pine') { setRadio(false); setChannel('fm', true); toast('Tắt radio', 2000); break; }
+      setRadio(!S.radio); toast(S.radio ? (S.weather === 'night' ? 'Tần Số Hẻm Hoa Giấy · 94.2 FM 📻' : 'Radio 94.2 FM 📻 (ban đêm có DJ trò chuyện)') : 'Tắt radio', 2600); break;
     case 'incense': S.incense = !S.incense; if (S.incense) S.litOnce = 1; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle(); if (S.incense) setTimeout(() => sayAt(HITS.incense.box, flavor('candle')), 2600);
       if (S.incense) { SFX.match(); toast('Nến cháy 25 phút: cùng ngồi làm việc, học bài nhé 🕯️ Chạm lần nữa để tắt', 3600); } else SFX.click(); break;
     case 'book': showNote(); break;
@@ -2122,7 +2315,7 @@ function act(id) {
       S.tea = true; save(); applyTea(); SFX.water(); toast('Pha một tách trà hoa cúc 🍵', 2400);
       setTimeout(() => { SFX.purr(); zzzT = -2; catSit(6); }, 1800); break;
     case 'cup': drinkTea(); break;
-    case 'lantern': S.lantern = !S.lantern; if (S.lantern) S.litOnce = 1; if (S.lantern && S.garden) S.garden.light = 1; save(); applyLantern();
+    case 'lantern': S.lantern = !S.lantern; if (S.lantern) S.litOnce = 1; if (S.lantern) allGardens().forEach(g => { g.light = 1; }); save(); applyLantern();
       if (S.lantern) { SFX.match(); growthCheck(); } else SFX.click(); break;
     case 'plane': readPlane(); break;
     case 'gift': openKeepsakes(); SFX.paper(); break;
@@ -2285,6 +2478,7 @@ document.addEventListener('visibilitychange', () => {
 
 // ---------------------------------------------------------------- main loop
 let last = performance.now(), perfT = 0;
+/*{{OUTSIDE_JS}}*/
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000); last = now; perfT = now;
   stepChime(dt); stepSky(dt); stepFx(dt); visitorTick();
@@ -2292,6 +2486,7 @@ function frame(now) {
 }
 addEventListener('resize', resize);
 resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyPin(); applyBouquet(); applyBmTail(); applyNaNote(); applyCandle(); applyChime(); applyLantern(); applyWelcome(); applyRings(); checkLights(); setInterval(growthCheck, 2000);
+updatePlant(false, 1); applyLighthouse(); applyMinhHome(); applyMapBtn(); setInterval(() => { applyMapBtn(); applyMinhHome(); }, 1500);
 setInterval(() => {
   if (started && catPose === 'sleep' && Math.random() < 1 / 160) catAct('back', 25);   // now and then she sits and watches the alley
   applyNaNote(); if (started && !$('#note-wrap').classList.contains('show')) finaleCheck();

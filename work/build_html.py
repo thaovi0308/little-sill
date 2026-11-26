@@ -23,7 +23,15 @@ t = t.replace('{{ROOM_MASK}}', uri(f'{G}/work/out/room_mask.png', 'image/png'))
 for w in ['sunset', 'rain', 'night']:
     t = t.replace('{{SCENE_%s}}' % w, uri(f'{G}/work/out/scene_{w}.webp', 'image/webp'))
 import io
+import os, hashlib
+CACHE = f'{G}/work/out/uri_cache'; os.makedirs(CACHE, exist_ok=True)
 def prop_uri(p, display_h, soft=False):
+    st = os.stat(f'{G}/assets/{p}.png')
+    key = hashlib.md5(f'{p}|{st.st_mtime_ns}|{st.st_size}|{display_h}|{soft}'.encode()).hexdigest()
+    cf = f'{CACHE}/{key}.txt'
+    if os.path.exists(cf): return open(cf).read()
+    r = _prop_uri(p, display_h, soft); open(cf, 'w').write(r); return r
+def _prop_uri(p, display_h, soft=False):
     im = Image.open(f'{G}/assets/{p}.png')
     if soft and im.mode == 'RGBA':           # hard cut-out edges look jagged when the paper shows them big: feather the alpha a little
         from PIL import ImageFilter
@@ -37,19 +45,21 @@ heights = {k: v[3] for k, v in L['boxes'].items() if k != 'plant'}; heights.upda
 PS, POT_CX, POT_BOTTOM = 0.73, 180, 898
 plant_img = {}
 PSK = {'fern': PS * 110 / 102, 'pothos': 0.62}           # Vi's fern sheet has a smaller pot
-for kind in ['daisy', 'lavender', 'cactus', 'fern', 'pothos']:
+for kind in ['daisy', 'lavender', 'cactus', 'fern', 'pothos', 'forget', 'hydrangea', 'clover', 'empty']:
     PS = PSK.get(kind, 0.73)
-    for st in range(3):
+    for st in range(1 if kind == 'empty' else 3):
         n = f'{kind}{st}'; im = Image.open(f'{G}/assets/{n}.png'); a = np.array(im)[:, :, 3] > 40
         rows = np.where(a.any(1))[0]; band = a[rows[-1] - 40:rows[-1] - 10]
         xs = np.where(band.any(0))[0]; pcx = (xs.min() + xs.max()) / 2
+        if kind in ('forget', 'hydrangea', 'clover'): PS = 0.73 * 110 / (xs.max() - xs.min())   # Vi's 26/11 sheets: same pot size as the daisy
         w, h = im.width * PS, im.height * PS
         box = [round(POT_CX - pcx * PS, 1), round(POT_BOTTOM - h, 1), round(w, 1), round(h, 1)]
         plant_img[n] = {'src': prop_uri(n, h), 'box': box}
-ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2', 'pothos2', 'k_spring', 'k_record', 'k_feather', 'k_button', 'k_shell', 'k_candy', 'bm_fern', 'bm_lavender', 'bm_pothos', 'seed_daisy', 'seed_lavender', 'seed_cactus', 'seed_pothos', 'pf_daisy', 'pf_lavender', 'pf_fern', 'pf_maple', 'pf_clover', 'st_paw', 'st_moon', 'st_watch', 'rb_twine', 'rb_blue']}
-ITEMS.update({'seedbag': 80, 'wilted': 100, 'scroll': 80, 'alley_lit': 260, 'stall_empty': 110, 'stall_full': 130, 'stall_wilt': 110, 'stall_mid': 110, 'stall_lit': 130, 'stamp_paw': 60, 'stamp_leaf': 60, 'stamp_moon': 60, 'can': 70, 'bouquet': 90, 'chime_flower': 292, 'mooncake': 90, 'basket': 120, 'keys': 90, 'bag': 90, 'landlady': 180, 'florist': 180, 'rabbit': 130, 'dj': 120, 'alley': 94, 'painting': 90, 'old_window': 170, 'na_cat': 160, 'na_friends': 160, 'na_window': 160})
+ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2', 'pothos2', 'k_spring', 'k_record', 'k_feather', 'k_button', 'k_shell', 'k_candy', 'bm_fern', 'bm_lavender', 'bm_pothos', 'seed_daisy', 'seed_lavender', 'seed_cactus', 'seed_pothos', 'pf_daisy', 'pf_lavender', 'pf_fern', 'pf_maple', 'pf_clover', 'st_paw', 'st_moon', 'st_watch', 'rb_twine', 'rb_blue', 'seed_forget', 'seed_hydrangea', 'seed_clover', 'cassette', 'compass', 'lighthouse', 'badge_plane', 'badge_mailbox', 'badge_shop', 'butterfly', 'mai_pot', 'tet_tray']}
+ITEMS.update({'seedbag': 80, 'wilted': 100, 'scroll': 80, 'alley_lit': 260, 'stall_empty': 110, 'stall_full': 130, 'stall_wilt': 110, 'stall_mid': 110, 'stall_lit': 130, 'stamp_paw': 60, 'stamp_leaf': 60, 'stamp_moon': 60, 'can': 70, 'bouquet': 90, 'chime_flower': 292, 'mooncake': 90, 'basket': 120, 'keys': 90, 'bag': 90, 'landlady': 180, 'florist': 180, 'rabbit': 130, 'dj': 120, 'alley': 94, 'painting': 90, 'old_window': 170, 'na_cat': 160, 'na_friends': 160, 'na_window': 160, 'pc_station': 200, 'pc_pine': 200, 'pc_lighthouse': 200, 'pc_alley': 200, 'mailbox2': 200, 'shop_bg': 1280, 'shop_front': 410, 'stairs_scene': 600})
 # images shown big inside the paper notes (characters, story pictures): keep the full drawing so phones do not upscale it (Vi 26/11: 'hình vỡ')
-PAPER_BIG = ['landlady', 'florist', 'rabbit', 'dj', 'wilted', 'stall_full', 'stall_empty', 'stall_wilt', 'stall_mid', 'stall_lit', 'seedbag', 'scroll', 'mooncake', 'bag', 'can', 'bouquet', 'alley_lit', 'basket', 'keys', 'na_cat', 'na_friends', 'na_window', 'old_window']
+PAPER_BIG = ['landlady', 'florist', 'rabbit', 'dj', 'wilted', 'stall_full', 'stall_empty', 'stall_wilt', 'stall_mid', 'stall_lit', 'seedbag', 'scroll', 'mooncake', 'bag', 'can', 'bouquet', 'alley_lit', 'basket', 'keys', 'na_cat', 'na_friends', 'na_window', 'old_window', 'pc_station', 'pc_pine', 'pc_lighthouse', 'pc_alley', 'mailbox2']
+t = t.replace('/*{{OUTSIDE_JS}}*/', open(f'{G}/src/outside.js', encoding='utf-8').read())
 t = t.replace('{{ITEM_IMG}}', json.dumps({k: prop_uri(k, 2000 if k in PAPER_BIG else h, soft=k in PAPER_BIG) for k, h in ITEMS.items()}))
 t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '60')
 heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'shelf': 68, 'notebook': 380})
