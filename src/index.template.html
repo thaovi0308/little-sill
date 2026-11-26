@@ -18,7 +18,8 @@
     --cream: #FFF8F0;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #1F1D2B; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1F1D2B; overscroll-behavior: none; }
+  .hit, #mute { touch-action: none; }
   body {
     font-family: 'Quicksand', system-ui, sans-serif;
     color: var(--ink);
@@ -785,6 +786,7 @@ function showPaper(html, onClose, modal) {
   $('#note-wrap').classList.add('show'); SFX.paper();
 }
 function closeNote() {
+  setTimeout(checkLights, 900);
   $('#note-wrap').classList.remove('show'); $('#note-wrap').dataset.modal = ''; SFX.paper();
   const f = onNoteClose; onNoteClose = null; if (f) setTimeout(f, 300);
 }
@@ -837,12 +839,16 @@ function readPlane() {
     showPaper(`${sub}${N.text}${from}<small style="margin-top:1.2em">Gấp một chiếc máy bay giấy gửi lại:</small>` +
       REPLIES.map((r, k) => `<button class="reply" data-reply="${k}">“${r}”</button>`).join(''), null, true);
     document.querySelectorAll('.reply').forEach(b => b.addEventListener('click', e => {
-      e.stopPropagation(); S.story.reply = +b.dataset.reply; S.story.plane = 2; S.story.planeAt = Date.now(); save();
-      closeNote(); leave('plane', true); SFX.flutter(); toast('Máy bay giấy đã bay lên tầng trên ✈️', 2600);
+      e.stopPropagation(); S.story.reply = +b.dataset.reply; S.story.plane = 2; S.story.planeAt = Date.now();
+      const att = ['lavender', 'daisy', 'pothos', 'fern'].find(k => S.keep[k] > 0);
+      if (att) { S.keep[att]--; S.story.planeGift = att; }
+      save(); closeNote(); leave('plane', true); SFX.flutter();
+      toast(att ? `Máy bay giấy kẹp theo ${PLANTS[att].gift.toLowerCase()} đã bay lên tầng trên ✈️` : 'Máy bay giấy đã bay lên tầng trên ✈️', 3000);
     }));
     return;
   }
-  showPaper(`${sub}${N.text}${from}`, () => {
+  const ps = i === 2 && S.story.planeGift ? `<small style="margin-top:1em">P.S. Cảm ơn ${PLANTS[S.story.planeGift].gift.toLowerCase()} bạn kẹp theo nhé, mình dán nó lên góc giá vẽ rồi!</small>` : '';
+  showPaper(`${sub}${N.text}${ps}${from}`, () => {
     S.story.plane = i + 1; S.story.planeAt = Date.now();
     if (N.gift) {
       N.gift.forEach(k => { S.keep[k] = 1; }); if (N.gift.includes('painting')) { S.wallArt = true; applyWallArt(); }
@@ -895,7 +901,10 @@ function candleTick() {
   if (left <= 0) {
     S.incense = false; S.candleAt = 0; save(); applyCandle(); el.style.display = 'none';
     SFX.chime(0.8); setTimeout(() => SFX.chime(0.5), 900);
-    showPaper('Ngọn nến vừa tàn. Bạn đã chăm chú suốt 25 phút rồi đấy! Đứng dậy vươn vai, uống một ngụm nước và nghỉ ngơi 5 phút nhé.<small>— ngọn nến thơm —</small>');
+    const pool = ['daisy', 'daisy', 'lavender', 'lavender', 'cactus', 'fern', 'pothos'], k = pool[Math.floor(Math.random() * pool.length)];
+    S.keep[k] = (S.keep[k] || 0) + 1; save();
+    showPaper(`<img class="paper-img" src="${ITEM_IMG[KEEP_ICON[k]]}" alt="" style="max-height:5em">Ngọn nến vừa tàn. Bạn đã chăm chú suốt 25 phút rồi đấy! Đứng dậy vươn vai, uống một ngụm nước và nghỉ ngơi 5 phút nhé.
+      <small>Phần thưởng: ${PLANTS[k].gift.toLowerCase()} đã vào hộp kỷ vật</small>`);
     return;
   }
   const m = Math.floor(left / 60e3), sec = Math.floor(left / 1000) % 60;
@@ -1088,7 +1097,9 @@ function openKeepsakes() {
   const rows = story.concat([['leaf', 'Lá phong khô (Sóc tặng)', '🍂']].concat(Object.entries(PLANTS).map(([k, P]) => [k, P.gift, P.icon]))
     .filter(([k]) => S.keep[k]).map(([k, name, icon]) => {
       const pic = KEEP_ICON[k] ? `<img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">` : icon + ' ';
-      return `<div class="keep"><span>${pic}${name}</span><b>× ${S.keep[k]}</b></div>`;
+      const use = { daisy: 'Gửi bé Na qua ruy băng của Bánh Quy', cactus: 'Sửa hộp nhạc kẹt của bác', lavender: 'Kẹp vào máy bay giấy gửi cậu họa sĩ',
+        fern: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', leaf: 'Quà của bạn sóc' }[k];
+      return `<div class="keep"><span>${pic}${name}${use ? `<span class="hint">${use}</span>` : ''}</span><b>× ${S.keep[k]}</b></div>`;
     }));
   const chimes = '<div class="chimes">' + Object.entries(CHIMES).map(([k, c]) =>
     `<button class="chime-pick${S.chimeType === k ? ' on' : ''}" data-item="${k}" aria-label="${c.name}"><img src="${c.src}" alt=""></button>`).join('') +
@@ -1224,12 +1235,33 @@ for (let i = 0; i < 170; i++) sky.rain.push({ x: rnd(80, 680), y: rnd(150, 920),
 for (const [x, y] of {{STAR_PTS}}) sky.stars.push({ x, y, r: rnd(0.5, 1.6), p: rnd(0, 6), s: rnd(0.6, 2) });
 for (let i = 0; i < 9; i++) sky.flies.push({ x: rnd(140, 620), y: rnd(560, 860), vx: rnd(-10, 10), vy: rnd(-10, 10), p: rnd(0, 6) });
 let birdT = 6;
+// windows of the houses across the alley (rain / night views), lit one by one as the neighbours' stories advance
+const WINDOWS = [[388, 581, 12, 19], [410, 579, 12, 21], [211, 555, 30, 36], [244, 555, 28, 33]];
+function storySteps() { const st = S.story; return st.old + st.plane + st.na; }
+function litCount() { return Math.min(WINDOWS.length, storySteps()); }
+let litShown = null, litFlash = 0;
+function checkLights() {
+  const n = litCount(); if (litShown === null) { litShown = n; return; }
+  if (n > litShown) {
+    litShown = n; litFlash = performance.now(); SFX.sparkle();
+    setTimeout(() => toast(S.weather === 'sunset' ? 'Tối nay, bên kia hẻm sẽ có thêm một ô cửa sáng đèn vì bạn 💡' : 'Bên kia hẻm, một ô cửa vừa bật đèn vàng 💡', 3400), 700);
+  }
+}
 function stepSky(dt) {
   const ctx = skyCtx; ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
   for (const k of ['rain', 'night', 'sunset']) {
     const target = S.weather === k ? 1 : 0; sky.level[k] += (target - sky.level[k]) * Math.min(1, dt * 1.2);
   }
   const L = sky.level;
+  const lv = L.night + L.rain * 0.85 + L.sunset * 0.15;
+  if (lv > 0.02) {
+    WINDOWS.slice(0, litShown || 0).forEach(([x, y, w, h], i) => {
+      const fresh = i === litShown - 1 ? Math.min(1, (performance.now() - litFlash) / 2500) : 1;
+      const a = lv * fresh * (0.82 + 0.06 * Math.sin(perfT * 0.002 + i));
+      ctx.fillStyle = `rgba(255,206,120,${a})`; ctx.fillRect(x, y, w, h);
+      glowDot(ctx, x + w / 2, y + h / 2, a * 0.35, (w + h) / 22);
+    });
+  }
   if (L.rain > 0.01) {
     ctx.strokeStyle = 'rgba(215,228,255,1)'; ctx.lineWidth = 1.1; ctx.lineCap = 'round';
     const slant = 0.12;
@@ -1452,6 +1484,8 @@ function applyMute() { $('#mute').style.backgroundImage = `url(${S.muted ? '{{PR
 applyMute();
 
 $('#intro').addEventListener('click', () => {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // iPhone: play even with the silent switch on
+  try { const a = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='); a.loop = true; a.play().catch(() => {}); } catch (e) {}
   initAudio(); if (AC.state === 'suspended') AC.resume();
   SFX.creak(); setTimeout(() => SFX.chime(0.6), 700);
   pushChime(110);
@@ -1471,7 +1505,7 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 addEventListener('resize', resize);
-resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyNaNote(); applyCandle(); applyChime(); applyLantern(); applyWelcome(); applyRings(); setInterval(growthCheck, 2000);
+resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyNaNote(); applyCandle(); applyChime(); applyLantern(); applyWelcome(); applyRings(); checkLights(); setInterval(growthCheck, 2000);
 setInterval(() => {
   if (started && catPose === 'sleep' && Math.random() < 1 / 160) catAct('back', 25);   // now and then she sits and watches the alley
   applyNaNote(); if (started && !$('#note-wrap').classList.contains('show')) finaleCheck();
