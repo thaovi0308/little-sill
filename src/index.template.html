@@ -1,0 +1,1362 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bên Khung Cửa Nhỏ</title>
+<link rel="icon" href="{{ICON}}">
+<link rel="apple-touch-icon" href="{{ICON}}">
+<meta name="theme-color" content="#2b2d42">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,500&family=Patrick+Hand&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FDF8EE;
+    --paper-line: #D4C5B0;
+    --ink: #4A3525;
+    --cream: #FFF8F0;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1F1D2B; }
+  body {
+    font-family: 'Quicksand', system-ui, sans-serif;
+    color: var(--ink);
+    user-select: none; -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  /* blurred copy of the scene behind the stage on wide screens */
+  #backdrop {
+    position: fixed; inset: -40px; background-size: cover; background-position: center;
+    filter: blur(28px) brightness(.55) saturate(1.1); transition: background-image 1.2s;
+  }
+  #stage {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    overflow: hidden; border-radius: 0; box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    background: #e9dcc6;
+  }
+  @media (min-aspect-ratio: 3/4) { #stage { border-radius: 18px; } }
+  .layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .scene { object-fit: fill; opacity: 0; transition: opacity 1.4s ease; pointer-events: none; }
+  .scene.on { opacity: 1; }
+  .masked-sky { -webkit-mask-image: var(--sky); mask-image: var(--sky);
+    -webkit-mask-size: 100% 100%; mask-size: 100% 100%; pointer-events: none; }
+  .masked-room { -webkit-mask-image: var(--room); mask-image: var(--room);
+    -webkit-mask-size: 100% 100%; mask-size: 100% 100%; pointer-events: none; }
+  #tint { mix-blend-mode: multiply; transition: background-color 1.4s ease; }
+  #glow { mix-blend-mode: screen; transition: opacity .9s ease; opacity: 0; }
+  #sunlight { mix-blend-mode: soft-light; transition: opacity 1.4s ease; opacity: 0; pointer-events: none;
+    background: radial-gradient(60% 40% at 45% 52%, rgba(255,190,120,.75), rgba(255,170,110,0) 70%); }
+
+  .hit { position: absolute; background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
+    outline: none; }
+  .hit:focus-visible { outline: 2px dashed rgba(255,255,255,.7); outline-offset: 2px; border-radius: 12px; }
+  .prop { position: absolute; pointer-events: none; transform-origin: 50% 100%;
+    filter: drop-shadow(0 3px 3px rgba(60,35,20,.28)); transition: filter .8s ease; }
+  #p-chime { transform-origin: 50% 0%; filter: drop-shadow(0 2px 2px rgba(20,30,60,.25)); }
+  #p-lamp.off { filter: drop-shadow(0 3px 3px rgba(60,35,20,.28)) brightness(.9) saturate(.7); }
+  #p-radio.on { animation: bop var(--beat, .833s) ease-in-out infinite; }
+  @keyframes bop { 0%,100% { transform: scale(1,1); } 12% { transform: scale(1.012,.985); } }
+  .wiggle { animation: wiggle 1.1s ease-in-out; }
+  @keyframes wiggle { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-3deg); } 45% { transform: rotate(2.2deg); }
+    70% { transform: rotate(-1deg); } }
+  .press { animation: press .35s ease; }
+  @keyframes press { 40% { transform: scale(.95); } 75% { transform: scale(1.03); } }
+
+  #wring { position: absolute; border-radius: 999px; pointer-events: none;
+    box-shadow: 0 0 0 2px rgba(255,255,255,.95), 0 0 14px 3px rgba(255,236,190,.75);
+    transition: left .5s cubic-bezier(.4,1.4,.6,1); }
+
+  /* paper note */
+  #note-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(31,29,43,.35); opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+  #note-wrap.show { opacity: 1; pointer-events: auto; }
+  #note { width: 78%; max-width: 420px; background: var(--paper); border-radius: 16px;
+    border: 1.5px dashed var(--paper-line); padding: 7% 7% 6%; transform: translateY(14px) rotate(-1.2deg);
+    transition: transform .5s cubic-bezier(.2,1.2,.4,1); box-shadow: 0 14px 40px rgba(40,25,10,.3);
+    font-family: 'Patrick Hand', 'Quicksand', cursive; font-size: clamp(17px, 2.9vh, 24px); line-height: 1.45;
+    color: #5b4330; text-align: center; }
+  #note-wrap.show #note { transform: translateY(0) rotate(-1.2deg); }
+  #note small { display: block; margin-top: 1.1em; font-family: 'Quicksand', sans-serif; font-size: .62em;
+    color: #a08a72; letter-spacing: .04em; }
+
+  #toast { z-index: 20; position: absolute; left: 50%; bottom: 13.5%; transform: translateX(-50%) translateY(8px);
+    background: rgba(253,248,238,.94); color: #6b5540; border-radius: 18px; padding: .55em 1.1em;
+    font-size: clamp(12px, 1.9vh, 16px); font-weight: 600; width: max-content; max-width: 86%; text-align: center; line-height: 1.35; opacity: 0;
+    transition: opacity .5s ease, transform .5s ease; pointer-events: none; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* intro */
+  #intro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 1.2em; cursor: pointer; text-align: center; color: var(--cream);
+    background: radial-gradient(120% 80% at 50% 45%, rgba(31,29,43,.55), rgba(20,18,30,.88));
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); transition: opacity 1.4s ease; z-index: 10; }
+  #intro .cover { width: 88%; max-width: 520px; border-radius: 14px; box-shadow: 0 12px 36px rgba(20,15,30,.45); }
+  #intro.gone { opacity: 0; pointer-events: none; }
+  #intro h1 { font-family: 'Lora', Georgia, serif; font-weight: 500; font-size: clamp(28px, 5.4vh, 46px);
+    margin: 0; letter-spacing: .01em; text-shadow: 0 2px 18px rgba(0,0,0,.4); }
+  #intro .en { font-family: 'Lora', Georgia, serif; font-style: italic; opacity: .75; margin-top: -.6em;
+    font-size: clamp(14px, 2.2vh, 18px); }
+  #intro .tap { margin-top: 1.6em; font-size: clamp(14px, 2.1vh, 17px); font-weight: 600; letter-spacing: .05em;
+    padding: .75em 1.5em; border-radius: 999px; background: rgba(255,248,240,.14);
+    border: 1px solid rgba(255,248,240,.35); animation: breathe 3.2s ease-in-out infinite; }
+  #intro .hint { font-size: clamp(11px, 1.6vh, 13px); opacity: .6; }
+  @keyframes breathe { 0%,100% { opacity: .65; transform: scale(1); } 50% { opacity: 1; transform: scale(1.04); } }
+
+  #mute { position: absolute; left: 3.2%; top: 2.6%; width: 11%; aspect-ratio: 126 / 97; border-radius: 30%;
+    border: 0; background: center / contain no-repeat; color: #6b5540; font-size: clamp(12px, 2vh, 18px);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; }
+  .visitor { opacity: 0; translate: 0 14px; transition: opacity .9s ease, translate .9s cubic-bezier(.3,1.5,.5,1); }
+  .visitor.here { opacity: 1; translate: 0 0; animation: idle 3.6s ease-in-out infinite; }
+  .visitor.away { opacity: 0; translate: 60px -90px; transition: opacity 1s ease, translate 1.2s ease-in; }
+  @keyframes idle { 0%,100% { scale: 1 1; } 50% { scale: 1.015 .985; } }
+  #p-owl { transform-origin: 50% 85%; }
+  .hop { animation: hop .5s ease !important; }
+  @keyframes hop { 30% { transform: translateY(-9%) scale(1.02,.98); } 60% { transform: translateY(0) scale(1.04,.94); } }
+  .tilt { animation: tilt 1.4s ease-in-out !important; }
+  @keyframes tilt { 25% { transform: rotate(-9deg); } 60% { transform: rotate(6deg); } }
+  #note.letter { background: #FBF3E2; border-style: solid; font-family: 'Lora', Georgia, serif; font-style: italic;
+    font-size: clamp(15px, 2.5vh, 20px); text-align: left; }
+  #note.panel { text-align: left; font-family: 'Quicksand', sans-serif; font-size: clamp(13px, 2vh, 16px); transform: none; }
+  #note.panel h3 { font-family: 'Lora', Georgia, serif; font-weight: 500; font-size: 1.35em; margin: 0 0 .7em; text-align: center; }
+  .seed { display: flex; gap: .8em; align-items: center; width: 100%; text-align: left; border: 1.5px solid var(--paper-line);
+    background: #fffdf7; border-radius: 12px; padding: .6em .8em; margin: .45em 0; font: inherit; color: inherit; cursor: pointer; }
+  .seed img { width: 3.2em; height: 3.2em; object-fit: contain; }
+  .seed b { display: block; font-size: 1.05em; }
+  .seed span { color: #8a735c; font-size: .85em; }
+  .keep { display: flex; justify-content: space-between; padding: .45em .2em; border-bottom: 1px dashed var(--paper-line); }
+  #note.panel small { text-align: center; }
+  #p-plane.here { animation: none; }
+  #p-cookies, #p-tea { transition: opacity .6s ease; }
+  .paper-img { display: block; width: 62%; max-width: 230px; margin: 0 auto .9em; border-radius: 4px; }
+  .reply img { height: 1.6em; vertical-align: middle; margin-right: .4em; }
+  .chimes { display: flex; justify-content: center; gap: .8em; }
+  .chime-pick { border: 0; background: rgba(255,255,255,.5); border-radius: 12px; padding: .35em .6em; cursor: pointer; }
+  .chime-pick.on { box-shadow: 0 0 0 2px #d9a55a; }
+  .chime-pick img { height: 4.2em; width: auto; display: block; }
+  .keep img { width: 2.2em; height: 2.2em; object-fit: contain; vertical-align: middle; margin-right: .4em; }
+  .keep[data-item] { cursor: pointer; }
+  .keep .hint { display: block; font-size: .78em; color: #a08a72; margin-left: 2.9em; }
+  .reply { display: block; width: 100%; margin: .5em 0 0; padding: .6em .8em; border-radius: 12px; border: 1.5px solid var(--paper-line);
+    background: #fffdf7; font: inherit; font-style: normal; font-size: .85em; color: inherit; text-align: left; cursor: pointer; }
+  .breath { display: flex; flex-direction: column; align-items: center; gap: 1.4em; padding: .6em 0; }
+  .breath .dot { width: 4.2em; height: 4.2em; border-radius: 50%; background: radial-gradient(circle, #ffe7b8, #f4c58c);
+    box-shadow: 0 0 30px rgba(244,197,140,.7); transform: scale(.7); transition: transform 4s ease-in-out; }
+  .breath p { margin: 0; font-family: 'Lora', serif; font-style: italic; font-size: 1.25em; min-height: 1.5em; text-align: center; }
+  @media (prefers-reduced-motion: reduce) {
+    #p-radio.on, .wiggle, .press, #intro .tap { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="backdrop"></div>
+<div id="stage" style="--sky:url({{SKY_MASK}});--room:url({{ROOM_MASK}})">
+  <img class="layer scene" data-w="sunset" src="{{SCENE_sunset}}" alt="">
+  <img class="layer scene" data-w="rain" src="{{SCENE_rain}}" alt="">
+  <img class="layer scene" data-w="night" src="{{SCENE_night}}" alt="">
+  <canvas id="sky" class="layer masked-sky"></canvas>
+  <div id="sunlight" class="layer masked-room"></div>
+
+  <img id="p-w_sunset" class="prop" src="{{PROP_w_sunset}}" alt="" style="filter:none">
+  <img id="p-w_rain" class="prop" src="{{PROP_w_rain}}" alt="" style="filter:none">
+  <img id="p-w_night" class="prop" src="{{PROP_w_night}}" alt="" style="filter:none">
+  <img id="p-plate" class="prop" src="{{PROP_plate}}" alt="" style="filter:none">
+  <img id="p-chime" class="prop" src="{{PROP_chime}}" alt="">
+  <img id="p-owl" class="prop visitor" src="{{PROP_owl}}" alt="">
+  <img id="p-plant" class="prop" alt="">
+  <img id="p-painting" class="prop" src="{{PROP_painting}}" alt="" style="opacity:0">
+  <img id="p-cat" class="prop" src="{{PROP_cat_sleep}}" alt="">
+  <img id="p-nanote" class="prop" src="{{PROP_na_note}}" alt="" style="opacity:0;transition:opacity .6s">
+  <img id="p-jar" class="prop" src="{{PROP_jar}}" alt="">
+  <img id="p-cookies" class="prop" src="{{PROP_cookies}}" alt="" style="opacity:0">
+  <img id="p-plane" class="prop visitor" src="{{PROP_plane}}" alt="">
+  <img id="p-frog" class="prop visitor" src="{{PROP_frog}}" alt="">
+  <img id="p-squirrel" class="prop visitor" src="{{PROP_squirrel}}" alt="">
+  <img id="p-lamp" class="prop" src="{{PROP_lamp}}" alt="">
+  <img id="p-radio" class="prop" src="{{PROP_radio}}" alt="">
+  <img id="p-tea" class="prop" src="{{PROP_tea}}" alt="" style="opacity:0">
+  <img id="p-sparrow" class="prop visitor" src="{{PROP_sparrow}}" alt="">
+  <img id="p-incense" class="prop" src="{{PROP_candle_on}}" alt="">
+
+  <div id="tint" class="layer masked-room"></div>
+  <div id="glow" class="layer"></div>
+  <canvas id="fx" class="layer" style="pointer-events:none"></canvas>
+  <div id="wring"></div>
+  <div id="hits"></div>
+  <button id="mute" aria-label="Tắt / bật âm thanh">♪</button>
+  <div id="toast"></div>
+  <div id="note-wrap"><div id="note"></div></div>
+  <div id="intro" role="button" aria-label="Chạm để mở cửa sổ">
+    <img class="cover" src="{{COVER}}" alt="Bên Khung Cửa Nhỏ — Little Sill">
+    <div class="tap">Chạm để mở cửa sổ</div>
+    <div class="hint">Nên đeo tai nghe để nghe tiếng mưa 🎧</div>
+  </div>
+</div>
+
+<script>
+'use strict';
+const LAYOUT = {{LAYOUT}};
+const SW = LAYOUT.W, SH = LAYOUT.H;            // scene units (pixels of the painting)
+const $ = s => document.querySelector(s);
+const stage = $('#stage');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------------------------------------------------------------- texts
+const NOTES = [
+  'Hôm nay bạn không cần phải làm điều gì lớn lao cả. Chỉ cần thở đều và uống một ngụm nước ấm là đã giỏi rồi.',
+  'Cơn mưa ngoài kia rồi sẽ tạnh, còn chiếc đèn nhỏ trên bệ cửa này thì luôn sáng chờ bạn.',
+  'Chú mèo mướp vừa ghé qua, để lại một chiếc lá khô và nhắn rằng: Cứ nghỉ ngơi một chút đi, thế giới ngoài kia tự xoay xở được mà.',
+  'Cây nhỏ trên bệ cửa không vội lớn, nó chỉ đón từng giọt nước mỗi ngày. Bạn cũng cứ đi từng bước chậm rãi như vậy nhé.',
+  'Nếu thế giới ngoài kia ồn ào quá, cứ đóng cửa sổ lại một chút và ngồi ở đây nghe mưa rơi với mình.',
+  'Không sao cả nếu hôm nay bạn chỉ muốn nằm yên. Nghỉ ngơi cũng là một cách để hồi phục mà.',
+  'Nếu hôm nay đầu óc bạn đang chật chội quá nhiều suy nghĩ, hãy thử nhìn ra ngoài khung cửa sổ này một phút thôi. Bầu trời rộng lớn lắm, bạn có thể gửi bớt một vài đám mây nặng nề ra ngoài đó.',
+  'Bạn không bắt buộc phải trả lời hết mọi tin nhắn, cũng không cần giải quyết xong mọi rắc rối trong tối nay. Thế giới ngoài kia biết tự chờ đợi, còn bây giờ là giờ nghỉ ngơi của riêng bạn.',
+  'Hãy thử thả lỏng hai bờ vai đang gồng cứng, hạ lưỡi xuống khỏi vòm họng và thở ra một hơi thật dài. Mọi áp lực đang đè lên bạn vừa nhẹ đi một chút rồi đấy.',
+  'Có những ngày chỉ cần bạn thức dậy, uống một ly nước và đi qua hết 24 tiếng đồng hồ đã là một nỗ lực rất đáng tự hào rồi.',
+  'Giữa thành phố triệu người này, ngay lúc này cũng có rất nhiều người đang ngồi bên ô cửa sổ giống như bạn, cùng nghe chung một tiếng mưa và cùng mong một chút bình yên. Bạn không hề một mình đâu.',
+  'Chú mèo mướp ngoài mái ngói vừa đi ngang qua và để lại một dấu chân nhỏ. Có những sự quan tâm trên đời này không ồn ào, chỉ lặng lẽ ở bên cạnh bạn như thế thôi.',
+  'Ô cửa sổ nhà ông lão bên kia đường vẫn đang sáng đèn. Khu phố nhỏ này luôn có một chỗ dành riêng cho bạn.',
+  'Hãy nhìn chậu cây nhỏ trên bệ cửa sổ. Có ngày nó chỉ nhú thêm được một milimet lá non, có ngày nó đứng yên để bén rễ sâu hơn. Chậm lại một chút không có nghĩa là bạn đang thụt lùi.',
+  'Bạn luôn dịu dàng và bao dung với những người xung quanh, tối nay hãy thử dành một nửa sự dịu dàng đó cho chính bản thân mình nhé.',
+  'Không phải chiếc máy bay giấy nào cất cánh cũng bay vút lên cao ngay lập tức, có những chiếc cần một làn gió nhẹ đi qua. Đừng vội trách mình khi gió chưa tới.',
+  'Ánh đèn vàng trên bàn sẽ thức canh giấc ngủ cho bạn. Nhắm mắt lại nào, mọi chuyện tốt đẹp đang đợi bạn ở buổi sáng ngày mai.',
+];
+
+// ---------------------------------------------------------------- state
+const KEY = 'littlesill.v1';
+function defaultWeather() {
+  const h = new Date().getHours();
+  if (h >= 16 && h < 19) return 'sunset';
+  if (h >= 19 || h < 6) return 'night';
+  return 'rain';
+}
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+const S = Object.assign({ weather: defaultWeather(), lamp: true, radio: false, incense: true, milk: false,
+  muted: false, noteIndex: Math.floor(Math.random() * NOTES.length) }, saved);
+S.radio = false;   // music starts only when the player asks for it
+if (S.milk) { S.food = 'milk'; } delete S.milk;
+const SPEED = {{SPEED}};            // prototype: 1 in-game hour = 1 minute (release build: 1)
+const HOUR = 3600e3 / SPEED;
+const PLANTS = {
+  daisy:    { name: 'Cúc Họa Mi', hours: 6, icon: '🌼', gift: 'Hoa cúc ép khô', meaning: 'Sự bình yên giản dị',
+              care: 'Tưới nước 2 lần', need: [{ water: 1 }, { water: 2 }] },
+  lavender: { name: 'Oải Hương', hours: 12, icon: '💜', gift: 'Túi thơm oải hương', meaning: 'Giấc ngủ sâu, thư thái',
+              care: 'Tưới nước + nghe nhạc radio', need: [{ water: 1 }, { water: 1, music: 1 }] },
+  cactus:   { name: 'Xương Rồng Tai Thỏ', hours: 24, icon: '🌵', gift: 'Gai xương rồng nhỏ', meaning: 'Sự kiên cường, tự lập',
+              care: 'Chỉ cần tưới 1 lần', need: [{ water: 1 }, { water: 1 }] },
+  fern:     { name: 'Dương Xỉ Rừng', hours: 8, icon: '🌿', gift: 'Lá dương xỉ xanh mướt', meaning: 'Sự tươi mới, hồi phục',
+              care: 'Tưới nước + gặp trời mưa 1 lần', need: [{ water: 1 }, { water: 1, rain: 1 }] },
+};
+const PLANT_IMG = {{PLANT_IMG}};
+if (S.leaves) { S.keep = Object.assign({}, S.keep, { leaf: S.leaves }); delete S.leaves; }
+S.keep = S.keep || {};
+if (S.garden === undefined) S.garden = { type: 'daisy', stage: 0, planted: Date.now(), water: 0, music: 0, lastWater: 0 };
+const ITEM_IMG = {{ITEM_IMG}};
+S.story = Object.assign({ old: 0, oldAt: 0, fixed: false, plane: 0, planeAt: 0, na: 0, naAt: 0, naSent: 0, naWarm: 0 }, S.story || {});
+S.meals = S.meals || 0;
+S.chimeType = S.chimeType || 'glass';
+const CHIMES = {
+  glass:  { name: 'Chuông gió thủy tinh', src: '{{PROP_chime}}', box: [124.2, 140, 111.6, 292] },
+  bamboo: { name: 'Chuông gió ống tre', src: '{{PROP_chime_bamboo}}', box: [140, 140, 80, 292] },
+  shell:  { name: 'Chuông gió vỏ sò', src: '{{PROP_chime_shell}}', box: [114, 140, 132, 292] },
+};
+function applyChime() { const c = CHIMES[S.chimeType]; const el = $('#p-chime'); el.src = c.src; place(el, ...c.box); }
+S.harvested = S.harvested || Object.fromEntries(Object.keys(PLANTS).filter(k => S.keep[k]).map(k => [k, 1]));
+// ---- Be Na, the girl downstairs: crayon notes tucked in Banh Quy's ribbon (doc: 5 chapters)
+const NA_NOTES = [
+  { img: 'na_cat', text: 'Mình tên là Na. Bánh Quy hay trốn lên tầng thượng lắm. Nếu bạn thấy nó thì cho nó ăn nha, đừng đuổi nó tội nghiệp.' },
+  { text: 'Cảm ơn bông hoa của bạn! Hôm nay mình mới chuyển tới trường mới. Các bạn ở lớp đã chơi thân với nhau hết rồi, mình ngồi một mình ở bàn cuối hơi buồn một chút.', reply: true },
+  { img: 'na_friends', text: 'Hôm nay giờ ra chơi, bạn ngồi bàn trên khen {gift} của mình thơm! Tụi mình đã cùng nhau vẽ Bánh Quy vào vở nháp.' },
+  { text: 'Tối qua mẹ mình đi làm về muộn, mình lo Bánh Quy bị ướt mưa. Cảm ơn bạn đã sưởi ấm cho nó nha. Mình tặng bạn viên bi ve đẹp nhất của mình nè!', gift: 'k_marble' },
+  { img: 'na_window', text: 'Mỗi tối đi học về ngước lên thấy cửa sổ nhà bạn sáng đèn, mình và Bánh Quy đều thấy ấm áp lắm. Chúc bạn ngủ ngon!' },
+];
+const NA_REPLIES = [
+  { icon: '🍓', text: 'Mỗi bông hoa đều cần thời gian để làm quen với khu vườn mới mà.', gift: 'viên kẹo dâu', name: 'một viên kẹo dâu' },
+  { img: 'k_clip', text: 'Bạn dễ thương như Bánh Quy vậy, rồi mọi người sẽ thích bạn thôi!', gift: 'chiếc kẹp tóc', name: 'chiếc kẹp tóc hình đám mây' },
+];
+const PLANE_NOTES = [
+  { text: 'Deadline ngày mai rồi mà đầu óc trống rỗng. Mình vẽ cái gì cũng thấy giả tạo và ngột ngạt...', sub: 'Một bức vẽ dang dở bị gạch chéo, gấp thành máy bay giấy' },
+  { text: 'Hôm qua định vứt bỏ bảng màu thì vô tình nhìn xuống thấy chậu hoa nhỏ xíu trên bệ cửa nhà bạn. Tự nhiên mình thấy dễ thở hơn một chút. Cho mình xin phép vẽ lại góc cửa sổ nhà bạn nhé?', reply: true },
+  { text: 'Cảm ơn lời nhắn của người bạn giấu mặt! Mình vừa nộp bài xong rồi. Không biết kết quả sao nhưng lần đầu tiên sau nhiều tháng mình thấy vui khi cầm cọ.', sub: 'Kèm theo một tuýp màu nước xanh pastel', gift: ['k_tube'] },
+  { text: 'Tranh của mình được chọn treo ở góc nhỏ của một quán cà phê sách rồi! Bạn là nguồn cảm hứng đầu tiên của bức tranh đó đấy. Gửi bạn bản vẽ “Góc Cửa Ngày Mưa” và tấm thiệp hoa lưu ly mình tự ép nhé.', gift: ['painting', 'card'] },
+];
+const REPLIES = ['Cứ vẽ những gì làm bạn thấy bình yên nhất thôi.', 'Không cần hoàn hảo ngay đâu, cứ chậm rãi nhé.'];
+const LETTERS = [
+  { text: 'Chào bạn trẻ mới chuyển tới. Cảm ơn bản nhạc tối qua của cháu. Chiếc hộp nhạc này bị kẹt bánh răng từ mùa đông năm ngoái, bác gửi sang nhờ cháu giữ hộ ít hôm cho đỡ buồn, khi nào tìm được chiếc lò xo nhỏ bác sẽ sửa nốt.', from: 'Bác sửa đồng hồ bên kia đường' },
+  { text: 'Kỳ diệu thật! Tiếng nhạc vang sang tận bên này đường làm bác nhớ lại những buổi tối cùng bà nhà ngồi đan len bên cửa sổ. Cảm ơn cháu vì đã đánh thức kỷ niệm cũ của bác.', from: 'Bác sửa đồng hồ bên kia đường' },
+  { text: 'Mưa gió mất điện làm bác hơi chạnh lòng, nhưng nhìn sang thấy ngọn đèn nhỏ nhà cháu vẫn sáng, bác thấy yên tâm hẳn. Gửi tặng cháu chiếc đồng hồ bỏ túi cũ này, nó không chạy nữa nhưng kim của nó luôn chỉ vào giờ đẹp nhất trong ngày.', from: 'Bác sửa đồng hồ bên kia đường' },
+];
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+// ---------------------------------------------------------------- layout
+let scale = 1, dpr = 1;
+const pct = (v, total) => (v / total * 100) + '%';
+function place(el, x, y, w, h) {
+  el.style.left = pct(x, SW); el.style.top = pct(y, SH);
+  el.style.width = pct(w, SW); el.style.height = pct(h, SH);
+}
+for (const [name, b] of Object.entries(LAYOUT.boxes)) place($('#p-' + name), ...b);
+
+const HITS = {
+  sunset: { box: [173, 30, 112, 68], label: 'Nắng chiều' },
+  rain:   { box: [301, 30, 112, 68], label: 'Mưa rào' },
+  night:  { box: [429, 30, 112, 68], label: 'Đêm sao' },
+  chime:  { box: [118, 138, 124, 300], label: 'Chuông gió' },
+  plant:  { box: [104, 672, 152, 226], label: 'Tưới cây' },
+  plate:  { box: [240, 862, 100, 44], label: 'Đĩa sữa cho mèo' },
+  cat:    { box: [345, 760, 230, 140], label: 'Vuốt ve mèo Bánh Quy' },
+  nanote: { box: [474, 786, 60, 64], label: 'Mẩu giấy của bé Na' },
+  jar:    { box: [570, 796, 78, 108], label: 'Lọ đom đóm' },
+  lamp:   { box: [30, 846, 176, 276], label: 'Đèn bàn' },
+  radio:  { box: [208, 940, 196, 182], label: 'Đài radio' },
+  incense:{ box: [556, 1010, 92, 116], label: 'Nến thơm' },
+  book:   { box: [88, 1185, 160, 76], label: 'Sổ tay' },
+  tea:    { box: [275, 1185, 163, 76], label: 'Pha trà' },
+  gift:   { box: [466, 1185, 164, 76], label: 'Hộp kỷ vật' },
+  cup:    { box: [418, 1040, 104, 82], label: 'Nhấp một ngụm trà' },
+};
+const hitsEl = $('#hits');
+for (const [id, h] of Object.entries(HITS)) {
+  const b = document.createElement('button');
+  b.className = 'hit'; b.id = 'h-' + id; b.setAttribute('aria-label', h.label);
+  place(b, ...h.box); hitsEl.appendChild(b);
+  h.el = b;
+}
+
+const VIS = {};
+const VIS_LABEL = { plane: 'Máy bay giấy', squirrel: 'Sóc nhỏ', frog: 'Ếch Cốm', owl: 'Cú Mèo', sparrow: 'Chim sẻ đưa thư' };
+for (const [n, b] of Object.entries(LAYOUT.visitors)) {
+  const el = $('#p-' + n); place(el, ...b);
+  const hit = document.createElement('button'); hit.className = 'hit'; hit.id = 'h-' + n;
+  hit.setAttribute('aria-label', VIS_LABEL[n]);
+  place(hit, b[0] + b[2] * 0.15, b[1] + b[3] * 0.1, b[2] * 0.7, b[3] * 0.9);
+  hit.style.display = 'none'; hitsEl.appendChild(hit);   // hit a bit inside the drawing: the plate stays tappable
+  VIS[n] = { el, hit, here: false, next: 0, stayUntil: 0 };
+}
+
+place($('#p-cookies'), 238, 852, 104, 50);
+// not in Vi's empty room: the weather pill and the plate come from the first painting
+for (const w of ['sunset', 'rain', 'night']) place($('#p-w_' + w), ...HITS[w].box);
+place($('#p-plate'), 244, 850, 96, 54);
+place($('#p-nanote'), 490, 800, 30, 38); place($('#p-painting'), 446, 950, 86, 90);
+
+// ---------------------------------------------------------------- Banh Quy: 3 poses drawn by Vi
+// sleep by default, sits up when petted / fed / tea, lies looking up while a visitor is around
+const CAT = {
+  sleep: { src: '{{PROP_cat_sleep}}', box: [345, 755, 230, 143], flip: false },
+  sit:   { src: '{{PROP_cat_sit}}',   box: [392, 688, 142, 210], flip: false },
+  look:  { src: '{{PROP_cat_look}}',  box: [336, 726, 319, 172], flip: true },
+  eat:   { src: '{{PROP_cat_eat}}',   box: [232, 717, 205, 188], flip: true },
+  play:  { src: '{{PROP_cat_play}}',  box: [392, 711, 175, 194], flip: true },
+};
+let catPose = 'sleep';
+const catUntil = { eat: 0, play: 0, sit: 0 };
+function setCatPose(p) {
+  if (p === catPose) return; catPose = p; const c = CAT[p], el = $('#p-cat');
+  el.src = c.src; place(el, ...c.box); el.style.transform = c.flip ? 'scaleX(-1)' : '';
+  el.animate([{ opacity: 0.2 }, { opacity: 1 }], { duration: 350, easing: 'ease-out' });
+}
+function catAct(pose, sec) { catUntil[pose] = Math.max(catUntil[pose], performance.now() + sec * 1000); updateCat(); }
+function catSit(sec) { catAct('sit', sec); }
+function updateCat() {
+  const now = performance.now();
+  const eating = now < catUntil.eat;
+  $('#p-plate').style.opacity = eating ? 0 : 1; if (eating) $('#p-cookies').style.opacity = 0;
+  setCatPose(eating ? 'eat' : now < catUntil.play ? 'play' : now < catUntil.sit ? 'sit'
+    : Object.values(VIS).some(v => v.here) ? 'look' : 'sleep');
+}
+place($('#p-cat'), ...CAT.sleep.box);
+place($('#p-tea'), 420, 1043, 100, 77.5);
+function applyFood() { $('#p-cookies').style.opacity = S.food === 'milk' ? 1 : 0; }
+function applyTea() { $('#p-tea').style.opacity = S.tea ? 1 : 0; HITS.cup.el.style.display = S.tea ? '' : 'none'; }
+function updatePlant(grew) {
+  const el = $('#p-plant'), g = S.garden;
+  const key = g ? g.type + g.stage : 'daisy0';
+  const P = PLANT_IMG[key]; el.src = P.src; place(el, ...P.box); place(HITS.plant.el, ...P.box);
+  HITS.plant.box = P.box;
+  if (grew) { bump(el, 'press'); SFX.sparkle(); }
+}
+function resize() {
+  const vw = window.innerWidth, vh = window.innerHeight;
+  let w = Math.min(vw, vh * SW / SH); let h = w * SH / SW;
+  stage.style.width = w + 'px'; stage.style.height = h + 'px';
+  scale = w / SW; dpr = Math.min(2, window.devicePixelRatio || 1);
+  for (const c of [skyCanvas, fxCanvas]) {
+    c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+  }
+  placeRing();
+}
+const skyCanvas = $('#sky'), fxCanvas = $('#fx');
+const skyCtx = skyCanvas.getContext('2d'), fxCtx = fxCanvas.getContext('2d');
+
+// ---------------------------------------------------------------- audio (all sounds are synthesised)
+let AC = null, master, reverb, amb = {}, radioBus;
+function makeNoise(seconds, kind) {
+  const len = Math.floor(AC.sampleRate * seconds), buf = AC.createBuffer(2, len, AC.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch); let last = 0, b0 = 0, b1 = 0, b2 = 0;
+    for (let i = 0; i < len; i++) {
+      const white = Math.random() * 2 - 1;
+      if (kind === 'brown') { last = (last + 0.02 * white) / 1.02; d[i] = last * 3.5; }
+      else if (kind === 'pink') { b0 = 0.997 * b0 + white * 0.029591; b1 = 0.985 * b1 + white * 0.032534;
+        b2 = 0.95 * b2 + white * 0.048056; d[i] = (b0 + b1 + b2 + white * 0.05) * 1.6; }
+      else d[i] = white;
+    }
+  }
+  return buf;
+}
+function makeImpulse(seconds, decay) {
+  const len = Math.floor(AC.sampleRate * seconds), buf = AC.createBuffer(2, len, AC.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+  }
+  return buf;
+}
+let NOISE = {};
+function loopNoise(kind, dest) {
+  const s = AC.createBufferSource(); s.buffer = NOISE[kind]; s.loop = true;
+  s.loopStart = Math.random(); s.connect(dest); s.start(0, Math.random() * 4); return s;
+}
+function filt(type, freq, q) { const f = AC.createBiquadFilter(); f.type = type; f.frequency.value = freq;
+  if (q !== undefined) f.Q.value = q; return f; }
+function gain(v) { const g = AC.createGain(); g.gain.value = v; return g; }
+function chain(...nodes) { for (let i = 0; i < nodes.length - 1; i++) nodes[i].connect(nodes[i + 1]); return nodes[nodes.length - 1]; }
+
+function initAudio() {
+  if (AC) return;
+  AC = new (window.AudioContext || window.webkitAudioContext)();
+  master = gain(S.muted ? 0 : 0.42); master.connect(AC.destination);
+  reverb = AC.createConvolver(); reverb.buffer = makeImpulse(3.2, 2.6);
+  chain(reverb, gain(0.32), master);
+  NOISE = { white: makeNoise(5, 'white'), pink: makeNoise(6, 'pink'), brown: makeNoise(7, 'brown') };
+
+  // rain: hiss + body + random drips
+  amb.rain = gain(0); amb.rain.connect(master);
+  loopNoise('pink', chain(filt('highpass', 450), filt('lowpass', 3200), gain(0.55), amb.rain));
+  loopNoise('brown', chain(filt('lowpass', 520), gain(0.65), amb.rain));
+  // night: soft wind + crickets
+  amb.night = gain(0); amb.night.connect(master);
+  const nightWind = filt('lowpass', 380);
+  loopNoise('brown', chain(nightWind, gain(0.38), amb.night));
+  lfo(nightWind.frequency, 0.07, 140);
+  // sunset: breeze
+  amb.sunset = gain(0); amb.sunset.connect(master);
+  const breeze = filt('lowpass', 600); const bg = gain(0.42);
+  loopNoise('brown', chain(breeze, bg, amb.sunset));
+  lfo(breeze.frequency, 0.05, 260); lfo(bg.gain, 0.09, 0.18);
+
+  radioBus = gain(0); chain(radioBus, filt('lowpass', 3400), filt('highpass', 90), master);
+  const radioRev = gain(0.5); radioBus.connect(radioRev); radioRev.connect(reverb);
+  setAmbience(S.weather, 0.01);
+  if (S.incense) {}
+}
+function lfo(param, rate, depth) {
+  const o = AC.createOscillator(), g = gain(depth); o.frequency.value = rate; o.connect(g); g.connect(param); o.start();
+}
+function setAmbience(w, t = 1.6) {
+  if (!AC) return;
+  const now = AC.currentTime;
+  for (const k of ['rain', 'night', 'sunset']) {
+    const target = k === w ? (k === 'rain' ? 0.6 : 0.55) : 0;
+    amb[k].gain.cancelScheduledValues(now); amb[k].gain.setTargetAtTime(target, now, t / 3);
+  }
+}
+function env(g, t, a, peak, d, sustain = 0.0001) {
+  g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(peak, t + a);
+  g.gain.exponentialRampToValueAtTime(Math.max(sustain, 0.0001), t + a + d);
+}
+function noiseBurst(t, dur, f1, f2, q, peak, dest = master, kind = 'white') {
+  const s = AC.createBufferSource(); s.buffer = NOISE[kind];
+  const f = filt('bandpass', f1, q); const g = gain(0);
+  if (f2) f.frequency.exponentialRampToValueAtTime(f2, t + dur);
+  chain(s, f, g, dest); env(g, t, 0.005, peak, dur);
+  s.start(t, Math.random() * 3); s.stop(t + dur + 0.05);
+}
+function tone(t, freq, dur, peak, type = 'sine', dest = master, attack = 0.005) {
+  const o = AC.createOscillator(); o.type = type; o.frequency.value = freq; const g = gain(0);
+  chain(o, g, dest); env(g, t, attack, peak, dur); o.start(t); o.stop(t + attack + dur + 0.05); return o;
+}
+
+// one-shot sounds
+const SFX = {
+  drip() { if (!AC) return; const t = AC.currentTime; noiseBurst(t, 0.03, 1800 + Math.random() * 3500, 0, 9, 0.05 + Math.random() * 0.05, amb.rain); },
+  chime(strength = 1) {
+    if (!AC) return;
+    if (S.chimeType === 'bamboo' || S.chimeType === 'shell') return SFX.chimeAlt(strength, S.chimeType);
+    const scaleHz = [1568, 1760, 2093, 2349, 2637, 3136];
+    const n = 1 + Math.round(strength * 2 + Math.random());
+    let t = AC.currentTime;
+    const pan = AC.createStereoPanner(); pan.pan.value = -0.45; pan.connect(master); pan.connect(reverb);
+    for (let i = 0; i < n; i++) {
+      const f = scaleHz[Math.floor(Math.random() * scaleHz.length)];
+      [[1, 0.16], [2.76, 0.05], [5.4, 0.025], [8.93, 0.012]].forEach(([r, a]) =>
+        tone(t, f * r, 2.6 / Math.sqrt(r), a * (0.6 + 0.4 * strength), 'sine', pan, 0.002));
+      t += 0.09 + Math.random() * 0.22;
+    }
+  },
+  chimeAlt(strength, type) {   // hollow wooden knocks (bamboo) or small clicks (shells)
+    const pan = AC.createStereoPanner(); pan.pan.value = -0.45; pan.connect(master); pan.connect(reverb);
+    let t = AC.currentTime; const n = 2 + Math.round(strength * 3 + Math.random() * 2);
+    for (let i = 0; i < n; i++) {
+      if (type === 'bamboo') {
+        const f = [392, 440, 523, 587, 659][Math.floor(Math.random() * 5)];
+        tone(t, f, 0.5, 0.14 * (0.6 + 0.4 * strength), 'sine', pan, 0.002); tone(t, f * 2.4, 0.18, 0.04, 'triangle', pan, 0.002);
+        noiseBurst(t, 0.03, 1200, 0, 2, 0.05, pan);
+        t += 0.12 + Math.random() * 0.25;
+      } else {
+        noiseBurst(t, 0.025, 3500 + Math.random() * 2500, 0, 3, 0.09 * (0.6 + 0.4 * strength), pan);
+        tone(t, 2800 + Math.random() * 1800, 0.12, 0.02, 'sine', pan, 0.001);
+        t += 0.05 + Math.random() * 0.12;
+      }
+    }
+  },
+  click() { if (!AC) return; const t = AC.currentTime; noiseBurst(t, 0.012, 3500, 0, 1.5, 0.25); tone(t, 2200, 0.02, 0.05); },
+  purr() {
+    if (!AC) return; const t = AC.currentTime;
+    for (let k = 0; k < 2; k++) {
+      const t0 = t + k * 1.0;
+      const s = AC.createBufferSource(); s.buffer = NOISE.brown;
+      const f = filt('lowpass', 220); const am = gain(0); const g = gain(0);
+      const o = AC.createOscillator(); o.frequency.value = 24 + k * 2; const od = gain(0.5);
+      o.connect(od); od.connect(am.gain); am.gain.value = 0.5;
+      chain(s, f, am, g, master);
+      g.gain.setValueAtTime(0.0001, t0); g.gain.linearRampToValueAtTime(0.9, t0 + 0.25);
+      g.gain.linearRampToValueAtTime(0.0001, t0 + 0.95);
+      s.start(t0, Math.random() * 3); s.stop(t0 + 1); o.start(t0); o.stop(t0 + 1);
+    }
+  },
+  water() {
+    if (!AC) return; const t = AC.currentTime;
+    noiseBurst(t, 1.1, 700, 1500, 2.5, 0.22);
+    for (let i = 0; i < 7; i++) {
+      const tt = t + 0.15 + Math.random() * 0.9; const o = AC.createOscillator(); const g = gain(0);
+      const f0 = 500 + Math.random() * 700; o.frequency.setValueAtTime(f0, tt);
+      o.frequency.exponentialRampToValueAtTime(f0 * 1.9, tt + 0.06);
+      chain(o, g, master); env(g, tt, 0.004, 0.035, 0.07); o.start(tt); o.stop(tt + 0.1);
+    }
+  },
+  sparkle() {
+    if (!AC) return; const t = AC.currentTime;
+    for (let i = 0; i < 6; i++) tone(t + i * 0.07 + Math.random() * 0.04, 2600 + Math.random() * 2400, 0.5, 0.025, 'sine', reverb);
+  },
+  paper() {
+    if (!AC) return; const t = AC.currentTime;
+    for (let i = 0; i < 5; i++) noiseBurst(t + i * 0.05 + Math.random() * 0.03, 0.05, 2500 + Math.random() * 2000, 0, 1.2, 0.07);
+  },
+  match() { if (!AC) return; const t = AC.currentTime; noiseBurst(t, 0.35, 1800, 900, 0.9, 0.12); },
+  creak() {
+    if (!AC) return; const t = AC.currentTime;
+    const o = AC.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(70, t);
+    o.frequency.linearRampToValueAtTime(95, t + 0.7);
+    const f = filt('bandpass', 520, 12); f.frequency.linearRampToValueAtTime(820, t + 0.7);
+    const g = gain(0); chain(o, f, g, master); env(g, t, 0.08, 0.09, 0.75);
+    o.start(t); o.stop(t + 0.9);
+    noiseBurst(t + 0.05, 1.4, 300, 700, 0.7, 0.18, master, 'brown');
+  },
+  cricket(pan) {
+    if (!AC) return; const t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = pan; p.connect(amb.night);
+    for (let i = 0; i < 3; i++) tone(t + i * 0.055, 4300 + pan * 200, 0.035, 0.012, 'sine', p, 0.004);
+  },
+  croak() {
+    if (!AC) return; const t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = -0.25; p.connect(master); p.connect(reverb);
+    [0, 0.32].forEach((d, i) => {
+      const o = AC.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(150 - i * 12, t + d);
+      o.frequency.linearRampToValueAtTime(120 - i * 12, t + d + 0.2);
+      const am = gain(0.5); const lf = AC.createOscillator(); lf.frequency.value = 38; const lg = gain(0.5);
+      lf.connect(lg); lg.connect(am.gain);
+      const f = filt('bandpass', 700, 2.5); const g = gain(0);
+      chain(o, am, f, g, p); env(g, t + d, 0.02, 0.3, 0.2);
+      o.start(t + d); lf.start(t + d); o.stop(t + d + 0.3); lf.stop(t + d + 0.3);
+    });
+  },
+  hoot() {
+    if (!AC) return; const t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = 0.4; p.connect(master); p.connect(reverb);
+    [[0, 0.3, 390], [0.55, 0.65, 410]].forEach(([d, len, f0]) => {
+      const o = AC.createOscillator(); o.frequency.setValueAtTime(f0, t + d); o.frequency.linearRampToValueAtTime(f0 * 0.88, t + d + len);
+      const g = gain(0); chain(o, filt('lowpass', 900), g, p);
+      g.gain.setValueAtTime(0.0001, t + d); g.gain.linearRampToValueAtTime(0.13, t + d + 0.08);
+      g.gain.linearRampToValueAtTime(0.0001, t + d + len); o.start(t + d); o.stop(t + d + len + 0.05);
+    });
+  },
+  chitter() {
+    if (!AC) return; const t = AC.currentTime;
+    for (let i = 0; i < 7; i++) {
+      const tt = t + i * 0.055; const o = AC.createOscillator(); const g = gain(0); const f0 = 3200 + Math.random() * 1400;
+      o.frequency.setValueAtTime(f0, tt); o.frequency.exponentialRampToValueAtTime(f0 * 0.7, tt + 0.04);
+      chain(o, g, master); env(g, tt, 0.003, 0.03, 0.04); o.start(tt); o.stop(tt + 0.06);
+    }
+  },
+  chirp() {
+    if (!AC) return; let t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = -0.1; p.connect(master); p.connect(reverb);
+    for (let i = 0; i < 3; i++) {
+      const o = AC.createOscillator(); const g = gain(0); const f0 = 3400 + Math.random() * 700;
+      o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f0 * 1.3, t + 0.06);
+      chain(o, g, p); env(g, t, 0.008, 0.045, 0.08); o.start(t); o.stop(t + 0.12); t += 0.13 + Math.random() * 0.06;
+    }
+  },
+  flutter() {
+    if (!AC) return; const t = AC.currentTime;
+    for (let i = 0; i < 8; i++) noiseBurst(t + i * 0.045, 0.035, 900 + Math.random() * 600, 0, 1, 0.06, master, 'pink');
+  },
+  bird() {
+    if (!AC) return; let t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = Math.random() * 1.4 - 0.7;
+    p.connect(amb.sunset); p.connect(reverb);
+    const n = 2 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < n; i++) {
+      const o = AC.createOscillator(); const g = gain(0); const f0 = 2600 + Math.random() * 900;
+      o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f0 * (1.25 + Math.random() * 0.3), t + 0.07);
+      chain(o, g, p); env(g, t, 0.01, 0.03, 0.09); o.start(t); o.stop(t + 0.14);
+      t += 0.12 + Math.random() * 0.1;
+    }
+  },
+};
+
+// ---------------------------------------------------------------- lo-fi radio (generative)
+const BPM = 72, BEAT = 60 / BPM;
+stage.style.setProperty('--beat', BEAT + 's');
+const midi = m => 440 * Math.pow(2, (m - 69) / 12);
+// Fmaj9 - Em7 - Dm9 - Cmaj7 (voicings around middle C)
+const PROG = [
+  { root: 41, notes: [57, 60, 64, 67] },
+  { root: 40, notes: [55, 59, 62, 64] },
+  { root: 38, notes: [57, 60, 64, 65] },
+  { root: 36, notes: [55, 59, 62, 64] },
+];
+const MELODY = [72, 74, 76, 79, 81, 84];
+let radioTimer = null, nextBeatTime = 0, beatIndex = 0;
+function epiano(t, m, dur, vel) {
+  const f = midi(m);
+  const o1 = AC.createOscillator(), o2 = AC.createOscillator(); o2.type = 'triangle';
+  o1.frequency.value = f; o2.frequency.value = f * 2; o2.detune.value = 4 + Math.random() * 4;
+  const g = gain(0), g2 = gain(0.18), lp = filt('lowpass', 1500 + vel * 900);
+  o1.connect(g); o2.connect(g2); g2.connect(g); chain(g, lp, radioBus);
+  g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.06 * vel, t + 0.012);
+  g.gain.exponentialRampToValueAtTime(0.02 * vel, t + 0.6); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o1.start(t); o2.start(t); o1.stop(t + dur + 0.05); o2.stop(t + dur + 0.05);
+}
+function kick(t) {
+  const o = AC.createOscillator(); const g = gain(0); o.frequency.setValueAtTime(115, t);
+  o.frequency.exponentialRampToValueAtTime(42, t + 0.14); chain(o, g, radioBus); env(g, t, 0.004, 0.42, 0.22);
+  o.start(t); o.stop(t + 0.3);
+}
+function snare(t) {
+  const s = AC.createBufferSource(); s.buffer = NOISE.white; const f = filt('bandpass', 1700, 0.8); const g = gain(0);
+  chain(s, f, g, radioBus); env(g, t, 0.003, 0.1, 0.16); s.start(t, Math.random() * 3); s.stop(t + 0.2);
+  tone(t, 185, 0.06, 0.05, 'triangle', radioBus);
+}
+function hat(t, v) {
+  const s = AC.createBufferSource(); s.buffer = NOISE.white; const f = filt('highpass', 7500); const g = gain(0);
+  chain(s, f, g, radioBus); env(g, t, 0.002, 0.022 * v, 0.035); s.start(t, Math.random() * 3); s.stop(t + 0.06);
+}
+function bass(t, m, dur) {
+  const o = AC.createOscillator(); o.frequency.value = midi(m); const g = gain(0); const lp = filt('lowpass', 320);
+  chain(o, lp, g, radioBus); g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.2, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur); o.start(t); o.stop(t + dur + 0.05);
+}
+function scheduleBeat(t, i) {
+  const bar = Math.floor(i / 4) % PROG.length, beat = i % 4, ch = PROG[bar];
+  const swing = BEAT * 0.16;
+  if (beat === 0) {
+    ch.notes.forEach((m, k) => epiano(t + k * 0.018 + Math.random() * 0.01, m, BEAT * 3.8, 0.8 + Math.random() * 0.2));
+    bass(t, ch.root, BEAT * 1.4);
+  }
+  if (beat === 2) bass(t + BEAT * 0.5, ch.root + 12 * (Math.random() < 0.3 ? 1 : 0), BEAT * 1.1);
+  if (beat === 0 || (beat === 2 && Math.random() < 0.8)) kick(t);
+  if (beat === 2 && Math.random() < 0.35) kick(t + BEAT * 0.5 + swing);
+  if (beat === 1 || beat === 3) snare(t);
+  hat(t, 0.8 + Math.random() * 0.4); hat(t + BEAT * 0.5 + swing, 0.45 + Math.random() * 0.3);
+  if (Math.random() < 0.32) {
+    const m = MELODY[Math.floor(Math.random() * MELODY.length)];
+    epiano(t + (Math.random() < 0.5 ? 0 : BEAT * 0.5 + swing), m, BEAT * 2, 0.55);
+  }
+  // vinyl crackle
+  for (let k = 0; k < 3; k++) if (Math.random() < 0.5)
+    noiseBurst(t + Math.random() * BEAT, 0.004, 2000 + Math.random() * 4000, 0, 2, 0.04 + Math.random() * 0.05, radioBus);
+}
+function radioTick() {
+  while (nextBeatTime < AC.currentTime + 0.25) {
+    scheduleBeat(nextBeatTime, beatIndex); nextBeatTime += BEAT; beatIndex++;
+    if (S.radio) fxSpawnNote();
+  }
+}
+function setRadio(on) {
+  S.radio = on; if (on && S.garden && S.garden.stage < 2) { S.garden.music = 1; setTimeout(growthCheck, 1500); } save();
+  $('#p-radio').classList.toggle('on', on);
+  if (!AC) return;
+  const now = AC.currentTime;
+  radioBus.gain.cancelScheduledValues(now);
+  if (on) {
+    noiseBurst(now, 0.45, 1200, 3000, 0.6, 0.12);   // static while tuning
+    nextBeatTime = now + 0.5; beatIndex = 0;
+    radioBus.gain.setTargetAtTime(0.9, now + 0.35, 0.4);
+    clearInterval(radioTimer); radioTimer = setInterval(radioTick, 60);
+  } else {
+    radioBus.gain.setTargetAtTime(0, now, 0.25);
+    clearInterval(radioTimer); radioTimer = null;
+  }
+}
+
+// ---------------------------------------------------------------- weather / lamp
+const TINT = {
+  rain:   { on: 'rgba(222,222,238,1)', off: 'rgba(175,180,212,1)' },
+  night:  { on: 'rgba(190,188,222,1)', off: 'rgba(128,132,182,1)' },
+  sunset: { on: 'rgba(255,236,215,1)', off: 'rgba(250,222,200,1)' },
+};
+const GLOW = { rain: 0.75, night: 0.9, sunset: 0.4 };
+function applyLook() {
+  document.querySelectorAll('.scene').forEach(img => img.classList.toggle('on', img.dataset.w === S.weather));
+  $('#tint').style.backgroundColor = TINT[S.weather][S.lamp ? 'on' : 'off'];
+  $('#glow').style.opacity = S.lamp ? GLOW[S.weather] : 0;
+  $('#sunlight').style.opacity = S.weather === 'sunset' ? 0.85 : 0;
+  $('#p-lamp').classList.toggle('off', !S.lamp);
+  const src = document.querySelector(`.scene[data-w="${S.weather}"]`).src;
+  $('#backdrop').style.backgroundImage = `url(${src})`;
+  placeRing();
+}
+function placeRing() {
+  const r = $('#wring'); const b = HITS[S.weather].box;
+  place(r, b[0] + 2, b[1] + 2, b[2] - 4, b[3] - 4);
+}
+$('#glow').style.background =
+  'radial-gradient(42% 26% at 16% 74%, rgba(255,214,140,.85), rgba(255,190,110,.35) 45%, rgba(255,170,90,0) 100%)';
+function setWeather(w) {
+  if (w === S.weather) return;
+  S.weather = w; if (w === 'rain' && S.garden) S.garden.rain = 1; save(); applyLook(); setAmbience(w); setTimeout(growthCheck, 1500);
+  sky.wind = 0; toast({ rain: 'Mưa rào', sunset: 'Nắng chiều', night: 'Đêm đầy sao' }[w]);
+}
+
+// ---------------------------------------------------------------- UI helpers
+let toastTimer;
+function toast(text, ms = 1800) {
+  const t = $('#toast'); t.textContent = text; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+function bump(el, cls = 'press') { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+let showNote = function () {
+  S.noteIndex = (S.noteIndex + 1) % NOTES.length; save();
+  $('#note').innerHTML = `“${NOTES[S.noteIndex]}”<small>— một mẩu giấy nhỏ trên bệ cửa —</small>`;
+  $('#note-wrap').classList.add('show'); SFX.paper();
+}
+let onNoteClose = null;
+function showPaper(html, onClose, modal) {
+  $('#note').classList.remove('panel'); $('#note').classList.add('letter'); $('#note-wrap').dataset.modal = modal ? '1' : '';
+  $('#note').innerHTML = html; onNoteClose = onClose || null;
+  $('#note-wrap').classList.add('show'); SFX.paper();
+}
+function closeNote() {
+  $('#note-wrap').classList.remove('show'); $('#note-wrap').dataset.modal = ''; SFX.paper();
+  const f = onNoteClose; onNoteClose = null; if (f) setTimeout(f, 300);
+}
+function nextOldLetter() {
+  const st = S.story;
+  if (st.old === 0) return 0;
+  if (st.old === 1 && st.fixed) return 1;
+  if (st.old === 2 && Date.now() - st.oldAt >= 2 * HOUR) return 2;
+  return null;
+}
+function showLetter() {
+  const i = nextOldLetter();
+  if (i === null) {   // no chapter waiting: a small anonymous note
+    const n = NOTES[Math.floor(Math.random() * NOTES.length)];
+    showPaper(`${n}<small>— một người hàng xóm giấu tên —</small>`); return;
+  }
+  const L = LETTERS[i];
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.old_window}" alt="">${L.text}<small>— ${L.from} —</small>`, () => {
+    S.story.old = i + 1; S.story.oldAt = Date.now();
+    if (i === 0) { S.keep.musicbox = 1; toast('Bạn nhận được hộp nhạc gỗ của bác 🎁 (xem trong hộp kỷ vật)', 3600); }
+    if (i === 2) { S.keep.watch = 1; toast('Bạn nhận được chiếc đồng hồ quả quýt 🎁', 3600); }
+    save();
+  });
+}
+function planeReady() {
+  const st = S.story, P = S.garden, now = Date.now();
+  switch (st.plane) {
+    case 0: return S.weather === 'rain';
+    case 1: return S.weather !== 'night' && !!P && P.stage === 2 && (P.type === 'daisy' || P.type === 'lavender');
+    case 2: return S.weather !== 'night' && now - st.planeAt >= 1 * HOUR;
+    case 3: return S.weather !== 'night' && now - st.planeAt >= 48 * HOUR;
+  }
+  return false;
+}
+function readPlane() {
+  const i = S.story.plane, N = PLANE_NOTES[i], from = '<small>— Cậu họa sĩ tầng trên —</small>';
+  const sub = N.sub ? `<small style="margin:0 0 .8em">${N.sub}</small>` : '';
+  if (N.reply) {
+    showPaper(`${sub}${N.text}${from}<small style="margin-top:1.2em">Gấp một chiếc máy bay giấy gửi lại:</small>` +
+      REPLIES.map((r, k) => `<button class="reply" data-reply="${k}">“${r}”</button>`).join(''), null, true);
+    document.querySelectorAll('.reply').forEach(b => b.addEventListener('click', e => {
+      e.stopPropagation(); S.story.reply = +b.dataset.reply; S.story.plane = 2; S.story.planeAt = Date.now(); save();
+      closeNote(); leave('plane', true); SFX.flutter(); toast('Máy bay giấy đã bay lên tầng trên ✈️', 2600);
+    }));
+    return;
+  }
+  showPaper(`${sub}${N.text}${from}`, () => {
+    S.story.plane = i + 1; S.story.planeAt = Date.now();
+    if (N.gift) {
+      N.gift.forEach(k => { S.keep[k] = 1; }); if (N.gift.includes('painting')) { S.wallArt = true; applyWallArt(); }
+      toast(N.gift.includes('painting') ? 'Bức tranh “Góc Cửa Ngày Mưa” đã được treo lên tường 🖼️' : 'Bạn nhận được tuýp màu nước xanh pastel 🎨', 3600);
+    }
+    save(); leave('plane', true);
+  });
+}
+// ---------- tea + breathing
+let breathTimers = [];
+function drinkTea() {
+  const html = `<div class="breath"><div class="dot"></div><p id="breath-text">Nhấp một ngụm trà ấm…</p></div><small>Chạm ra ngoài để dừng</small>`;
+  openPanel(html); onNoteClose = () => breathTimers.forEach(clearTimeout);
+  const steps = []; let t = 1800;
+  for (let k = 0; k < 3; k++) {
+    steps.push([t, 'Hít vào thật chậm…', 1.25]); t += 4000;
+    steps.push([t, 'Giữ lại một chút…', 1.25]); t += 2000;
+    steps.push([t, 'Thở ra nhẹ nhàng…', 0.7]); t += 6000;
+  }
+  steps.push([t, 'Cảm ơn bạn đã dành một phút cho chính mình 🍵', 0.9]);
+  breathTimers = steps.map(([at, text, sc]) => setTimeout(() => {
+    const p = $('#breath-text'), d = document.querySelector('.breath .dot'); if (!p) return;
+    p.textContent = text; d.style.transitionDuration = text.startsWith('Thở') ? '6s' : '4s'; d.style.transform = `scale(${sc})`;
+  }, at));
+  breathTimers.push(setTimeout(() => { S.tea = false; save(); applyTea(); }, t));
+}
+// ---------- keepsakes that do something
+function playMusicBox() {
+  if (!AC) return;
+  const mel = [76, 79, 84, 83, 81, 79, 76, 0, 77, 81, 86, 84, 83, 79, 0, 0, 76, 79, 84, 88, 86, 84, 81, 0, 77, 76, 74, 79, 72, 0, 0, 0];
+  let t = AC.currentTime + 0.1;
+  mel.forEach((m, k) => {
+    const step = 0.34 + (k > 27 ? (k - 27) * 0.06 : 0);
+    if (m) { const f = midi(m); tone(t, f, 1.3, 0.09, 'sine', reverb); tone(t, f, 1.1, 0.06); tone(t, f * 3, 0.35, 0.012); }
+    t += step;
+  });
+}
+function waves() {
+  if (!AC) return; const t = AC.currentTime;
+  for (let k = 0; k < 4; k++) noiseBurst(t + k * 1.7, 2.2, 300, 900, 0.4, 0.16, master, 'brown');
+}
+const CANDLE = { on: ['{{PROP_candle_on}}', [573, 1003, 56, 100]], off: ['{{PROP_candle_off}}', [575, 1023, 53, 80]] };
+function applyCandle() { const [src, box] = CANDLE[S.incense ? 'on' : 'off']; const el = $('#p-incense'); el.src = src; place(el, ...box); }
+// wall: one painting at a time (S.wallArt = 'painting' | 'alley' | false)
+const WALL = { painting: [446, 950, 86, 90], alley: [452, 946, 74, 94] };
+function applyWallArt() {
+  if (S.wallArt === true) S.wallArt = 'painting';
+  const el = $('#p-painting'); el.style.opacity = S.wallArt ? 1 : 0;
+  if (S.wallArt) { el.src = ITEM_IMG[S.wallArt]; place(el, ...WALL[S.wallArt]); }
+}
+// ---------- Be Na
+function finaleCheck() {
+  const st = S.story;
+  if (S.keep.alley || st.old < 3 || st.plane < 4 || st.na < 5) return;
+  S.keep.alley = 1; S.wallArt = 'alley'; save(); applyWallArt();
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.alley}" alt="">Cả xóm nhỏ gửi bạn bức tranh con hẻm hoa giấy đầu ngõ, nơi ai cũng đi ngang qua ô cửa sổ sáng đèn của bạn mỗi tối. Cảm ơn bạn đã ở đây.<small>— Bác sửa đồng hồ, cậu họa sĩ, Na và Bánh Quy —</small>`);
+  SFX.sparkle(); toast('Tranh “Hẻm Hoa Giấy” đã được treo lên tường 🌸', 3600);
+}
+function naChapter() {
+  const st = S.story, now = Date.now();
+  if (st.na === 0) return S.meals >= 1 ? 0 : null;
+  if (st.na === 1) return st.naSent && now - st.naSent >= 0.5 * HOUR ? 1 : null;
+  if (st.na === 2) return now - st.naAt >= 24 * HOUR ? 2 : null;
+  if (st.na === 3) return st.naWarm && now - st.naWarm >= 0.5 * HOUR && S.weather !== 'rain' ? 3 : null;
+  if (st.na === 4) return Object.keys(S.harvested).length >= 2 ? 4 : null;
+  return null;
+}
+function showNaNote(i, again) {
+  const N = NA_NOTES[i], from = '<small>— Na, tầng dưới —</small>';
+  const gift = NA_REPLIES[S.story.naGift || 0].gift;
+  const img = N.img ? `<img class="paper-img" src="${ITEM_IMG[N.img]}" alt="">` : '';
+  const text = N.text.replace('{gift}', gift);
+  if (N.reply && !again) {
+    showPaper(`${text}${from}<small style="margin-top:1.2em">Kẹp lại vào ruy băng của Bánh Quy:</small>` +
+      NA_REPLIES.map((r, k) => `<button class="reply" data-na="${k}">${r.img ? `<img src="${ITEM_IMG[r.img]}" alt="">` : r.icon + ' '}${r.name} + “${r.text}”</button>`).join(''), null, true);
+    document.querySelectorAll('[data-na]').forEach(b => b.addEventListener('click', e => {
+      e.stopPropagation(); S.story.naGift = +b.dataset.na; S.story.na = 2; S.story.naAt = Date.now(); save(); applyNaNote();
+      closeNote(); SFX.purr(); hearts(); toast('Bánh Quy mang quà xuống tầng dưới cho Na 🐾', 2800);
+    }));
+    return;
+  }
+  showPaper(`${img}${text}${from}`, again ? null : () => {
+    S.story.na = i + 1; S.story.naAt = Date.now();
+    if (N.img) S.keep[N.img] = 1;
+    if (N.gift) { S.keep[N.gift] = 1; toast('Bạn nhận được viên bi ve đại dương của Na 🎁', 3600); }
+    save(); applyNaNote();
+  });
+}
+function applyNaNote() {
+  const on = naChapter() !== null;
+  $('#p-nanote').style.opacity = on ? 1 : 0; HITS.nanote.el.style.display = on ? '' : 'none';
+}
+let naWetShown = false;
+function petCat() {
+  const st = S.story;
+  if (st.na === 1 && !st.naSent && S.meals >= 3) {
+    if (!S.keep.daisy) { toast('Bánh Quy dụi đầu vào tay bạn… hình như Na thích hoa cúc họa mi 🌼', 3200); return; }
+    openPanel(`<h3>Gửi quà cho Na</h3><p style="text-align:center"><img src="${ITEM_IMG.k_daisy}" alt="" style="height:3.4em"><br>
+      Kẹp một bông cúc họa mi ép vào ruy băng của Bánh Quy?</p><button class="reply" id="na-send">Gửi bông hoa 🌼</button>`, true);
+    $('#na-send').addEventListener('click', e => {
+      e.stopPropagation(); S.keep.daisy--; st.naSent = Date.now(); save(); closeNote(); hearts(); SFX.purr();
+      toast('Bánh Quy ngậm bông hoa chạy xuống tầng dưới 🌼', 2800);
+    });
+    return;
+  }
+  if (st.na === 3 && !st.naWarm && S.weather === 'rain') {
+    if (!S.lamp) { toast('Bánh Quy ướt nhẹp, run rẩy… bật đèn vàng cho nó sưởi nhé 💡', 3200); return; }
+    st.naWarm = Date.now(); save(); toast('Bạn lau khô cho Bánh Quy, nó cuộn tròn sưởi bên ánh đèn vàng 💛', 3400);
+  }
+}
+function tickTock() {
+  if (!AC) return; const t = AC.currentTime;
+  for (let k = 0; k < 20; k++) noiseBurst(t + k * 0.5, 0.012, k % 2 ? 2100 : 2600, 0, 4, 0.08);
+}
+function jam() {
+  if (!AC) return; const t = AC.currentTime;
+  noiseBurst(t, 0.02, 3000, 0, 3, 0.2); noiseBurst(t + 0.12, 0.02, 2600, 0, 3, 0.15); tone(t + 0.25, 1046, 0.2, 0.03);
+}
+function useItem(k) {
+  if (k === 'musicbox') {
+    if (S.story.fixed) { playMusicBox(); toast('Hộp nhạc hát lại giai điệu cũ của bác 🎶', 3000); return; }
+    if (S.keep.cactus) {
+      S.keep.cactus--; S.story.fixed = true; save(); openKeepsakes(); playMusicBox();
+      toast('Chiếc gai xương rồng vừa khít… hộp nhạc hát lại rồi 🎶', 3600); return;
+    }
+    jam(); toast('Hộp nhạc bị kẹt bánh răng. Hình như cần một chiếc gai thật nhỏ… 🌵', 3600); return;
+  }
+  if (k === 'watch') { tickTock(); toast('Tích… tắc… kim đồng hồ chỉ vào giờ đẹp nhất trong ngày', 3600); return; }
+  if (k === 'card') { SFX.paper(); toast('Thiệp hoa lưu ly ép khô của cậu họa sĩ 💙', 3000); }
+  if (k === 'k_tube') { SFX.paper(); toast('Tuýp màu nước xanh pastel, vẫn còn thơm mùi màu 🎨', 3000); }
+  if (k === 'k_marble') { waves(); toast('Áp viên bi lên tai… nghe sóng biển rì rào 🌊', 3600); }
+  if (k === 'painting' || k === 'alley') { S.wallArt = S.wallArt === k ? false : k; save(); applyWallArt(); openKeepsakes(); SFX.paper(); }
+  if (CHIMES[k]) { S.chimeType = k; save(); applyChime(); openKeepsakes(); pushChime(150); }
+  const ni = { na_cat: 0, na_friends: 2, na_window: 4 }[k];
+  if (ni !== undefined) showNaNote(ni, true);
+}
+$('#note').addEventListener('click', e => {
+  const it = e.target.closest('[data-item]'); if (!it) return;
+  e.stopPropagation(); useItem(it.dataset.item);
+});
+function openPanel(html, modal) {
+  onNoteClose = null; const n = $('#note'); n.classList.remove('letter'); n.classList.add('panel'); n.innerHTML = html;
+  $('#note-wrap').classList.add('show'); $('#note-wrap').dataset.modal = modal ? '1' : '';
+}
+function fmtLeft(ms) {
+  const h = ms / HOUR;
+  return h >= 1 ? `khoảng ${Math.ceil(h)} giờ` : `khoảng ${Math.max(1, Math.ceil(h * 60))} phút`;
+}
+function growthCheck() {
+  const g = S.garden; if (!g) return;
+  const P = PLANTS[g.type];
+  while (g.stage < 2) {
+    const need = P.need[g.stage], at = g.planted + (g.stage + 1) / 2 * P.hours * HOUR;
+    if (Date.now() >= at && g.water >= need.water && g.music >= (need.music || 0) && (g.rain || 0) >= (need.rain || 0)) {
+      g.stage++; save(); updatePlant(true);
+      toast(g.stage === 2 ? `${P.name} đã nở hoa ${P.icon} Chạm để hái nhé` : `${P.name} vừa lớn thêm một chút 🌱`, 3200);
+    } else break;
+  }
+}
+function plantStatus() {
+  const g = S.garden, P = PLANTS[g.type];
+  if (g.stage === 2) return `${P.name} đang nở hoa ${P.icon}`;
+  const need = P.need[g.stage], left = g.planted + (g.stage + 1) / 2 * P.hours * HOUR - Date.now();
+  if (g.water < need.water) return `${P.name}: tưới thêm nước nhé 💧`;
+  if (g.music < (need.music || 0)) return `${P.name} muốn nghe nhạc 📻`;
+  if ((g.rain || 0) < (need.rain || 0)) return `${P.name} đang chờ một cơn mưa 🌧️`;
+  return `${P.name} đang lớn, ${fmtLeft(left)} nữa 🌱`;
+}
+function tapPlant() {
+  const g = S.garden;
+  if (!g) { openSeedPicker(); return; }
+  const P = PLANTS[g.type];
+  if (g.stage === 2) {
+    S.keep[g.type] = (S.keep[g.type] || 0) + 1; S.harvested[g.type] = 1; S.garden = null; save();
+    SFX.sparkle(); bump($('#p-plant'), 'wiggle');
+    toast(`Hái ${P.gift.toLowerCase()} cất vào hộp kỷ vật ${P.icon}`, 2600);
+    setTimeout(openSeedPicker, 1600); return;
+  }
+  bump($('#p-plant'), 'wiggle'); waterDrops(); SFX.water();
+  if (Date.now() - g.lastWater >= HOUR || !g.lastWater) {
+    g.water++; g.lastWater = Date.now(); save();
+    setTimeout(() => { toast(plantStatus(), 2600); growthCheck(); }, 900);
+  } else toast('Đất còn ẩm rồi, lát nữa tưới tiếp nhé 💧', 2400);
+}
+function openSeedPicker() {
+  openPanel(`<h3>Gieo hạt mới</h3>` + Object.entries(PLANTS).map(([k, P]) =>
+    `<button class="seed" data-seed="${k}"><img src="${PLANT_IMG[k + '2'].src}" alt=""><div><b>${P.name}</b>
+     <span>${P.meaning} · ${P.hours} giờ · ${P.care}</span></div></button>`).join(''), true);
+  document.querySelectorAll('.seed').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    S.garden = { type: b.dataset.seed, stage: 0, planted: Date.now(), water: 0, music: S.radio ? 1 : 0, lastWater: 0, rain: S.weather === 'rain' ? 1 : 0 };
+    save(); updatePlant(true); $('#note-wrap').classList.remove('show'); SFX.paper();
+    toast(`Đã gieo hạt ${PLANTS[b.dataset.seed].name}. Nhớ tưới nước nhé 💧`, 2800);
+  }));
+}
+const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2' };
+function openKeepsakes() {
+  const story = [['musicbox', 'Hộp nhạc gỗ của bác', S.story.fixed ? 'Chạm để nghe nhạc' : 'Đang kẹt bánh răng, chạm để thử'],
+    ['watch', 'Đồng hồ quả quýt', 'Chạm để nghe tích tắc'], ['card', 'Thiệp hoa lưu ly ép khô', 'Quà của cậu họa sĩ'],
+    ['k_tube', 'Tuýp màu nước xanh pastel', 'Quà của cậu họa sĩ'],
+    ['painting', 'Tranh “Góc Cửa Ngày Mưa”', S.wallArt === 'painting' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
+    ['alley', 'Tranh “Hẻm Hoa Giấy”', S.wallArt === 'alley' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
+    ['k_marble', 'Viên bi ve đại dương', 'Chạm để nghe sóng biển'],
+    ['na_cat', 'Tranh bút sáp: Bánh Quy', 'Của bé Na'], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', 'Của bé Na'],
+    ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', 'Của bé Na']]
+    .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
+      `<div class="keep" data-item="${k}"><span><img src="${ITEM_IMG[k]}" alt="">${name}<span class="hint">${hint}</span></span></div>`);
+  const rows = story.concat([['leaf', 'Lá phong khô (Sóc tặng)', '🍂']].concat(Object.entries(PLANTS).map(([k, P]) => [k, P.gift, P.icon]))
+    .filter(([k]) => S.keep[k]).map(([k, name, icon]) => {
+      const pic = KEEP_ICON[k] ? `<img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">` : icon + ' ';
+      return `<div class="keep"><span>${pic}${name}</span><b>× ${S.keep[k]}</b></div>`;
+    }));
+  const chimes = '<div class="chimes">' + Object.entries(CHIMES).map(([k, c]) =>
+    `<button class="chime-pick${S.chimeType === k ? ' on' : ''}" data-item="${k}" aria-label="${c.name}"><img src="${c.src}" alt=""></button>`).join('') +
+    '</div><small style="margin:.2em 0 .8em">Chạm để đổi chuông gió bên cửa sổ</small>';
+  openPanel(`<h3>Hộp kỷ vật</h3>${chimes}${rows.length ? rows.join('') : '<p style="text-align:center">Hộp còn trống. Hãy chăm cây và chờ các vị khách nhỏ nhé.</p>'}
+    <small>Chạm ra ngoài để đóng</small>`);
+}
+const _showNote = showNote;
+showNote = function () { $('#note').classList.remove('letter', 'panel'); $('#note-wrap').dataset.modal = ''; _showNote(); };
+$('#note-wrap').addEventListener('click', () => { if ($('#note-wrap').dataset.modal) return; closeNote(); });
+
+// ---------------------------------------------------------------- chime physics
+const chime = { a: 0, v: 0, el: $('#p-chime'), lastRing: 0 };
+function pushChime(force) {
+  chime.v += force;
+  const now = performance.now();
+  if (now - chime.lastRing > 250) { chime.lastRing = now; SFX.chime(Math.min(1, Math.abs(force) / 160)); }
+}
+function stepChime(dt) {
+  let wind = 0;
+  if (S.weather === 'rain') wind = (Math.sin(perfT * 0.0007) + Math.sin(perfT * 0.0013 + 1)) * 6;
+  else if (S.weather === 'sunset') wind = Math.sin(perfT * 0.0005) * 3;
+  const k = 22, c = 1.6;
+  chime.v += (-k * (chime.a - wind * 0.15) - c * chime.v) * dt;
+  chime.a += chime.v * dt;
+  chime.el.style.transform = `rotate(${chime.a.toFixed(2)}deg)`;
+  // a gust now and then rings the chime by itself
+  if (S.weather !== 'night' && Math.random() < dt * 0.012) pushChime((Math.random() < 0.5 ? -1 : 1) * (40 + Math.random() * 40));
+}
+
+// ---------------------------------------------------------------- particles
+const P = [];   // fx particles in scene units
+const rnd = (a, b) => a + Math.random() * (b - a);
+function spawn(p) { if (!reduceMotion || p.keep) P.push(p); }
+const FLAME = [601, 1036];   // tip of the flame of Vi's candle
+function fxSpawnNote() {
+  spawn({ kind: 'note', x: rnd(250, 360), y: 945, vx: rnd(-8, 8), vy: rnd(-30, -22), life: 3.2, t: 0,
+    ch: Math.random() < 0.5 ? '♪' : '♫', size: rnd(18, 26) });
+}
+function hearts() {
+  for (let i = 0; i < 3; i++) spawn({ kind: 'heart', x: catPose === 'sit' ? rnd(430, 500) : rnd(440, 540), y: catPose === 'sit' ? rnd(690, 712) : rnd(770, 795), vx: rnd(-10, 10),
+    vy: rnd(-34, -24), life: 2.2, t: -i * 0.25, size: rnd(14, 20) });
+}
+function waterDrops() {
+  const b = HITS.plant.box;
+  for (let i = 0; i < 14; i++) spawn({ kind: 'drop', x: rnd(145, 215), y: b[1] - rnd(10, 30), vx: 0, vy: rnd(120, 180),
+    life: 1.4, t: -i * 0.05, floor: rnd(800, 815) });
+}
+const fireflies = [];
+function releaseFireflies() {
+  for (let i = 0; i < 7; i++) fireflies.push({ x: 609 + rnd(-10, 10), y: 845 + rnd(-15, 15), vx: rnd(-25, 25), vy: rnd(-40, -15),
+    t: 0, life: rnd(4, 6), phase: rnd(0, 6) });
+}
+let zzzT = 0;
+const SEEDS = [[278, 883, .3], [288, 886, -.5], [298, 882, 1.2], [304, 886, .1], [284, 880, 2], [294, 887, .8], [272, 886, -1]];
+function stepFx(dt) {
+  const ctx = fxCtx; ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
+  // milk in the plate
+  if (S.food === 'seeds') {
+    for (const [x, y, r] of SEEDS) {
+      ctx.save(); ctx.translate(x, y); ctx.rotate(r);
+      ctx.fillStyle = '#3d3029'; ctx.beginPath(); ctx.ellipse(0, 0, 4.4, 2.2, 0, 0, 7); ctx.fill();
+      ctx.strokeStyle = 'rgba(235,225,205,.8)'; ctx.lineWidth = 0.7; ctx.beginPath(); ctx.moveTo(-3, 0); ctx.lineTo(3, 0); ctx.stroke();
+      ctx.restore();
+    }
+  }
+  if (S.leaf) { ctx.font = '19px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🍂', 318, 893); }
+  if (S.tea && !reduceMotion && Math.random() < dt * 5)
+    spawn({ kind: 'smoke', x: rnd(455, 485), y: 1046, vx: rnd(-2, 2), vy: rnd(-22, -15), life: rnd(2, 3), t: 0, ph: rnd(0, 6) });
+  // candle flame: a soft flickering halo
+  if (S.incense) glowDot(ctx, FLAME[0], FLAME[1], 0.32 + 0.1 * Math.sin(perfT * 0.013) + 0.06 * Math.sin(perfT * 0.031), 2.4);
+  // zzz of the sleeping cat
+  zzzT += dt;
+  if (catPose !== 'sleep') zzzT = 0;
+  if (zzzT > 4.5) { zzzT = 0; spawn({ kind: 'zzz', x: 520, y: 770, vx: -6, vy: -14, life: 3, t: 0, size: rnd(13, 17) }); }
+  for (let i = P.length - 1; i >= 0; i--) {
+    const p = P[i]; p.t += dt; if (p.t < 0) continue;
+    if (p.t > p.life) { P.splice(i, 1); continue; }
+    const k = p.t / p.life;
+    if (p.kind === 'smoke') {
+      p.x += (p.vx + Math.sin(p.t * 1.6 + p.ph) * 7) * dt; p.y += p.vy * dt;
+      const r = 3 + k * 16; const a = 0.20 * (1 - k) * Math.min(1, p.t * 3);
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+      g.addColorStop(0, `rgba(250,248,245,${a})`); g.addColorStop(1, 'rgba(250,248,245,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 7); ctx.fill();
+    } else if (p.kind === 'drop') {
+      p.y += p.vy * dt; if (p.y > p.floor) { p.t = p.life + 1; continue; }
+      ctx.fillStyle = 'rgba(140,190,240,.85)'; ctx.beginPath(); ctx.ellipse(p.x, p.y, 2.2, 3.6, 0, 0, 7); ctx.fill();
+    } else {
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      const a = Math.min(1, p.t * 4) * (1 - k);
+      ctx.globalAlpha = a; ctx.textAlign = 'center';
+      if (p.kind === 'heart') { ctx.fillStyle = '#ff8fa3'; ctx.font = `${p.size}px sans-serif`; ctx.fillText('♥', p.x, p.y); }
+      else if (p.kind === 'note') { ctx.fillStyle = '#fff3d6'; ctx.font = `${p.size}px serif`;
+        ctx.shadowColor = 'rgba(255,220,150,.9)'; ctx.shadowBlur = 8; ctx.fillText(p.ch, p.x + Math.sin(p.t * 3) * 6, p.y); ctx.shadowBlur = 0; }
+      else if (p.kind === 'zzz') { ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.font = `600 ${p.size}px Quicksand, sans-serif`;
+        ctx.fillText('z', p.x + Math.sin(p.t * 2) * 4, p.y); }
+      ctx.globalAlpha = 1;
+    }
+  }
+  // fireflies let out of the jar
+  for (let i = fireflies.length - 1; i >= 0; i--) {
+    const f = fireflies[i]; f.t += dt;
+    if (f.t > f.life) { fireflies.splice(i, 1); continue; }
+    const back = f.t > f.life - 1.4;
+    if (back) { f.vx += (609 - f.x) * dt * 3; f.vy += (850 - f.y) * dt * 3; f.vx *= 0.94; f.vy *= 0.94; }
+    else { f.vx += rnd(-60, 60) * dt; f.vy += rnd(-60, 60) * dt; }
+    f.x += f.vx * dt; f.y += f.vy * dt;
+    glowDot(ctx, f.x, f.y, 0.55 + 0.45 * Math.sin(f.t * 6 + f.phase), 1);
+  }
+  // the jar glows softly
+  const jg = (S.weather === 'sunset' ? 0.25 : 0.55) * (0.75 + 0.25 * Math.sin(perfT * 0.002));
+  const g = ctx.createRadialGradient(609, 855, 2, 609, 855, 46);
+  g.addColorStop(0, `rgba(255,236,140,${jg * 0.6})`); g.addColorStop(1, 'rgba(255,236,140,0)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(609, 855, 46, 0, 7); ctx.fill();
+}
+function glowDot(ctx, x, y, a, size) {
+  const r = 9 * size; const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, `rgba(255,250,190,${a})`); g.addColorStop(0.25, `rgba(255,232,120,${a * 0.6})`);
+  g.addColorStop(1, 'rgba(255,220,100,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+}
+
+// ---------------------------------------------------------------- sky effects (masked to the window)
+const sky = { rain: [], stars: [], birds: [], flies: [], level: { rain: 0, night: 0, sunset: 0 }, wind: 0, shoot: null };
+for (let i = 0; i < 170; i++) sky.rain.push({ x: rnd(80, 680), y: rnd(150, 920), l: rnd(14, 28), v: rnd(620, 900), a: rnd(0.18, 0.42) });
+// star positions are picked at build time inside the open sky of the view (not on the roofs)
+for (const [x, y] of {{STAR_PTS}}) sky.stars.push({ x, y, r: rnd(0.5, 1.6), p: rnd(0, 6), s: rnd(0.6, 2) });
+for (let i = 0; i < 9; i++) sky.flies.push({ x: rnd(140, 620), y: rnd(560, 860), vx: rnd(-10, 10), vy: rnd(-10, 10), p: rnd(0, 6) });
+let birdT = 6;
+function stepSky(dt) {
+  const ctx = skyCtx; ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
+  for (const k of ['rain', 'night', 'sunset']) {
+    const target = S.weather === k ? 1 : 0; sky.level[k] += (target - sky.level[k]) * Math.min(1, dt * 1.2);
+  }
+  const L = sky.level;
+  if (L.rain > 0.01) {
+    ctx.strokeStyle = 'rgba(215,228,255,1)'; ctx.lineWidth = 1.1; ctx.lineCap = 'round';
+    const slant = 0.12;
+    for (const d of sky.rain) {
+      d.y += d.v * dt; d.x += d.v * slant * dt;
+      if (d.y > 920) { d.y = rnd(120, 180); d.x = rnd(40, 680); }
+      ctx.globalAlpha = d.a * L.rain; ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.l * slant, d.y - d.l); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    if (Math.random() < dt * 6 * L.rain) SFX.drip();
+  }
+  if (L.night > 0.01) {
+    for (const s of sky.stars) {
+      const a = (0.45 + 0.55 * Math.sin(perfT * 0.001 * s.s + s.p)) * L.night;
+      ctx.fillStyle = `rgba(255,250,225,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill();
+    }
+    // crescent moon with a soft halo
+    ctx.globalAlpha = L.night; glowDot(ctx, 548, 238, 0.55, 3.2);
+    ctx.fillStyle = 'rgba(255,240,190,1)'; ctx.beginPath(); ctx.arc(548, 238, 17, 0, 7); ctx.fill();
+    ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(557, 231, 15, 0, 7); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    if (!sky.shoot && Math.random() < dt / 22) sky.shoot = { x: rnd(250, 600), y: rnd(190, 300), t: 0 };
+    if (sky.shoot) {
+      const s = sky.shoot; s.t += dt; const k = s.t / 0.9;
+      if (k > 1) sky.shoot = null; else {
+        const x = s.x - k * 170, y = s.y + k * 70; const g = ctx.createLinearGradient(x, y, x + 60, y - 25);
+        g.addColorStop(0, `rgba(255,255,240,${(1 - k) * L.night})`); g.addColorStop(1, 'rgba(255,255,240,0)');
+        ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 60, y - 25); ctx.stroke();
+      }
+    }
+    for (const f of sky.flies) {
+      f.vx += rnd(-20, 20) * dt; f.vy += rnd(-20, 20) * dt; f.vx *= 0.98; f.vy *= 0.98;
+      f.x += f.vx * dt; f.y += f.vy * dt;
+      if (f.x < 120 || f.x > 640) f.vx *= -1; if (f.y < 540 || f.y > 880) f.vy *= -1;
+      glowDot(ctx, f.x, f.y, (0.35 + 0.45 * Math.sin(perfT * 0.003 + f.p)) * L.night, 0.8);
+    }
+    if (Math.random() < dt * 0.9 * L.night) SFX.cricket(Math.random() < 0.5 ? -0.5 : 0.6);
+  }
+  if (L.sunset > 0.01) {
+    birdT -= dt;
+    if (birdT < 0) {
+      birdT = rnd(12, 22); const y = rnd(220, 380), n = 2 + Math.floor(Math.random() * 3), dir = Math.random() < 0.5 ? 1 : -1;
+      for (let i = 0; i < n; i++) sky.birds.push({ x: dir > 0 ? 60 - i * 26 : 680 + i * 26, y: y + rnd(-14, 14), v: dir * rnd(55, 70), p: rnd(0, 6) });
+      setTimeout(() => S.weather === 'sunset' && SFX.bird(), 600);
+    }
+    ctx.strokeStyle = `rgba(90,50,45,${0.7 * L.sunset})`; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+    for (let i = sky.birds.length - 1; i >= 0; i--) {
+      const b = sky.birds[i]; b.x += b.v * dt; const w = 6 + Math.sin(perfT * 0.012 + b.p) * 3;
+      if (b.x < -40 || b.x > 760) { sky.birds.splice(i, 1); continue; }
+      ctx.beginPath(); ctx.moveTo(b.x - 8, b.y - w * 0.6); ctx.quadraticCurveTo(b.x - 3, b.y - 1, b.x, b.y);
+      ctx.quadraticCurveTo(b.x + 3, b.y - 1, b.x + 8, b.y - w * 0.6); ctx.stroke();
+    }
+    const g = ctx.createRadialGradient(330, 640, 10, 330, 640, 330);
+    g.addColorStop(0, `rgba(255,230,170,${0.35 * L.sunset})`); g.addColorStop(1, 'rgba(255,200,140,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 150, SW, 780);
+  }
+}
+
+// ---------------------------------------------------------------- interactions
+function act(id) {
+  const h = HITS[id];
+  switch (id) {
+    case 'sunset': case 'rain': case 'night': setWeather(id); SFX.click(); break;
+    case 'chime': pushChime((Math.random() < 0.5 ? -1 : 1) * rnd(120, 170)); if (Math.random() < 0.5) catAct('play', 3.5); break;
+    case 'plant': tapPlant(); break;
+    case 'plate':
+      if (S.leaf) { S.leaf = false; S.keep.leaf = (S.keep.leaf || 0) + 1; save(); SFX.paper(); toast('Cất chiếc lá phong khô vào hộp kỷ vật 🍂'); break; }
+      if (S.food) { S.food = null; save(); applyFood(); SFX.click(); break; }
+      if (S.weather === 'sunset') { S.food = 'seeds'; toast('Rắc ít hạt hướng dương lên đĩa 🌻'); }
+      else { S.food = 'milk'; toast('Đặt sữa và bánh quy cho Bánh Quy 🍪'); setTimeout(() => {
+        if (S.food !== 'milk') return;
+        catAct('eat', 9); SFX.purr();
+        setTimeout(() => {   // the plate is empty after the meal
+          if (S.food === 'milk') { S.food = null; S.meals++; save(); applyFood(); applyNaNote(); }
+          catSit(5); hearts(); toast('Bánh Quy ăn sạch bánh quy rồi, no căng bụng 😽', 2600);
+        }, 9000);
+      }, 1200); }
+      save(); applyFood(); SFX.click(); break;
+    case 'cat': hearts(); SFX.purr(); zzzT = -3; catSit(7); petCat(); break;
+    case 'nanote': { const i = naChapter(); if (i !== null) showNaNote(i); break; }
+    case 'jar': releaseFireflies(); SFX.sparkle(); setTimeout(() => catAct('play', 5), 500); break;
+    case 'lamp': S.lamp = !S.lamp; save(); SFX.click(); bump($('#p-lamp')); applyLook(); break;
+    case 'radio': bump($('#p-radio')); setRadio(!S.radio); toast(S.radio ? 'Đài đêm khuya 94.2 FM 📻' : 'Tắt radio'); break;
+    case 'incense': S.incense = !S.incense; save(); applyCandle(); if (S.incense) SFX.match(); else SFX.click(); break;
+    case 'book': showNote(); break;
+    case 'tea':
+      if (S.tea) { toast('Tách trà vẫn còn ấm trên bàn, chạm vào để nhấp một ngụm nhé 🍵', 2800); SFX.click(); break; }
+      S.tea = true; save(); applyTea(); SFX.water(); toast('Pha một tách trà hoa cúc 🍵', 2400);
+      setTimeout(() => { SFX.purr(); zzzT = -2; catSit(6); }, 1800); break;
+    case 'cup': drinkTea(); break;
+    case 'plane': readPlane(); break;
+    case 'gift': openKeepsakes(); SFX.paper(); break;
+    case 'frog': visitorAct('frog'); toast('Ếch Cốm núp mưa bên chậu cây 🐸'); break;
+    case 'owl': visitorAct('owl'); toast('Cú Mèo thức gác đêm cho bạn ngủ 🦉'); break;
+    case 'squirrel': visitorAct('squirrel'); toast('Sóc nhỏ phồng má cảm ơn bạn 🐿️'); break;
+    case 'sparrow': SFX.chirp(); showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
+  }
+}
+for (const [id, h] of Object.entries(HITS)) h.el.addEventListener('click', e => { e.stopPropagation(); act(id); });
+for (const n of Object.keys(VIS)) VIS[n].hit.addEventListener('click', e => { e.stopPropagation(); act(n); });
+
+// ---------------------------------------------------------------- visitors (doc: "Những vị khách theo thời tiết")
+let started = false, sparrowOn = false, sparrowTimer = null;
+const due = {};
+const DELAY = { frog: () => rnd(5000, 10000), owl: () => rnd(3000, 6000), squirrel: () => 2200, sparrow: () => 0, plane: () => rnd(8000, 15000) };
+function scheduleSparrow(first) {
+  clearTimeout(sparrowTimer);
+  sparrowTimer = setTimeout(() => { sparrowOn = true; }, first ? 15000 : rnd(70000, 130000));
+}
+function want(n) {
+  switch (n) {
+    case 'frog': return S.weather === 'rain';
+    case 'owl': return S.weather === 'night' && !S.lamp;
+    case 'squirrel': return S.weather === 'sunset' && (S.food === 'seeds' || perfT < VIS.squirrel.stayUntil);
+    case 'sparrow': return S.weather !== 'night' && sparrowOn;
+    case 'plane': return VIS.plane.here || planeReady();
+  }
+}
+const IDLE = {
+  frog: () => { SFX.croak(); bump(VIS.frog.el, 'hop'); },
+  owl: () => { SFX.hoot(); bump(VIS.owl.el, 'tilt'); },
+  squirrel: () => { SFX.chitter(); bump(VIS.squirrel.el, 'hop'); },
+  sparrow: () => { SFX.chirp(); bump(VIS.sparrow.el, 'hop'); },
+  plane: () => {},
+};
+function visitorAct(n) { IDLE[n](); VIS[n].next = perfT + rnd(12000, 25000); }
+function arrive(n) {
+  const v = VIS[n]; v.here = true; v.el.classList.remove('away'); v.el.classList.add('here');
+  v.hit.style.display = ''; v.next = perfT + rnd(2500, 6000);
+  if (n === 'sparrow') {
+    SFX.flutter(); setTimeout(() => SFX.chirp(), 600);
+    setTimeout(() => { if (v.here) { sparrowOn = false; leave('sparrow', true); scheduleSparrow(); } }, 50000);
+  }
+  if (n === 'owl') SFX.flutter();
+  if (n === 'plane') {
+    v.next = Infinity;
+    if (AC) noiseBurst(AC.currentTime, 2.2, 500, 1600, 0.6, 0.12, master, 'pink');
+    if (!reduceMotion) v.el.animate([
+      { translate: '-430px -620px', rotate: '-25deg', opacity: 0 }, { opacity: 1, offset: 0.15 },
+      { translate: '-160px -260px', rotate: '8deg', offset: 0.6 }, { translate: '0 0', rotate: '0deg', opacity: 1 }],
+      { duration: 2600, easing: 'ease-out' });
+    setTimeout(() => toast('Một chiếc máy bay giấy vừa đáp xuống bệ cửa ✈️', 2800), 2400);
+  }
+  if (n === 'squirrel') {
+    v.stayUntil = perfT + 60000; setTimeout(() => SFX.chitter(), 500);
+    setTimeout(() => {
+      if (!v.here || S.food !== 'seeds') return;
+      S.food = null; S.leaf = true; save(); applyFood(); bump(v.el, 'hop'); SFX.chitter();
+      toast('Sóc giấu hạt vào má, để lại một chiếc lá khô 🍂', 2800);
+    }, 3500);
+  }
+}
+function leave(n, fly) {
+  const v = VIS[n]; if (!v.here) return;
+  v.here = false; v.hit.style.display = 'none'; v.el.classList.remove('here');
+  if (fly) { v.el.classList.add('away'); if (n !== 'squirrel') SFX.flutter(); setTimeout(() => v.el.classList.remove('away'), 1400); }
+}
+function visitorTick() {
+  updateCat();
+  if (!started) return;
+  for (const n of Object.keys(VIS)) {
+    const v = VIS[n], w = want(n);
+    if (w && !v.here) { if (!due[n]) due[n] = perfT + DELAY[n](); else if (perfT > due[n]) { due[n] = 0; arrive(n); } }
+    if (!w) { due[n] = 0; if (v.here) leave(n, n !== 'frog'); }
+    if (v.here && perfT > v.next) visitorAct(n);
+  }
+}
+
+// swipe across the chime rings it in the swipe direction
+let swipe = null;
+stage.addEventListener('pointerdown', e => { swipe = { x: e.clientX, y: e.clientY, t: performance.now() }; });
+stage.addEventListener('pointermove', e => {
+  if (!swipe) return;
+  const r = stage.getBoundingClientRect(); const sx = (e.clientX - r.left) / scale, sy = (e.clientY - r.top) / scale;
+  const b = HITS.chime.box;
+  if (sx > b[0] && sx < b[0] + b[2] && sy > b[1] && sy < b[1] + b[3]) {
+    const dx = e.clientX - swipe.x;
+    if (Math.abs(dx) > 18) { pushChime(Math.sign(dx) * 150); swipe = null; }
+  }
+});
+addEventListener('pointerup', () => { swipe = null; });
+
+$('#mute').addEventListener('click', e => {
+  e.stopPropagation(); S.muted = !S.muted; save();
+  applyMute();
+  if (AC) master.gain.setTargetAtTime(S.muted ? 0 : 0.42, AC.currentTime, 0.2);
+});
+function applyMute() { $('#mute').style.backgroundImage = `url(${S.muted ? '{{PROP_snd_off}}' : '{{PROP_snd_on}}'})`; }
+applyMute();
+
+$('#intro').addEventListener('click', () => {
+  initAudio(); if (AC.state === 'suspended') AC.resume();
+  SFX.creak(); setTimeout(() => SFX.chime(0.6), 700);
+  pushChime(110);
+  $('#intro').classList.add('gone'); started = true; scheduleSparrow(true);
+  setTimeout(() => toast('Chạm vào đồ vật để tương tác ✨', 3200), 1600);
+});
+document.addEventListener('visibilitychange', () => {
+  if (!AC) return;
+  if (document.hidden) AC.suspend(); else AC.resume();
+});
+
+// ---------------------------------------------------------------- main loop
+let last = performance.now(), perfT = 0;
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); last = now; perfT = now;
+  stepChime(dt); stepSky(dt); stepFx(dt); visitorTick();
+  requestAnimationFrame(frame);
+}
+addEventListener('resize', resize);
+resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyNaNote(); applyCandle(); applyChime(); setInterval(growthCheck, 2000);
+setInterval(() => {
+  applyNaNote(); if (started && !$('#note-wrap').classList.contains('show')) finaleCheck();
+  if (S.story.na === 3 && !S.story.naWarm && S.weather === 'rain' && started && !naWetShown) {
+    naWetShown = true; catSit(4); toast('Bánh Quy chạy về ướt nhẹp, run rẩy… chạm vào mèo để lau khô 🌧️', 3600);
+  }
+}, 1500);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# debug crops and backups
+work/*.png
+work/*.jpg
+work/*.before*
+work/out/
+__pycache__/
