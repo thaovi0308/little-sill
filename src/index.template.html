@@ -98,8 +98,8 @@
     background: radial-gradient(circle at 30% 30%, #ffd3e2, #f39ab8 70%); opacity: .85; animation: petal linear forwards; }
   @keyframes petal { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 10% { opacity: .9; }
     50% { transform: translate(var(--sway), 55vh) rotate(200deg); } 100% { transform: translate(calc(var(--sway) * -.5), 110vh) rotate(420deg); opacity: .7; } }
-  #dj { position: absolute; z-index: 18; left: 4%; right: 4%; bottom: 19%; pointer-events: none; opacity: 0; transition: opacity .8s;
-    background: rgba(25,20,30,.55); color: #f6ead8; border-radius: 14px; padding: .5em .8em; font: 500 clamp(12px, 1.75vh, 15px)/1.45 'Quicksand', sans-serif; backdrop-filter: blur(3px); }
+  #dj { position: absolute; z-index: 18; left: 4%; right: 4%; top: calc(env(safe-area-inset-top, 0px) + 10.5%); pointer-events: none; opacity: 0; transition: opacity .8s;
+    background: rgba(25,20,30,.62); color: #f6ead8; border-radius: 14px; padding: .5em .8em; font: 500 clamp(12px, 1.75vh, 15px)/1.45 'Quicksand', sans-serif; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
   #dj { display: flex; gap: .7em; align-items: center; } #dj img { width: 4.2em; height: 4.2em; object-fit: cover; border-radius: 10px; flex: none; }
   #dj small { display: block; font-size: .78em; opacity: .65; letter-spacing: .05em; }
   #dj.show { opacity: 1; }
@@ -859,6 +859,7 @@ function djNext(first) {
     let line;
     if (first) line = DJ.hi[Math.floor(Math.random() * DJ.hi.length)];
     else if (late && DJ.said && Math.random() < 0.3) line = DJ.bye[Math.floor(Math.random() * DJ.bye.length)];
+    else if (floNeedsSprig() && Math.random() < 0.5) { line = FLO_HINT.replace('Bản tin chiều', 'Bản tin tối'); floHinted = Date.now(); }   // keep the florist clue in the night rotation while she waits
     else { if (!DJ.left.length) DJ.left = DJ.talk.map((_, k) => k).sort(() => Math.random() - 0.5); line = DJ.talk[DJ.left.pop()]; }
     DJ.said = true; djSay(line);
     if (!DJ.bye.includes(line)) djNext(false);
@@ -1498,9 +1499,10 @@ function floChapter() {
 }
 function floNeedsSprig() { return floWaiting() && !(S.keep.lavender > 0 || S.keep.pothos > 0); }
 let floHinted = 0;
+const FLO_HINT = 'Bản tin chiều tại Hẻm Hoa Giấy: Nghe nói cô bán hoa đầu hẻm dạo này đang tìm một nhành oải hương hoặc trầu bà tươi tắn để lấy lại cảm hứng chăm vườn. Ai có trồng trên bệ cửa thì chia sẻ với cô nhé!';
 function floHint() {
   if (!floNeedsSprig() || Date.now() - floHinted < 10 * 60000) return;
-  floHinted = Date.now(); setTimeout(() => djSay('Bản tin chiều tại Hẻm Hoa Giấy: Nghe nói cô bán hoa đầu hẻm dạo này đang tìm một nhành oải hương hoặc trầu bà tươi tắn để lấy lại cảm hứng chăm vườn. Ai có trồng trên bệ cửa thì chia sẻ với cô nhé!'), 2600);
+  floHinted = Date.now(); setTimeout(() => djSay(FLO_HINT), 2600);
 }
 function floWaiting() { const st = S.story; return st.flower === 1 && !st.flowerSent; }
 let floRang = -1;
