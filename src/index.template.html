@@ -237,6 +237,8 @@
   <div id="candle-t"></div>
   <img id="p-seeds" class="prop" src="{{PROP_seeds_plate}}" alt="" style="opacity:0;transition:opacity .6s">
   <img id="p-shelf" class="prop" src="{{PROP_shelf}}" alt="">
+  <img id="p-mooncake" class="prop" alt="" style="display:none">
+  <img id="p-rabbit" class="prop" alt="" style="display:none">
   <img id="p-lantern" class="prop" src="{{PROP_lantern_off}}" alt="">
   <img id="p-cat" class="prop" src="{{PROP_cat_sleep}}" alt="">
   <img id="p-towel" class="prop" src="{{PROP_towel}}" alt="" style="opacity:0">
@@ -333,7 +335,7 @@ if (S.garden === undefined) S.garden = { type: 'daisy', stage: 0, planted: Date.
 const ITEM_IMG = {{ITEM_IMG}};
 document.querySelector('#dj img').src = ITEM_IMG.dj;
 ITEM_IMG.k_sunseed = '{{PROP_seeds_plate}}';   // until Vi draws the seed bag
-ITEM_IMG.k_can = ITEM_IMG.can; ITEM_IMG.k_flowerchime = ITEM_IMG.chime_flower;
+ITEM_IMG.k_can = ITEM_IMG.can; ITEM_IMG.k_ttlantern = '{{PROP_lantern_on}}'; ITEM_IMG.k_flowerchime = ITEM_IMG.chime_flower;
 $('#p-bag img').src = ITEM_IMG.bag;
 S.story = Object.assign({ old: 0, oldAt: 0, fixed: false, plane: 0, planeAt: 0, na: 0, naAt: 0, naSent: 0, naWarm: 0 }, S.story || {});
 S.meals = S.meals || 0;
@@ -403,6 +405,7 @@ const HITS = {
   tea:    { box: [275, 1185, 163, 76], label: 'Pha trà' },
   gift:   { box: [466, 1185, 164, 76], label: 'Hộp kỷ vật' },
   cup:    { box: [418, 1040, 104, 82], label: 'Nhấp một ngụm trà' },
+  rabbit: { box: [246, 800, 96, 120], label: 'Chú thỏ trắng' },
 };
 const hitsEl = $('#hits');
 for (const [id, h] of Object.entries(HITS)) {
@@ -822,6 +825,8 @@ function djNext(first) {
   }, first ? 1800 : rnd(75000, 120000));
 }
 function setRadio(on) {
+  if (on && !S.radioOnce) { S.radioOnce = 1; if (S.story.old === 0) setTimeout(() => { sparrowOn = true; }, 4000); }
+  if (on) floHint();
   S.radio = on; if (on && S.garden && S.garden.stage < 2) { S.garden.music = 1; setTimeout(growthCheck, 1500); } save();
   if (on && S.weather === 'night') djNext(true); else if (!on) djStop();
   $('#p-radio').classList.toggle('on', on);
@@ -866,6 +871,7 @@ function setWeather(w) {
   if (w === S.weather) return;
   S.weather = w; if (w === 'rain' && S.garden) S.garden.rain = 1; save(); applyLook(); setAmbience(w); setTimeout(growthCheck, 1500);
   if (S.radio && w === 'night') djNext(true); else if (w !== 'night') djStop();
+  if (typeof applyTT === 'function') setTimeout(applyTT, 600);
   sky.wind = 0; toast({ rain: 'Mưa rào', sunset: 'Nắng chiều', night: 'Đêm đầy sao' }[w]);
 }
 
@@ -920,7 +926,7 @@ let showNote = function () {
        <span class="moods">${MOODS.map(m => `<button data-mood="${m}">${m.split(' ')[0]}</button>`).join('')}</span>
        <button id="nb-save">Cất trang này</button>`;
   const old = Object.keys(S.diary).length - (done ? 1 : 0);
-  $('#note').innerHTML = `<div class="nb"><img src="{{PROP_notebook}}" alt=""><div class="l">${left}</div><p class="r">“${NOTES[S.noteIndex]}”${old > 0 ? '<button id="nb-old">Trang cũ ›</button>' : ''}</p></div>`;
+  $('#note').innerHTML = `<div class="nb"><img src="{{PROP_notebook}}" alt=""><div class="l">${left}</div><p class="r">“${NOTES[S.noteIndex]}”${old > 0 || S.selfLetter ? '<button id="nb-old">Trang cũ ›</button>' : ''}</p></div>`;
   $('#note .l').addEventListener('click', e => e.stopPropagation());
   const ob = $('#nb-old'); if (ob) ob.addEventListener('click', e => { e.stopPropagation(); openDiary(); SFX.paper(); });
   if (!done) {
@@ -937,11 +943,42 @@ let showNote = function () {
   }
   $('#note-wrap').classList.add('show'); SFX.paper();
 }
+// Vi 26/11: after the alley painting, the notebook opens a letter to yourself built from your own diary answers (poetic fallbacks if you skipped writing)
+const SELF_PICK = {
+  sky: [[0, 0], [0, 2], [0, 1], [3, 0]],
+  worry: [[2, 0], [2, 1], [2, 4]],
+  joy: [[1, 0], [1, 2], [1, 4], [1, 1]],
+};
+const SELF_DEFAULT = { sky: 'những tia nắng chiều dịu nhẹ', worry: 'những suy nghĩ vội vã', joy: 'một tách trà ấm và bản nhạc quen' };
+function selfPick(kind) {
+  const qs = SELF_PICK[kind].map(([t, q]) => Q_THEMES[t][1][q]), rows = Object.keys(S.diary || {}).sort().reverse().map(k => S.diary[k]);
+  for (const q of qs) {
+    const d = rows.find(r => r.q === q && r.a && r.a.trim().length >= 2);
+    if (d) { let a = d.a.trim().replace(/[.!?…。]+$/, ''); a = a.charAt(0).toLowerCase() + a.slice(1); if (a.length > 90) a = a.slice(0, 90).replace(/\s+\S*$/, '') + '…'; return `<b class="kw">${esc(a)}</b>`; }
+  }
+  return SELF_DEFAULT[kind];
+}
+function selfLetterHtml() {
+  return `<h3 style="margin-top:0">Gửi chính mình của những ngày đã qua</h3><div style="text-align:left">
+    <p><i>Gửi tôi của ngày hôm nay,</i></p>
+    <p>Vậy là cũng đã qua một quãng thời gian kể từ ngày đầu tiên dọn lên căn gác nhỏ nhìn ra con hẻm hoa giấy này. Tôi vẫn nhớ có những ngày bầu trời ngoài kia mang màu ${selfPick('sky')}, hay những lúc đầu óc hơi chật chội vì ${selfPick('worry')}.</p>
+    <p>Nhưng rồi, từng chút một, tôi đã học cách chậm lại: tưới một chậu cây, pha một tách trà, và lắng nghe những câu chuyện dịu dàng quanh hiên nhà. Hóa ra, niềm vui đôi khi chỉ giản đơn là ${selfPick('joy')}.</p>
+    <p>Cảm ơn tôi vì đã kiên nhẫn ở lại, đã thắp sáng khung cửa sổ này, và đã tự vỗ về chính mình thật tốt. Dù ngày mai ngoài kia có bận rộn thế nào, hãy luôn nhớ rằng bên trong tôi vẫn có một góc gác nhỏ bình yên như thế này để trở về.</p>
+    <p style="text-align:right"><i>Ký tên: Người bạn ở căn gác nhỏ</i></p></div>`;
+}
+function selfLetter(first, then) {
+  if (first) { S.selfLetter = 1; save(); }
+  showPaper(selfLetterHtml() + '<small>Lá thư được cất trong sổ tay · Chạm ra ngoài để đóng</small>', then); SFX.paper();
+}
 function openDiary() {
   const keys = Object.keys(S.diary || {}).sort().reverse();
   openPanel(`<h3>Sổ tay của bạn</h3>` + keys.map(k => { const d = S.diary[k], [y, m, dd] = k.split('-');
     return `<div class="dpage"><small>${dd}/${m}/${y} · ${d.theme}</small><p class="q">${d.q}</p><p class="ans">${esc(d.a)}</p>${stampHtml(d.s)}</div>`; }).join('') +
     '<small>Chạm ra ngoài để đóng</small>');
+  if (S.selfLetter) {   // the letter to yourself sits on the first page
+    const b = document.createElement('button'); b.className = 'reply'; b.textContent = '✉️ Gửi chính mình của những ngày đã qua';
+    b.addEventListener('click', e => { e.stopPropagation(); selfLetter(false); }); const h = $('#note h3'); if (h) h.after(b);
+  }
 }
 let onNoteClose = null;
 function showPaper(html, onClose, modal) {
@@ -1013,7 +1050,7 @@ function closeNote() {
 }
 function nextOldLetter() {
   const st = S.story;
-  if (st.old === 0) return 0;
+  if (st.old === 0) return S.radioOnce ? 0 : null;   // the sparrow brings the first letter after the radio is first switched on
   if (st.old === 1 && st.fixed) return 1;
   if (st.old === 2 && Date.now() - st.oldAt >= 2 * HOUR) return 2;
   return null;
@@ -1054,8 +1091,8 @@ function showLetter() {
 function planeReady() {
   const st = S.story, P = S.garden, now = Date.now();
   switch (st.plane) {
-    case 0: return S.weather === 'rain';
-    case 1: return S.weather !== 'night' && (S.lantern || (!!P && P.stage === 2 && (P.type === 'daisy' || P.type === 'lavender')));
+    case 0: return !!S.litOnce;   // day one: lighting the candle or the lantern yourself brings the first plane
+    case 1: return S.weather !== 'night' && now - st.planeAt >= 24 * HOUR && (S.lantern || (!!P && P.stage === 2 && (P.type === 'daisy' || P.type === 'lavender')));
     case 2: return S.weather !== 'night' && now - st.planeAt >= 1 * HOUR;
     case 3: return S.weather !== 'night' && now - st.planeAt >= 48 * HOUR;
     case 4: return S.weather !== 'night' && now - st.planeAt >= 24 * HOUR;
@@ -1178,11 +1215,11 @@ function finaleLetter() {
     ${sign('Cậu họa sĩ tầng trên', 'Cảm ơn góc cửa bình yên của bạn đã cho mình tìm lại niềm vui bên cây cọ sau những ngày mỏi mệt.')}
     ${sign('Bé Na & mèo Bánh Quy', 'Cảm ơn anh/chị vì những đĩa bánh quy thơm ngon và ánh đèn ấm áp luôn chờ đón chúng em mỗi ngày ạ!')}
     ${sign('Cô bán hoa đầu hẻm', 'Cảm ơn cháu vì đã chia sẻ hơi ấm và sắc xanh từ khung cửa sổ nhỏ, giúp cả góc hẻm này lại rực rỡ hương hoa.')}
-    ${sign('Cô chủ nhà tầng dưới', 'Cảm ơn cháu đã biến căn gác nhỏ này thành một nơi chốn thật dịu dàng để trở về.')}
+    ${sign('Bà chủ nhà tầng dưới', 'Cảm ơn cháu đã biến căn gác nhỏ này thành một nơi chốn thật dịu dàng để trở về.')}
     <p>Chúng tôi đã cùng nhau vẽ lại bức tranh “Hẻm Hoa Giấy” này để tặng bạn. Dù ngoài kia cuộc sống có đôi lúc vội vã, mong bạn hãy luôn nhớ rằng ở góc hẻm nhỏ này, vẫn luôn có những ô cửa sáng đèn và những người hàng xóm lặng lẽ mỉm cười chào đón bạn.</p>
     <p style="text-align:center;margin-top:.8em"><b>Cảm ơn bạn đã ở đây.</b></p>`, () => {
     // stage 3: free play
-    setTimeout(() => showPaper(`<p class="bub">Bức tranh “Hẻm Hoa Giấy” đã được treo trang trọng trên tường. Câu chuyện của những người hàng xóm đã trọn vẹn, nhưng căn gác nhỏ này vẫn luôn mở cửa. Bạn cứ thong thả chăm cây, nghe đài và tận hưởng những ngày bình yên tiếp theo nhé!</p>`), 600);
+    setTimeout(() => selfLetter(true, () => showPaper(`<p class="bub">Bức tranh “Hẻm Hoa Giấy” đã được treo trang trọng trên tường. Câu chuyện của những người hàng xóm đã trọn vẹn, nhưng căn gác nhỏ này vẫn luôn mở cửa. Bạn cứ thong thả chăm cây, nghe đài và tận hưởng những ngày bình yên tiếp theo nhé!</p>`)), 600);
   });
   SFX.paper(); playMusicBox(); petals(28);
 }
@@ -1269,6 +1306,7 @@ function jam() {
 }
 // a line for each keepsake when touched (flavor text by Vi); several lines take turns
 const FLAVOR = {
+  k_ttlantern: ['Chiếc đèn kéo quân của bà chủ nhà khẽ xoay, bóng những chú cá chép và cành trúc lướt chậm trên vách gác.'],
   musicbox0: ['Chiếc hộp nhạc bằng gỗ sồi cũ kỹ. Bánh răng bên trong dường như đang bị kẹt, cần một chiếc lò xo nhỏ để đánh thức giai điệu.'],
   musicbox: ['Giai điệu du dương vang lên từ những bánh răng nhỏ bé, êm đềm như một lời ru buổi tối.', 'Tiếng nhạc mộc mạc lan tỏa khắp căn gác, mang theo cả hơi ấm của những kỷ niệm xưa.'],
   k_record: ['Trên mặt đĩa còn hằn vài vết xước thời gian, nhưng âm thanh phát ra lại trầm ấm đến lạ.'],
@@ -1375,7 +1413,7 @@ function tapPlant() {
     toast(`Hái ${P.gift.toLowerCase()} cất vào hộp kỷ vật ${P.icon}`, 2600);
     setTimeout(openSeedPicker, 1600); return;
   }
-  bump($('#p-plant'), 'wiggle'); waterDrops(); SFX.water();
+  bump($('#p-plant'), 'wiggle'); waterDrops(); SFX.water(); if (!S.watered) { S.watered = 1; save(); setTimeout(applyBag, 2500); }
   if (Date.now() - g.lastWater >= HOUR || !g.lastWater) {
     g.water++; g.lastWater = Date.now(); save();
     setTimeout(() => { toast(plantStatus(), 2600); growthCheck(); }, 900);
@@ -1410,12 +1448,18 @@ const FLO = [
 const FLO_GIFT = { k_sunseed: 'Túi hạt giống hướng dương 🌻', k_can: 'Bình tưới bằng đồng và bó hoa khô 🌾', k_flowerchime: 'Chuông gió thủy tinh vẽ hoa 🎐' };
 function floChapter() {
   const st = S.story, f = st.flower || 0, now = Date.now(), since = now - (st.flowerAt || 0);
-  if (f === 0) return (st.old >= 1 || st.na >= 1 || st.plane >= 1) && Object.keys(S.harvested).length >= 1 ? 0 : null;
+  if (f === 0) return S.watered ? 0 : null;   // day one: the first watering rings the bag
   if (f === 1) return st.flowerSent && now - st.flowerSent >= 0.5 * HOUR ? 1 : null;
   if (f === 2) return since >= 24 * HOUR ? 2 : null;
   if (f === 3) return (S.candleDone || 0) > (st.flowerCandle || 0) && (S.weather === 'night' || S.weather === 'rain') ? 3 : null;
   if (f === 4) return since >= 24 * HOUR && S.weather === 'night' ? 4 : null;
   return null;
+}
+function floNeedsSprig() { return floWaiting() && !(S.keep.lavender > 0 || S.keep.pothos > 0); }
+let floHinted = 0;
+function floHint() {
+  if (!floNeedsSprig() || Date.now() - floHinted < 10 * 60000) return;
+  floHinted = Date.now(); setTimeout(() => djSay('Bản tin chiều tại Hẻm Hoa Giấy: Nghe nói cô bán hoa đầu hẻm dạo này đang tìm một nhành oải hương hoặc trầu bà tươi tắn để lấy lại cảm hứng chăm vườn. Ai có trồng trên bệ cửa thì chia sẻ với cô nhé!'), 2600);
 }
 function floWaiting() { const st = S.story; return st.flower === 1 && !st.flowerSent; }
 let floRang = -1;
@@ -1454,6 +1498,60 @@ function tapBag() {
   }); stageReveal(false);
 }
 setInterval(applyBag, 5000);
+// Mid-Autumn (Vi 26/11): on the nights around Tết Trung Thu the landlady brings mooncakes, a white rabbit drops by; ?trungthu forces it for testing
+const TT_DAYS = ['2027-09-15', '2028-10-03', '2029-09-22', '2030-09-12'];
+const TT = {
+  lady: ['Cốc cốc... Bà mang lên cho cháu một đĩa bánh nướng đậu xanh với ấm trà hoa cúc đây. Đêm nay trăng rằm đẹp lắm, đừng ngồi một mình mãi nhé!',
+    'Ngày xưa, cứ tới rằm tháng Tám là cả con hẻm lại rước đèn rộn ràng. Giờ mọi người bận rộn cả, chỉ còn bà giữ thói quen treo chiếc đèn lồng cũ này thôi.',
+    'À, ban nãy bà thấy có chú thỏ trắng đi lạc ngoài đầu ngõ, chắc đánh hơi thấy mùi bánh nướng nên chạy theo lên gác đấy. Cháu chia cho nó miếng bánh nhé!'],
+  gift: 'Thấy căn gác sáng đèn và rộn tiếng cười thế này, bà mừng lắm. Bà tặng cháu chiếc đèn lồng kéo quân nhỏ này, thắp lên cho ấm cửa ấm nhà nha.',
+  rabbit: ['Khịt khịt... Mùi bánh nướng thơm quá đi mất! Cho tớ ghé mũi ngửi một chút được không?',
+    'Ngon tuyệt! Đôi tai của tớ đang vẫy lên vì vui sướng này!',
+    'Bạn mèo mướp ở đây hiền thật đấy, bộ lông lại còn ấm nữa. Tớ ngồi ké bên cạnh ngắm trăng cùng nhé!',
+    'Trăng đã lên cao đỉnh đầu rồi. Cảm ơn bữa tiệc đêm rằm ngọt ngào của bạn, hẹn gặp lại vào mùa trăng sau nha!'],
+};
+$('#p-rabbit').src = ITEM_IMG.rabbit; $('#p-mooncake').src = ITEM_IMG.mooncake;
+place($('#p-mooncake'), 284, 866, 58, 50);
+const RABBIT_AT = [[226, 806, 70, 100], [292, 806, 70, 100]];
+function ttSeason() {
+  if (/trungthu/.test(location.search)) return 'test';
+  const now = Date.now();
+  const d = TT_DAYS.find(x => { const t = new Date(x + 'T12:00:00').getTime(); return now > t - 10 * 86400000 && now < t + 1.5 * 86400000; });
+  return d ? d.slice(0, 4) : null;
+}
+function ttState() { const y = ttSeason(); if (!y) return null; S.tt = S.tt && S.tt.y === y ? S.tt : { y, step: 0 }; return S.tt; }
+function applyTT() {
+  const t = ttState(), night = S.weather === 'night', on = !!t && night && t.step >= 1 && t.step <= 3;
+  $('#p-rabbit').style.display = on ? '' : 'none'; HITS.rabbit.el.style.display = on ? '' : 'none';
+  $('#p-mooncake').style.display = on && t.step === 1 ? '' : 'none';
+  if (on) { place($('#p-rabbit'), ...RABBIT_AT[t.step >= 3 ? 1 : 0]); place(HITS.rabbit.el, ...RABBIT_AT[t.step >= 3 ? 1 : 0]); }
+  if (t && night && t.step === 0 && started && S.welcomed && !$('#note-wrap').classList.contains('show')) {
+    t.step = 0.5; SFX.paper();
+    const face = `<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:6em">`, cake = `<img class="paper-img" src="${ITEM_IMG.mooncake}" alt="" style="max-height:3.6em">`;
+    showPaper(face + staged(TT.lady, cake + '<small>— Bà chủ nhà tầng dưới —</small>'), () => {
+      t.step = 1; save(); applyTT(); setTimeout(() => say2(TT.rabbit[0]), 1400);
+    }); stageReveal(false);
+  }
+}
+function say2(text) { sayAt(RABBIT_AT[S.tt && S.tt.step >= 3 ? 1 : 0], text, 6000); }
+function tapRabbit() {
+  const t = ttState(); if (!t) return; bump($('#p-rabbit'), 'hop');
+  if (t.step === 1) { t.step = 2; SFX.paper(); say2(TT.rabbit[1]); }
+  else if (t.step === 2) { t.step = 3; save(); applyTT(); setTimeout(() => say2(TT.rabbit[2]), 300); }
+  else if (t.step === 3) {
+    t.step = 4; say2(TT.rabbit[3]);
+    setTimeout(() => { applyTT(); }, 5000);
+    setTimeout(() => {
+      showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:5em">` + staged([TT.gift], `<img class="paper-img" src="${ITEM_IMG.k_ttlantern}" alt="" style="max-height:4em"><small>— Bà chủ nhà tầng dưới —</small>`), () => {
+        t.step = 5; S.keep.k_ttlantern = 1; save(); toast('Bạn nhận được: Đèn lồng kéo quân của bà 🏮', 3600);
+      }); stageReveal(false);
+    }, 6500);
+  }
+  save(); applyTT();
+}
+if (S.tt && S.tt.step === 0.5) S.tt.step = 0;   // reloaded while reading the landlady's note
+if (S.tt && S.tt.step === 4) { S.tt.step = 5; S.keep.k_ttlantern = 1; }   // reloaded before the gift note
+setInterval(applyTT, 3000);
 
 // ---------------------------------------------------------------- journal (Lời nhắn): chapters the player has lived, to read again
 const JOURNAL = [
@@ -1503,6 +1601,7 @@ function openKeepsakes() {
     ['na_cat', 'Tranh bút sáp: Bánh Quy', 'Của bé Na'], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', 'Của bé Na'],
     ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', 'Của bé Na'],
     ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của cô bán hoa. Rắc lên đĩa để mời bạn sóc'], ['k_can', 'Bình tưới bằng đồng và bó hoa khô', 'Quà của cô bán hoa. Cây lớn nhanh hơn một chút'],
+    ['k_ttlantern', 'Đèn lồng kéo quân', 'Quà Trung Thu của bà chủ nhà'],
     ['k_flowerchime', 'Chuông gió thủy tinh vẽ hoa', 'Chọn ở hàng chuông gió phía trên']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
       `<div class="keep" data-item="${k}"><span>${ITEM_IMG[k] ? `<img src="${ITEM_IMG[k]}" alt="">` : '<b style="font-size:1.6em;width:1.6em;display:inline-block;text-align:center">🪴</b>'}${name}<span class="hint">${hint}</span></span></div>`);
@@ -1586,7 +1685,7 @@ function stepFx(dt) {
   if (S.tea && !reduceMotion && Math.random() < dt * 5)
     spawn({ kind: 'smoke', x: rnd(455, 485), y: 1046, vx: rnd(-2, 2), vy: rnd(-22, -15), life: rnd(2, 3), t: 0, ph: rnd(0, 6) });
   // candle flame: a soft flickering halo
-  if (S.weather === 'night' && started && (S.story.old === 0 || nextOldLetter() !== null)) {
+  if (S.weather === 'night' && started && nextOldLetter() !== null) {
     const ph = (perfT / 1000) % 7;   // three slow blinks, then a pause
     if (ph < 3.6) glowDot(ctx, BLINK[0], BLINK[1], Math.max(0, Math.sin(ph / 1.2 * Math.PI)) * 0.9, 2.2);
   }
@@ -1747,9 +1846,9 @@ function applyRings() {
 function applyWelcome() { const on = !S.welcomed; $('#p-welcome').style.display = on ? '' : 'none'; HITS.welcome.el.style.display = on ? '' : 'none'; }
 place($('#p-welcome'), 598, 872, 44, 30);
 function readWelcome() {
-  showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:7em">Chào bạn mới dọn tới căn gác nhỏ này! Ở đây chẳng có gì phải vội. Bạn cứ chạm vào mọi thứ quanh mình:
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:7em">Chào cháu mới dọn tới căn gác nhỏ này! Ở đây chẳng có gì phải vội. Cháu cứ chạm vào mọi thứ quanh mình:
     bật chiếc đèn bàn, vuốt ve chú mèo Bánh Quy hay ghé ngủ nhờ, tưới chậu cây, lắc chuông gió, mở radio nghe nhạc.
-    Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, nhớ để ý bệ cửa nhé.<small>— Bà chủ nhà tầng dưới —</small>`,
+    Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, cháu nhớ để ý bệ cửa nhé.<small>— Bà chủ nhà tầng dưới —</small>`,
     () => { S.welcomed = true; save(); applyWelcome(); applyRings(); toast('Những chỗ phát sáng là đồ vật bạn chạm được ✨', 3200); });
 }
 const CAT_MOODS = ['Bánh Quy khẽ rừ rừ trong cổ họng…', 'Bánh Quy dụi đầu vào tay bạn 💛', 'Bánh Quy lim dim, đuôi phe phẩy nhẹ…',
@@ -1761,6 +1860,7 @@ function act(id) {
     case 'sunset': case 'rain': case 'night': setWeather(id); SFX.click(); break;
     case 'chime': pushChime((Math.random() < 0.5 ? -1 : 1) * rnd(120, 170)); if (Math.random() < 0.5) catAct('play', 3.5); break;
     case 'plant': tapPlant(); break;
+    case 'rabbit': tapRabbit(); break;
     case 'plate':
       if (S.leaf) { S.leaf = false; S.keep.leaf = (S.keep.leaf || 0) + 1; save(); SFX.paper(); toast('Cất chiếc lá phong khô vào hộp kỷ vật 🍂'); break; }
       if (S.food) { S.food = null; save(); applyFood(); SFX.click(); break; }
@@ -1780,7 +1880,7 @@ function act(id) {
     case 'jar': releaseFireflies(); SFX.sparkle(); setTimeout(() => catAct('play', 5), 500); sayAt(HITS.jar.box, flavor('jar')); break;
     case 'lamp': S.lamp = !S.lamp; save(); SFX.click(); bump($('#p-lamp')); applyLook(); break;
     case 'radio': bump($('#p-radio')); setRadio(!S.radio); toast(S.radio ? (S.weather === 'night' ? 'Tần Số Hẻm Hoa Giấy · 94.2 FM 📻' : 'Radio 94.2 FM 📻 (ban đêm có DJ trò chuyện)') : 'Tắt radio', 2600); break;
-    case 'incense': S.incense = !S.incense; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle(); if (S.incense) setTimeout(() => sayAt(HITS.incense.box, flavor('candle')), 2600);
+    case 'incense': S.incense = !S.incense; if (S.incense) S.litOnce = 1; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle(); if (S.incense) setTimeout(() => sayAt(HITS.incense.box, flavor('candle')), 2600);
       if (S.incense) { SFX.match(); toast('Nến cháy 25 phút: cùng ngồi làm việc, học bài nhé 🕯️ Chạm lần nữa để tắt', 3600); } else SFX.click(); break;
     case 'book': showNote(); break;
     case 'tea':
@@ -1788,7 +1888,7 @@ function act(id) {
       S.tea = true; save(); applyTea(); SFX.water(); toast('Pha một tách trà hoa cúc 🍵', 2400);
       setTimeout(() => { SFX.purr(); zzzT = -2; catSit(6); }, 1800); break;
     case 'cup': drinkTea(); break;
-    case 'lantern': S.lantern = !S.lantern; if (S.lantern && S.garden) S.garden.light = 1; save(); applyLantern();
+    case 'lantern': S.lantern = !S.lantern; if (S.lantern) S.litOnce = 1; if (S.lantern && S.garden) S.garden.light = 1; save(); applyLantern();
       if (S.lantern) { SFX.match(); growthCheck(); } else SFX.click(); break;
     case 'plane': readPlane(); break;
     case 'gift': openKeepsakes(); SFX.paper(); break;
@@ -1796,7 +1896,8 @@ function act(id) {
     case 'frog': visitorAct('frog'); sayTap('frog'); break;
     case 'owl': visitorAct('owl'); sayTap('owl'); break;
     case 'squirrel': visitorAct('squirrel'); sayTap('squirrel'); break;
-    case 'sparrow': SFX.chirp(); if (!sparrowGift()) showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
+    case 'sparrow': SFX.chirp(); if (nextOldLetter() === null && floNeedsSprig() && !S.story.sparrowFloHint) { S.story.sparrowFloHint = 1; save(); say('sparrow', 'Chíp chíp! Hôm nay bay ngang đầu hẻm, tớ nghe cô bán hoa bảo cô thích mùi oải hương và sức sống của trầu bà lắm đấy!', 6500); sparrowOn = false; setTimeout(() => leave('sparrow', true), 6500); scheduleSparrow(); break; }
+      if (!sparrowGift()) showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
   }
 }
 for (const [id, h] of Object.entries(HITS)) h.el.addEventListener('click', e => { e.stopPropagation(); act(id); });
