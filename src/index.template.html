@@ -232,6 +232,8 @@
   <img id="p-owl" class="prop visitor" src="{{PROP_owl}}" alt="">
   <img id="p-plant" class="prop" alt="">
   <img id="p-painting" class="prop" src="{{PROP_painting}}" alt="" style="opacity:0">
+  <img id="p-pin" class="prop" alt="" style="opacity:0;transform:rotate(-5deg);transform-origin:50% 0;filter:drop-shadow(1px 2px 2px rgba(60,40,20,.35))">
+  <img id="p-bouquet" class="prop" alt="" style="opacity:0">
   <div id="p-rope"></div><div id="p-bag"><img alt=""></div>
   <img id="p-welcome" class="prop" src="{{PROP_na_note}}" alt="" style="transform:rotate(-12deg);z-index:2;pointer-events:none">
   <div id="candle-t"></div>
@@ -340,6 +342,7 @@ $('#p-bag img').src = ITEM_IMG.bag;
 S.story = Object.assign({ old: 0, oldAt: 0, fixed: false, plane: 0, planeAt: 0, na: 0, naAt: 0, naSent: 0, naWarm: 0 }, S.story || {});
 S.meals = S.meals || 0;
 S.chimeType = S.chimeType || 'glass';
+if (S.keep && S.keep.k_can && !S.keep.bouquet) S.keep.bouquet = 1;
 const CHIMES = {
   glass:  { name: 'Chuông gió thủy tinh', src: '{{PROP_chime}}', box: [124.2, 140, 111.6, 292] },
   bamboo: { name: 'Chuông gió ống tre', src: '{{PROP_chime_bamboo}}', box: [140, 140, 80, 292] },
@@ -406,6 +409,8 @@ const HITS = {
   gift:   { box: [466, 1185, 164, 76], label: 'Hộp kỷ vật' },
   cup:    { box: [418, 1040, 104, 82], label: 'Nhấp một ngụm trà' },
   rabbit: { box: [246, 800, 96, 120], label: 'Chú thỏ trắng' },
+  pin:    { box: [92, 556, 88, 80], label: 'Tranh dán trên khung cửa' },
+  bouquet:{ box: [644, 800, 54, 98], label: 'Bó hoa khô' },
 };
 const hitsEl = $('#hits');
 for (const [id, h] of Object.entries(HITS)) {
@@ -947,7 +952,11 @@ const Q_THEMES = [
     'Trước khi khép lại một ngày, bạn muốn gửi lời chúc ngủ ngon gì tới chính mình và những ô cửa sáng đèn bên kia hẻm?']],
 ];
 const MOODS = ['☀️ nhẹ nhõm', '🌧️ hơi buồn', '🍵 bình yên', '🌙 mệt mỏi'];
-const STAMPS = [['🐾', 'dấu chân Bánh Quy', 'stamp_paw'], ['🍁', 'lá phong của sóc', 'stamp_leaf'], ['🌙', 'vầng trăng của bạn cú', 'stamp_moon']];
+const STAMPS = [['🐾', 'dấu chân Bánh Quy', 'stamp_paw'], ['🍁', 'lá phong của sóc', 'stamp_leaf', 'leaf'], ['🌙', 'vầng trăng của bạn cú', 'stamp_moon'],
+  ['🪶', 'lông chim sẻ', 'k_feather', 'k_feather'], ['🔘', 'cúc áo đồng', 'k_button', 'k_button'], ['🎨', 'màu xanh pastel của cậu họa sĩ', 'k_tube', 'k_tube']];
+function stampPick() {   // Vi 26/11: keepsakes unlock more stamps (feather, button, pastel tube, the squirrel's leaf)
+  const ok = STAMPS.map((t, i) => i).filter(i => !STAMPS[i][3] || S.keep[STAMPS[i][3]]); return ok[Math.floor(Math.random() * ok.length)];
+}
 function dayKey(t = Date.now()) { const d = new Date(t); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
 function todayQuestion() {
   const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);
@@ -976,7 +985,7 @@ let showNote = function () {
     }));
     $('#nb-save').addEventListener('click', () => {
       const a = $('#nb-a').value.trim(); if (!a) { toast('Chỉ cần một chữ hay một biểu tượng thôi cũng được nha', 2200); return; }
-      const st = Math.floor(Math.random() * STAMPS.length);
+      const st = stampPick();
       S.diary[key] = { theme, q, a, s: st }; save();
       $('#note .l').innerHTML = `<small class="th">${theme}</small><span class="q">${q}</span><span class="ans">${esc(a)}</span>${stampHtml(st, true)}`;
       SFX.paper(); toast(`Trang hôm nay đã được đóng ${STAMPS[st][1]} ${STAMPS[st][0]}`, 2600);
@@ -1241,6 +1250,21 @@ place($('#candle-t'), 566, 1106, 70, 22); setInterval(candleTick, 1000);
 function applyCandle() { const [src, box] = CANDLE[S.incense ? 'on' : 'off']; const el = $('#p-incense'); el.src = src; place(el, ...box); }
 // wall: one painting at a time (S.wallArt = 'painting' | 'alley' | false)
 const WALL = { painting: [446, 950, 86, 90], alley: [462, 944, 54, 98] };
+// Vi 26/11: Na's drawings and the forget-me-not card can be taped to the window pane; the dried bouquet can stand on the sill
+const PINS = ['na_cat', 'na_friends', 'na_window', 'card'];
+function applyPin() {
+  const el = $('#p-pin'), on = PINS.includes(S.pin) && S.keep[S.pin];
+  el.style.opacity = on ? 1 : 0; HITS.pin.el.style.display = on ? '' : 'none';
+  if (on) { el.src = ITEM_IMG[S.pin]; const r = { card: 226 / 342 }[S.pin] || 1.13, h = S.pin === 'card' ? 92 : 68; place(el, 92 + (88 - h * r) / 2, 556, h * r, h); }
+}
+function applyBouquet() {
+  const el = $('#p-bouquet'), on = !!(S.bouquetOut && S.keep.bouquet);
+  el.style.opacity = on ? 1 : 0; HITS.bouquet.el.style.display = on ? '' : 'none';
+  if (on) { el.src = ITEM_IMG.bouquet; place(el, 648, 806, 46, 82); }
+}
+function sparkles() {   // a soft scent of tiny glowing specks rising from the bouquet
+  for (let i = 0; i < 6; i++) spawn({ kind: 'note', ch: i % 2 ? '✦' : '·', x: rnd(650, 692), y: rnd(800, 830), vx: rnd(-8, 8), vy: rnd(-30, -20), life: 2.4, t: -i * 0.2, size: rnd(12, 18) });
+}
 function applyWallArt() {
   if (S.wallArt === true) S.wallArt = 'painting';
   const el = $('#p-painting'); el.style.opacity = S.wallArt ? 1 : 0;
@@ -1380,7 +1404,8 @@ const FLAVOR = {
   na_friends: ['Những nét vẽ bằng bút sáp màu nguệch ngoạc nhưng rực rỡ, chứa đầy niềm vui trẻ thơ.'],
   k_marble: ['Ánh nắng xuyên qua viên bi ve tạo nên những vệt sáng lung linh như mặt biển mùa hè.', 'Chạm nhẹ vào viên bi mát lạnh, dường như có tiếng sóng biển rì rào vỗ về bên tai.'],
   na_window: ['Bức tranh vẽ ô cửa sổ nhà bạn tỏa sáng rực rỡ giữa màn đêm, một ngọn hải đăng nhỏ của cả con hẻm.'],
-  k_can: ['Chiếc bình tưới nhỏ nhắn đã lên nước đồng bóng loáng, vòi phun tỏa ra làn sương mịn như mưa xuân.', 'Dù đã khô lại, những cánh hoa vẫn giữ được sắc màu nhẹ nhàng và tỏa ra mùi hương thảo mộc dễ chịu.'],
+  k_can: ['Chiếc bình tưới nhỏ nhắn đã lên nước đồng bóng loáng, vòi phun tỏa ra làn sương mịn như mưa xuân.'],
+  bouquet: ['Dù đã khô lại, những cánh hoa vẫn giữ được sắc màu nhẹ nhàng và tỏa ra mùi hương thảo mộc dễ chịu.', 'Một làn hương khô ấm áp lan khẽ quanh bệ cửa, như mùi nắng còn sót lại trong những cánh hoa.', 'Bó hoa nhỏ đứng yên bên cửa sổ, nhắc rằng có những điều đẹp đẽ vẫn còn đó dù mùa đã qua.'],
   flower: ['Một cơn gió nhẹ lùa qua, chiếc chuông thủy tinh khẽ ngân lên tiếng leng keng trong trẻo.', 'Những bông hoa vẽ tay trên thân chuông khẽ đung đưa, như đang gửi lời chúc bình an từ đầu hẻm.'],
   k_flowerchime: ['Một cơn gió nhẹ lùa qua, chiếc chuông thủy tinh khẽ ngân lên tiếng leng keng trong trẻo.', 'Những bông hoa vẽ tay trên thân chuông khẽ đung đưa, như đang gửi lời chúc bình an từ đầu hẻm.'],
   tea: ['Làn khói mỏng mang theo hương trà thoang thoảng. Hít một hơi thật sâu, thở ra thật chậm...'],
@@ -1420,14 +1445,17 @@ function useItem(k, row) {
   }
   if (k === 'watch') { tickTock(); return; }
   if (k === 'k_record') { if (!S.radio) { act('radio'); toast('Đặt đĩa nhạc cũ của bác lên… radio phát một bản piano 🎶', 3000); } return; }
-  if (k === 'card' || k === 'k_tube' || k === 'k_can' || k === 'k_button' || k === 'k_feather') SFX.paper();
+  if (k === 'k_tube' || k === 'k_can' || k === 'k_button' || k === 'k_feather') SFX.paper();
   if (k === 'k_shell') waves();
   if (k === 'k_marble') waves();
   if (k === 'k_flowerchime') { S.chimeType = 'flower'; save(); applyChime(); pushChime(150); SFX.chimeAlt ? SFX.chime(0.6) : 0; }
   if (k === 'painting' || k === 'alley') { S.wallArt = S.wallArt === k ? false : k; save(); applyWallArt(); openKeepsakes(); SFX.paper(); if (k === 'painting' && S.wallArt) showFlavor('painting'); }
   if (CHIMES[k]) { S.chimeType = k; save(); applyChime(); openKeepsakes(); pushChime(150); if (k === 'flower') showFlavor('flower'); }
-  const ni = { na_cat: 0, na_friends: 2, na_window: 4 }[k];
-  if (ni !== undefined && !flav) showNaNote(ni, true);
+  if (PINS.includes(k)) {
+    S.pin = S.pin === k ? null : k; save(); applyPin(); openKeepsakes(); SFX.paper();
+    toast(S.pin ? 'Dán lên khung cửa sổ rồi 📌' : 'Gỡ xuống, cất lại vào hộp kỷ vật', 2400); return;
+  }
+  if (k === 'bouquet') { S.bouquetOut = !S.bouquetOut; save(); applyBouquet(); openKeepsakes(); SFX.paper(); if (S.bouquetOut) { showFlavor('bouquet'); sparkles(); } return; }
 }
 $('#note').addEventListener('click', e => {
   const it = e.target.closest('[data-item]'); if (!it) return;
@@ -1540,8 +1568,10 @@ function tapBag() {
     if (!have.length) { toast('Cô bán hoa đang chờ một nhánh oải hương hoặc trầu bà 🌿 (hái từ chậu cây hoặc nhận khi nến tàn)', 3800); return; }
     openPanel(`<h3>Gửi vào túi vải</h3>` + have.map(k => `<button class="reply" data-flo="${k}"><img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">${PLANTS[k].gift}</button>`).join('') + '<small>Chạm ra ngoài để đóng</small>');
     document.querySelectorAll('[data-flo]').forEach(b => b.addEventListener('click', e => {
-      e.stopPropagation(); S.keep[b.dataset.flo]--; st.flowerSent = Date.now(); save(); closeNote(); applyBag(); SFX.flutter();
-      toast('Túi vải theo dây ròng rọc trượt về phía đầu hẻm 🌿', 3000);
+      e.stopPropagation(); S.keep[b.dataset.flo]--; st.flowerSent = Date.now();
+      const wrap = S.keep.fern > 0; if (wrap) { S.keep.fern--; st.fernWrap = 1; }   // Vi 26/11: a fern frond lines the little parcel
+      save(); closeNote(); applyBag(); SFX.flutter();
+      toast(wrap ? 'Bạn lót một lá dương xỉ quanh nhánh hoa, túi vải trượt về phía đầu hẻm 🌿' : 'Túi vải theo dây ròng rọc trượt về phía đầu hẻm 🌿', 3200);
     }));
     return;
   }
@@ -1551,10 +1581,11 @@ function tapBag() {
   const pic2 = N.gift === 'k_can' ? `<div style="display:flex;justify-content:center;gap:.6em"><img src="${ITEM_IMG.can}" alt="" style="height:4em"><img src="${ITEM_IMG.bouquet}" alt="" style="height:4.6em"></div>` : pic;
   const face = `<img class="paper-img" src="${ITEM_IMG.florist}" alt="" style="max-height:${ch === 0 ? 9 : 6}em">`;
   const scene = SCENE[ch] ? `<img class="paper-img" src="${ITEM_IMG[SCENE[ch]]}" alt="" style="max-height:7em">` : '';
-  showPaper(face + staged(N.b, scene + pic2 + sig), () => {
+  const fernPs = ch === 1 && st.fernWrap ? '<small style="margin-top:.8em">P.S. Lá dương xỉ cháu lót quanh nhánh hoa xanh mướt quá, cô cắm chung vào bình trên quầy rồi đấy.</small>' : '';
+  showPaper(face + staged(N.b, scene + pic2 + fernPs + sig), () => {
     st.flower = ch + 1; st.flowerAt = Date.now(); if (ch === 3) st.flowerCandle = S.candleDone || 0;
     if (ch === 2) st.flowerCandle = S.candleDone || 0;
-    if (N.gift) { S.keep[N.gift] = 1; toast(`Bạn nhận được: ${FLO_GIFT[N.gift]}`, 3600); }
+    if (N.gift) { S.keep[N.gift] = 1; if (N.gift === 'k_can') S.keep.bouquet = 1; toast(`Bạn nhận được: ${FLO_GIFT[N.gift]}`, 3600); }
     if (N.gift === 'k_sunseed' && !S.food) { S.food = 'seeds'; applyFood(); }
     save(); applyBag(); checkLights();
   }); stageReveal(false);
@@ -1653,18 +1684,19 @@ function openJournal(open) {
   $('#j-back').addEventListener('click', e => { e.stopPropagation(); openKeepsakes(); SFX.paper(); });
   document.querySelectorAll('#note details').forEach(d => d.addEventListener('click', e => e.stopPropagation()));
 }
+function pinHint(k) { return S.pin === k ? 'Đang dán trên khung cửa, chạm để gỡ' : 'Chạm để dán lên khung cửa sổ'; }
 function openKeepsakes() {
   const story = [['musicbox', 'Hộp nhạc gỗ của bác', S.story.fixed ? 'Chạm để nghe nhạc' : 'Đang kẹt bánh răng, chạm để thử'],
-    ['watch', 'Đồng hồ quả quýt', 'Chạm để nghe tích tắc'], ['card', 'Thiệp hoa lưu ly ép khô', 'Quà của cậu họa sĩ'],
-    ['k_tube', 'Tuýp màu nước xanh pastel', 'Quà của cậu họa sĩ'],
+    ['watch', 'Đồng hồ quả quýt', 'Chạm để nghe tích tắc'], ['card', 'Thiệp hoa lưu ly ép khô', S.pin === 'card' ? 'Đang dán trên khung cửa, chạm để gỡ' : 'Chạm để dán lên khung cửa sổ'],
+    ['k_tube', 'Tuýp màu nước xanh pastel', 'Mở thêm con dấu xanh pastel trong sổ tay'],
     ['painting', 'Tranh “Góc Cửa Ngày Mưa”', S.wallArt === 'painting' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['alley', 'Tranh “Hẻm Hoa Giấy”', S.wallArt === 'alley' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['k_marble', 'Viên bi ve đại dương', 'Chạm để nghe sóng biển'],
     ['k_record', 'Đĩa nhạc cũ bác sửa', 'Chạm để phát nhạc'], ['k_spring', 'Lò xo nhỏ', S.story.fixed ? 'Đã lắp vào hộp nhạc' : 'Chạm vào hộp nhạc để thử'],
-    ['k_feather', 'Lông chim sẻ', 'Quà của chú chim sẻ'], ['k_button', 'Cúc áo đồng', 'Quà của chú chim sẻ'], ['k_shell', 'Vỏ sò nhỏ', 'Quà của chú chim sẻ'],
-    ['na_cat', 'Tranh bút sáp: Bánh Quy', 'Của bé Na'], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', 'Của bé Na'],
-    ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', 'Của bé Na'],
-    ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của cô bán hoa. Rắc lên đĩa để mời bạn sóc'], ['k_can', 'Bình tưới bằng đồng và bó hoa khô', 'Quà của cô bán hoa. Cây lớn nhanh hơn một chút'],
+    ['k_feather', 'Lông chim sẻ', 'Mở thêm con dấu lông chim trong sổ tay'], ['k_button', 'Cúc áo đồng', 'Mở thêm con dấu cúc áo trong sổ tay'], ['k_shell', 'Vỏ sò nhỏ', 'Quà của chú chim sẻ'],
+    ['na_cat', 'Tranh bút sáp: Bánh Quy', pinHint('na_cat')], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', pinHint('na_friends')],
+    ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', pinHint('na_window')],
+    ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của cô bán hoa. Rắc lên đĩa để mời bạn sóc'], ['bouquet', 'Bó hoa khô thơm dịu', S.bouquetOut ? 'Đang đặt trên bệ cửa, chạm để cất' : 'Chạm để đặt lên bệ cửa sổ'], ['k_can', 'Bình tưới bằng đồng', 'Quà của cô bán hoa. Cây lớn nhanh hơn một chút'],
     ['k_ttlantern', 'Đèn lồng kéo quân', 'Quà Trung Thu của bà chủ nhà'],
     ['k_flowerchime', 'Chuông gió thủy tinh vẽ hoa', 'Chọn ở hàng chuông gió phía trên']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
@@ -1673,7 +1705,7 @@ function openKeepsakes() {
     .filter(([k]) => S.keep[k]).map(([k, name, icon]) => {
       const pic = KEEP_ICON[k] ? `<img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">` : icon + ' ';
       const use = { daisy: 'Gửi bé Na qua ruy băng của Bánh Quy', cactus: 'Sửa hộp nhạc kẹt của bác', lavender: 'Kẹp vào máy bay giấy gửi cậu họa sĩ',
-        fern: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', leaf: 'Quà của bạn sóc' }[k];
+        fern: 'Lót gói quà gửi cô bán hoa, hoặc kẹp máy bay giấy', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', leaf: 'Quà của bạn sóc. Mở con dấu lá phong trong sổ tay' }[k];
       return `<div class="keep"><span>${pic}${name}${use ? `<span class="hint">${use}</span>` : ''}</span><b>× ${S.keep[k]}</b></div>`;
     }));
   const chimes = '<div class="chimes">' + Object.entries(CHIMES).filter(([, c]) => !c.need || S.keep[c.need]).map(([k, c]) =>
@@ -1925,6 +1957,8 @@ function act(id) {
     case 'chime': pushChime((Math.random() < 0.5 ? -1 : 1) * rnd(120, 170)); if (Math.random() < 0.5) catAct('play', 3.5); break;
     case 'plant': tapPlant(); break;
     case 'rabbit': tapRabbit(); break;
+    case 'pin': if (S.pin) { const ni = { na_cat: 0, na_friends: 2, na_window: 4 }[S.pin]; if (ni !== undefined) showNaNote(ni, true); else { openKeepsakes(); showFlavor(S.pin); } } break;
+    case 'bouquet': bump($('#p-bouquet'), 'wiggle'); sparkles(); SFX.chime(0.25); toast(flavor('bouquet'), 3600); break;
     case 'plate':
       if (S.leaf) { S.leaf = false; S.keep.leaf = (S.keep.leaf || 0) + 1; save(); SFX.paper(); toast('Cất chiếc lá phong khô vào hộp kỷ vật 🍂'); break; }
       if (S.food) { S.food = null; save(); applyFood(); SFX.click(); break; }
@@ -2121,7 +2155,7 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 addEventListener('resize', resize);
-resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyNaNote(); applyCandle(); applyChime(); applyLantern(); applyWelcome(); applyRings(); checkLights(); setInterval(growthCheck, 2000);
+resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyPin(); applyBouquet(); applyNaNote(); applyCandle(); applyChime(); applyLantern(); applyWelcome(); applyRings(); checkLights(); setInterval(growthCheck, 2000);
 setInterval(() => {
   if (started && catPose === 'sleep' && Math.random() < 1 / 160) catAct('back', 25);   // now and then she sits and watches the alley
   applyNaNote(); if (started && !$('#note-wrap').classList.contains('show')) finaleCheck();
