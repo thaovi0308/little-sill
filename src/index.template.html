@@ -214,6 +214,9 @@
   #note.panel small { text-align: center; }
   #p-plane.here { animation: none; }
   #p-cookies, #p-tea { transition: opacity .6s ease; }
+  /* Vi 26/11 lighting tint: characters / postcards on the paper take the hour's light */
+  #note-wrap[data-w="sunset"] .paper-img, #note-wrap[data-w="sunset"] .bm .fl { filter: url(#lt-sunset); }
+  #note-wrap[data-w="night"] .paper-img, #note-wrap[data-w="rain"] .paper-img, #note-wrap[data-w="night"] .bm .fl, #note-wrap[data-w="rain"] .bm .fl { filter: url(#lt-night); }
   .paper-img { display: block; width: 62%; max-width: 230px; margin: 0 auto .9em; border-radius: 4px; height: auto; object-fit: contain; }
   .reply img { height: 1.6em; vertical-align: middle; margin-right: .4em; }
   .chimes { display: flex; justify-content: center; gap: .8em; }
@@ -287,6 +290,7 @@
   <div id="vbub" aria-live="polite"></div>
   <div id="dj" aria-live="polite"><img alt=""><div><small>📻 Tần Số Hẻm Hoa Giấy</small><span></span></div></div>
   <div id="toast"></div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="lt-sunset" color-interpolation-filters="sRGB"><feFlood flood-color="#F4A261" result="f"/><feBlend in="f" in2="SourceGraphic" mode="multiply" result="m"/><feComposite in="m" in2="SourceGraphic" operator="arithmetic" k2="0.15" k3="0.85" result="x"/><feComposite in="x" in2="SourceGraphic" operator="in"/></filter><filter id="lt-night" color-interpolation-filters="sRGB"><feFlood flood-color="#243B55" result="f"/><feBlend in="f" in2="SourceGraphic" mode="multiply" result="m"/><feComposite in="m" in2="SourceGraphic" operator="arithmetic" k2="0.25" k3="0.75" result="x"/><feComposite in="x" in2="SourceGraphic" operator="in"/></filter></svg>
   <div id="note-wrap"><div id="note"></div></div>
   <div id="intro" role="button" aria-label="Chạm để mở cửa sổ">
     <img class="cover" src="{{COVER}}" alt="Bên Khung Cửa Nhỏ — Little Sill">
@@ -924,7 +928,7 @@ function applyLook() {
   $('#tint').style.backgroundColor = TINT[S.weather][S.lamp ? 'on' : 'off'];
   $('#glow').style.opacity = S.lamp ? GLOW[S.weather] : 0;
   $('#sunlight').style.opacity = S.weather === 'sunset' ? 0.85 : 0;
-  $('#p-lamp').classList.toggle('off', !S.lamp);
+  $('#p-lamp').classList.toggle('off', !S.lamp); $('#note-wrap').dataset.w = S.weather;
   const src = document.querySelector(`.scene[data-w="${S.weather}"]`).src;
   $('#backdrop').style.backgroundImage = `url(${src})`;
   placeRing();
