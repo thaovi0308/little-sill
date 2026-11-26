@@ -990,14 +990,18 @@ const SELF_PICK = {
   worry: [[2, 0], [2, 1], [2, 4]],
   joy: [[1, 0], [1, 2], [1, 4], [1, 1]],
 };
-const SELF_DEFAULT = { sky: 'những tia nắng chiều dịu nhẹ', worry: 'những suy nghĩ vội vã', joy: 'một tách trà ấm và bản nhạc quen' };
+const SELF_DEFAULT = {   // Vi 26/11: fallbacks when the diary has no answer; one is picked per letter
+  sky: ['những tia nắng chiều dịu nhẹ', 'một buổi sớm mai trong trẻo sau cơn mưa', 'ánh hoàng hôn cam hồng thật êm', 'màn đêm tĩnh lặng điểm vài ngôi sao nhỏ'],
+  worry: ['những suy nghĩ vội vã', 'những nỗi lo chưa kịp gọi tên', 'những ngày dài nhiều mỏi mệt', 'những điều chưa hoàn hảo của chính mình'],
+  joy: ['một tách trà ấm và bản nhạc quen', 'tiếng mưa rơi đều ngoài khung cửa sổ', 'một mầm cây nhỏ vừa nhú thêm lá mới', 'cảm giác được ngồi yên và thở một hơi thật sâu'] };
 function selfPick(kind) {
   const qs = SELF_PICK[kind].map(([t, q]) => Q_THEMES[t][1][q]), rows = Object.keys(S.diary || {}).sort().reverse().map(k => S.diary[k]);
   for (const q of qs) {
     const d = rows.find(r => r.q === q && r.a && r.a.trim().length >= 2);
     if (d) { let a = d.a.trim().replace(/[.!?…。]+$/, ''); a = a.charAt(0).toLowerCase() + a.slice(1); if (a.length > 90) a = a.slice(0, 90).replace(/\s+\S*$/, '') + '…'; return `<b class="kw">${esc(a)}</b>`; }
   }
-  return SELF_DEFAULT[kind];
+  const L = SELF_DEFAULT[kind], seed = S.selfSeed ?? (S.selfSeed = Math.floor(Math.random() * 1e6));
+  return L[(seed + Object.keys(SELF_DEFAULT).indexOf(kind) * 7) % L.length];
 }
 function selfLetterHtml() {
   return `<h3 style="margin-top:0">Gửi chính mình của những ngày đã qua</h3><div style="text-align:left">
@@ -1313,7 +1317,7 @@ function applyNaNote() {
 let naWetShown = false;
 function petCat() {
   const st = S.story;
-  if (st.na === 1 && !st.naSent && S.meals >= 3) {
+  if (st.na === 1 && !st.naSent && (S.mealsSp ?? S.meals) >= 3) {
     if (!S.keep.daisy) { toast('Bánh Quy dụi đầu vào tay bạn… hình như Na thích hoa cúc họa mi 🌼', 3200); return true; }
     openPanel(`<h3>Gửi quà cho Na</h3><p style="text-align:center"><img src="${ITEM_IMG.k_daisy}" alt="" style="height:3.4em"><br>
       Kẹp một bông cúc họa mi ép vào ruy băng của Bánh Quy?</p><button class="reply" id="na-send">Gửi bông hoa 🌼</button>`, true);
@@ -1348,7 +1352,9 @@ function jam() {
 }
 // a line for each keepsake when touched (flavor text by Vi); several lines take turns
 const FLAVOR = {
-  k_ttlantern: ['Chiếc đèn kéo quân của bà chủ nhà khẽ xoay, bóng những chú cá chép và cành trúc lướt chậm trên vách gác.'],
+  k_ttlantern: ['Chiếc đèn kéo quân của bà chủ nhà khẽ xoay, bóng những chú cá chép và cành trúc lướt chậm trên vách gác.',
+    'Ánh nến ấm áp bên trong làm vòng giấy xoay tròn nhè nhẹ, gợi nhớ tiếng trống rước đèn rộn ràng của những mùa trăng cũ.',
+    'Món quà nhỏ của bà chủ nhà tỏa ra thứ ánh sáng vàng dịu dàng, sưởi ấm cả một góc căn gác đêm khuya.'],
   musicbox0: ['Chiếc hộp nhạc bằng gỗ sồi cũ kỹ. Bánh răng bên trong dường như đang bị kẹt, cần một chiếc lò xo nhỏ để đánh thức giai điệu.'],
   musicbox: ['Giai điệu du dương vang lên từ những bánh răng nhỏ bé, êm đềm như một lời ru buổi tối.', 'Tiếng nhạc mộc mạc lan tỏa khắp căn gác, mang theo cả hơi ấm của những kỷ niệm xưa.'],
   k_record: ['Trên mặt đĩa còn hằn vài vết xước thời gian, nhưng âm thanh phát ra lại trầm ấm đến lạ.'],
@@ -1491,7 +1497,7 @@ const FLO_GIFT = { k_sunseed: 'Túi hạt giống hướng dương 🌻', k_can:
 function floChapter() {
   const st = S.story, f = st.flower || 0, now = Date.now(), since = now - (st.flowerAt || 0);
   if (f === 0) return S.watered ? 0 : null;   // day one: the first watering rings the bag
-  if (f === 1) return st.flowerSent && now - st.flowerSent >= 0.5 * HOUR ? 1 : null;
+  if (f === 1) return st.flowerSent && now - st.flowerSent >= 1.5 * HOUR ? 1 : null;
   if (f === 2) return since >= 24 * HOUR ? 2 : null;
   if (f === 3) return (S.candleDone || 0) > (st.flowerCandle || 0) && (S.weather === 'night' || S.weather === 'rain') ? 3 : null;
   if (f === 4) return since >= 24 * HOUR && S.weather === 'night' ? 4 : null;
@@ -1529,11 +1535,11 @@ function tapBag() {
     return;
   }
   if (ch === null) return;
-  const SCENE = { 0: 'wilted', 4: 'stall_full' };   // Vi 26/11: the drooping branch, then her stall in full bloom
+  const SCENE = { 0: 'stall_wilt', 1: 'stall_mid', 2: 'stall_mid', 3: 'stall_full', 4: 'stall_lit' };   // Vi 26/11: the stall changes with what you did
   const N = FLO[ch], pic = N.gift ? (ITEM_IMG[N.gift] ? `<img class="paper-img" src="${ITEM_IMG[N.gift]}" alt="" style="max-height:4em">` : '') : '';
   const pic2 = N.gift === 'k_can' ? `<div style="display:flex;justify-content:center;gap:.6em"><img src="${ITEM_IMG.can}" alt="" style="height:4em"><img src="${ITEM_IMG.bouquet}" alt="" style="height:4.6em"></div>` : pic;
   const face = `<img class="paper-img" src="${ITEM_IMG.florist}" alt="" style="max-height:${ch === 0 ? 9 : 6}em">`;
-  const scene = SCENE[ch] ? `<img class="paper-img" src="${ITEM_IMG[SCENE[ch]]}" alt="" style="max-height:5em;width:auto">` : '';
+  const scene = SCENE[ch] ? `<img class="paper-img" src="${ITEM_IMG[SCENE[ch]]}" alt="" style="max-height:7em">` : '';
   showPaper(face + staged(N.b, scene + pic2 + sig), () => {
     st.flower = ch + 1; st.flowerAt = Date.now(); if (ch === 3) st.flowerCandle = S.candleDone || 0;
     if (ch === 2) st.flowerCandle = S.candleDone || 0;
@@ -1561,8 +1567,10 @@ const RABBIT_AT = [[226, 806, 70, 100], [292, 806, 70, 100]];
 function ttSeason() {
   if (/trungthu/.test(location.search)) return 'test';
   const now = Date.now();
-  const d = TT_DAYS.find(x => { const t = new Date(x + 'T12:00:00').getTime(); return now > t - 10 * 86400000 && now < t + 1.5 * 86400000; });
-  return d ? d.slice(0, 4) : null;
+  const d = TT_DAYS.find(x => { const t = new Date(x + 'T12:00:00').getTime(); return now > t - 3.5 * 86400000 && now < t + 1.5 * 86400000; });   // 12-16 of the 8th lunar month
+  if (d) return d.slice(0, 4);
+  if (S.ttForce) { const n = new Date(); return `moon-${n.getFullYear()}-${n.getMonth() + 1}-${n.getDate()}`; }   // 'Đêm Trăng Rằm' switch
+  return null;
 }
 function ttState() { const y = ttSeason(); if (!y) return null; S.tt = S.tt && S.tt.y === y ? S.tt : { y, step: 0 }; return S.tt; }
 function applyTT() {
@@ -1914,7 +1922,7 @@ function act(id) {
         if (S.food !== 'milk') return;
         catAct('eat', 9); SFX.purr();
         setTimeout(() => {   // the plate is empty after the meal
-          if (S.food === 'milk') { S.food = null; S.meals++; save(); applyFood(); applyNaNote(); }
+          if (S.food === 'milk') { S.food = null; S.meals++; if (Date.now() - (S.mealAt || 0) >= 2 * HOUR) { S.mealsSp = (S.mealsSp || 0) + 1; S.mealAt = Date.now(); } save(); applyFood(); applyNaNote(); }
           catSit(5); hearts(); toast('Bánh Quy ăn sạch bánh quy rồi, no căng bụng 😽', 2600);
         }, 9000);
       }, 1200); }
@@ -2059,11 +2067,14 @@ function setMuted(m) { S.muted = m; save(); applyMute(); if (AC) master.gain.set
 function openSound() {
   const sl = (id, label, v) => `<label class="vol"><span>${label}</span><input type="range" id="${id}" min="0" max="100" value="${Math.round(v * 100)}"></label>`;
   openPanel(`<h3>Âm thanh</h3>${sl('v-amb', '🌧️ Mưa, chim, côn trùng', S.volAmb)}${sl('v-radio', '📻 Nhạc radio', S.volRadio)}${sl('v-music', '🎵 Nhạc nền', S.volMusic ?? 0.7)}
+    ${S.keep.alley ? `<button class="reply" id="v-moon">${S.ttForce ? '🌕 Đêm Trăng Rằm: đang bật' : '🌑 Đêm Trăng Rằm: đang tắt'}</button>` : ''}
     <button class="reply" id="v-mute">${S.muted ? '🔈 Bật lại âm thanh' : '🔇 Tắt hết âm thanh'}</button>
     <button class="reply" id="v-done" style="text-align:center">Xong</button>`, true);
   $('#v-amb').addEventListener('input', e => { S.volAmb = e.target.value / 100; save(); if (ambBus) ambBus.gain.setTargetAtTime(S.volAmb, AC.currentTime, 0.05); });
   $('#v-music').addEventListener('input', e => { S.volMusic = e.target.value / 100; save(); if (bgmBus) bgmBus.gain.setTargetAtTime(S.volMusic, AC.currentTime, 0.05); });
   $('#v-radio').addEventListener('input', e => { S.volRadio = e.target.value / 100; save(); if (radioVol) radioVol.gain.setTargetAtTime(S.volRadio, AC.currentTime, 0.05); });
+  const vm = $('#v-moon'); if (vm) vm.addEventListener('click', e => { e.stopPropagation(); S.ttForce = !S.ttForce; save(); applyTT(); openSound();
+    if (S.ttForce) toast(S.weather === 'night' ? 'Đêm nay bà chủ nhà sẽ ghé ngắm trăng cùng bạn 🌕' : 'Chuyển sang trời đêm để ngắm trăng cùng bà chủ nhà nhé 🌕', 3600); });
   $('#v-mute').addEventListener('click', e => { e.stopPropagation(); setMuted(!S.muted); openSound(); });
   $('#v-done').addEventListener('click', e => { e.stopPropagation(); closeNote(); });
   $('#note').addEventListener('click', e => e.stopPropagation(), { once: true });
