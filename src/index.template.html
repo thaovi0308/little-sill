@@ -516,6 +516,22 @@ function makeImpulse(seconds, decay) {
   return buf;
 }
 let NOISE = {};
+// recorded sounds next to the page (audio/*.mp3), decoded once into buffers; a sound that fails to load falls back to the synthesized one
+const SAMPLES = ['amb_rain', 'amb_night', 'amb_day', 'sfx_page', 'sfx_paper', 'sfx_pour', 'sfx_match', 'sfx_meow', 'sfx_meow2', 'sfx_chirp', 'sfx_chirp2'], BUF = {};
+function loadSamples(done) {
+  let left = SAMPLES.length;
+  for (const n of SAMPLES) fetch(`audio/${n}.mp3`).then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+    .then(a => new Promise((ok, no) => AC.decodeAudioData(a, ok, no))).then(b => { BUF[n] = b; }).catch(() => {})
+    .finally(() => { if (--left === 0) done(); });
+}
+// play a recorded one-shot with a small random pitch (0.95-1.05) so repeated taps sound natural
+function playS(names, v = 1, dest = master, pan = 0, wet = 0) {
+  if (!AC) return true;
+  const n = [].concat(names).filter(k => BUF[k]); if (!n.length) return false;
+  const b = AC.createBufferSource(); b.buffer = BUF[n[Math.floor(Math.random() * n.length)]]; b.playbackRate.value = 0.95 + Math.random() * 0.1;
+  const g = gain(v), p = AC.createStereoPanner(); p.pan.value = pan; chain(b, g, p, dest); if (wet) chain(p, gain(wet), reverb);
+  b.start(); return true;
+}
 function loopNoise(kind, dest) {
   const s = AC.createBufferSource(); s.buffer = NOISE[kind]; s.loop = true;
   s.connect(dest); s.start(0, Math.random() * 4); return s;
@@ -536,11 +552,19 @@ function initAudio() {
   // rain: hiss + body + random drips
   ambBus = gain(S.volAmb); ambBus.connect(master);
   amb.rain = gain(0); amb.rain.connect(ambBus);
-  loopNoise('pink', chain(filt('highpass', 450), filt('lowpass', 3200), gain(0.55), amb.rain));
-  loopNoise('brown', chain(filt('lowpass', 520), gain(0.65), amb.rain));
+  const rainSynth = gain(1); rainSynth.connect(amb.rain);   // fallback until the recorded rain loop is decoded
+  loopNoise('pink', chain(filt('highpass', 450), filt('lowpass', 3200), gain(0.55), rainSynth));
+  loopNoise('brown', chain(filt('lowpass', 520), gain(0.65), rainSynth));
   // night: crickets only; sunset: sparrows only (Vi 26/11: no noise bed outside the rain, the hiss belongs to the radio)
   amb.night = gain(0); amb.night.connect(ambBus);
   amb.sunset = gain(0); amb.sunset.connect(ambBus);
+  loadSamples(() => {
+    // recorded beds (Mixkit free SFX): rain only in the rain, distant crickets at night, leaves in the breeze by day
+    const bed = (name, dest, v) => { if (!BUF[name]) return false; const b = AC.createBufferSource(); b.buffer = BUF[name]; b.loop = true;
+      chain(b, gain(v), dest); b.start(0, Math.random() * BUF[name].duration); return true; };
+    if (bed('amb_rain', amb.rain, 1.1)) rainSynth.gain.setTargetAtTime(0, AC.currentTime, 0.5);
+    bed('amb_night', amb.night, 0.5); bed('amb_day', amb.sunset, 0.35);
+  });
 
   radioVol = gain(S.volRadio); radioVol.connect(master);
   radioBus = gain(0); chain(radioBus, filt('lowpass', 3400), filt('highpass', 90), radioVol);
@@ -647,7 +671,7 @@ const SFX = {
     }
   },
   water() {
-    if (!AC) return; const t = AC.currentTime;
+    if (playS('sfx_pour', 0.5)) return; const t = AC.currentTime;
     noiseBurst(t, 1.1, 700, 1500, 2.5, 0.22);
     for (let i = 0; i < 7; i++) {
       const tt = t + 0.15 + Math.random() * 0.9; const o = AC.createOscillator(); const g = gain(0);
@@ -661,10 +685,10 @@ const SFX = {
     for (let i = 0; i < 6; i++) tone(t + i * 0.07 + Math.random() * 0.04, 2600 + Math.random() * 2400, 0.5, 0.025, 'sine', reverb);
   },
   paper() {
-    if (!AC) return; const t = AC.currentTime;
+    if (playS(['sfx_page', 'sfx_paper'], 0.45)) return; const t = AC.currentTime;
     for (let i = 0; i < 5; i++) noiseBurst(t + i * 0.05 + Math.random() * 0.03, 0.05, 2500 + Math.random() * 2000, 0, 1.2, 0.07);
   },
-  match() { if (!AC) return; const t = AC.currentTime; noiseBurst(t, 0.35, 1800, 900, 0.9, 0.12); },
+  match() { if (playS('sfx_match', 0.6)) return; const t = AC.currentTime; noiseBurst(t, 0.35, 1800, 900, 0.9, 0.12); },
   creak() {
     if (!AC) return; const t = AC.currentTime;
     const o = AC.createOscillator(); o.type = 'sawtooth'; o.frequency.setValueAtTime(70, t);
@@ -675,7 +699,7 @@ const SFX = {
     noiseBurst(t + 0.05, 1.4, 300, 700, 0.7, 0.18, master, 'brown');
   },
   cricket(pan) {
-    if (!AC) return; const t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = pan; p.connect(amb.night);
+    if (!AC || BUF.amb_night) return; const t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = pan; p.connect(amb.night);
     for (let i = 0; i < 3; i++) tone(t + i * 0.055, 4300 + pan * 200, 0.035, 0.012, 'sine', p, 0.004);
   },
   croak() {
@@ -708,7 +732,7 @@ const SFX = {
     }
   },
   chirp() {
-    if (!AC) return; let t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = -0.1; p.connect(master); p.connect(reverb);
+    if (playS(['sfx_chirp', 'sfx_chirp2'], 0.4, master, -0.1, 0.25)) return; let t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = -0.1; p.connect(master); p.connect(reverb);
     for (let i = 0; i < 3; i++) {
       const o = AC.createOscillator(); const g = gain(0); const f0 = 3400 + Math.random() * 700;
       o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f0 * 1.3, t + 0.06);
@@ -720,7 +744,7 @@ const SFX = {
     for (let i = 0; i < 8; i++) noiseBurst(t + i * 0.045, 0.035, 900 + Math.random() * 600, 0, 1, 0.06, master, 'pink');
   },
   bird() {
-    if (!AC) return; let t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = Math.random() * 1.4 - 0.7;
+    if (playS(['sfx_chirp', 'sfx_chirp2'], 0.18, amb.sunset, Math.random() * 1.4 - 0.7, 0.3)) return; let t = AC.currentTime; const p = AC.createStereoPanner(); p.pan.value = Math.random() * 1.4 - 0.7;
     p.connect(amb.sunset); p.connect(reverb);
     const n = 2 + Math.floor(Math.random() * 4);
     for (let i = 0; i < n; i++) {
@@ -1893,7 +1917,7 @@ function act(id) {
         }, 9000);
       }, 1200); }
       save(); applyFood(); SFX.click(); break;
-    case 'cat': hearts(); SFX.purr(); zzzT = -3; catSit(7); if (!petCat()) toast(CAT_MOODS[Math.floor(Math.random() * CAT_MOODS.length)], 2400); break;
+    case 'cat': hearts(); if (Math.random() < 0.5) playS(['sfx_meow', 'sfx_meow2'], 0.3); SFX.purr(); zzzT = -3; catSit(7); if (!petCat()) toast(CAT_MOODS[Math.floor(Math.random() * CAT_MOODS.length)], 2400); break;
     case 'welcome': readWelcome(); break;
     case 'nanote': { const i = naChapter(); if (i !== null) showNaNote(i); break; }
     case 'jar': releaseFireflies(); SFX.sparkle(); setTimeout(() => catAct('play', 5), 500); sayAt(HITS.jar.box, flavor('jar')); break;
