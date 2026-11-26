@@ -425,7 +425,7 @@ const HITS = {
   nanote: { box: [474, 786, 60, 64], label: 'Mẩu giấy của bé Na' },
   jar:    { box: [570, 796, 78, 108], label: 'Lọ đom đóm' },
   welcome:{ box: [592, 862, 58, 44], label: 'Lá thư chào mừng' },
-  bag:    { box: [500, 218, 90, 130], label: 'Túi vải của cô bán hoa' },
+  bag:    { box: [500, 218, 90, 130], label: 'Túi vải của chị bán hoa' },
   lantern:{ box: [532, 930, 64, 56], label: 'Đèn lồng giấy' },
   lamp:   { box: [30, 846, 176, 276], label: 'Đèn bàn' },
   radio:  { box: [208, 940, 196, 182], label: 'Đài radio' },
@@ -1321,7 +1321,7 @@ function finaleLetter() {
     ${sign('Bác sửa đồng hồ', 'Cảm ơn cháu vì đã giúp những bánh răng cũ kỹ và cả ký ức của bác được ngân vang trở lại.')}
     ${sign('Cậu họa sĩ tầng trên', 'Cảm ơn góc cửa bình yên của bạn đã cho mình tìm lại niềm vui bên cây cọ sau những ngày mỏi mệt.')}
     ${sign('Bé Na & mèo Bánh Quy', 'Cảm ơn anh/chị vì những đĩa bánh quy thơm ngon và ánh đèn ấm áp luôn chờ đón chúng em mỗi ngày ạ!')}
-    ${sign('Cô bán hoa đầu hẻm', 'Cảm ơn cháu vì đã chia sẻ hơi ấm và sắc xanh từ khung cửa sổ nhỏ, giúp cả góc hẻm này lại rực rỡ hương hoa.')}
+    ${sign('Chị bán hoa đầu hẻm', 'Cảm ơn em vì đã chia sẻ hơi ấm và sắc xanh từ khung cửa sổ nhỏ, giúp cả góc hẻm này lại rực rỡ hương hoa.')}
     ${sign('Bà chủ nhà tầng dưới', 'Cảm ơn cháu đã biến căn gác nhỏ này thành một nơi chốn thật dịu dàng để trở về.')}
     <p>Chúng tôi đã cùng nhau vẽ lại bức tranh “Hẻm Hoa Giấy” này để tặng bạn. Dù ngoài kia cuộc sống có đôi lúc vội vã, mong bạn hãy luôn nhớ rằng ở góc hẻm nhỏ này, vẫn luôn có những ô cửa sáng đèn và những người hàng xóm lặng lẽ mỉm cười chào đón bạn.</p>
     <p style="text-align:center;margin-top:.8em"><b>Cảm ơn bạn đã ở đây.</b></p>`, () => {
@@ -1547,16 +1547,16 @@ const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', ca
 // ---------------------------------------------------------------- route 4: the florist at the head of the alley (lines by Vi)
 // a cloth bag on a pulley rope comes to the window; a small bell rings when it carries a note
 const FLO = [
-  { t: 'Nhành Hoa Ủ Rũ', b: ['Chào người hàng xóm mới. Cô là người bán hoa ở đầu hẻm. Dạo này khách ít ghé, mấy chậu hoa ngoài sạp của cô cũng ủ rũ theo...',
-    'Nhìn lên thấy bệ cửa nhà cháu xanh mướt, cô ngưỡng mộ lắm. Cháu có bí quyết gì thì gửi một nhánh oải hương hoặc trầu bà vào túi vải chia sẻ với cô nhé!'] },
-  { t: 'Hạt Giống Nắng Mai', b: ['Cảm ơn nhánh cây xanh mướt của cháu! Hóa ra hoa cũng cần được nghe nhạc và thắp đèn ấm mới vui vẻ trở lại.',
-    'Cô gửi tặng cháu túi hạt giống hướng dương này. Rắc lên đĩa ngoài bệ cửa, biết đâu sẽ có bạn sóc nhỏ ghé thăm đấy!'], gift: 'k_sunseed' },
-  { t: 'Chiếc Bình Đồng Cũ', b: ['Nhờ áp dụng cách của cháu mà sạp hoa đầu hẻm hôm nay tươi tắn hẳn lên, khách đi ngang cũng dừng lại ngắm nhiều hơn.',
-    'Cô tặng cháu bình tưới nước bằng đồng và một bó hoa khô thơm dịu. Có chiếc bình này, mấy chậu cây của cháu sẽ lớn nhanh hơn một chút đấy!'], gift: 'k_can' },
-  { t: 'Hương Nến Đêm Gió', b: ['Tối qua trời trở gió lạnh, hương thơm dịu nhẹ từ ngọn nến thơm nhà cháu bay xuống tận đầu hẻm làm cô thấy ấm lòng lạ thường.',
-    'Cô gửi tặng cháu chiếc chuông gió thủy tinh vẽ hoa. Mỗi khi gió lùa qua khung cửa, tiếng ngân của nó sẽ thay cô chúc cháu bình yên.'], gift: 'k_flowerchime' },
-  { t: 'Ánh Đèn Đầu Hẻm', b: ['Góc sạp hoa đầu hẻm tối nay cũng bật sáng một chiếc đèn vàng ấm cúng, hòa cùng ánh đèn từ căn gác nhỏ nhà cháu.',
-    '“Từ ngày có người bạn cùng yêu cây cối ở tầng trên, sáng nào mở cửa hàng cô cũng thấy tràn đầy niềm vui.”'] },
+  { t: 'Nhành Hoa Ủ Rũ', b: ['Chào người hàng xóm mới. Chị là người bán hoa ở đầu hẻm. Dạo này khách ít ghé, mấy chậu hoa ngoài sạp của chị cũng ủ rũ theo...',
+    'Nhìn lên thấy bệ cửa nhà em xanh mướt, chị ngưỡng mộ lắm. Em có bí quyết gì thì gửi một nhánh oải hương hoặc trầu bà vào túi vải chia sẻ với chị nhé!'] },
+  { t: 'Hạt Giống Nắng Mai', b: ['Cảm ơn nhánh cây xanh mướt của em! Hóa ra hoa cũng cần được nghe nhạc và thắp đèn ấm mới vui vẻ trở lại.',
+    'Chị gửi tặng em túi hạt giống hướng dương này. Rắc lên đĩa ngoài bệ cửa, biết đâu sẽ có bạn sóc nhỏ ghé thăm đấy!'], gift: 'k_sunseed' },
+  { t: 'Chiếc Bình Đồng Cũ', b: ['Nhờ áp dụng cách của em mà sạp hoa đầu hẻm hôm nay tươi tắn hẳn lên, khách đi ngang cũng dừng lại ngắm nhiều hơn.',
+    'Chị tặng em bình tưới nước bằng đồng và một bó hoa khô thơm dịu. Có chiếc bình này, mấy chậu cây của em sẽ lớn nhanh hơn một chút đấy!'], gift: 'k_can' },
+  { t: 'Hương Nến Đêm Gió', b: ['Tối qua trời trở gió lạnh, hương thơm dịu nhẹ từ ngọn nến thơm nhà em bay xuống tận đầu hẻm làm chị thấy ấm lòng lạ thường.',
+    'Chị gửi tặng em chiếc chuông gió thủy tinh vẽ hoa. Mỗi khi gió lùa qua khung cửa, tiếng ngân của nó sẽ thay chị chúc em bình yên.'], gift: 'k_flowerchime' },
+  { t: 'Ánh Đèn Đầu Hẻm', b: ['Góc sạp hoa đầu hẻm tối nay cũng bật sáng một chiếc đèn vàng ấm cúng, hòa cùng ánh đèn từ căn gác nhỏ nhà em.',
+    '“Từ ngày có người bạn cùng yêu cây cối ở tầng trên, sáng nào mở cửa hàng chị cũng thấy tràn đầy niềm vui.”'] },
 ];
 const FLO_GIFT = { k_sunseed: 'Túi hạt giống hướng dương 🌻', k_can: 'Bình tưới bằng đồng và bó hoa khô 🌾', k_flowerchime: 'Chuông gió thủy tinh vẽ hoa 🎐' };
 function floChapter() {
@@ -1570,7 +1570,7 @@ function floChapter() {
 }
 function floNeedsSprig() { return floWaiting() && !(S.keep.lavender > 0 || S.keep.pothos > 0); }
 let floHinted = 0;
-const FLO_HINT = 'Bản tin chiều tại Hẻm Hoa Giấy: Nghe nói cô bán hoa đầu hẻm dạo này đang tìm một nhành oải hương hoặc trầu bà tươi tắn để lấy lại cảm hứng chăm vườn. Ai có trồng trên bệ cửa thì chia sẻ với cô nhé!';
+const FLO_HINT = 'Bản tin chiều tại Hẻm Hoa Giấy: Nghe nói chị bán hoa đầu hẻm dạo này đang tìm một nhành oải hương hoặc trầu bà tươi tắn để lấy lại cảm hứng chăm vườn. Ai có trồng trên bệ cửa thì chia sẻ với chị nhé!';
 function floHint() {
   if (!floNeedsSprig() || Date.now() - floHinted < 10 * 60000) return;
   floHinted = Date.now(); setTimeout(() => djSay(FLO_HINT), 2600);
@@ -1588,10 +1588,10 @@ function applyBag() {
 }
 place($('#p-bag'), 512, 222, 66, 118); place($('#p-rope'), 430, 236, 130, 2);
 function tapBag() {
-  const st = S.story, ch = floChapter(), sig = '<small>— Cô bán hoa đầu hẻm —</small>';
+  const st = S.story, ch = floChapter(), sig = '<small>— Chị bán hoa đầu hẻm —</small>';
   if (ch === null && floWaiting()) {
     const have = ['lavender', 'pothos'].filter(k => S.keep[k] > 0);
-    if (!have.length) { toast('Cô bán hoa đang chờ một nhánh oải hương hoặc trầu bà 🌿 (hái từ chậu cây hoặc nhận khi nến tàn)', 3800); return; }
+    if (!have.length) { toast('Chị bán hoa đang chờ một nhánh oải hương hoặc trầu bà 🌿 (hái từ chậu cây hoặc nhận khi nến tàn)', 3800); return; }
     openPanel(`<h3>Gửi vào túi vải</h3>` + have.map(k => `<button class="reply" data-flo="${k}"><img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">${PLANTS[k].gift}</button>`).join('') + '<small>Chạm ra ngoài để đóng</small>');
     document.querySelectorAll('[data-flo]').forEach(b => b.addEventListener('click', e => {
       e.stopPropagation(); S.keep[b.dataset.flo]--; st.flowerSent = Date.now();
@@ -1607,7 +1607,7 @@ function tapBag() {
   const pic2 = N.gift === 'k_can' ? `<div style="display:flex;justify-content:center;gap:.6em"><img src="${ITEM_IMG.can}" alt="" style="height:4em"><img src="${ITEM_IMG.bouquet}" alt="" style="height:4.6em"></div>` : pic;
   const face = `<img class="paper-img" src="${ITEM_IMG.florist}" alt="" style="max-height:${ch === 0 ? 9 : 6}em">`;
   const scene = SCENE[ch] ? `<img class="paper-img" src="${ITEM_IMG[SCENE[ch]]}" alt="" style="max-height:7em">` : '';
-  const fernPs = ch === 1 && st.fernWrap ? '<small style="margin-top:.8em">P.S. Lá dương xỉ cháu lót quanh nhánh hoa xanh mướt quá, cô cắm chung vào bình trên quầy rồi đấy.</small>' : '';
+  const fernPs = ch === 1 && st.fernWrap ? '<small style="margin-top:.8em">P.S. Lá dương xỉ em lót quanh nhánh hoa xanh mướt quá, chị cắm chung vào bình trên quầy rồi đấy.</small>' : '';
   showPaper(face + staged(N.b, scene + pic2 + fernPs + sig), () => {
     st.flower = ch + 1; st.flowerAt = Date.now(); if (ch === 3) st.flowerCandle = S.candleDone || 0;
     if (ch === 2) st.flowerCandle = S.candleDone || 0;
@@ -1694,7 +1694,7 @@ const JOURNAL = [
     { t: 'Những Người Bạn Mới', ok: st => st.na >= 3, x: 'Mẩu giấy nét chữ nắn nót: “Nhờ món quà của anh/chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ! Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh/chị bức tranh hai đứa em nắm tay nhau nè!”' },
     { t: 'Đêm Mưa Và Viên Bi Ve', ok: st => st.na >= 4, x: 'Một đêm mưa tầm tã, Bánh Quy chạy lạc lên gác với bộ lông ướt nhẹp và run rẩy. Nhờ ánh đèn vàng ấm áp và chiếc khăn khô mềm mại của bạn, chú mèo nhỏ đã ngủ một giấc ngon lành. Hôm sau, bé Na rối rít cảm ơn và gửi tặng bạn một viên bi ve trong veo, mỗi khi chạm tay vào, bạn dường như nghe thấy cả tiếng sóng biển rì rào.' },
     { t: 'Hơi Ấm Khung Cửa', ok: st => st.na >= 5, x: 'Khi góc vườn nhỏ của bạn đã nở rộ sắc hoa, bé Na gửi lên một bức tranh sáp vẽ chính khung cửa sổ nhà bạn đang tỏa sáng lung linh trong đêm. Kèm theo đó là dòng chữ nguệch ngoạc nhưng chân thành: “Mỗi lần ngước lên nhìn cửa sổ nhà anh/chị sáng đèn, cả em và Bánh Quy đều thấy ấm áp lắm ạ.”' }] },
-  { who: 'Cô Bán Hoa Đầu Hẻm', by: 'Túi vải ròng rọc', img: 'florist', ch: FLO.map((c, k) => ({ t: c.t, ok: st => (st.flower || 0) > k, x: c.b.join(' ') })) },
+  { who: 'Chị Bán Hoa Đầu Hẻm', by: 'Túi vải ròng rọc', img: 'florist', ch: FLO.map((c, k) => ({ t: c.t, ok: st => (st.flower || 0) > k, x: c.b.join(' ') })) },
 ];
 function openJournal(open) {
   const st = S.story;
@@ -1782,7 +1782,7 @@ function openCraft() {
 }
 const BM_THANKS = {
   painter: ['Chiếc dấu trang xinh quá! Màu giấy với cánh hoa phối khéo thật, bạn có con mắt của người vẽ tranh đấy. Mình kẹp nó vào cuốn sổ ký họa rồi.', '— Cậu họa sĩ tầng trên —'],
-  florist: ['Cô treo chiếc dấu trang của cháu lên sạp hoa đầu hẻm rồi, khách nào ghé cũng hỏi ai làm mà khéo thế!', '— Cô bán hoa đầu hẻm —'] };
+  florist: ['Chị treo chiếc dấu trang của em lên sạp hoa đầu hẻm rồi, khách nào ghé cũng hỏi ai làm mà khéo thế!', '— Chị bán hoa đầu hẻm —'] };
 function openBookmarks() {
   const L = S.bookmarks;
   openPanel(`<h3>Bộ sưu tập dấu trang</h3>${L.length ? `<div class="bm-grid">${L.map((b, i) => `<div data-bm="${i}">${bmHtml(b)}</div>`).join('')}</div>` : '<p style="text-align:center">Chưa có chiếc nào. Thử làm chiếc đầu tiên nhé!</p>'}
@@ -1796,7 +1796,7 @@ function openBm(i) {
   openPanel(`<h3>Dấu trang</h3><div style="display:flex;justify-content:center;font-size:15px;padding:3.4em 0 .6em">${bmHtml(b)}</div>
     <button class="reply" id="bm-clip" style="text-align:center">${S.bmClip === i ? '🔖 Đang kẹp trong sổ tay' : '🔖 Kẹp vào sổ tay'}</button>
     ${canP ? '<button class="reply" data-give="painter" style="text-align:center">✈️ Gửi cậu họa sĩ theo máy bay giấy</button>' : ''}
-    ${canF ? '<button class="reply" data-give="florist" style="text-align:center">🧺 Gửi cô bán hoa qua túi vải</button>' : ''}
+    ${canF ? '<button class="reply" data-give="florist" style="text-align:center">🧺 Gửi chị bán hoa qua túi vải</button>' : ''}
     <button class="reply" id="bm-back" style="text-align:center">‹ Bộ sưu tập</button><small>Chạm ra ngoài để đóng</small>`);
   $('#bm-clip').addEventListener('click', e => { e.stopPropagation(); S.bmClip = i; save(); applyBmTail(); SFX.paper(); openBm(i); });
   $('#bm-back').addEventListener('click', e => { e.stopPropagation(); openBookmarks(); });
@@ -1828,7 +1828,7 @@ function openKeepsakes() {
     ['k_feather', 'Lông chim sẻ', 'Mở thêm con dấu lông chim trong sổ tay'], ['k_button', 'Cúc áo đồng', 'Mở thêm con dấu cúc áo trong sổ tay'], ['k_shell', 'Vỏ sò nhỏ', 'Quà của chú chim sẻ'],
     ['na_cat', 'Tranh bút sáp: Bánh Quy', pinHint('na_cat')], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', pinHint('na_friends')],
     ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', pinHint('na_window')],
-    ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của cô bán hoa. Rắc lên đĩa để mời bạn sóc'], ['bouquet', 'Bó hoa khô thơm dịu', S.bouquetOut ? 'Đang đặt trên bệ cửa, chạm để cất' : 'Chạm để đặt lên bệ cửa sổ'], ['k_can', 'Bình tưới bằng đồng', 'Quà của cô bán hoa. Cây lớn nhanh hơn một chút'],
+    ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của chị bán hoa. Rắc lên đĩa để mời bạn sóc'], ['bouquet', 'Bó hoa khô thơm dịu', S.bouquetOut ? 'Đang đặt trên bệ cửa, chạm để cất' : 'Chạm để đặt lên bệ cửa sổ'], ['k_can', 'Bình tưới bằng đồng', 'Quà của chị bán hoa. Cây lớn nhanh hơn một chút'],
     ['k_ttlantern', 'Đèn lồng kéo quân', 'Quà Trung Thu của bà chủ nhà'],
     ['k_flowerchime', 'Chuông gió thủy tinh vẽ hoa', 'Chọn ở hàng chuông gió phía trên']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
@@ -1837,7 +1837,7 @@ function openKeepsakes() {
     .filter(([k]) => S.keep[k]).map(([k, name, icon]) => {
       const pic = KEEP_ICON[k] ? `<img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">` : icon + ' ';
       const use = { daisy: 'Gửi bé Na qua ruy băng của Bánh Quy', cactus: 'Sửa hộp nhạc kẹt của bác', lavender: 'Kẹp vào máy bay giấy gửi cậu họa sĩ',
-        fern: 'Lót gói quà gửi cô bán hoa, hoặc kẹp máy bay giấy', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', leaf: 'Quà của bạn sóc. Mở con dấu lá phong trong sổ tay' }[k];
+        fern: 'Lót gói quà gửi chị bán hoa, hoặc kẹp máy bay giấy', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', leaf: 'Quà của bạn sóc. Mở con dấu lá phong trong sổ tay' }[k];
       return `<div class="keep"><span>${pic}${name}${use ? `<span class="hint">${use}</span>` : ''}</span><b>× ${S.keep[k]}</b></div>`;
     }));
   const chimes = '<div class="chimes">' + Object.entries(CHIMES).filter(([, c]) => !c.need || S.keep[c.need]).map(([k, c]) =>
@@ -2128,7 +2128,7 @@ function act(id) {
     case 'frog': visitorAct('frog'); sayTap('frog'); break;
     case 'owl': visitorAct('owl'); sayTap('owl'); break;
     case 'squirrel': visitorAct('squirrel'); sayTap('squirrel'); break;
-    case 'sparrow': SFX.chirp(); if (nextOldLetter() === null && floNeedsSprig() && Date.now() - floHinted > 10 * 60000) { floHinted = Date.now(); S.story.sparrowFloHint = 1; save(); say('sparrow', 'Chíp chíp! Hôm nay bay ngang đầu hẻm, tớ nghe cô bán hoa bảo cô thích mùi oải hương và sức sống của trầu bà lắm đấy!', 6500); sparrowOn = false; setTimeout(() => leave('sparrow', true), 6500); scheduleSparrow(); break; }
+    case 'sparrow': SFX.chirp(); if (nextOldLetter() === null && floNeedsSprig() && Date.now() - floHinted > 10 * 60000) { floHinted = Date.now(); S.story.sparrowFloHint = 1; save(); say('sparrow', 'Chíp chíp! Hôm nay bay ngang đầu hẻm, tớ nghe chị bán hoa bảo chị thích mùi oải hương và sức sống của trầu bà lắm đấy!', 6500); sparrowOn = false; setTimeout(() => leave('sparrow', true), 6500); scheduleSparrow(); break; }
       if (!sparrowGift()) showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
   }
 }
