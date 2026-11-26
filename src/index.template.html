@@ -1484,7 +1484,7 @@ const FLO = [
     'Cô tặng cháu bình tưới nước bằng đồng và một bó hoa khô thơm dịu. Có chiếc bình này, mấy chậu cây của cháu sẽ lớn nhanh hơn một chút đấy!'], gift: 'k_can' },
   { t: 'Hương Nến Đêm Gió', b: ['Tối qua trời trở gió lạnh, hương thơm dịu nhẹ từ ngọn nến thơm nhà cháu bay xuống tận đầu hẻm làm cô thấy ấm lòng lạ thường.',
     'Cô gửi tặng cháu chiếc chuông gió thủy tinh vẽ hoa. Mỗi khi gió lùa qua khung cửa, tiếng ngân của nó sẽ thay cô chúc cháu bình yên.'], gift: 'k_flowerchime' },
-  { t: 'Ánh Đèn Đầu Hẻm', b: ['Góc sạp hoa đầu hẻm tối nay cũng bật sáng một chiếc đèn vàng ấm cúng, hòa cùng ánh đèn từ căn gác nhỏ nhà bạn.',
+  { t: 'Ánh Đèn Đầu Hẻm', b: ['Góc sạp hoa đầu hẻm tối nay cũng bật sáng một chiếc đèn vàng ấm cúng, hòa cùng ánh đèn từ căn gác nhỏ nhà cháu.',
     '“Từ ngày có người bạn cùng yêu cây cối ở tầng trên, sáng nào mở cửa hàng cô cũng thấy tràn đầy niềm vui.”'] },
 ];
 const FLO_GIFT = { k_sunseed: 'Túi hạt giống hướng dương 🌻', k_can: 'Bình tưới bằng đồng và bó hoa khô 🌾', k_flowerchime: 'Chuông gió thủy tinh vẽ hoa 🎐' };
@@ -1941,7 +1941,7 @@ function act(id) {
     case 'frog': visitorAct('frog'); sayTap('frog'); break;
     case 'owl': visitorAct('owl'); sayTap('owl'); break;
     case 'squirrel': visitorAct('squirrel'); sayTap('squirrel'); break;
-    case 'sparrow': SFX.chirp(); if (nextOldLetter() === null && floNeedsSprig() && !S.story.sparrowFloHint) { S.story.sparrowFloHint = 1; save(); say('sparrow', 'Chíp chíp! Hôm nay bay ngang đầu hẻm, tớ nghe cô bán hoa bảo cô thích mùi oải hương và sức sống của trầu bà lắm đấy!', 6500); sparrowOn = false; setTimeout(() => leave('sparrow', true), 6500); scheduleSparrow(); break; }
+    case 'sparrow': SFX.chirp(); if (nextOldLetter() === null && floNeedsSprig() && Date.now() - floHinted > 10 * 60000) { floHinted = Date.now(); S.story.sparrowFloHint = 1; save(); say('sparrow', 'Chíp chíp! Hôm nay bay ngang đầu hẻm, tớ nghe cô bán hoa bảo cô thích mùi oải hương và sức sống của trầu bà lắm đấy!', 6500); sparrowOn = false; setTimeout(() => leave('sparrow', true), 6500); scheduleSparrow(); break; }
       if (!sparrowGift()) showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
   }
 }
