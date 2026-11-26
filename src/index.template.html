@@ -1926,7 +1926,13 @@ applyMute();
 
 $('#intro').addEventListener('click', () => {
   try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // iPhone: play even with the silent switch on
-  try { const a = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='); a.loop = true; a.play().catch(() => {}); } catch (e) {}
+  // iPhone silent-switch unlock: loop a real 1-second silent clip (an empty clip on loop seeks thousands of times a second and freezes Chrome)
+  if (/iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) try {
+    const n = 8000, buf = new Uint8Array(44 + n), v = new DataView(buf.buffer), str = (o, t) => [...t].forEach((c, i) => buf[o + i] = c.charCodeAt(0));
+    str(0, 'RIFF'); v.setUint32(4, 36 + n, true); str(8, 'WAVEfmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, 8000, true); v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true); str(36, 'data'); v.setUint32(40, n, true); buf.fill(128, 44);
+    const a = new Audio(URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }))); a.loop = true; a.volume = 0.01; a.play().catch(() => {});
+  } catch (e) {}
   initAudio(); if (AC.state === 'suspended') AC.resume();
   SFX.creak(); setTimeout(() => SFX.chime(0.6), 700);
   pushChime(110);
