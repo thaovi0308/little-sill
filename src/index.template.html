@@ -54,6 +54,7 @@
   .bm { position: relative; width: 5.2em; height: 15em; border-radius: .45em; box-shadow: 0 .15em .5em rgba(60,40,20,.28); overflow: visible; flex: none; }
   .bm .hole { position: absolute; left: 50%; top: .7em; width: .55em; height: .55em; margin-left: -.275em; border-radius: 50%; background: rgba(40,28,18,.55); box-shadow: inset 0 .05em .1em rgba(0,0,0,.4); }
   .bm .rib { position: absolute; left: 50%; bottom: calc(100% - .95em); width: .22em; height: 3.2em; margin-left: -.11em; border-radius: .1em; transform-origin: 50% 100%; }
+  .bm .bow { position: absolute; left: 50%; top: -.55em; width: 4.6em; transform: translateX(-50%) rotate(-4deg); z-index: 1; filter: drop-shadow(0 .05em .08em rgba(0,0,0,.25)); }
   .bm .rib.b { transform: rotate(14deg); } .bm .rib.a { transform: rotate(-9deg); }
   .bm .fl { position: absolute; left: 50%; transform: translateX(-50%); filter: saturate(.82) sepia(.12) drop-shadow(0 .04em .06em rgba(0,0,0,.25)); }
   .bm .stp { position: absolute; right: .35em; bottom: .4em; width: 1.7em; height: 1.7em; object-fit: contain; opacity: .85; transform: rotate(-12deg); mix-blend-mode: multiply; }
@@ -978,8 +979,8 @@ const Q_THEMES = [
     'Trước khi khép lại một ngày, bạn muốn gửi lời chúc ngủ ngon gì tới chính mình và những ô cửa sáng đèn bên kia hẻm?']],
 ];
 const MOODS = ['☀️ nhẹ nhõm', '🌧️ hơi buồn', '🍵 bình yên', '🌙 mệt mỏi'];
-const STAMPS = [['🐾', 'dấu chân Bánh Quy', 'stamp_paw'], ['🍁', 'lá phong của sóc', 'stamp_leaf', 'leaf'], ['🌙', 'vầng trăng của bạn cú', 'stamp_moon'],
-  ['🪶', 'lông chim sẻ', 'k_feather', 'k_feather'], ['🔘', 'cúc áo đồng', 'k_button', 'k_button'], ['🎨', 'màu xanh pastel của cậu họa sĩ', 'k_tube', 'k_tube']];
+const STAMPS = [['🐾', 'dấu chân Bánh Quy', 'st_paw'], ['🍁', 'lá phong của sóc', 'stamp_leaf', 'leaf'], ['🌙', 'vầng trăng của bạn cú', 'st_moon'],
+  ['🪶', 'lông chim sẻ', 'k_feather', 'k_feather'], ['🔘', 'cúc áo đồng', 'k_button', 'k_button'], ['🎨', 'màu xanh pastel của cậu họa sĩ', 'k_tube', 'k_tube'], ['🕰️', 'đồng hồ quả quýt của bác', 'st_watch', 'watch']];
 function stampPick() {   // Vi 26/11: keepsakes unlock more stamps (feather, button, pastel tube, the squirrel's leaf)
   const ok = STAMPS.map((t, i) => i).filter(i => !STAMPS[i][3] || S.keep[STAMPS[i][3]]); return ok[Math.floor(Math.random() * ok.length)];
 }
@@ -1712,19 +1713,20 @@ function openJournal(open) {
 }
 // ---------- Bookmark corner (Vi 26/11): press flowers onto a paper strip, tie a ribbon, stamp it, pick a line
 const BM_PAPER = { kraft: ['Giấy kraft nâu'], cream: ['Giấy kem xước'], pastel: ['Giấy xanh pastel', 'k_tube', 'Mở khi nhận tuýp màu của cậu họa sĩ'], red: ['Giấy đỏ nhũ vàng', 'tet', 'Mở trong dịp Tết'] };
-const BM_FLOWER = { daisy: ['Cúc họa mi', 'k_daisy', 'Bình yên'], lavender: ['Oải hương', 'bm_lavender', 'Thư thái'], fern: ['Dương xỉ', 'bm_fern', 'Tươi mới'],
-  pothos: ['Trầu bà', 'bm_pothos', 'Gắn bó'], leaf: ['Lá phong', 'k_leaf', 'Quà của sóc'] };
-const BM_RIBBON = { twine: ['Dây thừng gai', '#a8875a'], blue: ['Ruy băng xanh của Bánh Quy', '#7fa6d6'], red: ['Chỉ đỏ may mắn', '#c8372d'] };
+const BM_FLOWER = { daisy: ['Cúc họa mi', 'pf_daisy', 'Bình yên'], lavender: ['Oải hương', 'pf_lavender', 'Thư thái'], fern: ['Dương xỉ', 'pf_fern', 'Tươi mới'],
+  pothos: ['Trầu bà', 'bm_pothos', 'Gắn bó'], leaf: ['Lá phong', 'pf_maple', 'Quà của sóc'] };
+const BM_RIBBON = { twine: ['Dây thừng gai', '#a8875a', 'rb_twine'], blue: ['Ruy băng xanh của Bánh Quy', '#7fa6d6', 'rb_blue'], red: ['Chỉ đỏ may mắn', '#c8372d'] };   // [2] = Vi's drawn bow
 const BM_QUOTES = ['Chậm lại một nhịp, hoa rồi sẽ nở.', 'Gói một chút nắng cất vào trang sách.', 'Bình yên nằm ở ngay góc cửa này.', 'Hôm nay bạn đã làm rất tốt rồi.'];
 const BM_MAX = 12;
 S.bookmarks = S.bookmarks || [];
 function bmPaperOk(k) { const need = BM_PAPER[k][1]; return !need || (need === 'tet' ? !!S.tetOn : !!S.keep[need]); }
 function bmHtml(b) {
-  const col = (BM_RIBBON[b.r] || BM_RIBBON.twine)[1], fl = b.f || [];
+  const rb = BM_RIBBON[b.r] || BM_RIBBON.twine, col = rb[1], fl = b.f || [];
   const pos = fl.length === 2 ? [['10%', '66%', -8], ['33%', '62%', 10]] : [['18%', '80%', 0]];
-  const flowers = fl.map((k, i) => `<img class="fl" src="${ITEM_IMG[BM_FLOWER[k][1]]}" alt="" style="top:${pos[i][0]};width:${pos[i][1]};transform:translateX(-50%) rotate(${pos[i][2]}deg)">`).join('');
+  const flowers = fl.map((k, i) => `<img class="fl" src="${ITEM_IMG[BM_FLOWER[k][1]]}" alt="" style="top:${pos[i][0]};width:${pos[i][1]};max-height:${fl.length === 2 ? 25 : 34}%;object-fit:contain;transform:translateX(-50%) rotate(${pos[i][2]}deg)">`).join('');
   const st = STAMPS[b.s] ? `<img class="stp" src="${ITEM_IMG[STAMPS[b.s][2]]}" alt="">` : '';
-  return `<div class="bm paper-${b.p}"><span class="rib a" style="background:${col}"></span><span class="rib b" style="background:${col}"></span><span class="hole"></span>${flowers}${st}<span class="q"${fl.length === 2 ? ' style="top:63%"' : ''}>${esc(b.t || '')}</span></div>`;
+  const tie = rb[2] ? `<img class="bow" src="${ITEM_IMG[rb[2]]}" alt="">` : `<span class="rib a" style="background:${col}"></span><span class="rib b" style="background:${col}"></span>`;
+  return `<div class="bm paper-${b.p}"><span class="hole"></span>${tie}${flowers}${st}<span class="q"${fl.length === 2 ? ' style="top:63%"' : ''}>${esc(b.t || '')}</span></div>`;
 }
 let bmDraft = null;
 function openCraft() {
@@ -1742,7 +1744,7 @@ function openCraft() {
   const have = Object.keys(BM_FLOWER).filter(k => S.keep[k] > 0);
   const flowers = have.length ? have.map(k => chip('bf', k, d.f.includes(k), `<img src="${ITEM_IMG[BM_FLOWER[k][1]]}" alt=""> ${BM_FLOWER[k][0]} ×${S.keep[k]}`)).join('')
     : '<small>Chưa có hoa lá ép nào. Hái từ chậu cây, nhặt lá phong của sóc, hoặc thắp nến 25 phút nhé.</small>';
-  const ribbons = Object.entries(BM_RIBBON).map(([k, v]) => chip('br', k, d.r === k, `<span style="display:inline-block;width:.9em;height:.9em;border-radius:50%;background:${v[1]};vertical-align:-.1em"></span> ${v[0]}`)).join('');
+  const ribbons = Object.entries(BM_RIBBON).map(([k, v]) => chip('br', k, d.r === k, `${v[2] ? `<img src="${ITEM_IMG[v[2]]}" alt="">` : `<span style="display:inline-block;width:.9em;height:.9em;border-radius:50%;background:${v[1]};vertical-align:-.1em"></span>`} ${v[0]}`)).join('');
   const stamps = st0.map(i => chip('bs', i, d.s === i, `<img src="${ITEM_IMG[STAMPS[i][2]]}" alt="${STAMPS[i][1]}">`, false, STAMPS[i][1])).join('');
   const quotes = BM_QUOTES.map((q, i) => chip('bq', i, d.t === q, q)).join('');
   const full = S.bookmarks.length >= BM_MAX;

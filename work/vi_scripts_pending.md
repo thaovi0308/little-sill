@@ -62,3 +62,29 @@ Art received: src/vi_1126/ (minh_tet_sheet.jpg, minh_tet_items2.jpg, tet_items.j
 - DJ night hint once the shop exists: "Bản tin tối tại Hẻm Hoa Giấy: Nghe nói sạp hoa đầu hẻm của chị chủ tiệm vừa về thêm vài túi hạt giống mới. Ngày mai trời nắng đẹp, bạn thử bước xuống đầu hẻm dạo một vòng xem sao nhé!"
 - Trung Thu, rabbit, DJ greeting/goodnight lines: already in the game (checked 26/11).
 - Placing characters in alley/shop scenes: cut-out background; the DJ stays a framed polaroid in the radio box (already so).
+
+## Mailbox under the stairs (map point 📮) — Vi 26/11
+- Popup close-up of the old wooden stair foot: left = wooden mailbox #B85A52 on a brick wall, a cream-yellow butterfly #F6E2A5 flapping on the lid when there is new mail; right (when she is there) = the landlady with brass keys + rattan basket, smiling.
+- Empty: "Bên trong chiếc hộp thư gỗ chỉ có vài cánh hoa giấy khô theo gió bay vào. Có lẽ người bạn phương xa đang bận ghi chép ở một vùng đất mới, mình quay lại xem sau nhé."
+- Opening with mail (paper rustle). Lead-in + back of the postcard (signed — Minh):
+  1. "Chú bướm vàng khẽ bay lên khi nắp hộp thư mở ra. Bên trong là một tấm bưu thiếp mang mùi gió biển cùng gói hạt giống nhỏ..." / "Chào bạn hiền! Nghe tin bạn mới dọn về căn gác nhỏ trong Hẻm Hoa Giấy, mình mừng lắm. Mình đang đứng ở một ga tàu cũ sát biển, gió thổi mát rượi. Gửi bạn ít hạt giống Cỏ Bốn Lá mình tìm thấy trên đồi cỏ gần đây—gieo thử lên bệ cửa sổ nhé!"
+  2. "Trong hòm thư có một chiếc phong bì giấy kraft dày dặn, bên trong cất một cuộn băng cassette cũ..." / "Tuần này mình đang ở một thị trấn sương mù trên đồi thông. Trời mưa rả rích suốt chiều làm mình chợt nhớ những buổi ngồi nghe nhạc cùng bạn hồi xưa. Gửi bạn cuộn băng cassette 'Gió Đồi Thông', bỏ vào chiếc radio trên bàn nghe thử nha!"
+  3. "Một chiếc hộp gỗ nhỏ xíu nằm gọn dưới đáy hòm thư, buộc bằng sợi dây dù màu xanh rêu..." / "Mình nhận được lá cỏ bốn lá bạn gửi rồi! Vừa mở phong thư ra là thấy ngay mùi nắng ấm của con hẻm nhà bạn. Tặng bạn chiếc la bàn đồng cũ này—kim của nó hơi lệch nên chẳng chỉ đúng hướng Bắc đâu, nhưng nó nhắc rằng dù đi đâu mình vẫn luôn hướng về bạn."
+  4. "Tấm bưu thiếp vẽ một ngọn hải đăng trắng giữa bầu trời đầy sao, kèm theo một món đồ thủ công bằng gỗ..." / "Đi nhiều nơi mới thấy ai cũng cần một ngọn đèn để nhớ đường về. Với mình, khung cửa sổ đầy hoa của bạn chính là một ngọn hải đăng như thế. Gửi tặng bạn mô hình hải đăng gỗ nhỏ xíu này đặt cạnh chậu cây nhé!"
+  5. "Tấm bưu thiếp cuối cùng vẽ chính con hẻm hoa giấy lúc hoàng hôn, nét vẽ mộc mạc mà thân thương..." / "Chuyến đi dài của mình sắp khép lại rồi. Giữ giúp mình một chỗ ngồi cạnh khung cửa sổ nhé! Ngày gần nhất mình sẽ ghé qua, tụi mình sẽ cùng uống trà, nghe đài và ngắm mưa rơi thật lâu."
+- Buttons under each postcard: [Lưu vào Album Bưu Thiếp 📖]; at ch2 also [Gửi lại lá cỏ ép 🍀] (sending the pressed clover starts the wait for ch3).
+- Landlady at the stairs (~40% when opening the mailbox by day/sunset):
+  - First meeting (introduces the shop): "Ôi, cháu đi xuống cầu thang đấy à? Bà vừa quét xong mấy cánh hoa giấy rụng ngoài sân." / "Ở đầu hẻm có tiệm hoa của con bé chủ tiệm dễ thương lắm, có đủ loại hạt giống lạ. Rảnh thì cháu bấm vào bản đồ ghé qua tiệm chơi cho khuây khỏa nhé!"
+  - New postcard waiting: "Sáng nay chú bưu tá mới bỏ vào hòm thư của cháu một tấm bưu thiếp có hình đẹp lắm đấy. Cháu mở ra xem bạn phương xa nhắn gì đi!"
+  - Random small talk (tap her): "Hôm nay cháu ăn uống đầy đủ chưa đấy? Trên gác tuy mát nhưng chiều tối gió lùa cũng hơi se lạnh, nhớ khoác thêm áo mỏng nha." / "Con mèo Bánh Quy sáng giờ cứ quấn quýt dưới chân cầu thang mãi, chắc nó đang ngóng cháu đặt đĩa bánh quy lên bệ cửa đấy." / "Sống ở hẻm này chẳng cần đi đâu vội vàng cả cháu ạ, cứ thong thả như giàn hoa giấy ngoài ngõ, ngày nào cũng nở một ít là vui rồi."
+  - Gift at most once a day: "Bà mới mua được ít bánh quy gừng nướng giòn thơm lắm, bỏ sẵn vào giỏ đây. Cháu cầm lên gác nhâm nhi với trà nóng nha!" -> refills cookies on the plate for the cat / on the desk.
+- Ch2 -> ch3: once the pressed clover is harvested, under postcard 2 show [Gửi lại Cỏ Bốn Lá cho Minh ✉️]; tap = envelope with a red postmark animation, starts the 24 h wait for ch3.
+
+## User flow (Vi 26/11) — keep taps low for 3-5 min sessions
+- Room -> bottom toolbar button [🗺️ Con Hẻm] -> alley map as a POPUP over the room (no page change).
+  - [🏠 Căn Gác] closes the popup. [📮 Hòm Thư] opens the mailbox popup ON TOP of the map; ✕ goes back to the map (no separate mailbox scene).
+  - [🌸 Tiệm Hoa] = the only real scene change (fade 0.4 s); inside: florist / shelf / seed basket; [🏠 Về Gác] returns to the room.
+- Gifts to the florist: day 1 (before the map unlocks) ch1 sprig still goes through the pulley bag. Once the map unlocks (day 2 / ch2) she writes: "Giờ em biết đường xuống đầu hẻm rồi, rảnh thì ghé thẳng tiệm hoa chơi với chị cho vui nha!" From then trades/gifts happen in the shop; the bag only rings for special events / quick letters.
+- Wayfinding: when the mailbox has a new postcard or a shop pot needs care, a small yellow butterfly / firefly glow sits on the corner of [🗺️ Con Hẻm]; on the map the same glow sits on the matching place.
+- Sound: map + mailbox popups keep the room music/ambience at ~70% volume. Entering the shop: room audio fades out 0.8 s, alley chime + sparrows (+ light guitar) fade in 0.8 s; back home reverses it.
+- Checklist (Vi): from the shop one tap goes straight home (no map in between); the weather buttons stay in the shop and share the room's weather; seeds from the shop and postcards/gifts from the mailbox go straight into the keepsake box / seed bag, no manual storing.
