@@ -1097,14 +1097,14 @@ function nextOldLetter() {
   const st = S.story;
   if (st.old === 0) return S.radioOnce ? 0 : null;   // the sparrow brings the first letter after the radio is first switched on
   if (st.old === 1 && st.fixed) return 1;
-  if (st.old === 2 && Date.now() - st.oldAt >= 2 * HOUR) return 2;
+  if (st.old === 2 && S.weather === 'rain' && S.lamp) return 2;   // ch4: a rainy night with the desk lamp on
   return null;
 }
 // the sparrow carries little things: first the spring the old man needs, then a feather, a button, a shell
 function sparrowGift() {
   if (nextOldLetter() !== null || S.story.old < 1) return false;
-  const late = S.story.old >= 3;   // chapter 5: once the old man's letters are done, the sparrow brings little things
-  const GIFTS = [['k_spring', 'một chiếc lò xo nhỏ xíu', !S.story.fixed], ['k_feather', 'một chiếc lông chim sẻ', late],
+  const late = S.story.old >= 3 && Date.now() - S.story.oldAt >= 12 * HOUR;   // ch5: a new day after the rainy-night letter   // chapter 5: once the old man's letters are done, the sparrow brings little things
+  const GIFTS = [['k_spring', 'một chiếc lò xo nhỏ xíu', !S.story.fixed && Date.now() - S.story.oldAt >= 12 * HOUR], ['k_feather', 'một chiếc lông chim sẻ', late],
     ['k_button', 'một chiếc cúc áo đồng', late], ['k_shell', 'hai vỏ sò nhỏ', late]];
   const g = GIFTS.find(([k, , ok]) => ok && !S.keep[k]); if (!g || Math.random() < 0.4) return false;
   S.keep[g[0]] = 1; save();
@@ -1137,10 +1137,10 @@ function planeReady() {
   const st = S.story, P = S.garden, now = Date.now();
   switch (st.plane) {
     case 0: return !!S.litOnce;   // day one: lighting the candle or the lantern yourself brings the first plane
-    case 1: return S.weather !== 'night' && now - st.planeAt >= 24 * HOUR && (S.lantern || (!!P && P.stage === 2 && (P.type === 'daisy' || P.type === 'lavender')));
-    case 2: return S.weather !== 'night' && now - st.planeAt >= 1 * HOUR;
-    case 3: return S.weather !== 'night' && now - st.planeAt >= 48 * HOUR;
-    case 4: return S.weather !== 'night' && now - st.planeAt >= 24 * HOUR;
+    case 1: return S.weather !== 'night' && (now - st.planeAt >= 24 * HOUR || (now - st.planeAt >= 2 * HOUR && (S.lantern || (!!P && P.stage === 2))));
+    case 2: return S.weather !== 'night' && now - st.planeAt >= 12 * HOUR;
+    case 3: return S.weather !== 'night' && now - st.planeAt >= 24 * HOUR;
+    case 4: return S.weather !== 'night' && (S.wallArt === 'painting' && now - st.planeAt >= 1 * HOUR || now - st.planeAt >= 48 * HOUR);   // ch5: once his painting hangs on your wall
   }
   return false;
 }
@@ -1283,7 +1283,7 @@ function naChapter() {
   const st = S.story, now = Date.now();
   if (st.na === 0) return S.meals >= 1 ? 0 : null;
   if (st.na === 1) return st.naSent && now - st.naSent >= 0.5 * HOUR ? 1 : null;
-  if (st.na === 2) return now - st.naAt >= 24 * HOUR ? 2 : null;
+  if (st.na === 2) return now - st.naAt >= 12 * HOUR ? 2 : null;
   if (st.na === 3) return st.naWarm && now - st.naWarm >= 0.5 * HOUR && S.weather !== 'rain' ? 3 : null;
   if (st.na === 4) return Object.keys(S.harvested).length >= 2 ? 4 : null;
   return null;
@@ -1497,10 +1497,10 @@ const FLO_GIFT = { k_sunseed: 'Túi hạt giống hướng dương 🌻', k_can:
 function floChapter() {
   const st = S.story, f = st.flower || 0, now = Date.now(), since = now - (st.flowerAt || 0);
   if (f === 0) return S.watered ? 0 : null;   // day one: the first watering rings the bag
-  if (f === 1) return st.flowerSent && now - st.flowerSent >= 1.5 * HOUR ? 1 : null;
-  if (f === 2) return since >= 24 * HOUR ? 2 : null;
+  if (f === 1) return st.flowerSent && now - st.flowerSent >= 2 * HOUR ? 1 : null;
+  if (f === 2) return (st.squirrelAte && since >= 1 * HOUR) || since >= 24 * HOUR ? 2 : null;   // ch3: the squirrel came for her seeds, or a day later
   if (f === 3) return (S.candleDone || 0) > (st.flowerCandle || 0) && (S.weather === 'night' || S.weather === 'rain') ? 3 : null;
-  if (f === 4) return since >= 24 * HOUR && S.weather === 'night' ? 4 : null;
+  if (f === 4) return S.chimeType === 'flower' || since >= 12 * HOUR ? 4 : null;   // ch5: her chime hangs at your window, or a new day
   return null;
 }
 function floNeedsSprig() { return floWaiting() && !(S.keep.lavender > 0 || S.keep.pothos > 0); }
@@ -2026,7 +2026,7 @@ function arrive(n) {
     v.stayUntil = perfT + 60000; setTimeout(() => SFX.chitter(), 500);
     setTimeout(() => {
       if (!v.here || S.food !== 'seeds') return;
-      S.food = null; S.leaf = true; save(); applyFood(); bump(v.el, 'hop'); SFX.chitter();
+      S.food = null; S.leaf = true; if ((S.story.flower || 0) >= 2) S.story.squirrelAte = 1; save(); applyFood(); bump(v.el, 'hop'); SFX.chitter();
       setTimeout(() => say('squirrel', VLINES.squirrel.gift, 5200), 5000);
     }, 3500);
   }
