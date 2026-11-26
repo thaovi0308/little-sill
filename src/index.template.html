@@ -1087,7 +1087,16 @@ function stageReveal(modalAfter) {
   };
   wrap.addEventListener('click', reveal, true);
 }
+// Vi 26/11: story events wait in line. A new chapter signal (Na's note, the bag, the plane, the sparrow's letter, Trung Thu) shows
+// only when no paper is open and the previous one appeared >45 s ago, or a paper closed >1 min ago; the next one waits its turn.
+let storyLast = 0; const storyShown = new Set();
+function storyGate(id) {
+  if (storyShown.has(id)) return true;
+  if (!started || $('#note-wrap').classList.contains('show') || Date.now() - storyLast < 45000) return false;
+  storyShown.add(id); storyLast = Date.now(); return true;
+}
 function closeNote() {
+  storyLast = Math.max(storyLast, Date.now() + 15000);
   finishTyping();
   setTimeout(checkLights, 900);
   $('#note-wrap').classList.remove('show'); $('#note-wrap').dataset.modal = ''; SFX.paper();
@@ -1217,7 +1226,9 @@ function candleTick() {
   if (left <= 0) {
     S.incense = false; S.candleAt = 0; S.candleDone = (S.candleDone || 0) + 1; save(); applyCandle(); el.style.display = 'none';
     SFX.chime(0.8); setTimeout(() => SFX.chime(0.5), 900);
-    const pool = ['daisy', 'daisy', 'lavender', 'lavender', 'cactus', 'fern', 'pothos'], k = pool[Math.floor(Math.random() * pool.length)];
+    const pool = ['daisy', 'daisy', 'lavender', 'lavender', 'cactus', 'fern', 'pothos'], st = S.story;
+    const need = st.na === 1 && !st.naSent && !(S.keep.daisy > 0) ? 'daisy' : floNeedsSprig() ? 'lavender' : null;   // Vi 26/11: never leave a route stuck
+    const k = need || pool[Math.floor(Math.random() * pool.length)];
     S.keep[k] = (S.keep[k] || 0) + 1; save();
     showPaper(`<img class="paper-img" src="${ITEM_IMG[KEEP_ICON[k]]}" alt="" style="max-height:5em">Ngọn nến vừa tàn. Bạn đã chăm chú suốt 25 phút rồi đấy! Đứng dậy vươn vai, uống một ngụm nước và nghỉ ngơi 5 phút nhé.
       <small>Phần thưởng: ${PLANTS[k].gift.toLowerCase()} đã vào hộp kỷ vật</small>`);
@@ -1311,7 +1322,7 @@ function showNaNote(i, again) {
   }); stageReveal(false);
 }
 function applyNaNote() {
-  const on = naChapter() !== null;
+  const on = naChapter() !== null && storyGate('na' + S.story.na);
   $('#p-nanote').style.opacity = on ? 1 : 0; HITS.nanote.el.style.display = on ? '' : 'none';
 }
 let naWetShown = false;
@@ -1513,7 +1524,7 @@ function floHint() {
 function floWaiting() { const st = S.story; return st.flower === 1 && !st.flowerSent; }
 let floRang = -1;
 function applyBag() {
-  const ch = floChapter(), on = ch !== null || floWaiting();
+  const c0 = floChapter(), ch = c0 !== null && storyGate('flo' + c0) ? c0 : null, on = ch !== null || floWaiting();
   $('#p-bag').classList.toggle('on', on); $('#p-rope').classList.toggle('on', on); $('#p-bag').classList.toggle('mail', ch !== null);
   HITS.bag.el.style.display = on ? '' : 'none';
   if (ch !== null && floRang !== ch && started) {
@@ -1578,7 +1589,7 @@ function applyTT() {
   $('#p-rabbit').style.display = on ? '' : 'none'; HITS.rabbit.el.style.display = on ? '' : 'none';
   $('#p-mooncake').style.display = on && t.step === 1 ? '' : 'none';
   if (on) { place($('#p-rabbit'), ...RABBIT_AT[t.step >= 3 ? 1 : 0]); place(HITS.rabbit.el, ...RABBIT_AT[t.step >= 3 ? 1 : 0]); }
-  if (t && night && t.step === 0 && started && S.welcomed && !$('#note-wrap').classList.contains('show')) {
+  if (t && night && t.step === 0 && started && S.welcomed && !$('#note-wrap').classList.contains('show') && storyGate('tt' + t.y)) {
     t.step = 0.5; SFX.paper();
     const face = `<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:8em">`, cake = `<img class="paper-img" src="${ITEM_IMG.mooncake}" alt="" style="max-height:3.6em">`;
     showPaper(face + staged(TT.lady, cake + '<small>— Bà chủ nhà tầng dưới —</small>'), () => {
@@ -1969,8 +1980,8 @@ function want(n) {
     case 'frog': return S.weather === 'rain';
     case 'owl': return S.weather === 'night' && !S.lamp;
     case 'squirrel': return S.weather === 'sunset' && (S.food === 'seeds' || perfT < VIS.squirrel.stayUntil);
-    case 'sparrow': return S.weather !== 'night' && sparrowOn;
-    case 'plane': return VIS.plane.here || planeReady();
+    case 'sparrow': return S.weather !== 'night' && sparrowOn && (VIS.sparrow.here || nextOldLetter() === null || storyGate('old' + S.story.old));
+    case 'plane': return VIS.plane.here || (planeReady() && storyGate('plane' + S.story.plane));
   }
 }
 // what the small visitors say (lines by Vi): on arrival, when tapped, when leaving
@@ -2114,7 +2125,7 @@ resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt
 setInterval(() => {
   if (started && catPose === 'sleep' && Math.random() < 1 / 160) catAct('back', 25);   // now and then she sits and watches the alley
   applyNaNote(); if (started && !$('#note-wrap').classList.contains('show')) finaleCheck();
-  if (S.story.na === 3 && !S.story.naWarm && S.weather === 'rain' && started && !naWetShown) {
+  if (S.story.na === 3 && !S.story.naWarm && S.weather === 'rain' && started && !naWetShown && storyGate('wet')) {
     naWetShown = true; catSit(4); toast('Bánh Quy chạy về ướt nhẹp, run rẩy… chạm vào mèo để lau khô 🌧️', 3600);
   }
 }, 1500);
