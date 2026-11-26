@@ -65,8 +65,7 @@ cv2.imwrite(f'{A}/mai_pot.png', cut(sheet, (540, 305, 805, 640)))
 cv2.imwrite(f'{A}/tet_tray.png', cut(sheet, (35, 380, 475, 632)))
 
 # ---- new plants: the bud stage is not drawn yet -> reuse the sprout
-for k in ['forget', 'hydrangea', 'clover']:
-    shutil.copy(f'{A}/{k}0.png', f'{A}/{k}1.png')
+pass   # Vi drew the bud stage 27/11: work/cut_items5.py writes forget1/hydrangea1/clover1
 print('ok')
 
 # ---- an empty pot (gift from the shop / after a harvest): Vi's daisy sprout pot with the sprout painted out

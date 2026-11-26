@@ -254,7 +254,7 @@ const SHOP_POTS = [[94, 388, 58, 82], [168, 420, 46, 50], [218, 392, 64, 90], [9
 function shopPotsToday() {
   if (S.shop.potsDay !== dayKey()) {
     const idx = SHOP_POTS.map((_, i) => i).sort(() => Math.random() - 0.5).slice(0, 3);
-    S.shop.pots = idx; S.shop.potsDay = dayKey(); save();
+    S.shop.pots = idx; S.shop.pick = idx.slice(); S.shop.potsDay = dayKey(); save();
   }
   return S.shop.pots || [];
 }
@@ -270,7 +270,13 @@ $('#shop-say').addEventListener('click', e => { e.stopPropagation(); if (shopQ.l
 function applyShop() {
   const sh = $('#shop'); sh.dataset.w = S.weather;
   const left = shopPotsLeft() ? shopPotsToday() : [];
+  const pick = S.shop.potsDay === dayKey() ? (S.shop.pick || []) : [];
   sh.querySelectorAll('.spot').forEach((el, i) => el.classList.toggle('dry', left.includes(i)));
+  sh.querySelectorAll('.spr').forEach((el, i) => {      // Vi's wilted pots stand on the shelf; once watered they perk up for the rest of the day
+    const dry = left.includes(i), wet = !dry && pick.includes(i);
+    el.style.backgroundImage = `url(${ITEM_IMG[dry ? (i % 2 ? 'shop_wilt2' : 'shop_wilt1') : (i % 2 ? 'shop_succ' : 'shop_leafy')]})`;
+    el.classList.toggle('on', dry || wet); el.classList.toggle('dry', dry);
+  });
   sh.querySelectorAll('.sw').forEach(b => b.classList.toggle('on', b.dataset.w === S.weather));
 }
 function outsideOpen() { return ['#amap', '#mbox', '#pcw'].some(q => $(q).classList.contains('show')) || $('#shop').classList.contains('show'); }
@@ -295,15 +301,20 @@ function leaveShop() {
 }
 function waterShopPot(i) {
   const left = shopPotsToday(); if (S.shop.helpDay === dayKey() || !left.includes(i)) { shopSay(SHOP.chat[S.shop.chat++ % SHOP.chat.length]); return; }
-  const el = $('#shop').querySelectorAll('.spot')[i]; el.classList.remove('dry'); bump(el, 'wiggle'); SFX.water();
-  S.shop.pots = left.filter(x => x !== i); save();
+  const el = $('#shop').querySelectorAll('.spot')[i]; el.classList.remove('dry'); SFX.water();
+  S.shop.pots = left.filter(x => x !== i); save(); applyShop(); bump($('#shop').querySelectorAll('.spr')[i], 'hop');
   if (S.shop.pots.length) { toast(`Tưới xong một chậu 💧 còn ${S.shop.pots.length} chậu đang khát`, 2200); return; }
   S.shop.helpDay = dayKey(); S.shop.helpN++;
   let line, got;
   if (S.garden2 === undefined) { S.garden2 = null; line = SHOP.pot2; got = 'Chậu nhỏ thứ hai đã đặt trên bàn, cạnh cây nến 🪴'; setTimeout(() => updatePlant(true, 1), 800); }
-  else if (Math.random() < 0.35 && !S.fert) { S.fert = 1; line = SHOP.helpFert; got = 'Túi phân bón đã bón cho chậu trên gác, lần lớn tới sẽ nhanh hơn 🌱'; }
+  else if (Math.random() < 0.35 && !S.fert) { S.fert = 1; line = SHOP.helpFert; got = 'Túi phân bón đã bón cho chậu trên gác, lần lớn tới sẽ nhanh hơn 🌱'; giftFloat('fert_bag'); }
   else { const k = ['lavender', 'daisy', 'fern'][Math.floor(Math.random() * 3)]; S.keep[k] = (S.keep[k] || 0) + 1; line = SHOP.help; got = `Nhận một nhành ${COST_NAME[k]} khô, đã cất vào hộp kỷ vật 🌾`; }
   save(); SFX.sparkle(); shopQ = []; shopSay(line); setTimeout(() => toast(got, 3600), 2200); applyMapBtn();
+}
+// a small gift picture rising from the counter (fertiliser bag)
+function giftFloat(k) {
+  const g = document.createElement('img'); g.className = 'gift-float'; g.src = ITEM_IMG[k]; g.alt = '';
+  place(g, 300, 600, 110, 150); $('#shop').appendChild(g); setTimeout(() => g.remove(), 3400);
 }
 function openSeedTrade() {
   const have = k => S.keep[k] || 0;
@@ -349,6 +360,8 @@ $('#shop').addEventListener('click', e => {
     d.style.backgroundImage = `url(${ITEM_IMG.shop_bg})`; d.style.backgroundPosition = `${x / (714 - w) * 100}% ${y / (1280 - h) * 100}%`;
     d.style.backgroundSize = `${714 / w * 100}% ${1280 / h * 100}%`;
     place(d, x, y, w, h); sh.insertBefore(d, $('#shop-florist'));
+    const sw = Math.max(w, 54) * 1.08, sp = document.createElement('div'); sp.className = 'spr';
+    place(sp, x + w / 2 - sw / 2, y + h - sw * 1.45 + 4, sw, sw * 1.45); sh.insertBefore(sp, $('#shop-florist'));
     const b = document.createElement('button'); b.className = 'hit'; b.dataset.s = 'pot' + i; b.setAttribute('aria-label', 'Chậu cây trên kệ');
     place(b, x - 6, y - 10, w + 12, h + 16); sh.appendChild(b);
   });
@@ -369,14 +382,19 @@ function applyLighthouse() {
 { const b = $('#beam'); b.style.left = (616 / SW * 100) + '%'; b.style.top = (922 / SH * 100) + '%'; }
 
 // ---------- Minh comes home: a second cup on the desk
-place($('#p-tea2'), 488, 1060, 68, 53);
+$('#p-tea2').src = ITEM_IMG.cup2; place($('#p-tea2'), 482, 1068, 70, 49);
+$('#p-mbag').src = ITEM_IMG.minh_bag; place($('#p-mbag'), 62, 590, 126, 128);
+const MINH_BAG = ['Chiếc ba lô sờn vai của Minh, còn vương chút cát biển và mùi lá thông 🎒',
+  'Tai nghe vắt trên quai ba lô, chắc Minh vừa nghe hết cuộn băng Gió Đồi Thông 🎧',
+  'Minh treo ba lô bên khung cửa như thể sắp ở lại đây thật lâu.'];
 function applyMinhHome() {
   const st = S.story;
   if (st.minh === 5 && !st.minhHome && Date.now() - (st.minhAt || 0) >= 72 * HOUR && started && storyGate('minhHome')) {
     st.minhHome = 1; save(); SFX.sparkle();
-    setTimeout(() => toast('Trên bàn có thêm một tách trà còn ấm và một mẩu giấy: “Mình về rồi nè, ra hòm thư xem quà nha!” 🎒', 5200), 600);
+    setTimeout(() => toast('Trên bàn có thêm một tách trà còn ấm, chiếc ba lô quen thuộc treo bên khung cửa, kèm mẩu giấy: “Mình về rồi nè, ra hòm thư xem quà nha!” 🎒', 5200), 600);
   }
-  $('#p-tea2').style.opacity = st.minhHome ? 1 : 0;
+  $('#p-tea2').style.opacity = st.minhHome ? 1 : 0; $('#p-mbag').style.opacity = st.minhHome ? 1 : 0;
+  HITS.mbag.el.style.display = st.minhHome ? '' : 'none';
 }
 
 // ---------- compass wishes

@@ -159,6 +159,8 @@
   #p-owl { transform-origin: 50% 85%; }
   .hop { animation: hop .5s ease !important; }
   @keyframes hop { 30% { transform: translateY(-9%) scale(1.02,.98); } 60% { transform: translateY(0) scale(1.04,.94); } }
+  .gift-float { position: absolute; z-index: 4; pointer-events: none; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(60,35,20,.35)); animation: giftUp 3.4s ease forwards; }
+  @keyframes giftUp { 0% { opacity: 0; transform: translateY(30%) scale(.7); } 18% { opacity: 1; transform: translateY(-6%) scale(1.05); } 30%, 78% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-25%) scale(.9); } }
   .tilt { animation: tilt 1.4s ease-in-out !important; }
   @keyframes tilt { 25% { transform: rotate(-9deg); } 60% { transform: rotate(6deg); } }
   #note:has(.nb) { background: none; border: 0; box-shadow: none; width: 96%; max-width: 560px; padding: 0; }
@@ -307,7 +309,9 @@
   #shop > img, #shop .spot { position: absolute; pointer-events: none; }
   #shop .spot { background-repeat: no-repeat; transition: filter 1.2s ease; -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent); mask-image: radial-gradient(closest-side, #000 70%, transparent); }
   #shop .spot.dry { filter: saturate(.25) sepia(.45) brightness(.92); }
-  #shop .spot.dry::after { content: '💧'; position: absolute; left: 50%; top: 4%; transform: translateX(-50%); font-size: clamp(10px, 1.8vh, 16px); animation: breathe 2s ease-in-out infinite; }
+  #shop .spr { position: absolute; pointer-events: none; background: center bottom / contain no-repeat; opacity: 0; transition: opacity .6s ease; transform-origin: 50% 100%; }
+  #shop .spr.on { opacity: 1; }
+  #shop .spr.dry::after { content: '💧'; position: absolute; left: 50%; top: 4%; transform: translateX(-50%); font-size: clamp(10px, 1.8vh, 16px); animation: breathe 2s ease-in-out infinite; }
   #shop .hit { z-index: 2; }
   #shop::after { content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; transition: background-color 1.2s ease; }
   #shop[data-w="night"]::after { background-color: rgba(70,70,125,.55); }
@@ -326,6 +330,7 @@
   .sw.on { box-shadow: 0 0 0 3px rgba(255,255,255,.85); }
   .shop-bar { position: absolute; left: 0; right: 0; bottom: 2.4%; display: flex; justify-content: center; gap: 4%; z-index: 3; }
   .shop-bar button { border: 0; border-radius: 999px; padding: .6em 1.3em; font: 600 clamp(13px, 2.1vh, 17px) 'Quicksand', sans-serif; cursor: pointer; box-shadow: 0 3px 8px rgba(30,20,10,.3); }
+  .shop-bar .sb-ic { width: 1.7em; height: 1.7em; vertical-align: middle; margin: -.5em .35em -.45em -.7em; border-radius: 50%; }
   .shop-bar .sb { background: #4A3525; color: #FDF8EE; } .shop-bar .sb2 { background: #FDF8EE; color: #4A3525; }
   #shop-say { position: absolute; left: 7%; right: 7%; top: 67%; z-index: 4; background: rgba(253,248,238,.96); border-radius: 18px; padding: .8em 1em;
     font: clamp(14px, 2.2vh, 18px)/1.45 'Patrick Hand', cursive; color: #5b4330; box-shadow: 0 6px 18px rgba(40,25,10,.25); border: 1.5px solid #C9A982;
@@ -397,6 +402,7 @@
   <img id="p-incense" class="prop" src="{{PROP_candle_on}}" alt="">
   <img id="p-plant2" class="prop" alt="" style="display:none">
   <img id="p-lighthouse" class="prop" alt="" style="display:none">
+  <img id="p-mbag" class="prop" alt="" style="opacity:0;transition:opacity .8s">
   <img id="p-tea2" class="prop" src="{{PROP_tea}}" alt="" style="opacity:0;transition:opacity .8s">
 
   <div id="tint" class="layer masked-room"></div>
@@ -421,7 +427,7 @@
       <button class="sw" data-s="w" data-w="night" aria-label="Đêm sao"><img src="{{PROP_w_night}}" alt=""></button>
     </div>
     <div id="shop-say" aria-live="polite"></div>
-    <div class="shop-bar"><button data-s="map" class="sb2">🗺️ Bản đồ</button><button data-s="home" class="sb">🏠 Về Gác</button></div>
+    <div class="shop-bar"><button data-s="map" class="sb2">🗺️ Bản đồ</button><button data-s="home" class="sb"><img data-img="badge_home" alt="" class="sb-ic">Về Gác</button></div>
   </div>
   <div id="note-wrap"><div id="note"></div></div>
   <div id="amap" role="dialog" aria-label="Bản đồ Hẻm Hoa Giấy">
@@ -600,6 +606,7 @@ const HITS = {
   bouquet:{ box: [644, 800, 54, 98], label: 'Bó hoa khô' },
   plant2: { box: [630, 1000, 70, 118], label: 'Chậu cây nhỏ trên bàn' },
   lighthouse: { box: [590, 920, 52, 84], label: 'Hải đăng gỗ mini' },
+  mbag: { box: [62, 590, 126, 128], label: 'Ba lô của Minh' },
 };
 const hitsEl = $('#hits');
 for (const [id, h] of Object.entries(HITS)) {
@@ -1727,7 +1734,7 @@ function openSeedPicker(i = 0) {
     toast(`Đã gieo hạt ${PLANTS[b.dataset.seed].name}. Nhớ tưới nước nhé 💧`, 2800);
   }));
 }
-const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2', clover: 'pf_clover', forget: 'seed_forget', hydrangea: 'seed_hydrangea' };
+const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2', clover: 'pf_clover', forget: 'pf_forget', hydrangea: 'pf_hydrangea' };
 // ---------------------------------------------------------------- route 4: the florist at the head of the alley (lines by Vi)
 // a cloth bag on a pulley rope comes to the window; a small bell rings when it carries a note
 const FLO = [
@@ -1898,7 +1905,8 @@ function openJournal(open) {
 // ---------- Bookmark corner (Vi 26/11): press flowers onto a paper strip, tie a ribbon, stamp it, pick a line
 const BM_PAPER = { kraft: ['Giấy kraft nâu'], cream: ['Giấy kem xước'], pastel: ['Giấy xanh pastel', 'k_tube', 'Mở khi nhận tuýp màu của cậu họa sĩ'], red: ['Giấy đỏ nhũ vàng', 'tet', 'Mở trong dịp Tết'] };
 const BM_FLOWER = { daisy: ['Cúc họa mi', 'pf_daisy', 'Bình yên'], lavender: ['Oải hương', 'pf_lavender', 'Thư thái'], fern: ['Dương xỉ', 'pf_fern', 'Tươi mới'],
-  pothos: ['Trầu bà', 'bm_pothos', 'Gắn bó'], leaf: ['Lá phong', 'pf_maple', 'Quà của sóc'] };
+  pothos: ['Trầu bà', 'bm_pothos', 'Gắn bó'], leaf: ['Lá phong', 'pf_maple', 'Quà của sóc'],
+  forget: ['Lưu ly', 'pf_forget', 'Không quên'], hydrangea: ['Cẩm tú cầu', 'pf_hydrangea', 'Biết ơn'], clover: ['Cỏ bốn lá', 'pf_clover', 'May mắn'] };
 const BM_RIBBON = { twine: ['Dây thừng gai', '#a8875a', 'rb_twine'], blue: ['Ruy băng xanh của Bánh Quy', '#7fa6d6', 'rb_blue'], red: ['Chỉ đỏ may mắn', '#c8372d'] };   // [2] = Vi's drawn bow
 const BM_QUOTES = ['Chậm lại một nhịp, hoa rồi sẽ nở.', 'Gói một chút nắng cất vào trang sách.', 'Bình yên nằm ở ngay góc cửa này.', 'Hôm nay bạn đã làm rất tốt rồi.'];
 const BM_MAX = 12;
@@ -2281,6 +2289,7 @@ function act(id) {
     case 'chime': pushChime((Math.random() < 0.5 ? -1 : 1) * rnd(120, 170)); if (Math.random() < 0.5) catAct('play', 3.5); break;
     case 'plant': tapPlant(0); break;
     case 'plant2': tapPlant(1); break;
+    case 'mbag': bump($('#p-mbag'), 'wig'); SFX.paper(); toast(MINH_BAG[Math.floor(Math.random() * MINH_BAG.length)], 3800); break;
     case 'lighthouse': bump($('#p-lighthouse'), 'wig'); SFX.chime(0.25); toast(S.weather === 'sunset' ? 'Ngọn hải đăng gỗ của Minh. Tối nay đèn sẽ quét một vòng vàng ấm 🗼' : 'Ngọn hải đăng nhỏ quét ánh vàng qua căn gác, như đang chỉ đường về 🗼', 3000); break;
     case 'rabbit': tapRabbit(); break;
     case 'pin': if (S.pin) { const ni = { na_cat: 0, na_friends: 2, na_window: 4 }[S.pin]; if (ni !== undefined) showNaNote(ni, true); else { openKeepsakes(); showFlavor(S.pin); } } break;
