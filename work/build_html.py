@@ -59,6 +59,7 @@ ic = Image.open(f'{G}/assets/icon.png').resize((192, 192), Image.LANCZOS); buf =
 t = t.replace('{{ICON}}', 'data:image/png;base64,' + base64.b64encode(buf.getvalue()).decode())
 cv = Image.open(f'{G}/assets/cover.jpg'); buf = io.BytesIO(); cv.save(buf, 'WEBP', quality=86)
 t = t.replace('{{COVER}}', 'data:image/webp;base64,' + base64.b64encode(buf.getvalue()).decode())
+t = t.replace('{{BM_RED}}', prop_uri('bm_red', 160))   # Vi's red-gold paper (sheet 26/11)
 assert '{{' not in t, t[t.index('{{'):t.index('{{') + 40]
 open(f'{G}/index.html', 'w', encoding='utf-8').write(t)
 print('index.html', len(t) // 1024, 'KB')

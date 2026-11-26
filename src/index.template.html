@@ -58,10 +58,10 @@
   .bm .fl { position: absolute; left: 50%; transform: translateX(-50%); filter: saturate(.82) sepia(.12) drop-shadow(0 .04em .06em rgba(0,0,0,.25)); }
   .bm .stp { position: absolute; right: .35em; bottom: .4em; width: 1.7em; height: 1.7em; object-fit: contain; opacity: .85; transform: rotate(-12deg); mix-blend-mode: multiply; }
   .bm .q { position: absolute; left: .5em; top: 52%; bottom: .6em; writing-mode: vertical-rl; font-style: italic; font-size: .62em; line-height: 1.35; letter-spacing: .02em; }
-  .bm.paper-kraft { background: linear-gradient(160deg, #cfae84, #b8925f); color: #4a3424; }
-  .bm.paper-cream { background: linear-gradient(160deg, #fbf5e6, #efe4cc); color: #5a4632; }
-  .bm.paper-pastel { background: linear-gradient(160deg, #dcecee, #bcd8dc); color: #35565c; }
-  .bm.paper-red { background: linear-gradient(160deg, #c23a2f, #9e2a22); color: #f6d58a; }
+  .bm.paper-kraft { background: linear-gradient(160deg, #d3b68f, #c9a982 55%, #bb9a70); color: #4a3424; }
+  .bm.paper-cream { background: linear-gradient(160deg, #faf5ea, #f5efe0 55%, #ebe2cd); color: #5a4632; }
+  .bm.paper-pastel { background: linear-gradient(160deg, #c6dadf, #b7ced4 55%, #a6c0c7); color: #33525a; }
+  .bm.paper-red { background: #ba5b52 url('{{BM_RED}}') center / cover; color: #f6d58a; }
   .bm-prev { position: sticky; top: -2.2em; z-index: 2; display: flex; justify-content: center; font-size: 11px; padding: 3.6em 0 1em; margin: 0 -1em; background: linear-gradient(var(--paper) 90%, rgba(253,248,238,0)); }
   .bm-row { display: flex; gap: .45em; flex-wrap: wrap; justify-content: center; margin: .3em 0 .6em; }
   .chip { border: 1.5px solid var(--paper-line); background: rgba(255,255,255,.55); border-radius: 999px; padding: .35em .75em; font: inherit; font-size: .9em; color: inherit; cursor: pointer; }
@@ -1717,10 +1717,10 @@ S.bookmarks = S.bookmarks || [];
 function bmPaperOk(k) { const need = BM_PAPER[k][1]; return !need || (need === 'tet' ? !!S.tetOn : !!S.keep[need]); }
 function bmHtml(b) {
   const col = (BM_RIBBON[b.r] || BM_RIBBON.twine)[1], fl = b.f || [];
-  const pos = fl.length === 2 ? [['14%', '72%', -8], ['36%', '66%', 10]] : [['18%', '80%', 0]];
+  const pos = fl.length === 2 ? [['10%', '66%', -8], ['33%', '62%', 10]] : [['18%', '80%', 0]];
   const flowers = fl.map((k, i) => `<img class="fl" src="${ITEM_IMG[BM_FLOWER[k][1]]}" alt="" style="top:${pos[i][0]};width:${pos[i][1]};transform:translateX(-50%) rotate(${pos[i][2]}deg)">`).join('');
   const st = STAMPS[b.s] ? `<img class="stp" src="${ITEM_IMG[STAMPS[b.s][2]]}" alt="">` : '';
-  return `<div class="bm paper-${b.p}"><span class="rib a" style="background:${col}"></span><span class="rib b" style="background:${col}"></span><span class="hole"></span>${flowers}${st}<span class="q">${esc(b.t || '')}</span></div>`;
+  return `<div class="bm paper-${b.p}"><span class="rib a" style="background:${col}"></span><span class="rib b" style="background:${col}"></span><span class="hole"></span>${flowers}${st}<span class="q"${fl.length === 2 ? ' style="top:63%"' : ''}>${esc(b.t || '')}</span></div>`;
 }
 let bmDraft = null;
 function openCraft() {
