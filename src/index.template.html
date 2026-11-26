@@ -76,11 +76,33 @@
     border: 1.5px dashed var(--paper-line); padding: 7% 7% 6%; transform: translateY(14px) rotate(-1.2deg);
     transition: transform .5s cubic-bezier(.2,1.2,.4,1); box-shadow: 0 14px 40px rgba(40,25,10,.3);
     font-family: 'Patrick Hand', 'Quicksand', cursive; font-size: clamp(17px, 2.9vh, 24px); line-height: 1.45;
-    color: #5b4330; text-align: center; }
+    color: #5b4330; text-align: center; max-height: 88%; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
   #note-wrap.show #note { transform: translateY(0) rotate(-1.2deg); }
   #note small { display: block; margin-top: 1.1em; font-family: 'Quicksand', sans-serif; font-size: .62em;
     color: #a08a72; letter-spacing: .04em; }
 
+  #vbub { position: absolute; z-index: 19; pointer-events: none; max-width: 52%; transform: translate(-50%, calc(-100% - 10px)) scale(.9); opacity: 0;
+    background: rgba(255,250,240,.96); color: #5b4636; border-radius: 18px; padding: .55em .85em; font-size: clamp(12px, 1.8vh, 16px); line-height: 1.4;
+    box-shadow: 0 4px 14px rgba(40,25,10,.25); transition: opacity .35s, transform .35s; }
+  #vbub::after { content: ''; position: absolute; left: var(--tail, 50%); bottom: -9px; border: 9px solid transparent; border-bottom: 0; border-top-color: rgba(255,250,240,.96); transform: translateX(-50%); }
+  #vbub.show { opacity: 1; transform: translate(-50%, calc(-100% - 10px)) scale(1); }
+  #p-rope { position: absolute; height: 0; border-top: 1.5px solid rgba(110,80,50,.75); transform-origin: left center; transform: rotate(-7deg); opacity: 0; transition: opacity 1s; pointer-events: none; }
+  #p-bag { position: absolute; opacity: 0; transition: opacity 1s, transform .6s; pointer-events: none; transform-origin: 50% 0; animation: bagSway 4s ease-in-out infinite; }
+  #p-bag img { width: 100%; height: 100%; display: block; filter: drop-shadow(0 3px 4px rgba(40,25,10,.3)); }
+  #p-bag::after { content: ''; position: absolute; left: 30%; bottom: 14%; width: 38%; height: 22%; border-radius: 3px; background: #fff7e6; box-shadow: 0 1px 3px rgba(40,25,10,.35); transform: rotate(-14deg); opacity: 0; transition: opacity .6s; }
+  #p-rope.on, #p-bag.on { opacity: 1; }
+  #p-bag.mail::after { opacity: 1; }
+  @keyframes bagSway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+  #petals { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+  #petals i { position: absolute; top: -40px; width: calc(18px * var(--s)); height: calc(14px * var(--s)); border-radius: 80% 10% 80% 10%;
+    background: radial-gradient(circle at 30% 30%, #ffd3e2, #f39ab8 70%); opacity: .85; animation: petal linear forwards; }
+  @keyframes petal { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 10% { opacity: .9; }
+    50% { transform: translate(var(--sway), 55vh) rotate(200deg); } 100% { transform: translate(calc(var(--sway) * -.5), 110vh) rotate(420deg); opacity: .7; } }
+  #dj { position: absolute; z-index: 18; left: 4%; right: 4%; bottom: 19%; pointer-events: none; opacity: 0; transition: opacity .8s;
+    background: rgba(25,20,30,.55); color: #f6ead8; border-radius: 14px; padding: .5em .8em; font: 500 clamp(12px, 1.75vh, 15px)/1.45 'Quicksand', sans-serif; backdrop-filter: blur(3px); }
+  #dj { display: flex; gap: .7em; align-items: center; } #dj img { width: 4.2em; height: 4.2em; object-fit: cover; border-radius: 10px; flex: none; }
+  #dj small { display: block; font-size: .78em; opacity: .65; letter-spacing: .05em; }
+  #dj.show { opacity: 1; }
   #toast { z-index: 20; position: absolute; left: 50%; bottom: 13.5%; transform: translateX(-50%) translateY(8px);
     background: rgba(253,248,238,.94); color: #6b5540; border-radius: 18px; padding: .55em 1.1em;
     font-size: clamp(12px, 1.9vh, 16px); font-weight: 600; width: max-content; max-width: 86%; text-align: center; line-height: 1.35; opacity: 0;
@@ -120,6 +142,18 @@
   .nb { position: relative; } .nb img { width: 100%; display: block; filter: drop-shadow(0 10px 18px rgba(30,20,10,.35)); }
   .nb p { position: absolute; top: 13%; width: 36%; max-height: 78%; overflow: hidden; margin: 0; font-family: 'Patrick Hand', cursive; font-size: clamp(11px, 1.75vh, 16px); line-height: 1.5; color: #5b4636; }
   .nb .l { left: 7%; } .nb .r { left: 56%; font-style: italic; }
+  .nb div.l { position: absolute; top: 11%; width: 37%; max-height: 82%; display: flex; flex-direction: column; gap: .35em; font-family: 'Patrick Hand', cursive; font-size: clamp(11px, 1.7vh, 16px); line-height: 1.35; color: #5b4636; }
+  .nb .th, .dpage small { margin: 0; font-size: .78em; letter-spacing: .04em; opacity: .6; text-transform: uppercase; }
+  .nb textarea { font: inherit; color: #3f2f22; background: repeating-linear-gradient(transparent 0 1.3em, rgba(120,90,60,.22) 1.3em calc(1.3em + 1px)); border: 0; outline: none; resize: none; width: 100%; padding: 0; line-height: 1.3em; }
+  .nb .moods { display: flex; gap: .2em; } .nb .moods button { font-size: 1.1em; background: none; border: 0; padding: .1em; cursor: pointer; }
+  .nb #nb-save, .nb #nb-old { font: inherit; background: rgba(255,240,215,.8); border: 1px solid rgba(120,90,60,.35); border-radius: 999px; padding: .15em .6em; color: #5b4636; cursor: pointer; align-self: flex-start; }
+  .nb #nb-old { display: block; margin-top: .8em; font-style: normal; }
+  .nb .ans, .dpage .ans { color: #3f2f22; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .stamp { display: inline-block; width: 2.8em; height: 2.8em; transform: rotate(-12deg); opacity: .9; align-self: flex-end; mix-blend-mode: multiply; }
+  .stamp.fresh { animation: stampIn .5s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes stampIn { from { transform: scale(2.2) rotate(-30deg); opacity: 0; } to { transform: scale(1) rotate(-12deg); opacity: .85; } }
+  .dpage { position: relative; border-top: 1px dashed rgba(120,90,60,.3); padding: .5em 0; } .dpage .q { margin: .2em 0; opacity: .75; } .dpage .ans { margin: .2em 3em .2em 0; }
+  .dpage .stamp { position: absolute; right: 0; top: .9em; font-size: 1em; } .dpage { padding-right: 2.6em; }
   .vol { display: block; margin: .9em 0; } .vol span { display: block; font-size: .9em; margin-bottom: .3em; }
   .vol input { width: 100%; accent-color: #d9a55a; }
   .ring { position: absolute; border-radius: 50%; pointer-events: none;
@@ -127,6 +161,24 @@
   @keyframes ring { 0%,100% { opacity: .45; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.04); } }
   #candle-t { position: absolute; pointer-events: none; font: 600 clamp(10px, 1.5vh, 13px) 'Quicksand', sans-serif;
     color: #fff6e0; background: rgba(60,40,25,.55); border-radius: 999px; padding: .1em .55em; text-align: center; display: none; }
+  .jl { margin: 0 0 1em; }
+  .jh { display: flex; gap: .6em; align-items: center; margin-bottom: .4em; }
+  .jh img { height: 2.6em; width: 2.6em; object-fit: contain; }
+  .jh small { display: block; margin: 0; opacity: .7; }
+  .jc { border-top: 1px dashed rgba(120,90,60,.3); padding: .45em .1em; }
+  .jc summary { cursor: pointer; list-style: none; }
+  .jc summary::-webkit-details-marker { display: none; }
+  .jc summary::after { content: ' ›'; opacity: .5; }
+  .jc[open] summary::after { content: ' ⌄'; }
+  .jc p { margin: .5em 0 .2em; line-height: 1.55; }
+  .jc.lock { opacity: .45; }
+  .flav { margin: -.2em 0 .8em; padding: .5em .8em; border-radius: 14px; background: rgba(255,255,255,.55); font-style: italic; line-height: 1.45; text-align: center; }
+  .fade { animation: fadeIn .5s ease; } @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } }
+  .wig { animation: wig .5s ease; } @keyframes wig { 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+  .tw { opacity: 0; } .tw.in { opacity: 1; }
+  .kw { color: #c9772f; font-weight: 600; }
+  .bub { background: rgba(255,255,255,.6); border-radius: 16px; padding: .55em .8em; margin: .2em 0 .6em; box-shadow: 0 1px 4px rgba(90,60,30,.12); }
+  .more { opacity: .6; text-align: right; animation: breathe 2.4s ease-in-out infinite; }
   #note.letter { background: #FBF3E2; border-style: solid; font-family: 'Lora', Georgia, serif; font-style: italic;
     font-size: clamp(15px, 2.5vh, 20px); text-align: left; }
   #note.panel { text-align: left; font-family: 'Quicksand', sans-serif; font-size: clamp(13px, 2vh, 16px); transform: none; }
@@ -180,9 +232,11 @@
   <img id="p-owl" class="prop visitor" src="{{PROP_owl}}" alt="">
   <img id="p-plant" class="prop" alt="">
   <img id="p-painting" class="prop" src="{{PROP_painting}}" alt="" style="opacity:0">
+  <div id="p-rope"></div><div id="p-bag"><img alt=""></div>
   <img id="p-welcome" class="prop" src="{{PROP_na_note}}" alt="" style="transform:rotate(-12deg);z-index:2;pointer-events:none">
   <div id="candle-t"></div>
   <img id="p-seeds" class="prop" src="{{PROP_seeds_plate}}" alt="" style="opacity:0;transition:opacity .6s">
+  <img id="p-shelf" class="prop" src="{{PROP_shelf}}" alt="">
   <img id="p-lantern" class="prop" src="{{PROP_lantern_off}}" alt="">
   <img id="p-cat" class="prop" src="{{PROP_cat_sleep}}" alt="">
   <img id="p-towel" class="prop" src="{{PROP_towel}}" alt="" style="opacity:0">
@@ -204,6 +258,8 @@
   <div id="wring"></div>
   <div id="hits"></div>
   <button id="mute" aria-label="Tắt / bật âm thanh">♪</button>
+  <div id="vbub" aria-live="polite"></div>
+  <div id="dj" aria-live="polite"><img alt=""><div><small>📻 Tần Số Hẻm Hoa Giấy</small><span></span></div></div>
   <div id="toast"></div>
   <div id="note-wrap"><div id="note"></div></div>
   <div id="intro" role="button" aria-label="Chạm để mở cửa sổ">
@@ -275,6 +331,10 @@ if (S.leaves) { S.keep = Object.assign({}, S.keep, { leaf: S.leaves }); delete S
 S.keep = S.keep || {};
 if (S.garden === undefined) S.garden = { type: 'daisy', stage: 0, planted: Date.now(), water: 0, music: 0, lastWater: 0 };
 const ITEM_IMG = {{ITEM_IMG}};
+document.querySelector('#dj img').src = ITEM_IMG.dj;
+ITEM_IMG.k_sunseed = '{{PROP_seeds_plate}}';   // until Vi draws the seed bag
+ITEM_IMG.k_can = ITEM_IMG.can; ITEM_IMG.k_flowerchime = ITEM_IMG.chime_flower;
+$('#p-bag img').src = ITEM_IMG.bag;
 S.story = Object.assign({ old: 0, oldAt: 0, fixed: false, plane: 0, planeAt: 0, na: 0, naAt: 0, naSent: 0, naWarm: 0 }, S.story || {});
 S.meals = S.meals || 0;
 S.chimeType = S.chimeType || 'glass';
@@ -282,16 +342,17 @@ const CHIMES = {
   glass:  { name: 'Chuông gió thủy tinh', src: '{{PROP_chime}}', box: [124.2, 140, 111.6, 292] },
   bamboo: { name: 'Chuông gió ống tre', src: '{{PROP_chime_bamboo}}', box: [140, 140, 80, 292] },
   shell:  { name: 'Chuông gió vỏ sò', src: '{{PROP_chime_shell}}', box: [114, 140, 132, 292] },
+  flower: { name: 'Chuông gió thủy tinh vẽ hoa', src: ITEM_IMG.chime_flower, box: [132, 140, 95.5, 292], need: 'k_flowerchime' },
 };
-function applyChime() { const c = CHIMES[S.chimeType]; const el = $('#p-chime'); el.src = c.src; place(el, ...c.box); }
+function applyChime() { const c = CHIMES[S.chimeType] || CHIMES.glass; const el = $('#p-chime'); el.src = c.src; el.style.filter = c.tint || ''; place(el, ...c.box); }
 S.harvested = S.harvested || Object.fromEntries(Object.keys(PLANTS).filter(k => S.keep[k]).map(k => [k, 1]));
 // ---- Be Na, the girl downstairs: crayon notes tucked in Banh Quy's ribbon (doc: 5 chapters)
 const NA_NOTES = [
   { img: 'na_cat', text: 'Mình tên là Na. Bánh Quy hay trốn lên tầng thượng lắm. Nếu bạn thấy nó thì cho nó ăn nha, đừng đuổi nó tội nghiệp.' },
-  { text: 'Cảm ơn bông hoa của bạn! Hôm nay mình mới chuyển tới trường mới. Các bạn ở lớp đã chơi thân với nhau hết rồi, mình ngồi một mình ở bàn cuối hơi buồn một chút.', reply: true },
-  { img: 'na_friends', text: 'Hôm nay giờ ra chơi, bạn ngồi bàn trên khen {gift} của mình thơm! Tụi mình đã cùng nhau vẽ Bánh Quy vào vở nháp.' },
-  { text: 'Tối qua mẹ mình đi làm về muộn, mình lo Bánh Quy bị ướt mưa. Cảm ơn bạn đã sưởi ấm cho nó nha. Mình tặng bạn viên bi ve đẹp nhất của mình nè!', gift: 'k_marble' },
-  { img: 'na_window', text: 'Mỗi tối đi học về ngước lên thấy cửa sổ nhà bạn sáng đèn, mình và Bánh Quy đều thấy ấm áp lắm. Chúc bạn ngủ ngon!' },
+  { b: ['Sau ba bữa no nê, mèo Bánh Quy mang về chiếc ruy băng kẹp bông hoa cúc ép từ bạn.', 'Na kể em mới chuyển trường, giờ ra chơi toàn ngồi một mình ở bàn cuối. Bạn liền gửi kèm món quà nhỏ để cổ vũ em.'], text: 'Cảm ơn bông hoa của bạn! Hôm nay mình mới chuyển tới trường mới. Các bạn ở lớp đã chơi thân với nhau hết rồi, mình ngồi một mình ở bàn cuối hơi buồn một chút.', reply: true },
+  { b: ['“Nhờ món quà của anh/chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ!”', '“Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh/chị bức tranh hai đứa em nắm tay nhau nè!”'], img: 'na_friends', text: 'Hôm nay giờ ra chơi, bạn ngồi bàn trên khen {gift} của mình thơm! Tụi mình đã cùng nhau vẽ Bánh Quy vào vở nháp.' },
+  { b: ['Đêm mưa tầm tã, Bánh Quy chạy lên gác ướt nhẹp và run rẩy. Nhờ ánh đèn vàng và khăn ấm của bạn, chú mèo đã ngủ ngon.', 'Hôm sau Na rối rít cảm ơn và tặng bạn một viên bi ve trong veo, chạm tay vào nghe như có tiếng sóng biển.'], text: 'Tối qua mẹ mình đi làm về muộn, mình lo Bánh Quy bị ướt mưa. Cảm ơn bạn đã sưởi ấm cho nó nha. Mình tặng bạn viên bi ve đẹp nhất của mình nè!', gift: 'k_marble' },
+  { b: ['Khi bệ cửa nhà bạn nở rộ sắc hoa, bé Na gửi lên bức tranh sáp vẽ khung cửa sổ sáng đèn lung linh.', '“Mỗi lần ngước lên nhìn cửa sổ nhà anh/chị sáng đèn, cả em và Bánh Quy đều thấy ấm áp lắm ạ.”'], img: 'na_window', text: 'Mỗi tối đi học về ngước lên thấy cửa sổ nhà bạn sáng đèn, mình và Bánh Quy đều thấy ấm áp lắm. Chúc bạn ngủ ngon!' },
 ];
 const NA_REPLIES = [
   { img: 'k_candy', text: 'Mỗi bông hoa đều cần thời gian để làm quen với khu vườn mới mà.', gift: 'viên kẹo dâu', name: 'một viên kẹo dâu' },
@@ -299,15 +360,17 @@ const NA_REPLIES = [
 ];
 const PLANE_NOTES = [
   { text: 'Deadline ngày mai rồi mà đầu óc trống rỗng. Mình vẽ cái gì cũng thấy giả tạo và ngột ngạt...', sub: 'Một bức vẽ dang dở bị gạch chéo, gấp thành máy bay giấy' },
-  { text: 'Hôm qua định vứt bỏ bảng màu thì vô tình nhìn xuống thấy chậu hoa nhỏ xíu trên bệ cửa nhà bạn. Tự nhiên mình thấy dễ thở hơn một chút. Cho mình xin phép vẽ lại góc cửa sổ nhà bạn nhé?', reply: true },
-  { text: 'Cảm ơn lời nhắn của người bạn giấu mặt! Mình vừa nộp bài xong rồi. Không biết kết quả sao nhưng lần đầu tiên sau nhiều tháng mình thấy vui khi cầm cọ.', sub: 'Kèm theo một tuýp màu nước xanh pastel', gift: ['k_tube'] },
-  { text: 'Tranh của mình được chọn treo ở góc nhỏ của một quán cà phê sách rồi! Bạn là nguồn cảm hứng đầu tiên của bức tranh đó đấy. Gửi bạn bản vẽ “Góc Cửa Ngày Mưa” và tấm thiệp hoa lưu ly mình tự ép nhé.', gift: ['painting', 'card'] },
+  { b: ['Một chiếc máy bay giấy chao liệng đáp xuống: “Sắc hoa và ánh đèn lồng nhà bạn làm dịu đi sự ngột ngạt của mình.”', '“Mình xin phép vẽ lại góc cửa bình yên này nhé!”'], text: 'Hôm qua định vứt bỏ bảng màu thì vô tình nhìn xuống thấy chậu hoa nhỏ xíu trên bệ cửa nhà bạn. Tự nhiên mình thấy dễ thở hơn một chút. Cho mình xin phép vẽ lại góc cửa sổ nhà bạn nhé?', reply: true },
+  { b: ['“Mình vừa nộp xong bản vẽ rồi! Lần đầu sau nhiều tháng chạy deadline, mình mới lại thấy vui khi cầm cọ.”', '“Cảm ơn lời nhắn và bông hoa ép của bạn nhé. Tặng bạn tuýp màu xanh pastel mình thích nhất này!”'], text: 'Cảm ơn lời nhắn của người bạn giấu mặt! Mình vừa nộp bài xong rồi. Không biết kết quả sao nhưng lần đầu tiên sau nhiều tháng mình thấy vui khi cầm cọ.', sub: 'Kèm theo một tuýp màu nước xanh pastel', gift: ['k_tube'] },
+  { b: ['Bức vẽ góc cửa nhà bạn của cậu họa sĩ đã được chọn treo trang trọng tại quán cà phê sách đầu phố.', 'Cậu gửi tặng bạn bức tranh “Góc Cửa Ngày Mưa” kèm tấm thiệp hoa lưu ly ép tím biếc để treo lên tường.'], text: 'Tranh của mình được chọn treo ở góc nhỏ của một quán cà phê sách rồi! Bạn là nguồn cảm hứng đầu tiên của bức tranh đó đấy. Gửi bạn bản vẽ “Góc Cửa Ngày Mưa” và tấm thiệp hoa lưu ly mình tự ép nhé.', gift: ['painting', 'card'] },
 ];
+PLANE_NOTES.push({ narr: true, b: ['Chẳng còn những bản nháp gạch chéo đầy bế tắc rơi xuống bệ cửa sổ nữa.',
+  'Mỗi tối nhìn lên, ô cửa tầng trên đã sáng đèn vàng ấm cúng, nơi có một người trẻ đang hạnh phúc với cây cọ của mình.'] });
 const REPLIES = ['Cứ vẽ những gì làm bạn thấy bình yên nhất thôi.', 'Không cần hoàn hảo ngay đâu, cứ chậm rãi nhé.'];
 const LETTERS = [
   { text: 'Chào bạn trẻ mới chuyển tới. Cảm ơn bản nhạc tối qua của cháu. Chiếc hộp nhạc này bị kẹt bánh răng từ mùa đông năm ngoái, bác gửi sang nhờ cháu giữ hộ ít hôm cho đỡ buồn, khi nào tìm được chiếc lò xo nhỏ bác sẽ sửa nốt.', from: 'Bác sửa đồng hồ bên kia đường' },
-  { text: 'Kỳ diệu thật! Tiếng nhạc vang sang tận bên này đường làm bác nhớ lại những buổi tối cùng bà nhà ngồi đan len bên cửa sổ. Cảm ơn cháu vì đã đánh thức kỷ niệm cũ của bác.', from: 'Bác sửa đồng hồ bên kia đường' },
-  { text: 'Mưa gió mất điện làm bác hơi chạnh lòng, nhưng nhìn sang thấy ngọn đèn nhỏ nhà cháu vẫn sáng, bác thấy yên tâm hẳn. Gửi tặng cháu chiếc đồng hồ bỏ túi cũ này, nó không chạy nữa nhưng kim của nó luôn chỉ vào giờ đẹp nhất trong ngày.', from: 'Bác sửa đồng hồ bên kia đường' },
+  { b: ['Tiếng hộp nhạc vọng sang làm bác nhớ những tối xưa, khi bác và bà nhà còn ngồi đan len bên cửa sổ.', 'Cảm ơn cháu đã đánh thức lại âm thanh cũ này. Bác tặng cháu chiếc đĩa nhạc xưa bác mới tự tay sửa lại nhé!'], text: 'Kỳ diệu thật! Tiếng nhạc vang sang tận bên này đường làm bác nhớ lại những buổi tối cùng bà nhà ngồi đan len bên cửa sổ. Cảm ơn cháu vì đã đánh thức kỷ niệm cũ của bác.', from: 'Bác sửa đồng hồ bên kia đường' },
+  { b: ['Đêm qua mưa lớn mất điện tối om, thấy ô cửa nhà cháu vẫn sáng đèn nên lòng bác yên tâm hẳn.', 'Bác gửi tặng cháu chiếc đồng hồ quả quýt cũ, kim đồng hồ này luôn chỉ vào “giờ đẹp nhất trong ngày” đấy.'], text: 'Mưa gió mất điện làm bác hơi chạnh lòng, nhưng nhìn sang thấy ngọn đèn nhỏ nhà cháu vẫn sáng, bác thấy yên tâm hẳn. Gửi tặng cháu chiếc đồng hồ bỏ túi cũ này, nó không chạy nữa nhưng kim của nó luôn chỉ vào giờ đẹp nhất trong ngày.', from: 'Bác sửa đồng hồ bên kia đường' },
 ];
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
@@ -331,7 +394,8 @@ const HITS = {
   nanote: { box: [474, 786, 60, 64], label: 'Mẩu giấy của bé Na' },
   jar:    { box: [570, 796, 78, 108], label: 'Lọ đom đóm' },
   welcome:{ box: [592, 862, 58, 44], label: 'Lá thư chào mừng' },
-  lantern:{ box: [546, 940, 76, 64], label: 'Đèn lồng giấy' },
+  bag:    { box: [500, 218, 90, 130], label: 'Túi vải của cô bán hoa' },
+  lantern:{ box: [532, 930, 64, 56], label: 'Đèn lồng giấy' },
   lamp:   { box: [30, 846, 176, 276], label: 'Đèn bàn' },
   radio:  { box: [208, 940, 196, 182], label: 'Đài radio' },
   incense:{ box: [556, 1010, 92, 116], label: 'Nến thơm' },
@@ -717,8 +781,49 @@ function radioTick() {
     if (S.radio) fxSpawnNote();
   }
 }
+// "Tần Số Hẻm Hoa Giấy": the late-night DJ (lines by Vi) talks between songs when the radio plays at night
+const DJ = {
+  hi: ['Chào mừng bạn đã ghé qua Tần Số Hẻm Hoa Giấy. Ngoài kia phố xá đã lên đèn từ lâu, còn bạn... hôm nay của bạn có dịu dàng không?',
+    'Nếu giờ này bạn vẫn còn thức bên khung cửa sổ, đừng vội lo lắng nhé. Hãy cứ coi chiếc radio nhỏ này là một người bạn ngồi cạnh, cùng bạn nghe hết một bản nhạc rồi hãy đi ngủ.',
+    'Tiếng rè rè của sóng đài đêm nay nghe thật yên ả. Hãy thả lỏng đôi vai, nhấp một ngụm trà ấm và để những suy nghĩ vội vã trôi theo làn gió ngoài hiên nhé.'],
+  talk: ['Bản tin thời tiết đêm nay tại Hẻm Hoa Giấy: Trời nhiều sao, gió thổi nhẹ qua giàn hoa giấy đầu ngõ, độ ẩm vừa đủ để một chậu dương xỉ vươn vai. Dự báo ngày mai sẽ là một ngày rất đẹp để bắt đầu lại những điều còn dang dở.',
+    'Tin vắn cuối ngày: Chú mèo mướp tầng dưới vừa được ghi nhận là đã có một giấc ngủ trưa kéo dài tận bốn tiếng đồng hồ. Các cư dân trong hẻm được khuyến khích học tập tinh thần nghỉ ngơi nghiêm túc này.',
+    'Lưu ý nhỏ từ trạm phát sóng: Đêm nay có mưa rào nhẹ ghé thăm. Nếu bạn thấy một chú ếch nhỏ núp dưới tán cây ngoài bệ cửa, hãy chia sẻ cho bạn ấy một chút ánh đèn ấm nhé.',
+    'Có những ngày chúng ta chẳng làm được điều gì to tát cả, chỉ đơn giản là thức dậy, tưới một chậu cây, và giữ cho lòng mình bình yên qua hết một ngày dài. Vậy là đã đủ giỏi rồi, bạn nhé.',
+    'Nếu hôm nay bạn lỡ vẽ hỏng một bức tranh, hay lỡ làm chưa trọn vẹn một dự định nào đó... cũng không sao cả. Ngay cả những chiếc đồng hồ cũ đôi khi cũng cần dừng lại một nhịp để lên lại dây cót mà.',
+    'Bạn có để ý không, mỗi ô cửa sổ sáng đèn trong đêm đều mang theo một câu chuyện nhỏ. Cảm ơn bạn vì đã thắp sáng một góc cửa sổ, khiến con hẻm này trở nên ấm áp hơn.'],
+  bye: ['Kim đồng hồ đã chỉ sang những giờ bình yên nhất của màn đêm. Trạm phát sóng xin phép khép lại buổi trò chuyện tại đây, nhường chỗ cho tiếng dế kêu và giấc mơ đẹp của bạn. Ngủ ngon nhé!',
+    'Chúc bạn một đêm không mộng mị, sáng mai thức dậy sẽ thấy một bông hoa mới nở ngay trên bệ cửa sổ. Tạm biệt và hẹn gặp lại vào đêm mai.'],
+  timer: 0, typing: 0, left: [], said: false,
+};
+function djOn() { return S.radio && S.weather === 'night'; }
+function djSay(text) {
+  const box = $('#dj'), span = $('#dj span'); clearInterval(DJ.typing); clearTimeout(DJ.hide);
+  if (AC) noiseBurst(AC.currentTime, 0.6, 900, 2600, 0.7, 0.05);   // a breath of tape hiss before the voice
+  span.textContent = ''; box.classList.add('show'); let i = 0;
+  DJ.typing = setInterval(() => {
+    span.textContent = text.slice(0, ++i);
+    if (i >= text.length) { clearInterval(DJ.typing); DJ.hide = setTimeout(() => box.classList.remove('show'), 7000); }
+  }, reduceMotion ? 1 : 42);
+}
+function djStop() { clearTimeout(DJ.timer); clearInterval(DJ.typing); $('#dj').classList.remove('show'); DJ.said = false; }
+function djNext(first) {
+  clearTimeout(DJ.timer);
+  if (!djOn()) { djStop(); return; }
+  DJ.timer = setTimeout(() => {
+    if (!djOn()) return;
+    const h = new Date().getHours(), late = h >= 23 || h < 4;
+    let line;
+    if (first) line = DJ.hi[Math.floor(Math.random() * DJ.hi.length)];
+    else if (late && DJ.said && Math.random() < 0.3) line = DJ.bye[Math.floor(Math.random() * DJ.bye.length)];
+    else { if (!DJ.left.length) DJ.left = DJ.talk.map((_, k) => k).sort(() => Math.random() - 0.5); line = DJ.talk[DJ.left.pop()]; }
+    DJ.said = true; djSay(line);
+    if (!DJ.bye.includes(line)) djNext(false);
+  }, first ? 1800 : rnd(75000, 120000));
+}
 function setRadio(on) {
   S.radio = on; if (on && S.garden && S.garden.stage < 2) { S.garden.music = 1; setTimeout(growthCheck, 1500); } save();
+  if (on && S.weather === 'night') djNext(true); else if (!on) djStop();
   $('#p-radio').classList.toggle('on', on);
   if (!AC) return;
   const now = AC.currentTime;
@@ -760,6 +865,7 @@ $('#glow').style.background =
 function setWeather(w) {
   if (w === S.weather) return;
   S.weather = w; if (w === 'rain' && S.garden) S.garden.rain = 1; save(); applyLook(); setAmbience(w); setTimeout(growthCheck, 1500);
+  if (S.radio && w === 'night') djNext(true); else if (w !== 'night') djStop();
   sky.wind = 0; toast({ rain: 'Mưa rào', sunset: 'Nắng chiều', night: 'Đêm đầy sao' }[w]);
 }
 
@@ -770,22 +876,137 @@ function toast(text, ms = 1800) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), ms);
 }
 function bump(el, cls = 'press') { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
-const QUESTIONS = ['Hôm nay bầu trời trong lòng bạn giống thời tiết nào?', 'Có một điều nhỏ xíu nào hôm nay khiến bạn mỉm cười không?',
-  'Hôm nay bạn đã uống đủ nước chưa?', 'Nếu được tặng mình một món quà nhỏ, bạn sẽ chọn gì?', 'Ai là người bạn muốn cảm ơn hôm nay?',
-  'Một mùi hương làm bạn thấy bình yên là gì?', 'Hôm nay bạn đã làm tốt điều gì, dù rất nhỏ?'];
+// daily notebook questions by Vi, in 4 moods; one per day, cycling through the themes
+const Q_THEMES = [
+  ['Chạm vào hiện tại', ['Hôm nay ngoài khung cửa sổ nhà bạn, bầu trời mang màu gì?',
+    'Có một âm thanh nhỏ bé nào hôm nay khiến bạn thấy dễ chịu không (tiếng mưa rơi, tiếng gió lùa, hay một bản nhạc cũ)?',
+    'Nếu mô tả tâm trạng hôm nay bằng một tách trà, bạn đang là vị trà gì (ấm áp, thanh mát, hơi đắng nhẹ hay ngọt ngào)?',
+    'Ngay lúc này, có góc nhỏ nào trong phòng khiến bạn thấy bình yên nhất?',
+    'Hôm nay bạn đã kịp hít một hơi thật sâu và thả lỏng đôi vai của mình chưa?']],
+  ['Gom nhặt niềm vui nhỏ', ['Kể tên một điều bé xíu hôm nay làm bạn khẽ mỉm cười?',
+    'Hôm nay bạn đã tự thưởng cho bản thân một khoảng nghỉ ngơi nào chưa?',
+    'Có món ăn hay thức uống nào hôm nay khiến chiếc bụng của bạn thấy được vỗ về không?',
+    'Nếu được gửi một chiếc máy bay giấy cảm ơn tới ai đó (hoặc chính bản thân mình) hôm nay, bạn sẽ viết gì lên đó?',
+    'Hôm nay có khoảnh khắc nào trôi qua thật chậm và dịu dàng với bạn không?']],
+  ['Lắng nghe & buông bỏ', ['Có suy nghĩ nào đang làm đầu óc bạn hơi chật chội không? Viết ra đây để cất bớt vào ngăn kéo nhé.',
+    'Nếu được gửi một nỗi lo âu theo cơn gió ngoài hẻm hoa giấy bay đi, bạn muốn gửi đi điều gì?',
+    'Hôm nay bạn đã cố gắng rất nhiều rồi. Có điều gì bạn muốn tự nhủ với bản thân để bớt khắt khe hơn không?',
+    'Khi thấy mọi thứ xung quanh hơi ồn ào, bạn thường làm gì để tìm lại khoảng lặng cho mình?',
+    'Hôm nay có điều gì chưa hoàn hảo nhưng bạn sẵn sàng mỉm cười bỏ qua không?']],
+  ['Khu vườn & con hẻm', ['Nếu tâm hồn bạn là một chậu cây trên bệ cửa sổ, hôm nay nó đang cần tưới nước, tắm nắng hay nghe một bản nhạc?',
+    'Giữa cúc họa mi bình yên, oải hương thư giãn và xương rồng kiên cường, hôm nay bạn thấy mình giống loài hoa nào nhất?',
+    'Nếu một người hàng xóm ghé qua ô cửa sổ lúc này, bạn muốn mời họ nghe chung bài hát nào?',
+    'Bạn muốn thắp một ngọn nến thơm để tập trung làm nốt việc gì trong 25 phút tới, hay chỉ đơn giản là ngồi ngắm ngọn lửa nhỏ?',
+    'Trước khi khép lại một ngày, bạn muốn gửi lời chúc ngủ ngon gì tới chính mình và những ô cửa sáng đèn bên kia hẻm?']],
+];
+const MOODS = ['☀️ nhẹ nhõm', '🌧️ hơi buồn', '🍵 bình yên', '🌙 mệt mỏi'];
+const STAMPS = [['🐾', 'dấu chân Bánh Quy', 'stamp_paw'], ['🍁', 'lá phong của sóc', 'stamp_leaf'], ['🌙', 'vầng trăng của bạn cú', 'stamp_moon']];
+function dayKey(t = Date.now()) { const d = new Date(t); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+function todayQuestion() {
+  const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);
+  const [theme, qs] = Q_THEMES[day % 4];
+  return { theme, q: qs[Math.floor(day / 4) % qs.length] };
+}
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function stampHtml(k, fresh) { const [, name, img] = STAMPS[k] || STAMPS[0]; return `<img class="stamp${fresh ? ' fresh' : ''}" src="${ITEM_IMG[img]}" title="${name}" alt="${name}">`; }
 let showNote = function () {
   S.noteIndex = (S.noteIndex + 1) % NOTES.length; save();
-  const q = QUESTIONS[Math.floor(Date.now() / 864e5) % QUESTIONS.length];
-  $('#note').innerHTML = `<div class="nb"><img src="{{PROP_notebook}}" alt=""><p class="l">${q}</p><p class="r">“${NOTES[S.noteIndex]}”</p></div>`;
+  S.diary = S.diary || {};
+  const key = dayKey(), done = S.diary[key], { theme, q } = done || todayQuestion();
+  const left = done
+    ? `<small class="th">${theme}</small><span class="q">${q}</span><span class="ans">${esc(done.a)}</span>${stampHtml(done.s)}`
+    : `<small class="th">${theme}</small><span class="q">${q}</span>
+       <textarea id="nb-a" rows="4" maxlength="400" placeholder="Viết vài chữ thôi cũng được…"></textarea>
+       <span class="moods">${MOODS.map(m => `<button data-mood="${m}">${m.split(' ')[0]}</button>`).join('')}</span>
+       <button id="nb-save">Cất trang này</button>`;
+  const old = Object.keys(S.diary).length - (done ? 1 : 0);
+  $('#note').innerHTML = `<div class="nb"><img src="{{PROP_notebook}}" alt=""><div class="l">${left}</div><p class="r">“${NOTES[S.noteIndex]}”${old > 0 ? '<button id="nb-old">Trang cũ ›</button>' : ''}</p></div>`;
+  $('#note .l').addEventListener('click', e => e.stopPropagation());
+  const ob = $('#nb-old'); if (ob) ob.addEventListener('click', e => { e.stopPropagation(); openDiary(); SFX.paper(); });
+  if (!done) {
+    document.querySelectorAll('[data-mood]').forEach(b => b.addEventListener('click', () => {
+      const t = $('#nb-a'); t.value = (t.value ? t.value.trimEnd() + ' ' : '') + b.dataset.mood; t.focus();
+    }));
+    $('#nb-save').addEventListener('click', () => {
+      const a = $('#nb-a').value.trim(); if (!a) { toast('Chỉ cần một chữ hay một biểu tượng thôi cũng được nha', 2200); return; }
+      const st = Math.floor(Math.random() * STAMPS.length);
+      S.diary[key] = { theme, q, a, s: st }; save();
+      $('#note .l').innerHTML = `<small class="th">${theme}</small><span class="q">${q}</span><span class="ans">${esc(a)}</span>${stampHtml(st, true)}`;
+      SFX.paper(); toast(`Trang hôm nay đã được đóng ${STAMPS[st][1]} ${STAMPS[st][0]}`, 2600);
+    });
+  }
   $('#note-wrap').classList.add('show'); SFX.paper();
+}
+function openDiary() {
+  const keys = Object.keys(S.diary || {}).sort().reverse();
+  openPanel(`<h3>Sổ tay của bạn</h3>` + keys.map(k => { const d = S.diary[k], [y, m, dd] = k.split('-');
+    return `<div class="dpage"><small>${dd}/${m}/${y} · ${d.theme}</small><p class="q">${d.q}</p><p class="ans">${esc(d.a)}</p>${stampHtml(d.s)}</div>`; }).join('') +
+    '<small>Chạm ra ngoài để đóng</small>');
 }
 let onNoteClose = null;
 function showPaper(html, onClose, modal) {
   $('#note').classList.remove('panel'); $('#note').classList.add('letter'); $('#note-wrap').dataset.modal = modal ? '1' : '';
   $('#note').innerHTML = html; onNoteClose = onClose || null;
+  highlight($('#note')); startTyping();
   $('#note-wrap').classList.add('show'); SFX.paper();
 }
+// item and action words in letters get a warm colour, so a quick reader still sees what to do (Vi's UI rule)
+const KEYWORDS = ['hộp nhạc gỗ', 'hộp nhạc', 'chiếc lò xo', 'lò xo', 'đĩa nhạc', 'đồng hồ quả quýt', 'hoa cúc ép', 'bông hoa cúc ép', 'cúc họa mi', 'oải hương', 'trầu bà',
+  'xương rồng', 'dương xỉ', 'máy bay giấy', 'tuýp màu xanh pastel', 'tuýp màu nước xanh pastel', 'Góc Cửa Ngày Mưa', 'Hẻm Hoa Giấy', 'thiệp hoa lưu ly', 'thiệp ép hoa lưu ly',
+  'viên bi ve', 'khăn ấm', 'chiếc khăn', 'đèn vàng', 'đèn lồng', 'nến thơm', 'tách trà', 'ruy băng', 'lông chim', 'cúc áo đồng', 'vỏ sò', 'cuộn giấy', 'hạt hướng dương', 'lá phong',
+  'bánh quy', 'sữa ấm', 'hoa ép', 'cánh hoa ép', 'bút sáp', 'tranh sáp'].sort((a, b) => b.length - a.length);
+const KW_RE = new RegExp(`(${KEYWORDS.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+function highlight(root) {
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n =>
+    n.parentElement.closest('button, small, .kw, h3, .nb') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+  const nodes = []; while (w.nextNode()) nodes.push(w.currentNode);
+  nodes.forEach(n => {
+    if (!KW_RE.test(n.nodeValue)) return; KW_RE.lastIndex = 0;
+    const f = document.createElement('span'); f.innerHTML = n.nodeValue.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(KW_RE, '<b class="kw">$1</b>');
+    n.replaceWith(...f.childNodes);
+  });
+}
+// typewriter for speech bubbles: letters appear one by one with a faint paper rustle; a tap shows the whole bubble at once
+const TW = { chars: [], timer: 0 };
+function startTyping() {
+  if (TW.timer) return;
+  const bubs = [...document.querySelectorAll('#note .bub:not([data-typed])')].filter(b => !b.closest('[hidden]'));
+  bubs.forEach(b => {
+    b.dataset.typed = 1;
+    const w = document.createTreeWalker(b, NodeFilter.SHOW_TEXT), nodes = []; while (w.nextNode()) nodes.push(w.currentNode);
+    nodes.forEach(n => { const f = document.createDocumentFragment();
+      for (const ch of n.nodeValue) { const sp = document.createElement('span'); sp.className = 'tw'; sp.textContent = ch; f.appendChild(sp); TW.chars.push(sp); }
+      n.replaceWith(f); });
+  });
+  if (!TW.chars.length || reduceMotion) { finishTyping(); return; }
+  let k = 0;
+  TW.timer = setInterval(() => {
+    const sp = TW.chars.shift(); if (!sp) { finishTyping(); return; }
+    sp.classList.add('in'); if (AC && ++k % 4 === 0 && sp.textContent.trim()) noiseBurst(AC.currentTime, 0.025, 2500 + Math.random() * 2000, 0, 1.2, 0.012);
+  }, 32);
+}
+function typing() { return !!TW.timer; }
+function finishTyping() { clearInterval(TW.timer); TW.timer = 0; TW.chars.forEach(sp => sp.classList.add('in')); TW.chars = []; }
+$('#note-wrap').addEventListener('click', e => { if (typing()) { finishTyping(); e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+// two speech bubbles: the second one (with picture, signature, replies) shows on the next tap
+function staged(b, rest) {
+  return b.slice(1).reduceRight((inner, t) => `<small class="more">Chạm để đọc tiếp…</small><div class="after" hidden><p class="bub">${t}</p>${inner}</div>`, rest)
+    .replace(/^/, `<p class="bub">${b[0]}</p>`);
+}
+function stageReveal(modalAfter) {
+  const wrap = $('#note-wrap'); if (!document.querySelector('#note .after[hidden]')) return;
+  wrap.dataset.modal = '1';
+  const reveal = e => {
+    const a = document.querySelector('#note .after[hidden]'); wrap.removeEventListener('click', reveal, true); if (!a) return;
+    e.stopPropagation(); a.hidden = false; const m = document.querySelector('#note .more'); if (m) m.remove();
+    SFX.paper(); startTyping();
+    if (document.querySelector('#note .after[hidden]')) wrap.addEventListener('click', reveal, true);
+    else setTimeout(() => { wrap.dataset.modal = modalAfter ? '1' : ''; }, 50);
+  };
+  wrap.addEventListener('click', reveal, true);
+}
 function closeNote() {
+  finishTyping();
   setTimeout(checkLights, 900);
   $('#note-wrap').classList.remove('show'); $('#note-wrap').dataset.modal = ''; SFX.paper();
   const f = onNoteClose; onNoteClose = null; if (f) setTimeout(f, 300);
@@ -800,11 +1021,18 @@ function nextOldLetter() {
 // the sparrow carries little things: first the spring the old man needs, then a feather, a button, a shell
 function sparrowGift() {
   if (nextOldLetter() !== null || S.story.old < 1) return false;
-  const GIFTS = [['k_spring', 'một chiếc lò xo nhỏ xíu', !S.story.fixed], ['k_feather', 'một chiếc lông chim sẻ', true],
-    ['k_button', 'một chiếc cúc áo đồng', true], ['k_shell', 'hai vỏ sò nhỏ', true]];
+  const late = S.story.old >= 3;   // chapter 5: once the old man's letters are done, the sparrow brings little things
+  const GIFTS = [['k_spring', 'một chiếc lò xo nhỏ xíu', !S.story.fixed], ['k_feather', 'một chiếc lông chim sẻ', late],
+    ['k_button', 'một chiếc cúc áo đồng', late], ['k_shell', 'hai vỏ sò nhỏ', late]];
   const g = GIFTS.find(([k, , ok]) => ok && !S.keep[k]); if (!g || Math.random() < 0.4) return false;
   S.keep[g[0]] = 1; save();
-  showPaper(`<img class="paper-img" src="${ITEM_IMG[g[0]]}" alt="" style="max-height:6em">Chú chim sẻ đặt xuống bệ cửa ${g[1]} rồi nghiêng đầu nhìn bạn.<small>— món quà nhỏ từ chú chim sẻ —</small>`);
+  const pic = `<img class="paper-img" src="${ITEM_IMG[g[0]]}" alt="" style="max-height:3.6em">`, sig = '<small>— món quà nhỏ từ chú chim sẻ —</small>';
+  if (g[0] === 'k_spring') showPaper(`${pic}<p class="bub">Chú chim sẻ nhỏ lại sà xuống bệ cửa, mang theo một chiếc lò xo bé xíu sáng bóng.</p><small>Chạm vào hộp nhạc trong hộp kỷ vật để lắp thử</small>`);
+  else if (!S.story.sparrowCh5) {
+    S.story.sparrowCh5 = 1; save();
+    showPaper(staged(['Từ ngày ô cửa bên kia hẻm bật đèn vàng, chú chim sẻ coi bệ cửa nhà bạn là trạm dừng chân quen thuộc.',
+      'Thỉnh thoảng chú lại tha tới vài món quà nhỏ: chiếc lông chim mượt, cúc áo đồng cũ hay vỏ sò mang hương biển.'], pic + sig)); stageReveal(false);
+  } else showPaper(`${pic}Chú chim sẻ đặt xuống bệ cửa ${g[1]} rồi nghiêng đầu nhìn bạn.${sig}`);
   return true;
 }
 function showLetter() {
@@ -814,13 +1042,14 @@ function showLetter() {
     showPaper(`${n}<small>— một người hàng xóm giấu tên —</small>`); return;
   }
   const L = LETTERS[i];
-  showPaper(`<img class="paper-img" src="${ITEM_IMG.old_window}" alt="">${L.text}<small>— ${L.from} —</small>`, () => {
+  const oldImg = `<img class="paper-img" src="${ITEM_IMG.old_window}" alt="">`, sig = `<small>— ${L.from} —</small>`;
+  showPaper(L.b ? oldImg + staged(L.b, sig) : `${oldImg}${L.text}${sig}`, () => {
     S.story.old = i + 1; S.story.oldAt = Date.now();
     if (i === 0) { S.keep.musicbox = 1; toast('Bạn nhận được hộp nhạc gỗ của bác 🎁 (xem trong hộp kỷ vật)', 3600); }
     if (i === 1) { S.keep.k_record = 1; toast('Bác gửi sang một đĩa nhạc cũ bác tự sửa 🎁', 3600); }
     if (i === 2) { S.keep.watch = 1; toast('Bạn nhận được chiếc đồng hồ quả quýt 🎁', 3600); }
     save();
-  });
+  }); stageReveal(false);
 }
 function planeReady() {
   const st = S.story, P = S.garden, now = Date.now();
@@ -829,6 +1058,7 @@ function planeReady() {
     case 1: return S.weather !== 'night' && (S.lantern || (!!P && P.stage === 2 && (P.type === 'daisy' || P.type === 'lavender')));
     case 2: return S.weather !== 'night' && now - st.planeAt >= 1 * HOUR;
     case 3: return S.weather !== 'night' && now - st.planeAt >= 48 * HOUR;
+    case 4: return S.weather !== 'night' && now - st.planeAt >= 24 * HOUR;
   }
   return false;
 }
@@ -836,8 +1066,9 @@ function readPlane() {
   const i = S.story.plane, N = PLANE_NOTES[i], from = '<small>— Cậu họa sĩ tầng trên —</small>';
   const sub = N.sub ? `<small style="margin:0 0 .8em">${N.sub}</small>` : '';
   if (N.reply) {
-    showPaper(`${sub}${N.text}${from}<small style="margin-top:1.2em">Gấp một chiếc máy bay giấy gửi lại:</small>` +
-      REPLIES.map((r, k) => `<button class="reply" data-reply="${k}">“${r}”</button>`).join(''), null, true);
+    const rest = `${from}<small style="margin-top:1.2em">Gấp một chiếc máy bay giấy gửi lại lời động viên${['lavender', 'daisy', 'pothos', 'fern'].some(k => S.keep[k] > 0) ? ' (kèm cánh hoa ép)' : ''}:</small>` +
+      REPLIES.map((r, k) => `<button class="reply" data-reply="${k}">“${r}”</button>`).join('');
+    showPaper(N.b ? staged(N.b, rest) : `${sub}${N.text}${rest}`, null, true); stageReveal(true);
     document.querySelectorAll('.reply').forEach(b => b.addEventListener('click', e => {
       e.stopPropagation(); S.story.reply = +b.dataset.reply; S.story.plane = 2; S.story.planeAt = Date.now();
       const att = ['lavender', 'daisy', 'pothos', 'fern'].find(k => S.keep[k] > 0);
@@ -848,19 +1079,21 @@ function readPlane() {
     return;
   }
   const ps = i === 2 && S.story.planeGift ? `<small style="margin-top:1em">P.S. Cảm ơn ${PLANTS[S.story.planeGift].gift.toLowerCase()} bạn kẹp theo nhé, mình dán nó lên góc giá vẽ rồi!</small>` : '';
-  showPaper(`${sub}${N.text}${ps}${from}`, () => {
+  const b = N.b && i === 2 && !S.story.planeGift ? [N.b[0], N.b[1].replace('lời nhắn và bông hoa ép của bạn', 'lời nhắn của bạn')] : N.b;
+  const sign = N.narr ? '' : from;
+  showPaper(b ? staged(b, sign) : `${sub}${N.text}${ps}${from}`, () => {
     S.story.plane = i + 1; S.story.planeAt = Date.now();
     if (N.gift) {
       N.gift.forEach(k => { S.keep[k] = 1; }); if (N.gift.includes('painting')) { S.wallArt = true; applyWallArt(); }
       toast(N.gift.includes('painting') ? 'Bức tranh “Góc Cửa Ngày Mưa” đã được treo lên tường 🖼️' : 'Bạn nhận được tuýp màu nước xanh pastel 🎨', 3600);
     }
     save(); leave('plane', true);
-  });
+  }); stageReveal(false);
 }
 // ---------- tea + breathing
 let breathTimers = [];
 function drinkTea() {
-  const html = `<div class="breath"><div class="cupv"><img src="{{PROP_tea_top}}" alt=""><img class="dot" src="{{PROP_steam_a}}" alt=""></div><p id="breath-text">Nhấp một ngụm trà ấm…</p></div><small>Chạm ra ngoài để dừng</small>`;
+  const html = `<div class="breath"><div class="cupv"><img src="{{PROP_tea_top}}" alt=""><img class="dot" src="{{PROP_steam_a}}" alt=""></div><p id="breath-text">Làn khói mỏng mang theo hương trà thoang thoảng. Hít một hơi thật sâu, thở ra thật chậm...</p></div><small>Chạm ra ngoài để dừng</small>`;
   openPanel(html); onNoteClose = () => breathTimers.forEach(clearTimeout);
   const steps = []; let t = 1800;
   for (let k = 0; k < 3; k++) {
@@ -892,14 +1125,15 @@ function waves() {
 }
 const CANDLE = { on: ['{{PROP_candle_on}}', [573, 1003, 56, 100]], off: ['{{PROP_candle_off}}', [575, 1023, 53, 80]] };
 function applyLantern() { $('#p-lantern').src = S.lantern ? '{{PROP_lantern_on}}' : '{{PROP_lantern_off}}'; }
-place($('#p-lantern'), 548, 942, 72, 64);
+place($('#p-shelf'), 530, 965, 116, 68);   // Vi's wall shelf (26/11); the lantern stands on its top board
+place($('#p-lantern'), 539, 937, 50, 46);
 const FOCUS = 25 * 60e3;
 function candleTick() {
   const el = $('#candle-t');
   if (!S.incense || !S.candleAt) { el.style.display = 'none'; return; }
   const left = S.candleAt + FOCUS - Date.now();
   if (left <= 0) {
-    S.incense = false; S.candleAt = 0; save(); applyCandle(); el.style.display = 'none';
+    S.incense = false; S.candleAt = 0; S.candleDone = (S.candleDone || 0) + 1; save(); applyCandle(); el.style.display = 'none';
     SFX.chime(0.8); setTimeout(() => SFX.chime(0.5), 900);
     const pool = ['daisy', 'daisy', 'lavender', 'lavender', 'cactus', 'fern', 'pothos'], k = pool[Math.floor(Math.random() * pool.length)];
     S.keep[k] = (S.keep[k] || 0) + 1; save();
@@ -922,10 +1156,45 @@ function applyWallArt() {
 // ---------- Be Na
 function finaleCheck() {
   const st = S.story;
-  if (S.keep.alley || st.old < 3 || st.plane < 4 || st.na < 5) return;
-  S.keep.alley = 1; S.wallArt = 'alley'; save(); applyWallArt();
-  showPaper(`<img class="paper-img" src="${ITEM_IMG.alley}" alt="">Cả xóm nhỏ gửi bạn bức tranh con hẻm hoa giấy đầu ngõ, nơi ai cũng đi ngang qua ô cửa sổ sáng đèn của bạn mỗi tối. Cảm ơn bạn đã ở đây.<small>— Bác sửa đồng hồ, cậu họa sĩ, Na và Bánh Quy —</small>`);
-  SFX.sparkle(); toast('Tranh “Hẻm Hoa Giấy” đã được treo lên tường 🌸', 3600);
+  if (S.keep.alley || st.old < 3 || st.plane < 5 || st.na < 5 || (st.flower || 0) < 5) return;
+  S.keep.alley = 1; save();
+  // stage 1: the alley lights up (Vi's narration), then a scroll tied with a red ribbon lands by the tea
+  const scroll = `<button class="reply" id="fin-open" style="text-align:center">🎀 Mở cuộn giấy</button>`;
+  showPaper(staged(['Khi chiếc đèn lồng cuối cùng bên kia đường bật sáng, cả con hẻm hoa giấy như bừng lên trong một thứ ánh sáng vàng dịu dàng.',
+    'Chú chim sẻ đậu trên bệ cửa khẽ hót vang, chiếc máy bay giấy lượn một vòng trong gió, và mèo Bánh Quy cũng dụi đầu vào tay bạn đầy quấn quýt.',
+    'Một cuộn giấy vẽ được buộc bằng sợi ruy băng đỏ thắm nhẹ nhàng đáp xuống ngay cạnh tách trà ấm...'], scroll), null, true);
+  SFX.sparkle(); setTimeout(() => SFX.chirp(), 1200); stageReveal(true);
+  $('#note').addEventListener('click', function h(e) {
+    if (e.target.id !== 'fin-open') return; e.stopPropagation(); $('#note').removeEventListener('click', h); finaleLetter();
+  });
+}
+function finaleLetter() {
+  // stage 2: the painting and the shared letter, with the music box and slow bougainvillea petals
+  S.wallArt = 'alley'; save(); applyWallArt();
+  const sign = (who, t) => `<p style="margin:.45em 0"><b>${who}:</b> “${t}”</p>`;
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.alley}" alt=""><p style="margin:.3em 0 .6em"><i>Gửi người bạn ở căn gác nhỏ,</i></p>
+    <p>Từ ngày khung cửa sổ nhà bạn sáng đèn, con hẻm yên tĩnh này dường như cũng trở nên ấm áp và có sức sống hơn hẳn.</p>
+    ${sign('Bác sửa đồng hồ', 'Cảm ơn cháu vì đã giúp những bánh răng cũ kỹ và cả ký ức của bác được ngân vang trở lại.')}
+    ${sign('Cậu họa sĩ tầng trên', 'Cảm ơn góc cửa bình yên của bạn đã cho mình tìm lại niềm vui bên cây cọ sau những ngày mỏi mệt.')}
+    ${sign('Bé Na & mèo Bánh Quy', 'Cảm ơn anh/chị vì những đĩa bánh quy thơm ngon và ánh đèn ấm áp luôn chờ đón chúng em mỗi ngày ạ!')}
+    ${sign('Cô bán hoa đầu hẻm', 'Cảm ơn cháu vì đã chia sẻ hơi ấm và sắc xanh từ khung cửa sổ nhỏ, giúp cả góc hẻm này lại rực rỡ hương hoa.')}
+    ${sign('Cô chủ nhà tầng dưới', 'Cảm ơn cháu đã biến căn gác nhỏ này thành một nơi chốn thật dịu dàng để trở về.')}
+    <p>Chúng tôi đã cùng nhau vẽ lại bức tranh “Hẻm Hoa Giấy” này để tặng bạn. Dù ngoài kia cuộc sống có đôi lúc vội vã, mong bạn hãy luôn nhớ rằng ở góc hẻm nhỏ này, vẫn luôn có những ô cửa sáng đèn và những người hàng xóm lặng lẽ mỉm cười chào đón bạn.</p>
+    <p style="text-align:center;margin-top:.8em"><b>Cảm ơn bạn đã ở đây.</b></p>`, () => {
+    // stage 3: free play
+    setTimeout(() => showPaper(`<p class="bub">Bức tranh “Hẻm Hoa Giấy” đã được treo trang trọng trên tường. Câu chuyện của những người hàng xóm đã trọn vẹn, nhưng căn gác nhỏ này vẫn luôn mở cửa. Bạn cứ thong thả chăm cây, nghe đài và tận hưởng những ngày bình yên tiếp theo nhé!</p>`), 600);
+  });
+  SFX.paper(); playMusicBox(); petals(28);
+}
+function petals(n) {
+  const box = document.createElement('div'); box.id = 'petals'; document.body.appendChild(box);
+  for (let i = 0; i < (reduceMotion ? 6 : n); i++) {
+    const p = document.createElement('i'), d = 9 + Math.random() * 7;
+    p.style.left = Math.random() * 100 + 'vw'; p.style.animationDuration = d + 's'; p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.setProperty('--sway', (Math.random() * 120 - 60) + 'px'); p.style.setProperty('--s', 0.6 + Math.random() * 0.7);
+    box.appendChild(p);
+  }
+  setTimeout(() => box.remove(), 24000);
 }
 function naChapter() {
   const st = S.story, now = Date.now();
@@ -942,20 +1211,21 @@ function showNaNote(i, again) {
   const img = N.img ? `<img class="paper-img" src="${ITEM_IMG[N.img]}" alt="">` : '';
   const text = N.text.replace('{gift}', gift);
   if (N.reply && !again) {
-    showPaper(`${text}${from}<small style="margin-top:1.2em">Kẹp lại vào ruy băng của Bánh Quy:</small>` +
-      NA_REPLIES.map((r, k) => `<button class="reply" data-na="${k}">${r.img ? `<img src="${ITEM_IMG[r.img]}" alt="">` : r.icon + ' '}${r.name} + “${r.text}”</button>`).join(''), null, true);
+    const rest = `${from}<small style="margin-top:1.2em">Kẹp lại vào ruy băng của Bánh Quy:</small>` +
+      NA_REPLIES.map((r, k) => `<button class="reply" data-na="${k}">${r.img ? `<img src="${ITEM_IMG[r.img]}" alt="">` : r.icon + ' '}${r.name} + “${r.text}”</button>`).join('');
+    showPaper(N.b ? staged(N.b, rest) : text + rest, null, true); stageReveal(true);
     document.querySelectorAll('[data-na]').forEach(b => b.addEventListener('click', e => {
       e.stopPropagation(); S.story.naGift = +b.dataset.na; S.story.na = 2; S.story.naAt = Date.now(); save(); applyNaNote();
       closeNote(); SFX.purr(); hearts(); toast('Bánh Quy mang quà xuống tầng dưới cho Na 🐾', 2800);
     }));
     return;
   }
-  showPaper(`${img}${text}${from}`, again ? null : () => {
+  showPaper(N.b ? staged(N.b, img + from) : `${img}${text}${from}`, again ? null : () => {
     S.story.na = i + 1; S.story.naAt = Date.now();
     if (N.img) S.keep[N.img] = 1;
     if (N.gift) { S.keep[N.gift] = 1; toast('Bạn nhận được viên bi ve đại dương của Na 🎁', 3600); }
     save(); applyNaNote();
-  });
+  }); stageReveal(false);
 }
 function applyNaNote() {
   const on = naChapter() !== null;
@@ -997,32 +1267,74 @@ function jam() {
   if (!AC) return; const t = AC.currentTime;
   noiseBurst(t, 0.02, 3000, 0, 3, 0.2); noiseBurst(t + 0.12, 0.02, 2600, 0, 3, 0.15); tone(t + 0.25, 1046, 0.2, 0.03);
 }
-function useItem(k) {
+// a line for each keepsake when touched (flavor text by Vi); several lines take turns
+const FLAVOR = {
+  musicbox0: ['Chiếc hộp nhạc bằng gỗ sồi cũ kỹ. Bánh răng bên trong dường như đang bị kẹt, cần một chiếc lò xo nhỏ để đánh thức giai điệu.'],
+  musicbox: ['Giai điệu du dương vang lên từ những bánh răng nhỏ bé, êm đềm như một lời ru buổi tối.', 'Tiếng nhạc mộc mạc lan tỏa khắp căn gác, mang theo cả hơi ấm của những kỷ niệm xưa.'],
+  k_record: ['Trên mặt đĩa còn hằn vài vết xước thời gian, nhưng âm thanh phát ra lại trầm ấm đến lạ.'],
+  watch: ['Kim đồng hồ đứng yên ở khoảnh khắc bình yên nhất, không vội vã, không thúc giục.', 'Mặt đồng hồ bằng đồng sáng bóng, dường như đang nhắc bạn rằng thời gian ở đây thuộc về riêng bạn.'],
+  k_feather: ['Một chiếc lông chim mượt mà, món quà nhỏ từ người đưa thư chăm chỉ nhất con hẻm.'],
+  k_button: ['Chiếc cúc áo bằng đồng đã ngả màu thời gian, trông thật vừa vặn trên bệ cửa sổ.'],
+  k_shell: ['Áp chiếc vỏ sò nhỏ lên tai, bạn như nghe thấy tiếng gió biển vi vu từ một nơi rất xa.'],
+  k_tube: ['Một tuýp màu xanh dịu mắt, mang theo niềm vui giản dị của một người vừa tìm lại được cảm hứng.'],
+  painting: ['Khung cửa sổ nhà bạn qua nét vẽ của cậu hàng xóm: tĩnh lặng, thơ mộng và đầy ắp sự bình yên.', 'Nhìn bức tranh trên tường, ngay cả những ngày trời nắng cũng thấy lòng dịu mát như có mưa rơi.'],
+  card: ['Cánh hoa lưu ly tím biếc được ép phẳng phiu trên nền giấy dày, kèm dòng chữ nhỏ: “Cảm ơn vì đã ở đây”.'],
+  na_cat: ['Những nét vẽ bằng bút sáp màu nguệch ngoạc nhưng rực rỡ, chứa đầy niềm vui trẻ thơ.'],
+  na_friends: ['Những nét vẽ bằng bút sáp màu nguệch ngoạc nhưng rực rỡ, chứa đầy niềm vui trẻ thơ.'],
+  k_marble: ['Ánh nắng xuyên qua viên bi ve tạo nên những vệt sáng lung linh như mặt biển mùa hè.', 'Chạm nhẹ vào viên bi mát lạnh, dường như có tiếng sóng biển rì rào vỗ về bên tai.'],
+  na_window: ['Bức tranh vẽ ô cửa sổ nhà bạn tỏa sáng rực rỡ giữa màn đêm, một ngọn hải đăng nhỏ của cả con hẻm.'],
+  k_can: ['Chiếc bình tưới nhỏ nhắn đã lên nước đồng bóng loáng, vòi phun tỏa ra làn sương mịn như mưa xuân.', 'Dù đã khô lại, những cánh hoa vẫn giữ được sắc màu nhẹ nhàng và tỏa ra mùi hương thảo mộc dễ chịu.'],
+  flower: ['Một cơn gió nhẹ lùa qua, chiếc chuông thủy tinh khẽ ngân lên tiếng leng keng trong trẻo.', 'Những bông hoa vẽ tay trên thân chuông khẽ đung đưa, như đang gửi lời chúc bình an từ đầu hẻm.'],
+  k_flowerchime: ['Một cơn gió nhẹ lùa qua, chiếc chuông thủy tinh khẽ ngân lên tiếng leng keng trong trẻo.', 'Những bông hoa vẽ tay trên thân chuông khẽ đung đưa, như đang gửi lời chúc bình an từ đầu hẻm.'],
+  tea: ['Làn khói mỏng mang theo hương trà thoang thoảng. Hít một hơi thật sâu, thở ra thật chậm...'],
+  candle: ['Ngọn lửa nhỏ nhảy múa dịu dàng, sưởi ấm cả không gian và xua tan đi những xao nhãng.'],
+  book: ['Những trang giấy nằm ngay ngắn trên bàn, sẵn sàng lắng nghe mọi tâm sự không tên của bạn.'],
+  jar: ['Những đốm sáng vàng li ti bay lượn trong chiếc lọ thủy tinh, như một bầu trời sao thu nhỏ.'],
+};
+const flavTurn = {};
+function flavor(k) { const L = FLAVOR[k]; if (!L) return null; flavTurn[k] = ((flavTurn[k] ?? -1) + 1) % L.length; return L[flavTurn[k]]; }
+function showFlavor(k, row) {
+  // inside the keepsake box: the line shows under the title and the item gives a little wiggle
+  const t = flavor(k); if (!t) return false;
+  let f = $('#note .flav'); if (!f) { f = document.createElement('p'); f.className = 'flav'; const h = $('#note h3'); if (h) h.after(f); else return false; }
+  f.textContent = t; bump(f, 'fade'); if (row) bump(row, 'wig'); return true;
+}
+function sayAt(box, text, ms = 4200) {
+  const b = $('#vbub'); const cx = (box[0] + box[2] / 2) / SW * 100, x = Math.min(74, Math.max(26, cx));
+  b.textContent = text; b.style.left = x + '%'; b.style.top = box[1] / SH * 100 + '%';
+  b.style.setProperty('--tail', `calc(50% + ${(cx - x) / 52 * 100}%)`);
+  b.classList.add('show'); clearTimeout(vbubTimer); vbubTimer = setTimeout(() => b.classList.remove('show'), ms);
+}
+function useItem(k, row) {
+  const fk = k === 'musicbox' && !S.story.fixed && !S.keep.k_spring && !S.keep.cactus ? 'musicbox0' : k === 'alley' ? null : k;
+  const flav = fk && showFlavor(fk, row);
+
   if (k === 'musicbox') {
-    if (S.story.fixed) { playMusicBox(); toast('Hộp nhạc hát lại giai điệu cũ của bác 🎶', 3000); return; }
+    if (S.story.fixed) { playMusicBox(); return; }
     if (S.keep.k_spring) {
-      S.story.fixed = true; save(); openKeepsakes(); playMusicBox();
-      toast('Chiếc lò xo chim sẻ tha tới vừa khít… hộp nhạc hát lại rồi 🎶', 3600); return;
+      S.story.fixed = true; save(); playMusicBox();
+      showPaper(`<img class="paper-img" src="${ITEM_IMG.musicbox}" alt="" style="max-height:6em"><p class="bub">Lắp lò xo vào chiếc hộp nhạc gỗ, những bánh răng rỉ sét bỗng chuyển động và ngân lên giai điệu du dương.</p>`); return;
     }
     if (S.keep.cactus) {
       S.keep.cactus--; S.story.fixed = true; save(); openKeepsakes(); playMusicBox();
       toast('Chiếc gai xương rồng vừa khít… hộp nhạc hát lại rồi 🎶', 3600); return;
     }
-    jam(); toast('Hộp nhạc bị kẹt bánh răng. Bác cần một chiếc lò xo nhỏ… chim sẻ hay tha đồ lặt vặt tới đấy 🐦 (hoặc thử một chiếc gai thật nhỏ 🌵)', 3600); return;
+    jam(); toast('Chim sẻ hay tha đồ lặt vặt tới đấy 🐦 (hoặc thử một chiếc gai thật nhỏ 🌵)', 3600); return;
   }
-  if (k === 'watch') { tickTock(); toast('Tích… tắc… kim đồng hồ chỉ vào giờ đẹp nhất trong ngày', 3600); return; }
-  if (k === 'k_record') { if (!S.radio) act('radio'); toast('Đặt đĩa nhạc cũ của bác lên… radio phát một bản piano 🎶', 3000); return; }
-  if (k === 'card') { SFX.paper(); toast('Thiệp hoa lưu ly ép khô của cậu họa sĩ 💙', 3000); }
-  if (k === 'k_tube') { SFX.paper(); toast('Tuýp màu nước xanh pastel, vẫn còn thơm mùi màu 🎨', 3000); }
-  if (k === 'k_marble') { waves(); toast('Áp viên bi lên tai… nghe sóng biển rì rào 🌊', 3600); }
-  if (k === 'painting' || k === 'alley') { S.wallArt = S.wallArt === k ? false : k; save(); applyWallArt(); openKeepsakes(); SFX.paper(); }
-  if (CHIMES[k]) { S.chimeType = k; save(); applyChime(); openKeepsakes(); pushChime(150); }
+  if (k === 'watch') { tickTock(); return; }
+  if (k === 'k_record') { if (!S.radio) { act('radio'); toast('Đặt đĩa nhạc cũ của bác lên… radio phát một bản piano 🎶', 3000); } return; }
+  if (k === 'card' || k === 'k_tube' || k === 'k_can' || k === 'k_button' || k === 'k_feather') SFX.paper();
+  if (k === 'k_shell') waves();
+  if (k === 'k_marble') waves();
+  if (k === 'k_flowerchime') { S.chimeType = 'flower'; save(); applyChime(); pushChime(150); SFX.chimeAlt ? SFX.chime(0.6) : 0; }
+  if (k === 'painting' || k === 'alley') { S.wallArt = S.wallArt === k ? false : k; save(); applyWallArt(); openKeepsakes(); SFX.paper(); if (k === 'painting' && S.wallArt) showFlavor('painting'); }
+  if (CHIMES[k]) { S.chimeType = k; save(); applyChime(); openKeepsakes(); pushChime(150); if (k === 'flower') showFlavor('flower'); }
   const ni = { na_cat: 0, na_friends: 2, na_window: 4 }[k];
-  if (ni !== undefined) showNaNote(ni, true);
+  if (ni !== undefined && !flav) showNaNote(ni, true);
 }
 $('#note').addEventListener('click', e => {
   const it = e.target.closest('[data-item]'); if (!it) return;
-  e.stopPropagation(); useItem(it.dataset.item);
+  e.stopPropagation(); useItem(it.dataset.item, it);
 });
 function openPanel(html, modal) {
   onNoteClose = null; const n = $('#note'); n.classList.remove('letter'); n.classList.add('panel'); n.innerHTML = html;
@@ -1036,7 +1348,7 @@ function growthCheck() {
   const g = S.garden; if (!g) return;
   const P = PLANTS[g.type];
   while (g.stage < 2) {
-    const need = P.need[g.stage], at = g.planted + (g.stage + 1) / 2 * P.hours * HOUR;
+    const need = P.need[g.stage], at = g.planted + (g.stage + 1) / 2 * P.hours * HOUR * (S.keep.k_can ? 0.8 : 1);
     if (Date.now() >= at && g.water >= need.water && g.music >= (need.music || 0) && (g.rain || 0) >= (need.rain || 0) && (g.light || 0) >= (need.light || 0)) {
       g.stage++; save(); updatePlant(true);
       toast(g.stage === 2 ? `${P.name} đã nở hoa ${P.icon} Chạm để hái nhé` : `${P.name} vừa lớn thêm một chút 🌱`, 3200);
@@ -1046,7 +1358,7 @@ function growthCheck() {
 function plantStatus() {
   const g = S.garden, P = PLANTS[g.type];
   if (g.stage === 2) return `${P.name} đang nở hoa ${P.icon}`;
-  const need = P.need[g.stage], left = g.planted + (g.stage + 1) / 2 * P.hours * HOUR - Date.now();
+  const need = P.need[g.stage], left = g.planted + (g.stage + 1) / 2 * P.hours * HOUR * (S.keep.k_can ? 0.8 : 1) - Date.now();
   if (g.water < need.water) return `${P.name}: tưới thêm nước nhé 💧`;
   if (g.music < (need.music || 0)) return `${P.name} muốn nghe nhạc 📻`;
   if ((g.rain || 0) < (need.rain || 0)) return `${P.name} đang chờ một cơn mưa 🌧️`;
@@ -1081,6 +1393,104 @@ function openSeedPicker() {
   }));
 }
 const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2' };
+// ---------------------------------------------------------------- route 4: the florist at the head of the alley (lines by Vi)
+// a cloth bag on a pulley rope comes to the window; a small bell rings when it carries a note
+const FLO = [
+  { t: 'Nhành Hoa Ủ Rũ', b: ['Chào người hàng xóm mới. Cô là người bán hoa ở đầu hẻm. Dạo này khách ít ghé, mấy chậu hoa ngoài sạp của cô cũng ủ rũ theo...',
+    'Nhìn lên thấy bệ cửa nhà cháu xanh mướt, cô ngưỡng mộ lắm. Cháu có bí quyết gì thì gửi một nhánh oải hương hoặc trầu bà vào túi vải chia sẻ với cô nhé!'] },
+  { t: 'Hạt Giống Nắng Mai', b: ['Cảm ơn nhánh cây xanh mướt của cháu! Hóa ra hoa cũng cần được nghe nhạc và thắp đèn ấm mới vui vẻ trở lại.',
+    'Cô gửi tặng cháu túi hạt giống hướng dương này. Rắc lên đĩa ngoài bệ cửa, biết đâu sẽ có bạn sóc nhỏ ghé thăm đấy!'], gift: 'k_sunseed' },
+  { t: 'Chiếc Bình Đồng Cũ', b: ['Nhờ áp dụng cách của cháu mà sạp hoa đầu hẻm hôm nay tươi tắn hẳn lên, khách đi ngang cũng dừng lại ngắm nhiều hơn.',
+    'Cô tặng cháu bình tưới nước bằng đồng và một bó hoa khô thơm dịu. Có chiếc bình này, mấy chậu cây của cháu sẽ lớn nhanh hơn một chút đấy!'], gift: 'k_can' },
+  { t: 'Hương Nến Đêm Gió', b: ['Tối qua trời trở gió lạnh, hương thơm dịu nhẹ từ ngọn nến thơm nhà cháu bay xuống tận đầu hẻm làm cô thấy ấm lòng lạ thường.',
+    'Cô gửi tặng cháu chiếc chuông gió thủy tinh vẽ hoa. Mỗi khi gió lùa qua khung cửa, tiếng ngân của nó sẽ thay cô chúc cháu bình yên.'], gift: 'k_flowerchime' },
+  { t: 'Ánh Đèn Đầu Hẻm', b: ['Góc sạp hoa đầu hẻm tối nay cũng bật sáng một chiếc đèn vàng ấm cúng, hòa cùng ánh đèn từ căn gác nhỏ nhà bạn.',
+    '“Từ ngày có người bạn cùng yêu cây cối ở tầng trên, sáng nào mở cửa hàng cô cũng thấy tràn đầy niềm vui.”'] },
+];
+const FLO_GIFT = { k_sunseed: 'Túi hạt giống hướng dương 🌻', k_can: 'Bình tưới bằng đồng và bó hoa khô 🌾', k_flowerchime: 'Chuông gió thủy tinh vẽ hoa 🎐' };
+function floChapter() {
+  const st = S.story, f = st.flower || 0, now = Date.now(), since = now - (st.flowerAt || 0);
+  if (f === 0) return (st.old >= 1 || st.na >= 1 || st.plane >= 1) && Object.keys(S.harvested).length >= 1 ? 0 : null;
+  if (f === 1) return st.flowerSent && now - st.flowerSent >= 0.5 * HOUR ? 1 : null;
+  if (f === 2) return since >= 24 * HOUR ? 2 : null;
+  if (f === 3) return (S.candleDone || 0) > (st.flowerCandle || 0) && (S.weather === 'night' || S.weather === 'rain') ? 3 : null;
+  if (f === 4) return since >= 24 * HOUR && S.weather === 'night' ? 4 : null;
+  return null;
+}
+function floWaiting() { const st = S.story; return st.flower === 1 && !st.flowerSent; }
+let floRang = -1;
+function applyBag() {
+  const ch = floChapter(), on = ch !== null || floWaiting();
+  $('#p-bag').classList.toggle('on', on); $('#p-rope').classList.toggle('on', on); $('#p-bag').classList.toggle('mail', ch !== null);
+  HITS.bag.el.style.display = on ? '' : 'none';
+  if (ch !== null && floRang !== ch && started) {
+    floRang = ch; SFX.chime(0.35); setTimeout(() => SFX.chime(0.2), 260);
+    toast('Leng keng… túi vải từ đầu hẻm vừa kéo tới một mẩu giấy mới 🌸', 3200);
+  }
+}
+place($('#p-bag'), 512, 222, 66, 118); place($('#p-rope'), 430, 236, 130, 2);
+function tapBag() {
+  const st = S.story, ch = floChapter(), sig = '<small>— Cô bán hoa đầu hẻm —</small>';
+  if (ch === null && floWaiting()) {
+    const have = ['lavender', 'pothos'].filter(k => S.keep[k] > 0);
+    if (!have.length) { toast('Cô bán hoa đang chờ một nhánh oải hương hoặc trầu bà 🌿 (hái từ chậu cây hoặc nhận khi nến tàn)', 3800); return; }
+    openPanel(`<h3>Gửi vào túi vải</h3>` + have.map(k => `<button class="reply" data-flo="${k}"><img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">${PLANTS[k].gift}</button>`).join('') + '<small>Chạm ra ngoài để đóng</small>');
+    document.querySelectorAll('[data-flo]').forEach(b => b.addEventListener('click', e => {
+      e.stopPropagation(); S.keep[b.dataset.flo]--; st.flowerSent = Date.now(); save(); closeNote(); applyBag(); SFX.flutter();
+      toast('Túi vải theo dây ròng rọc trượt về phía đầu hẻm 🌿', 3000);
+    }));
+    return;
+  }
+  if (ch === null) return;
+  const N = FLO[ch], pic = N.gift ? (ITEM_IMG[N.gift] ? `<img class="paper-img" src="${ITEM_IMG[N.gift]}" alt="" style="max-height:4em">` : '') : '';
+  const pic2 = N.gift === 'k_can' ? `<div style="display:flex;justify-content:center;gap:.6em"><img src="${ITEM_IMG.can}" alt="" style="height:4em"><img src="${ITEM_IMG.bouquet}" alt="" style="height:4.6em"></div>` : pic;
+  const face = `<img class="paper-img" src="${ITEM_IMG.florist}" alt="" style="max-height:${ch === 0 ? 7 : 4.5}em">`;
+  showPaper(face + staged(N.b, pic2 + sig), () => {
+    st.flower = ch + 1; st.flowerAt = Date.now(); if (ch === 3) st.flowerCandle = S.candleDone || 0;
+    if (ch === 2) st.flowerCandle = S.candleDone || 0;
+    if (N.gift) { S.keep[N.gift] = 1; toast(`Bạn nhận được: ${FLO_GIFT[N.gift]}`, 3600); }
+    if (N.gift === 'k_sunseed' && !S.food) { S.food = 'seeds'; applyFood(); }
+    save(); applyBag(); checkLights();
+  }); stageReveal(false);
+}
+setInterval(applyBag, 5000);
+
+// ---------------------------------------------------------------- journal (Lời nhắn): chapters the player has lived, to read again
+const JOURNAL = [
+  { who: 'Bác Sửa Đồng Hồ Bên Kia Đường', by: 'Thư chim sẻ', img: 'old_window', ch: [
+    { t: 'Chiếc Hộp Nhạc Kẹt', ok: st => st.old >= 1, x: 'Chú chim sẻ mang tới lá thư đầu tiên của bác sửa đồng hồ bên kia đường. Bác cảm ơn bản nhạc tối qua và gửi nhờ chiếc hộp nhạc gỗ bị kẹt bánh răng từ mùa đông năm ngoái, hẹn khi nào tìm được chiếc lò xo nhỏ sẽ sửa nốt.' },
+    { t: 'Nhịp Điệu Trở Lại', ok: st => !!st.fixed, x: 'Chú chim sẻ nhỏ lại sà xuống bệ cửa, mang theo một chiếc lò xo bé xíu sáng bóng. Khi bánh răng bên trong chiếc hộp nhạc gỗ khớp lại (hoặc nhờ chiếc gai xương rồng cứng cáp thay thế), giai điệu du dương lại ngân vang khắp căn gác nhỏ. Tiếng nhạc êm đềm len qua khung cửa sổ, nối liền khoảng cách giữa hai bên con hẻm hoa giấy.' },
+    { t: 'Ký Ức Bên Khung Cửa Sổ', ok: st => st.old >= 2, x: 'Lời nhắn từ bác hàng xóm: “Tiếng hộp nhạc vọng sang làm bác nhớ những buổi tối ngày xưa, khi bác và bà nhà còn ngồi đan len bên cửa sổ. Cảm ơn cháu đã đánh thức lại âm thanh cũ kỹ này. Bác gửi tặng cháu chiếc đĩa nhạc xưa bác mới tự tay chỉnh lại, nghe vào những tối yên tĩnh hợp lắm.”' },
+    { t: 'Ánh Đèn Trong Đêm Mưa', ok: st => st.old >= 3, x: 'Đêm qua trời đổ mưa lớn, cả con hẻm chìm vào mất điện tối om. Nhìn sang thấy ô cửa sổ nhà cháu vẫn hắt ra ánh đèn ấm áp, lòng bác bỗng thấy yên tâm đến lạ. Sáng nay bác gửi sang chiếc đồng hồ quả quýt cũ, kim đồng hồ này không chạy theo thời gian vội vã, mà luôn dừng lại ở “giờ đẹp nhất trong ngày”.' },
+    { t: 'Những Món Quà Của Gió', ok: st => !!st.sparrowCh5, x: 'Từ ngày ô cửa bên kia đường bật sáng ánh đèn vàng, chú chim sẻ dường như đã coi bệ cửa nhà bạn là trạm dừng chân quen thuộc. Thỉnh thoảng chú lại tha tới những kỷ vật nhỏ bé nhặt được dọc đường: một chiếc lông chim mượt mà, chiếc cúc áo bằng đồng cũ kỹ, hay một chiếc vỏ sò mang hương biển xa.' }] },
+  { who: 'Cậu Họa Sĩ Tầng Trên', by: 'Máy bay giấy', img: 'painting', ch: [
+    { t: 'Bản Vẽ Bị Gạch Chéo', ok: st => st.plane >= 1, x: 'Một ngày mưa, bức vẽ dang dở bị gạch chéo gấp thành máy bay giấy rơi xuống bệ cửa: “Deadline ngày mai rồi mà đầu óc trống rỗng. Mình vẽ cái gì cũng thấy giả tạo và ngột ngạt...”' },
+    { t: 'Góc Nhìn Bình Yên', ok: st => st.plane >= 2, x: 'Một chiếc máy bay giấy lại chao liệng đáp xuống bệ cửa sổ. Cậu họa sĩ tầng trên nhắn rằng sắc hoa nở rộ và ánh đèn lồng dịu dàng nơi góc cửa nhà bạn đã làm dịu đi sự ngột ngạt trong lòng cậu. Cậu xin phép được phác họa lại khung cảnh bình yên này. Một chiếc máy bay giấy mang theo lời nhắn nhủ (cùng cánh hoa ép dịu dàng) đã được thả bay lên, gửi trọn sự ủng hộ tới người bạn hàng xóm.' },
+    { t: 'Sắc Màu Của Niềm Vui', ok: st => st.plane >= 3, x: 'Lời nhắn trên máy bay giấy: “Mình vừa nộp xong bản vẽ rồi! Lần đầu tiên sau nhiều tháng trời chạy deadline mệt mỏi, mình mới lại thấy vui khi cầm cây cọ trên tay. Cảm ơn lời động viên (và cả bông hoa ép xinh xắn) của bạn nhé. Tặng bạn tuýp màu xanh pastel mình thích nhất!”' },
+    { t: 'Góc Cửa Ngày Mưa', ok: st => st.plane >= 4, x: 'Bức tranh vẽ khung cửa sổ nhà bạn của cậu họa sĩ đã được chọn treo trang trọng tại quán cà phê sách đầu phố. Để cảm ơn nguồn cảm hứng đặc biệt này, cậu gửi tặng bạn bức tranh “Góc Cửa Ngày Mưa” kèm một tấm thiệp ép hoa lưu ly tím biếc. Bức tranh được treo lên tường, mang theo cả sự dịu dàng của những ngày mưa rả rích.' },
+    { t: 'Ánh Đèn Tầng Trên', ok: st => st.plane >= 5, x: 'Chẳng còn những bản nháp gạch chéo đầy bế tắc rơi xuống nữa. Giờ đây, mỗi tối nhìn lên, ô cửa sổ tầng trên đã sáng lên ánh đèn vàng ấm cúng, nơi có một người trẻ đang mỉm cười vẽ nên những điều giản dị làm mình hạnh phúc.' }] },
+  { who: 'Bé Na Tầng Dưới Và Mèo Bánh Quy', by: 'Ruy băng cổ mèo', img: 'na_cat', ch: [
+    { t: 'Mẩu Giấy Trên Ruy Băng', ok: st => st.na >= 1, x: 'Lần đầu Bánh Quy ghé ăn, trên ruy băng cổ mèo có kẹp một mẩu giấy: “Mình tên là Na. Bánh Quy hay trốn lên tầng thượng lắm. Nếu bạn thấy nó thì cho nó ăn nha, đừng đuổi nó tội nghiệp.”' },
+    { t: 'Bí Mật Ở Bàn Cuối', ok: st => st.na >= 2, x: 'Sau ba bữa no nê với sữa ấm và bánh quy giòn, chú mèo Bánh Quy mang về chiếc ruy băng kẹp một bông hoa cúc ép từ bạn. Đáp lại món quà nhỏ, bé Na viết mẩu giấy kể rằng em vừa chuyển trường, giờ ra chơi toàn ngồi một mình ở bàn cuối lớp nên hơi buồn. Bạn đã gửi lại một món quà nhỏ xinh cùng lời chúc đầy ấm áp theo chân Bánh Quy trở về.' },
+    { t: 'Những Người Bạn Mới', ok: st => st.na >= 3, x: 'Mẩu giấy nét chữ nắn nót: “Nhờ món quà của anh/chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ! Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh/chị bức tranh hai đứa em nắm tay nhau nè!”' },
+    { t: 'Đêm Mưa Và Viên Bi Ve', ok: st => st.na >= 4, x: 'Một đêm mưa tầm tã, Bánh Quy chạy lạc lên gác với bộ lông ướt nhẹp và run rẩy. Nhờ ánh đèn vàng ấm áp và chiếc khăn khô mềm mại của bạn, chú mèo nhỏ đã ngủ một giấc ngon lành. Hôm sau, bé Na rối rít cảm ơn và gửi tặng bạn một viên bi ve trong veo, mỗi khi chạm tay vào, bạn dường như nghe thấy cả tiếng sóng biển rì rào.' },
+    { t: 'Hơi Ấm Khung Cửa', ok: st => st.na >= 5, x: 'Khi góc vườn nhỏ của bạn đã nở rộ sắc hoa, bé Na gửi lên một bức tranh sáp vẽ chính khung cửa sổ nhà bạn đang tỏa sáng lung linh trong đêm. Kèm theo đó là dòng chữ nguệch ngoạc nhưng chân thành: “Mỗi lần ngước lên nhìn cửa sổ nhà anh/chị sáng đèn, cả em và Bánh Quy đều thấy ấm áp lắm ạ.”' }] },
+  { who: 'Cô Bán Hoa Đầu Hẻm', by: 'Túi vải ròng rọc', img: 'florist', ch: FLO.map((c, k) => ({ t: c.t, ok: st => (st.flower || 0) > k, x: c.b.join(' ') })) },
+];
+function openJournal(open) {
+  const st = S.story;
+  const html = JOURNAL.map((L, li) => {
+    const got = L.ch.filter(c => c.ok(st));
+    const rows = L.ch.map((c, k) => c.ok(st)
+      ? `<details class="jc"${open === li + ':' + k ? ' open' : ''}><summary><b>Chương ${k + 1}</b> · ${c.t}</summary><p>${c.x}</p></details>`
+      : `<div class="jc lock">Chương ${k + 1} · <i>chưa tới</i></div>`).join('');
+    return `<div class="jl"><div class="jh">${ITEM_IMG[L.img] ? `<img src="${ITEM_IMG[L.img]}" alt="">` : ''}<span><b>${L.who}</b><small>${L.by} · ${got.length}/5 chương</small></span></div>${got.length ? rows : '<div class="jc lock"><i>Chưa có lời nhắn nào…</i></div>'}</div>`;
+  }).join('');
+  openPanel(`<h3>Lời nhắn</h3><small style="margin:0 0 .8em">Những câu chuyện bạn đã đi qua cùng con hẻm</small>${html}
+    <button class="reply" id="j-back" style="text-align:center">‹ Về hộp kỷ vật</button><small>Chạm ra ngoài để đóng</small>`);
+  $('#j-back').addEventListener('click', e => { e.stopPropagation(); openKeepsakes(); SFX.paper(); });
+  document.querySelectorAll('#note details').forEach(d => d.addEventListener('click', e => e.stopPropagation()));
+}
 function openKeepsakes() {
   const story = [['musicbox', 'Hộp nhạc gỗ của bác', S.story.fixed ? 'Chạm để nghe nhạc' : 'Đang kẹt bánh răng, chạm để thử'],
     ['watch', 'Đồng hồ quả quýt', 'Chạm để nghe tích tắc'], ['card', 'Thiệp hoa lưu ly ép khô', 'Quà của cậu họa sĩ'],
@@ -1091,9 +1501,11 @@ function openKeepsakes() {
     ['k_record', 'Đĩa nhạc cũ bác sửa', 'Chạm để phát nhạc'], ['k_spring', 'Lò xo nhỏ', S.story.fixed ? 'Đã lắp vào hộp nhạc' : 'Chạm vào hộp nhạc để thử'],
     ['k_feather', 'Lông chim sẻ', 'Quà của chú chim sẻ'], ['k_button', 'Cúc áo đồng', 'Quà của chú chim sẻ'], ['k_shell', 'Vỏ sò nhỏ', 'Quà của chú chim sẻ'],
     ['na_cat', 'Tranh bút sáp: Bánh Quy', 'Của bé Na'], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', 'Của bé Na'],
-    ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', 'Của bé Na']]
+    ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', 'Của bé Na'],
+    ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của cô bán hoa. Rắc lên đĩa để mời bạn sóc'], ['k_can', 'Bình tưới bằng đồng và bó hoa khô', 'Quà của cô bán hoa. Cây lớn nhanh hơn một chút'],
+    ['k_flowerchime', 'Chuông gió thủy tinh vẽ hoa', 'Chọn ở hàng chuông gió phía trên']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
-      `<div class="keep" data-item="${k}"><span><img src="${ITEM_IMG[k]}" alt="">${name}<span class="hint">${hint}</span></span></div>`);
+      `<div class="keep" data-item="${k}"><span>${ITEM_IMG[k] ? `<img src="${ITEM_IMG[k]}" alt="">` : '<b style="font-size:1.6em;width:1.6em;display:inline-block;text-align:center">🪴</b>'}${name}<span class="hint">${hint}</span></span></div>`);
   const rows = story.concat([['leaf', 'Lá phong khô (Sóc tặng)', '🍂']].concat(Object.entries(PLANTS).map(([k, P]) => [k, P.gift, P.icon]))
     .filter(([k]) => S.keep[k]).map(([k, name, icon]) => {
       const pic = KEEP_ICON[k] ? `<img src="${ITEM_IMG[KEEP_ICON[k]]}" alt="">` : icon + ' ';
@@ -1101,11 +1513,14 @@ function openKeepsakes() {
         fern: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', pothos: 'Kẹp vào máy bay giấy gửi cậu họa sĩ', leaf: 'Quà của bạn sóc' }[k];
       return `<div class="keep"><span>${pic}${name}${use ? `<span class="hint">${use}</span>` : ''}</span><b>× ${S.keep[k]}</b></div>`;
     }));
-  const chimes = '<div class="chimes">' + Object.entries(CHIMES).map(([k, c]) =>
-    `<button class="chime-pick${S.chimeType === k ? ' on' : ''}" data-item="${k}" aria-label="${c.name}"><img src="${c.src}" alt=""></button>`).join('') +
+  const chimes = '<div class="chimes">' + Object.entries(CHIMES).filter(([, c]) => !c.need || S.keep[c.need]).map(([k, c]) =>
+    `<button class="chime-pick${S.chimeType === k ? ' on' : ''}" data-item="${k}" aria-label="${c.name}"><img src="${c.src}" alt=""${c.tint ? ` style="filter:${c.tint}"` : ''}></button>`).join('') +
     '</div><small style="margin:.2em 0 .8em">Chạm để đổi chuông gió bên cửa sổ</small>';
-  openPanel(`<h3>Hộp kỷ vật</h3>${chimes}${rows.length ? rows.join('') : '<p style="text-align:center">Hộp còn trống. Hãy chăm cây và chờ các vị khách nhỏ nhé.</p>'}
+  const nJ = JOURNAL.reduce((n, L) => n + L.ch.filter(c => c.ok(S.story)).length, 0);
+  const jbtn = `<button class="reply" id="k-journal" style="text-align:center">📖 Lời nhắn (${nJ}/${JOURNAL.length * 5} chương)</button>`;
+  openPanel(`<h3>Hộp kỷ vật</h3>${jbtn}${chimes}${rows.length ? rows.join('') : '<p style="text-align:center">Hộp còn trống. Hãy chăm cây và chờ các vị khách nhỏ nhé.</p>'}
     <small>Chạm ra ngoài để đóng</small>`);
+  $('#k-journal').addEventListener('click', e => { e.stopPropagation(); openJournal(); SFX.paper(); });
 }
 const _showNote = showNote;
 showNote = function () { $('#note').classList.remove('letter', 'panel'); $('#note-wrap').dataset.modal = ''; _showNote(); };
@@ -1175,7 +1590,7 @@ function stepFx(dt) {
     const ph = (perfT / 1000) % 7;   // three slow blinks, then a pause
     if (ph < 3.6) glowDot(ctx, BLINK[0], BLINK[1], Math.max(0, Math.sin(ph / 1.2 * Math.PI)) * 0.9, 2.2);
   }
-  if (S.lantern) glowDot(ctx, 584, 966, 0.42 + 0.05 * Math.sin(perfT * 0.004), 3.2);
+  if (S.lantern) glowDot(ctx, 564, 958, 0.42 + 0.05 * Math.sin(perfT * 0.004), 3.2);
   if (S.incense) glowDot(ctx, FLAME[0], FLAME[1], 0.32 + 0.1 * Math.sin(perfT * 0.013) + 0.06 * Math.sin(perfT * 0.031), 2.4);
   // zzz of the sleeping cat
   zzzT += dt;
@@ -1236,9 +1651,9 @@ for (const [x, y] of {{STAR_PTS}}) sky.stars.push({ x, y, r: rnd(0.5, 1.6), p: r
 for (let i = 0; i < 9; i++) sky.flies.push({ x: rnd(140, 620), y: rnd(560, 860), vx: rnd(-10, 10), vy: rnd(-10, 10), p: rnd(0, 6) });
 let birdT = 6;
 // windows of the houses across the alley (rain / night views), lit one by one as the neighbours' stories advance
-const WINDOWS = [[388, 581, 12, 19], [410, 579, 12, 21], [211, 555, 30, 36], [244, 555, 28, 33]];
+const WINDOWS = [[388, 581, 12, 19], [410, 579, 12, 21], [211, 555, 30, 36], [244, 555, 28, 33], [520, 640, 16, 14]];
 function storySteps() { const st = S.story; return st.old + st.plane + st.na; }
-function litCount() { return Math.min(WINDOWS.length, storySteps()); }
+function litCount() { const st = S.story, n = Math.min(4, st.old + st.plane + st.na); return n + ((st.flower || 0) >= 5 ? 1 : 0); }
 let litShown = null, litFlash = 0;
 function checkLights() {
   const n = litCount(); if (litShown === null) { litShown = n; return; }
@@ -1332,7 +1747,7 @@ function applyRings() {
 function applyWelcome() { const on = !S.welcomed; $('#p-welcome').style.display = on ? '' : 'none'; HITS.welcome.el.style.display = on ? '' : 'none'; }
 place($('#p-welcome'), 598, 872, 44, 30);
 function readWelcome() {
-  showPaper(`Chào bạn mới dọn tới căn gác nhỏ này! Ở đây chẳng có gì phải vội. Bạn cứ chạm vào mọi thứ quanh mình:
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:7em">Chào bạn mới dọn tới căn gác nhỏ này! Ở đây chẳng có gì phải vội. Bạn cứ chạm vào mọi thứ quanh mình:
     bật chiếc đèn bàn, vuốt ve chú mèo Bánh Quy hay ghé ngủ nhờ, tưới chậu cây, lắc chuông gió, mở radio nghe nhạc.
     Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, nhớ để ý bệ cửa nhé.<small>— Bà chủ nhà tầng dưới —</small>`,
     () => { S.welcomed = true; save(); applyWelcome(); applyRings(); toast('Những chỗ phát sáng là đồ vật bạn chạm được ✨', 3200); });
@@ -1362,10 +1777,10 @@ function act(id) {
     case 'cat': hearts(); SFX.purr(); zzzT = -3; catSit(7); if (!petCat()) toast(CAT_MOODS[Math.floor(Math.random() * CAT_MOODS.length)], 2400); break;
     case 'welcome': readWelcome(); break;
     case 'nanote': { const i = naChapter(); if (i !== null) showNaNote(i); break; }
-    case 'jar': releaseFireflies(); SFX.sparkle(); setTimeout(() => catAct('play', 5), 500); break;
+    case 'jar': releaseFireflies(); SFX.sparkle(); setTimeout(() => catAct('play', 5), 500); sayAt(HITS.jar.box, flavor('jar')); break;
     case 'lamp': S.lamp = !S.lamp; save(); SFX.click(); bump($('#p-lamp')); applyLook(); break;
-    case 'radio': bump($('#p-radio')); setRadio(!S.radio); toast(S.radio ? 'Đài đêm khuya 94.2 FM 📻' : 'Tắt radio'); break;
-    case 'incense': S.incense = !S.incense; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle();
+    case 'radio': bump($('#p-radio')); setRadio(!S.radio); toast(S.radio ? (S.weather === 'night' ? 'Tần Số Hẻm Hoa Giấy · 94.2 FM 📻' : 'Radio 94.2 FM 📻 (ban đêm có DJ trò chuyện)') : 'Tắt radio', 2600); break;
+    case 'incense': S.incense = !S.incense; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle(); if (S.incense) setTimeout(() => sayAt(HITS.incense.box, flavor('candle')), 2600);
       if (S.incense) { SFX.match(); toast('Nến cháy 25 phút: cùng ngồi làm việc, học bài nhé 🕯️ Chạm lần nữa để tắt', 3600); } else SFX.click(); break;
     case 'book': showNote(); break;
     case 'tea':
@@ -1377,9 +1792,10 @@ function act(id) {
       if (S.lantern) { SFX.match(); growthCheck(); } else SFX.click(); break;
     case 'plane': readPlane(); break;
     case 'gift': openKeepsakes(); SFX.paper(); break;
-    case 'frog': visitorAct('frog'); toast('Ếch Cốm núp mưa bên chậu cây 🐸'); break;
-    case 'owl': visitorAct('owl'); toast('Cú Mèo thức gác đêm cho bạn ngủ 🦉'); break;
-    case 'squirrel': visitorAct('squirrel'); toast('Sóc nhỏ phồng má cảm ơn bạn 🐿️'); break;
+    case 'bag': tapBag(); break;
+    case 'frog': visitorAct('frog'); sayTap('frog'); break;
+    case 'owl': visitorAct('owl'); sayTap('owl'); break;
+    case 'squirrel': visitorAct('squirrel'); sayTap('squirrel'); break;
     case 'sparrow': SFX.chirp(); if (!sparrowGift()) showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
   }
 }
@@ -1403,6 +1819,29 @@ function want(n) {
     case 'plane': return VIS.plane.here || planeReady();
   }
 }
+// what the small visitors say (lines by Vi): on arrival, when tapped, when leaving
+const VLINES = {
+  frog: { hi: ['Ộp... Mưa ngoài kia to quá, cho tớ trú nhờ dưới tán lá dương xỉ một chút nhé?', 'Tí tách, tí tách... Đứng ở bệ cửa nhà bạn nghe tiếng mưa rơi êm tai thật đấy!'],
+    tap: ['Da tớ hơi ướt một chút, nhưng ngồi cạnh ánh đèn lồng ấm áp này thấy dễ chịu hẳn.', 'Cảm ơn bạn đã không đuổi tớ đi. Tớ sẽ hát tặng bạn một khúc đồng dao ngày mưa nhé!'],
+    bye: 'Trời tạnh rồi, cầu vồng sắp lên kia kìa! Tạm biệt bạn, hẹn gặp lại vào cơn mưa sau nha!' },
+  owl: { hi: ['Hù... Đêm khuya rồi mà ô cửa nhà bạn vẫn sáng đèn à? Tớ ghé qua gác đêm cùng bạn một lát nhé.', 'Con hẻm giờ này ngủ say cả rồi, chỉ còn gió mát và mùi hoa oải hương nhà bạn thoang thoảng thôi.'],
+    tap: ['Đừng thức khuya quá nhé người bạn nhỏ. Nếu thấy mỏi mắt, hãy thử pha một tách trà ấm xem sao.', 'Tớ đang canh chừng sự bình yên cho cả con hẻm này đây. Bạn cứ yên tâm nghỉ ngơi nha!'],
+    bye: 'Trời sắp hửng sáng rồi, đến giờ tớ đi ngủ đây. Chúc bạn một ngày mới thật dịu dàng!' },
+  squirrel: { hi: ['Chít chít! Mùi hạt hướng dương thơm quá đi mất, tớ xin phép nhâm nhi một chút nhé!', 'Hôm nay nắng đẹp quá, bệ cửa nhà bạn đúng là chỗ lý tưởng nhất để phơi nắng và ăn vặt!'],
+    tap: ['Rộp rộp... Ngon tuyệt! Má tớ phồng lên như hai chiếc bánh bao rồi này!', 'Bạn trồng hoa khéo thật đấy, chú cúc họa mi kia cứ đung đưa theo gió trông vui mắt ghê.'],
+    gift: 'Cảm ơn bữa ăn ngon lành nhé! Tớ nhặt được chiếc lá phong đỏ rực này ngoài công viên, tặng bạn làm kỷ niệm nè!' },
+};
+const vTap = {};
+let vbubTimer;
+function say(n, text, ms = 4200) {
+  const v = VIS[n], b = $('#vbub'); if (!v) return;
+  const l = parseFloat(v.el.style.left), w = parseFloat(v.el.style.width), t = parseFloat(v.el.style.top);
+  const cx = l + w / 2, x = Math.min(74, Math.max(26, cx));
+  b.textContent = text; b.style.left = x + '%'; b.style.top = t + '%';
+  b.style.setProperty('--tail', `calc(50% + ${(cx - x) / 52 * 100}%)`);
+  b.classList.add('show'); clearTimeout(vbubTimer); vbubTimer = setTimeout(() => b.classList.remove('show'), ms);
+}
+function sayTap(n) { const L = VLINES[n].tap; vTap[n] = ((vTap[n] ?? -1) + 1) % L.length; say(n, L[vTap[n]]); }
 const IDLE = {
   frog: () => { SFX.croak(); bump(VIS.frog.el, 'hop'); },
   owl: () => { SFX.hoot(); bump(VIS.owl.el, 'tilt'); },
@@ -1419,6 +1858,7 @@ function arrive(n) {
     setTimeout(() => { if (v.here) { sparrowOn = false; leave('sparrow', true); scheduleSparrow(); } }, 50000);
   }
   if (n === 'owl') SFX.flutter();
+  if (VLINES[n]) setTimeout(() => { if (v.here) say(n, VLINES[n].hi[Math.floor(Math.random() * 2)]); }, 1200);
   if (n === 'plane') {
     v.next = Infinity;
     if (AC) noiseBurst(AC.currentTime, 2.2, 500, 1600, 0.6, 0.12, master, 'pink');
@@ -1433,12 +1873,13 @@ function arrive(n) {
     setTimeout(() => {
       if (!v.here || S.food !== 'seeds') return;
       S.food = null; S.leaf = true; save(); applyFood(); bump(v.el, 'hop'); SFX.chitter();
-      toast('Sóc giấu hạt vào má, để lại một chiếc lá khô 🍂', 2800);
+      setTimeout(() => say('squirrel', VLINES.squirrel.gift, 5200), 5000);
     }, 3500);
   }
 }
 function leave(n, fly) {
   const v = VIS[n]; if (!v.here) return;
+  if (VLINES[n] && VLINES[n].bye && !fly) say(n, VLINES[n].bye, 4500);
   v.here = false; v.hit.style.display = 'none'; v.el.classList.remove('here');
   if (fly) { v.el.classList.add('away'); if (n !== 'squirrel') SFX.flutter(); setTimeout(() => v.el.classList.remove('away'), 1400); }
 }
@@ -1448,7 +1889,7 @@ function visitorTick() {
   for (const n of Object.keys(VIS)) {
     const v = VIS[n], w = want(n);
     if (w && !v.here) { if (!due[n]) due[n] = perfT + DELAY[n](); else if (perfT > due[n]) { due[n] = 0; arrive(n); } }
-    if (!w) { due[n] = 0; if (v.here) leave(n, n !== 'frog'); }
+    if (!w) { due[n] = 0; if (v.here) { if (n === 'owl' && VLINES.owl.bye) say('owl', VLINES.owl.bye, 4500); leave(n, n !== 'frog'); } }
     if (v.here && perfT > v.next) visitorAct(n);
   }
 }
