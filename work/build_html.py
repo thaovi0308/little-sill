@@ -46,7 +46,7 @@ for kind in ['daisy', 'lavender', 'cactus', 'fern', 'pothos']:
         w, h = im.width * PS, im.height * PS
         box = [round(POT_CX - pcx * PS, 1), round(POT_BOTTOM - h, 1), round(w, 1), round(h, 1)]
         plant_img[n] = {'src': prop_uri(n, h), 'box': box}
-ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2', 'pothos2', 'k_spring', 'k_record', 'k_feather', 'k_button', 'k_shell', 'k_candy', 'seed_daisy', 'seed_lavender', 'seed_cactus', 'seed_pothos']}
+ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2', 'pothos2', 'k_spring', 'k_record', 'k_feather', 'k_button', 'k_shell', 'k_candy', 'bm_fern', 'bm_lavender', 'bm_pothos', 'seed_daisy', 'seed_lavender', 'seed_cactus', 'seed_pothos']}
 ITEMS.update({'seedbag': 80, 'wilted': 100, 'scroll': 80, 'alley_lit': 260, 'stall_empty': 110, 'stall_full': 130, 'stall_wilt': 110, 'stall_mid': 110, 'stall_lit': 130, 'stamp_paw': 60, 'stamp_leaf': 60, 'stamp_moon': 60, 'can': 70, 'bouquet': 90, 'chime_flower': 292, 'mooncake': 90, 'basket': 120, 'keys': 90, 'bag': 90, 'landlady': 180, 'florist': 180, 'rabbit': 130, 'dj': 120, 'alley': 94, 'painting': 90, 'old_window': 170, 'na_cat': 160, 'na_friends': 160, 'na_window': 160})
 # images shown big inside the paper notes (characters, story pictures): keep the full drawing so phones do not upscale it (Vi 26/11: 'hình vỡ')
 PAPER_BIG = ['landlady', 'florist', 'rabbit', 'dj', 'wilted', 'stall_full', 'stall_empty', 'stall_wilt', 'stall_mid', 'stall_lit', 'seedbag', 'scroll', 'mooncake', 'bag', 'can', 'bouquet', 'alley_lit', 'basket', 'keys', 'na_cat', 'na_friends', 'na_window', 'old_window']
