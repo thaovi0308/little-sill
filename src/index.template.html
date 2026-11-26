@@ -431,8 +431,13 @@ function makeNoise(seconds, kind) {
         b2 = 0.95 * b2 + white * 0.048056; d[i] = (b0 + b1 + b2 + white * 0.05) * 1.6; }
       else d[i] = white;
     }
+    if (kind === 'brown') { let m = 0; for (let i = 0; i < len; i++) m += d[i]; m /= len; for (let i = 0; i < len; i++) d[i] -= m; }
+    const X = Math.floor(AC.sampleRate * 0.8);   // the end fades into the start, so the loop has no click
+    for (let i = 0; i < X; i++) { const a = i / X; d[i] = d[i] * a + d[len - X + i] * (1 - a); }
   }
-  return buf;
+  const out = AC.createBuffer(2, len - Math.floor(AC.sampleRate * 0.8), AC.sampleRate);
+  for (let ch = 0; ch < 2; ch++) out.copyToChannel(buf.getChannelData(ch).subarray(0, out.length), ch);
+  return out;
 }
 function makeImpulse(seconds, decay) {
   const len = Math.floor(AC.sampleRate * seconds), buf = AC.createBuffer(2, len, AC.sampleRate);
@@ -445,7 +450,7 @@ function makeImpulse(seconds, decay) {
 let NOISE = {};
 function loopNoise(kind, dest) {
   const s = AC.createBufferSource(); s.buffer = NOISE[kind]; s.loop = true;
-  s.loopStart = Math.random(); s.connect(dest); s.start(0, Math.random() * 4); return s;
+  s.connect(dest); s.start(0, Math.random() * 4); return s;
 }
 function filt(type, freq, q) { const f = AC.createBiquadFilter(); f.type = type; f.frequency.value = freq;
   if (q !== undefined) f.Q.value = q; return f; }
@@ -468,13 +473,13 @@ function initAudio() {
   // night: soft wind + crickets
   amb.night = gain(0); amb.night.connect(ambBus);
   const nightWind = filt('lowpass', 380);
-  loopNoise('brown', chain(nightWind, gain(0.38), amb.night));
-  lfo(nightWind.frequency, 0.07, 140);
+  loopNoise('brown', chain(filt('highpass', 60), nightWind, gain(0.1), amb.night));
+  lfo(nightWind.frequency, 0.07, 90);
   // sunset: breeze
   amb.sunset = gain(0); amb.sunset.connect(ambBus);
-  const breeze = filt('lowpass', 600); const bg = gain(0.42);
-  loopNoise('brown', chain(breeze, bg, amb.sunset));
-  lfo(breeze.frequency, 0.05, 260); lfo(bg.gain, 0.09, 0.18);
+  const breeze = filt('lowpass', 420); const bg = gain(0.1);
+  loopNoise('brown', chain(filt('highpass', 60), breeze, bg, amb.sunset));
+  lfo(breeze.frequency, 0.05, 160); lfo(bg.gain, 0.09, 0.06);
 
   radioVol = gain(S.volRadio); radioVol.connect(master);
   radioBus = gain(0); chain(radioBus, filt('lowpass', 3400), filt('highpass', 90), radioVol);
