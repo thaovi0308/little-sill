@@ -23,8 +23,11 @@ t = t.replace('{{ROOM_MASK}}', uri(f'{G}/work/out/room_mask.png', 'image/png'))
 for w in ['sunset', 'rain', 'night']:
     t = t.replace('{{SCENE_%s}}' % w, uri(f'{G}/work/out/scene_{w}.webp', 'image/webp'))
 import io
-def prop_uri(p, display_h):
+def prop_uri(p, display_h, soft=False):
     im = Image.open(f'{G}/assets/{p}.png')
+    if soft and im.mode == 'RGBA':           # hard cut-out edges look jagged when the paper shows them big: feather the alpha a little
+        from PIL import ImageFilter
+        al = im.getchannel('A').filter(ImageFilter.GaussianBlur(0.9)); im.putalpha(al)
     target = round(display_h * 1.6)          # ~1.6x the scene size is sharp on phones
     if im.height > target: im = im.resize((round(im.width * target / im.height), target), Image.LANCZOS)
     buf = io.BytesIO(); im.save(buf, 'WEBP', quality=88, method=6)
@@ -45,7 +48,9 @@ for kind in ['daisy', 'lavender', 'cactus', 'fern', 'pothos']:
         plant_img[n] = {'src': prop_uri(n, h), 'box': box}
 ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2', 'pothos2', 'k_spring', 'k_record', 'k_feather', 'k_button', 'k_shell', 'k_candy', 'seed_daisy', 'seed_lavender', 'seed_cactus', 'seed_pothos']}
 ITEMS.update({'seedbag': 80, 'wilted': 100, 'scroll': 80, 'alley_lit': 260, 'stall_empty': 110, 'stall_full': 130, 'stamp_paw': 60, 'stamp_leaf': 60, 'stamp_moon': 60, 'can': 70, 'bouquet': 90, 'chime_flower': 292, 'mooncake': 90, 'basket': 120, 'keys': 90, 'bag': 90, 'landlady': 180, 'florist': 180, 'rabbit': 130, 'dj': 120, 'alley': 94, 'painting': 90, 'old_window': 170, 'na_cat': 160, 'na_friends': 160, 'na_window': 160})
-t = t.replace('{{ITEM_IMG}}', json.dumps({k: prop_uri(k, h) for k, h in ITEMS.items()}))
+# images shown big inside the paper notes (characters, story pictures): keep the full drawing so phones do not upscale it (Vi 26/11: 'hình vỡ')
+PAPER_BIG = ['landlady', 'florist', 'rabbit', 'dj', 'wilted', 'stall_full', 'stall_empty', 'seedbag', 'scroll', 'mooncake', 'bag', 'can', 'bouquet', 'alley_lit', 'basket', 'keys', 'na_cat', 'na_friends', 'na_window', 'old_window']
+t = t.replace('{{ITEM_IMG}}', json.dumps({k: prop_uri(k, 2000 if k in PAPER_BIG else h, soft=k in PAPER_BIG) for k, h in ITEMS.items()}))
 t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '60')
 heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'shelf': 68, 'notebook': 380})
 for p, h in heights.items():

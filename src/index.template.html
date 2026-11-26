@@ -192,7 +192,7 @@
   #note.panel small { text-align: center; }
   #p-plane.here { animation: none; }
   #p-cookies, #p-tea { transition: opacity .6s ease; }
-  .paper-img { display: block; width: 62%; max-width: 230px; margin: 0 auto .9em; border-radius: 4px; }
+  .paper-img { display: block; width: 62%; max-width: 230px; margin: 0 auto .9em; border-radius: 4px; height: auto; object-fit: contain; }
   .reply img { height: 1.6em; vertical-align: middle; margin-right: .4em; }
   .chimes { display: flex; justify-content: center; gap: .8em; }
   .chime-pick { border: 0; background: rgba(255,255,255,.5); border-radius: 12px; padding: .35em .6em; cursor: pointer; }
@@ -1530,7 +1530,7 @@ function tapBag() {
   const SCENE = { 0: 'wilted', 4: 'stall_full' };   // Vi 26/11: the drooping branch, then her stall in full bloom
   const N = FLO[ch], pic = N.gift ? (ITEM_IMG[N.gift] ? `<img class="paper-img" src="${ITEM_IMG[N.gift]}" alt="" style="max-height:4em">` : '') : '';
   const pic2 = N.gift === 'k_can' ? `<div style="display:flex;justify-content:center;gap:.6em"><img src="${ITEM_IMG.can}" alt="" style="height:4em"><img src="${ITEM_IMG.bouquet}" alt="" style="height:4.6em"></div>` : pic;
-  const face = `<img class="paper-img" src="${ITEM_IMG.florist}" alt="" style="max-height:${ch === 0 ? 7 : 4.5}em">`;
+  const face = `<img class="paper-img" src="${ITEM_IMG.florist}" alt="" style="max-height:${ch === 0 ? 9 : 6}em">`;
   const scene = SCENE[ch] ? `<img class="paper-img" src="${ITEM_IMG[SCENE[ch]]}" alt="" style="max-height:5em;width:auto">` : '';
   showPaper(face + staged(N.b, scene + pic2 + sig), () => {
     st.flower = ch + 1; st.flowerAt = Date.now(); if (ch === 3) st.flowerCandle = S.candleDone || 0;
@@ -1570,7 +1570,7 @@ function applyTT() {
   if (on) { place($('#p-rabbit'), ...RABBIT_AT[t.step >= 3 ? 1 : 0]); place(HITS.rabbit.el, ...RABBIT_AT[t.step >= 3 ? 1 : 0]); }
   if (t && night && t.step === 0 && started && S.welcomed && !$('#note-wrap').classList.contains('show')) {
     t.step = 0.5; SFX.paper();
-    const face = `<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:6em">`, cake = `<img class="paper-img" src="${ITEM_IMG.mooncake}" alt="" style="max-height:3.6em">`;
+    const face = `<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:8em">`, cake = `<img class="paper-img" src="${ITEM_IMG.mooncake}" alt="" style="max-height:3.6em">`;
     showPaper(face + staged(TT.lady, cake + '<small>— Bà chủ nhà tầng dưới —</small>'), () => {
       t.step = 1; save(); applyTT(); setTimeout(() => say2(TT.rabbit[0]), 1400);
     }); stageReveal(false);
