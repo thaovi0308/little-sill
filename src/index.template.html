@@ -363,9 +363,12 @@
 <body>
 <div id="backdrop"></div>
 <div id="stage" style="--sky:url({{SKY_MASK}});--room:url({{ROOM_MASK}})">
-  <img class="layer scene" data-w="sunset" src="{{SCENE_sunset}}" alt="">
-  <img class="layer scene" data-w="rain" src="{{SCENE_rain}}" alt="">
-  <img class="layer scene" data-w="night" src="{{SCENE_night}}" alt="">
+  <img class="layer scene" data-w="sunset" data-tet="0" src="{{SCENE_sunset}}" alt="">
+  <img class="layer scene" data-w="rain" data-tet="0" src="{{SCENE_rain}}" alt="">
+  <img class="layer scene" data-w="night" data-tet="0" src="{{SCENE_night}}" alt="">
+  <img class="layer scene" data-w="sunset" data-tet="1" src="{{SCENE_tet_sunset}}" alt="">
+  <img class="layer scene" data-w="rain" data-tet="1" src="{{SCENE_tet_rain}}" alt="">
+  <img class="layer scene" data-w="night" data-tet="1" src="{{SCENE_tet_night}}" alt="">
   <canvas id="sky" class="layer masked-sky"></canvas>
   <div id="sunlight" class="layer masked-room"></div>
 
@@ -403,6 +406,8 @@
   <img id="p-plant2" class="prop" alt="" style="display:none">
   <img id="p-lighthouse" class="prop" alt="" style="display:none">
   <img id="p-mbag" class="prop" alt="" style="opacity:0;transition:opacity .8s">
+  <img id="p-cpl" class="prop" alt="" style="display:none"><img id="p-cpr" class="prop" alt="" style="display:none">
+  <img id="p-mai" class="prop" alt="" style="display:none"><img id="p-tray" class="prop" alt="" style="display:none"><img id="p-lixi" class="prop" alt="" style="display:none">
   <img id="p-tea2" class="prop" src="{{PROP_tea}}" alt="" style="opacity:0;transition:opacity .8s">
 
   <div id="tint" class="layer masked-room"></div>
@@ -607,6 +612,9 @@ const HITS = {
   plant2: { box: [630, 1000, 70, 118], label: 'Chậu cây nhỏ trên bàn' },
   lighthouse: { box: [590, 920, 52, 84], label: 'Hải đăng gỗ mini' },
   mbag: { box: [62, 590, 126, 128], label: 'Ba lô của Minh' },
+  mai: { box: [618, 790, 84, 118], label: 'Chậu mai vàng' },
+  tray: { box: [386, 1082, 116, 62], label: 'Khay bánh chưng, mứt Tết' },
+  lixi: { box: [170, 1050, 46, 70], label: 'Phong lì xì' },
 };
 const hitsEl = $('#hits');
 for (const [id, h] of Object.entries(HITS)) {
@@ -1103,12 +1111,13 @@ const TINT = {
 };
 const GLOW = { rain: 0.75, night: 0.9, sunset: 0.4 };
 function applyLook() {
-  document.querySelectorAll('.scene').forEach(img => img.classList.toggle('on', img.dataset.w === S.weather));
+  const tv = typeof tetOn === 'function' && tetOn() ? '1' : '0';   // Tết: Vi's alley with lanterns and mai in the window
+  document.querySelectorAll('.scene').forEach(img => img.classList.toggle('on', img.dataset.w === S.weather && img.dataset.tet === tv));
   $('#tint').style.backgroundColor = TINT[S.weather][S.lamp ? 'on' : 'off'];
   $('#glow').style.opacity = S.lamp ? GLOW[S.weather] : 0;
   $('#sunlight').style.opacity = S.weather === 'sunset' ? 0.85 : 0;
   $('#p-lamp').classList.toggle('off', !S.lamp); $('#note-wrap').dataset.w = S.weather;
-  const src = document.querySelector(`.scene[data-w="${S.weather}"]`).src;
+  const src = document.querySelector(`.scene[data-w="${S.weather}"][data-tet="${tv}"]`).src;
   $('#backdrop').style.backgroundImage = `url(${src})`;
   placeRing();
 }
@@ -1159,7 +1168,8 @@ const Q_THEMES = [
 ];
 const MOODS = ['☀️ nhẹ nhõm', '🌧️ hơi buồn', '🍵 bình yên', '🌙 mệt mỏi'];
 const STAMPS = [['🐾', 'dấu chân Bánh Quy', 'st_paw'], ['🍁', 'lá phong của sóc', 'stamp_leaf', 'leaf'], ['🌙', 'vầng trăng của bạn cú', 'st_moon'],
-  ['🪶', 'lông chim sẻ', 'k_feather', 'k_feather'], ['🔘', 'cúc áo đồng', 'k_button', 'k_button'], ['🎨', 'màu xanh pastel của cậu họa sĩ', 'k_tube', 'k_tube'], ['🕰️', 'đồng hồ quả quýt của bác', 'st_watch', 'watch']];
+  ['🪶', 'lông chim sẻ', 'k_feather', 'k_feather'], ['🔘', 'cúc áo đồng', 'k_button', 'k_button'], ['🎨', 'màu xanh pastel của cậu họa sĩ', 'k_tube', 'k_tube'], ['🕰️', 'đồng hồ quả quýt của bác', 'st_watch', 'watch'],
+  ['🕰️', 'Đồng Hồ Mùa Xuân', 'st_tet_watch', 'st_tet_watch'], ['🖌️', 'Cọ Vẽ Hoa Mai', 'st_tet_brush', 'st_tet_brush'], ['🐱', 'Mèo Đeo Nơ Đỏ', 'st_tet_cat', 'st_tet_cat'], ['🌼', 'Cánh Mai Vàng', 'st_tet_mai', 'st_tet_mai']];
 function stampPick() {   // Vi 26/11: keepsakes unlock more stamps (feather, button, pastel tube, the squirrel's leaf)
   const ok = STAMPS.map((t, i) => i).filter(i => !STAMPS[i][3] || S.keep[STAMPS[i][3]]); return ok[Math.floor(Math.random() * ok.length)];
 }
@@ -1665,6 +1675,7 @@ function useItem(k, row) {
   if (k === 'k_compass') { SFX.click(); toast(COMPASS[Math.floor(Math.random() * COMPASS.length)], 4200); return; }
   if (k === 'k_lighthouse') { S.lighthouseOut = !S.lighthouseOut; save(); applyLighthouse(); openKeepsakes(); SFX.paper(); toast(S.lighthouseOut ? 'Đặt hải đăng gỗ lên kệ tường 🗼' : 'Cất hải đăng vào hộp kỷ vật', 2400); return; }
   if (k === 'k_album') { closeNote(); openAlbum(); return; }
+  if (k === 'k_couplet') { S.coupletOut = !S.coupletOut; save(); applyTet(); openKeepsakes(); SFX.paper(); toast(S.coupletOut ? 'Treo đôi câu đối đỏ bên khung cửa 🧧' : 'Cuộn câu đối lại, cất vào hộp kỷ vật', 2600); return; }
   if (k === 'bouquet') { S.bouquetOut = !S.bouquetOut; save(); applyBouquet(); openKeepsakes(); SFX.paper(); if (S.bouquetOut) { showFlavor('bouquet'); sparkles(); } return; }
 }
 $('#note').addEventListener('click', e => {
@@ -2028,7 +2039,8 @@ function openKeepsakes() {
     ['k_cassette', 'Băng cassette “Gió Đồi Thông”', S.radio && S.radioCh === 'pine' ? 'Đang phát trên radio' : 'Chạm để bỏ vào radio'],
     ['k_compass', 'La bàn đồng của Minh', 'Chạm để xem kim chỉ về đâu'],
     ['k_lighthouse', 'Hải đăng gỗ mini', S.lighthouseOut ? 'Đang đặt trên kệ, chạm để cất' : 'Chạm để đặt lên kệ tường'],
-    ['k_album', 'Album Bưu Thiếp Phương Xa', 'Có chữ ký của Minh, chạm để xem']]
+    ['k_album', 'Album Bưu Thiếp Phương Xa', 'Có chữ ký của Minh, chạm để xem'],
+    ['k_couplet', 'Câu đối “Mừng Xuân – Như Ý”', S.coupletOut ? 'Đang treo hai bên khung cửa, chạm để cất' : 'Chạm để treo hai bên khung cửa']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
       `<div class="keep" data-item="${k}"><span>${ITEM_IMG[k] ? `<img src="${ITEM_IMG[k]}" alt="">` : '<b style="font-size:1.6em;width:1.6em;display:inline-block;text-align:center">🪴</b>'}${name}<span class="hint">${hint}</span></span></div>`);
   const rows = story.concat([['leaf', 'Lá phong khô (Sóc tặng)', '🍂']].concat(Object.entries(PLANTS).map(([k, P]) => [k, P.gift, P.icon]))
@@ -2113,7 +2125,7 @@ function stepFx(dt) {
   if (S.tea && !reduceMotion && Math.random() < dt * 5)
     spawn({ kind: 'smoke', x: rnd(455, 485), y: 1046, vx: rnd(-2, 2), vy: rnd(-22, -15), life: rnd(2, 3), t: 0, ph: rnd(0, 6) });
   // candle flame: a soft flickering halo
-  if (S.weather === 'night' && started && nextOldLetter() !== null) {
+  if (S.weather === 'night' && started && !window.tetView && nextOldLetter() !== null) {
     const ph = (perfT / 1000) % 7;   // three slow blinks, then a pause
     if (ph < 3.6) glowDot(ctx, BLINK[0], BLINK[1], Math.max(0, Math.sin(ph / 1.2 * Math.PI)) * 0.9, 2.2);
   }
@@ -2196,7 +2208,7 @@ function stepSky(dt) {
   }
   const L = sky.level;
   const lv = L.night + L.rain * 0.85 + L.sunset * 0.15;
-  if (lv > 0.02) {
+  if (lv > 0.02 && !window.tetView) {
     WINDOWS.slice(0, litShown || 0).forEach(([x, y, w, h], i) => {
       const fresh = i === litShown - 1 ? Math.min(1, (performance.now() - litFlash) / 2500) : 1;
       const a = lv * fresh * (0.82 + 0.06 * Math.sin(perfT * 0.002 + i));
@@ -2215,7 +2227,8 @@ function stepSky(dt) {
     ctx.globalAlpha = 1;
     if (Math.random() < dt * 6 * L.rain) SFX.drip();
   }
-  if (L.night > 0.01) {
+  if (window.tetView) stepFireworks(ctx, dt, L.night);
+  if (L.night > 0.01 && !window.tetView) {
     for (const s of sky.stars) {
       const a = (0.45 + 0.55 * Math.sin(perfT * 0.001 * s.s + s.p)) * L.night;
       ctx.fillStyle = `rgba(255,250,225,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill();
@@ -2289,6 +2302,9 @@ function act(id) {
     case 'chime': pushChime((Math.random() < 0.5 ? -1 : 1) * rnd(120, 170)); if (Math.random() < 0.5) catAct('play', 3.5); break;
     case 'plant': tapPlant(0); break;
     case 'plant2': tapPlant(1); break;
+    case 'mai': tapMai(); break;
+    case 'tray': bump($('#p-tray'), 'wig'); SFX.paper(); toast(TET.tray, 5200); break;
+    case 'lixi': bump($('#p-lixi'), 'hop'); openLixi(); break;
     case 'mbag': bump($('#p-mbag'), 'wig'); SFX.paper(); toast(MINH_BAG[Math.floor(Math.random() * MINH_BAG.length)], 3800); break;
     case 'lighthouse': bump($('#p-lighthouse'), 'wig'); SFX.chime(0.25); toast(S.weather === 'sunset' ? 'Ngọn hải đăng gỗ của Minh. Tối nay đèn sẽ quét một vòng vàng ấm 🗼' : 'Ngọn hải đăng nhỏ quét ánh vàng qua căn gác, như đang chỉ đường về 🗼', 3000); break;
     case 'rabbit': tapRabbit(); break;
@@ -2450,12 +2466,15 @@ function setMuted(m) { S.muted = m; save(); applyMute(); if (AC) master.gain.set
 function openSound() {
   const sl = (id, label, v) => `<label class="vol"><span>${label}</span><input type="range" id="${id}" min="0" max="100" value="${Math.round(v * 100)}"></label>`;
   openPanel(`<h3>Âm thanh</h3>${sl('v-amb', '🌧️ Mưa, chim, côn trùng', S.volAmb)}${sl('v-radio', '📻 Nhạc radio', S.volRadio)}${sl('v-music', '🎵 Nhạc nền', S.volMusic ?? 0.7)}
+    ${tetUnlocked() && !tetSeason() ? `<button class="reply" id="v-tet">${S.tetForce ? '🧧 Không Khí Tết: đang bật' : '🧧 Không Khí Tết: đang tắt'}</button>` : ''}
     ${S.keep.alley ? `<button class="reply" id="v-moon">${S.ttForce ? '🌕 Đêm Trăng Rằm: đang bật' : '🌑 Đêm Trăng Rằm: đang tắt'}</button>` : ''}
     <button class="reply" id="v-mute">${S.muted ? '🔈 Bật lại âm thanh' : '🔇 Tắt hết âm thanh'}</button>
     <button class="reply" id="v-done" style="text-align:center">Xong</button>`, true);
   $('#v-amb').addEventListener('input', e => { S.volAmb = e.target.value / 100; save(); if (ambBus) ambBus.gain.setTargetAtTime(S.volAmb, AC.currentTime, 0.05); });
   $('#v-music').addEventListener('input', e => { S.volMusic = e.target.value / 100; save(); if (bgmBus) bgmBus.gain.setTargetAtTime(S.volMusic, AC.currentTime, 0.05); });
   $('#v-radio').addEventListener('input', e => { S.volRadio = e.target.value / 100; save(); if (radioVol) radioVol.gain.setTargetAtTime(S.volRadio, AC.currentTime, 0.05); });
+  const vt = $('#v-tet'); if (vt) vt.addEventListener('click', e => { e.stopPropagation(); S.tetForce = !S.tetForce; save(); applyTet(); applyLook(); openSound();
+    if (S.tetForce) toast('Con hẻm đã treo đèn lồng đỏ, Tết về rồi 🧧', 3200); });
   const vm = $('#v-moon'); if (vm) vm.addEventListener('click', e => { e.stopPropagation(); S.ttForce = !S.ttForce; save(); applyTT(); openSound();
     if (S.ttForce) toast(S.weather === 'night' ? 'Đêm nay bà chủ nhà sẽ ghé ngắm trăng cùng bạn 🌕' : 'Chuyển sang trời đêm để ngắm trăng cùng bà chủ nhà nhé 🌕', 3600); });
   $('#v-mute').addEventListener('click', e => { e.stopPropagation(); setMuted(!S.muted); openSound(); });

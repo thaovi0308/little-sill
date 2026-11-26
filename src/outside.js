@@ -288,6 +288,7 @@ function enterShop() {
     applyShop(); $('#shop').classList.add('show'); shopAudio(true); fade.classList.remove('on');
     shopQ = [];
     if (!S.shop.visited) shopQ = SHOP.greet.slice();
+    else if (tetOn()) shopQ = [TET.shop];
     else if (S.story.minh >= 1 && !S.seedsGot.clover && !S.shop.cloverHi) { S.shop.cloverHi = 1; shopQ = [SHOP_SEEDS[2].hello]; }
     else shopQ = [SHOP.greet[Math.floor(Math.random() * 2)]];
     S.shop.visited = 1; save(); applyMapBtn();
