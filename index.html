@@ -311,7 +311,7 @@ function defaultWeather() {
 let saved = {};
 try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
 const S = Object.assign({ weather: defaultWeather(), lamp: true, lantern: false, radio: false, incense: true, milk: false,
-  muted: false, volAmb: 1, volRadio: 0.8, seen: {}, welcomed: false, candleAt: 0, noteIndex: Math.floor(Math.random() * NOTES.length) }, saved);
+  muted: false, volAmb: 1, volRadio: 0.8, volMusic: 0.7, seen: {}, welcomed: false, candleAt: 0, noteIndex: Math.floor(Math.random() * NOTES.length) }, saved);
 S.radio = false;   // music starts only when the player asks for it
 if (S.milk) { S.food = 'milk'; } delete S.milk;
 const SPEED = 60;            // prototype: 1 in-game hour = 1 minute (release build: 1)
@@ -538,16 +538,9 @@ function initAudio() {
   amb.rain = gain(0); amb.rain.connect(ambBus);
   loopNoise('pink', chain(filt('highpass', 450), filt('lowpass', 3200), gain(0.55), amb.rain));
   loopNoise('brown', chain(filt('lowpass', 520), gain(0.65), amb.rain));
-  // night: soft wind + crickets
+  // night: crickets only; sunset: sparrows only (Vi 26/11: no noise bed outside the rain, the hiss belongs to the radio)
   amb.night = gain(0); amb.night.connect(ambBus);
-  const nightWind = filt('lowpass', 380);
-  loopNoise('brown', chain(filt('highpass', 60), nightWind, gain(0.1), amb.night));
-  lfo(nightWind.frequency, 0.07, 90);
-  // sunset: breeze
   amb.sunset = gain(0); amb.sunset.connect(ambBus);
-  const breeze = filt('lowpass', 420); const bg = gain(0.1);
-  loopNoise('brown', chain(filt('highpass', 60), breeze, bg, amb.sunset));
-  lfo(breeze.frequency, 0.05, 160); lfo(bg.gain, 0.09, 0.06);
 
   radioVol = gain(S.volRadio); radioVol.connect(master);
   radioBus = gain(0); chain(radioBus, filt('lowpass', 3400), filt('highpass', 90), radioVol);
@@ -558,11 +551,34 @@ function initAudio() {
 function lfo(param, rate, depth) {
   const o = AC.createOscillator(), g = gain(depth); o.frequency.value = rate; o.connect(g); g.connect(param); o.start();
 }
+// background music (Vi 26/11): acoustic guitar for the sunny hours, soft piano for the night and the rain; the radio takes over while it plays.
+// Files live next to the page (audio/bgm_day.mp3, audio/bgm_night.mp3); a missing file just stays silent.
+const BGM = { day: 'audio/bgm_day.mp3', night: 'audio/bgm_night.mp3' }, bgm = {};
+let bgmBus = null;
+function bgmUpdate() {
+  if (!AC || !started) return;
+  if (!bgmBus) { bgmBus = gain(S.volMusic ?? 0.7); bgmBus.connect(master); }
+  const want = S.radio ? null : S.weather === 'sunset' ? 'day' : 'night';
+  for (const k of Object.keys(BGM)) {
+    let b = bgm[k];
+    if (!b && k === want) {
+      const el = new Audio(BGM[k]); el.loop = true; el.preload = 'auto';
+      const g = gain(0); AC.createMediaElementSource(el).connect(g); g.connect(bgmBus);
+      b = bgm[k] = { el, g, on: false, bad: false }; el.addEventListener('error', () => { b.bad = true; });
+    }
+    if (!b || b.bad) continue;
+    const on = k === want;
+    if (on === b.on) continue;
+    b.on = on; b.g.gain.cancelScheduledValues(AC.currentTime); b.g.gain.setTargetAtTime(on ? 1 : 0, AC.currentTime, 0.9);   // ~3 s crossfade
+    if (on) b.el.play().catch(() => {}); else setTimeout(() => { if (!b.on) b.el.pause(); }, 4500);
+  }
+}
+setInterval(bgmUpdate, 700);
 function setAmbience(w, t = 1.6) {
   if (!AC) return;
   const now = AC.currentTime;
   for (const k of ['rain', 'night', 'sunset']) {
-    const target = k === w ? (k === 'rain' ? 0.6 : 0.55) : 0;
+    const target = k === w ? (k === 'rain' ? 0.6 : k === 'night' ? 0.35 : 0.55) : 0;
     amb[k].gain.cancelScheduledValues(now); amb[k].gain.setTargetAtTime(target, now, t / 3);
   }
 }
@@ -594,7 +610,7 @@ const SFX = {
     const pan = AC.createStereoPanner(); pan.pan.value = -0.45; pan.connect(master); pan.connect(reverb);
     for (let i = 0; i < n; i++) {
       const f = scaleHz[Math.floor(Math.random() * scaleHz.length)];
-      [[1, 0.16], [2.76, 0.05], [5.4, 0.025], [8.93, 0.012]].forEach(([r, a]) =>
+      [[1, 0.16], [2.76, 0.05], [5.4, 0.025], [8.93, 0.012]].filter(([r]) => f * r < 18000).forEach(([r, a]) =>
         tone(t, f * r, 2.6 / Math.sqrt(r), a * (0.6 + 0.4 * strength), 'sine', pan, 0.002));
       t += 0.09 + Math.random() * 0.22;
     }
@@ -1019,7 +1035,7 @@ function startTyping() {
   let k = 0;
   TW.timer = setInterval(() => {
     const sp = TW.chars.shift(); if (!sp) { finishTyping(); return; }
-    sp.classList.add('in'); if (AC && ++k % 4 === 0 && sp.textContent.trim()) noiseBurst(AC.currentTime, 0.025, 2500 + Math.random() * 2000, 0, 1.2, 0.012);
+    sp.classList.add('in'); if (AC && ++k % 4 === 0 && sp.textContent.trim()) tone(AC.currentTime, 1400 + Math.random() * 500, 0.012, 0.004);
   }, 32);
 }
 function typing() { return !!TW.timer; }
@@ -2016,10 +2032,11 @@ $('#mute').addEventListener('click', e => { e.stopPropagation(); openSound(); })
 function setMuted(m) { S.muted = m; save(); applyMute(); if (AC) master.gain.setTargetAtTime(S.muted ? 0 : 0.42, AC.currentTime, 0.2); }
 function openSound() {
   const sl = (id, label, v) => `<label class="vol"><span>${label}</span><input type="range" id="${id}" min="0" max="100" value="${Math.round(v * 100)}"></label>`;
-  openPanel(`<h3>Âm thanh</h3>${sl('v-amb', '🌧️ Mưa, gió, côn trùng', S.volAmb)}${sl('v-radio', '📻 Nhạc radio', S.volRadio)}
+  openPanel(`<h3>Âm thanh</h3>${sl('v-amb', '🌧️ Mưa, chim, côn trùng', S.volAmb)}${sl('v-radio', '📻 Nhạc radio', S.volRadio)}${sl('v-music', '🎵 Nhạc nền', S.volMusic ?? 0.7)}
     <button class="reply" id="v-mute">${S.muted ? '🔈 Bật lại âm thanh' : '🔇 Tắt hết âm thanh'}</button>
     <button class="reply" id="v-done" style="text-align:center">Xong</button>`, true);
   $('#v-amb').addEventListener('input', e => { S.volAmb = e.target.value / 100; save(); if (ambBus) ambBus.gain.setTargetAtTime(S.volAmb, AC.currentTime, 0.05); });
+  $('#v-music').addEventListener('input', e => { S.volMusic = e.target.value / 100; save(); if (bgmBus) bgmBus.gain.setTargetAtTime(S.volMusic, AC.currentTime, 0.05); });
   $('#v-radio').addEventListener('input', e => { S.volRadio = e.target.value / 100; save(); if (radioVol) radioVol.gain.setTargetAtTime(S.volRadio, AC.currentTime, 0.05); });
   $('#v-mute').addEventListener('click', e => { e.stopPropagation(); setMuted(!S.muted); openSound(); });
   $('#v-done').addEventListener('click', e => { e.stopPropagation(); closeNote(); });
