@@ -33,8 +33,8 @@ heights = {k: v[3] for k, v in L['boxes'].items() if k != 'plant'}; heights.upda
 # growing plants: all 9 drawings at one scale, the pot centred where the painted pot was
 PS, POT_CX, POT_BOTTOM = 0.73, 180, 898
 plant_img = {}
-PSK = {'fern': PS * 110 / 102}           # Vi's fern sheet has a smaller pot
-for kind in ['daisy', 'lavender', 'cactus', 'fern']:
+PSK = {'fern': PS * 110 / 102, 'pothos': 0.62}           # Vi's fern sheet has a smaller pot
+for kind in ['daisy', 'lavender', 'cactus', 'fern', 'pothos']:
     PS = PSK.get(kind, 0.73)
     for st in range(3):
         n = f'{kind}{st}'; im = Image.open(f'{G}/assets/{n}.png'); a = np.array(im)[:, :, 3] > 40
@@ -43,11 +43,11 @@ for kind in ['daisy', 'lavender', 'cactus', 'fern']:
         w, h = im.width * PS, im.height * PS
         box = [round(POT_CX - pcx * PS, 1), round(POT_BOTTOM - h, 1), round(w, 1), round(h, 1)]
         plant_img[n] = {'src': prop_uri(n, h), 'box': box}
-ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2']}
+ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2', 'pothos2', 'k_spring', 'k_record', 'k_feather', 'k_button', 'k_shell', 'k_candy', 'seed_daisy', 'seed_lavender', 'seed_cactus', 'seed_pothos']}
 ITEMS.update({'alley': 94, 'painting': 90, 'old_window': 170, 'na_cat': 160, 'na_friends': 160, 'na_window': 160})
 t = t.replace('{{ITEM_IMG}}', json.dumps({k: prop_uri(k, h) for k, h in ITEMS.items()}))
 t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '60')
-heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292})
+heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'notebook': 380})
 for p, h in heights.items():
     t = t.replace('{{PROP_%s}}' % p, prop_uri(p, h))
 ic = Image.open(f'{G}/assets/icon.png').resize((192, 192), Image.LANCZOS); buf = io.BytesIO(); ic.save(buf, 'PNG', optimize=True)

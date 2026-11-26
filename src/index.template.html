@@ -115,6 +115,17 @@
   @keyframes hop { 30% { transform: translateY(-9%) scale(1.02,.98); } 60% { transform: translateY(0) scale(1.04,.94); } }
   .tilt { animation: tilt 1.4s ease-in-out !important; }
   @keyframes tilt { 25% { transform: rotate(-9deg); } 60% { transform: rotate(6deg); } }
+  #note:has(.nb) { background: none; border: 0; box-shadow: none; width: 96%; max-width: 560px; padding: 0; }
+  .nb { position: relative; } .nb img { width: 100%; display: block; filter: drop-shadow(0 10px 18px rgba(30,20,10,.35)); }
+  .nb p { position: absolute; top: 13%; width: 36%; max-height: 78%; overflow: hidden; margin: 0; font-family: 'Patrick Hand', cursive; font-size: clamp(11px, 1.75vh, 16px); line-height: 1.5; color: #5b4636; }
+  .nb .l { left: 7%; } .nb .r { left: 56%; font-style: italic; }
+  .vol { display: block; margin: .9em 0; } .vol span { display: block; font-size: .9em; margin-bottom: .3em; }
+  .vol input { width: 100%; accent-color: #d9a55a; }
+  .ring { position: absolute; border-radius: 50%; pointer-events: none;
+    box-shadow: 0 0 0 3px rgba(255,244,200,.95), 0 0 28px 12px rgba(255,225,140,.7); animation: ring 2.2s ease-in-out infinite; }
+  @keyframes ring { 0%,100% { opacity: .45; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.04); } }
+  #candle-t { position: absolute; pointer-events: none; font: 600 clamp(10px, 1.5vh, 13px) 'Quicksand', sans-serif;
+    color: #fff6e0; background: rgba(60,40,25,.55); border-radius: 999px; padding: .1em .55em; text-align: center; display: none; }
   #note.letter { background: #FBF3E2; border-style: solid; font-family: 'Lora', Georgia, serif; font-style: italic;
     font-size: clamp(15px, 2.5vh, 20px); text-align: left; }
   #note.panel { text-align: left; font-family: 'Quicksand', sans-serif; font-size: clamp(13px, 2vh, 16px); transform: none; }
@@ -140,7 +151,10 @@
   .reply { display: block; width: 100%; margin: .5em 0 0; padding: .6em .8em; border-radius: 12px; border: 1.5px solid var(--paper-line);
     background: #fffdf7; font: inherit; font-style: normal; font-size: .85em; color: inherit; text-align: left; cursor: pointer; }
   .breath { display: flex; flex-direction: column; align-items: center; gap: 1.4em; padding: .6em 0; }
-  .breath .dot { width: 4.2em; height: 4.2em; border-radius: 50%; background: radial-gradient(circle, #ffe7b8, #f4c58c);
+  .breath .cupv { position: relative; width: 13em; }
+  .breath .cupv img:first-child { width: 100%; display: block; }
+  .breath .cupv .dot { position: absolute; left: 24%; top: 12%; width: 40%; height: auto; opacity: .55; background: none; transform: scale(.7); transition: transform 4s ease-in-out; }
+  .breath .dot0 { width: 4.2em; height: 4.2em; border-radius: 50%; background: radial-gradient(circle, #ffe7b8, #f4c58c);
     box-shadow: 0 0 30px rgba(244,197,140,.7); transform: scale(.7); transition: transform 4s ease-in-out; }
   .breath p { margin: 0; font-family: 'Lora', serif; font-style: italic; font-size: 1.25em; min-height: 1.5em; text-align: center; }
   @media (prefers-reduced-motion: reduce) {
@@ -165,7 +179,12 @@
   <img id="p-owl" class="prop visitor" src="{{PROP_owl}}" alt="">
   <img id="p-plant" class="prop" alt="">
   <img id="p-painting" class="prop" src="{{PROP_painting}}" alt="" style="opacity:0">
+  <img id="p-welcome" class="prop" src="{{PROP_na_note}}" alt="" style="transform:rotate(-12deg);z-index:2;pointer-events:none">
+  <div id="candle-t"></div>
+  <img id="p-seeds" class="prop" src="{{PROP_seeds_plate}}" alt="" style="opacity:0;transition:opacity .6s">
+  <img id="p-lantern" class="prop" src="{{PROP_lantern_off}}" alt="">
   <img id="p-cat" class="prop" src="{{PROP_cat_sleep}}" alt="">
+  <img id="p-towel" class="prop" src="{{PROP_towel}}" alt="" style="opacity:0">
   <img id="p-nanote" class="prop" src="{{PROP_na_note}}" alt="" style="opacity:0;transition:opacity .6s">
   <img id="p-jar" class="prop" src="{{PROP_jar}}" alt="">
   <img id="p-cookies" class="prop" src="{{PROP_cookies}}" alt="" style="opacity:0">
@@ -188,7 +207,7 @@
   <div id="note-wrap"><div id="note"></div></div>
   <div id="intro" role="button" aria-label="Chạm để mở cửa sổ">
     <img class="cover" src="{{COVER}}" alt="Bên Khung Cửa Nhỏ — Little Sill">
-    <div class="tap">Chạm để mở cửa sổ</div>
+    <div class="tap">Mở khung cửa nhỏ</div>
     <div class="hint">Nên đeo tai nghe để nghe tiếng mưa 🎧</div>
   </div>
 </div>
@@ -232,8 +251,8 @@ function defaultWeather() {
 }
 let saved = {};
 try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
-const S = Object.assign({ weather: defaultWeather(), lamp: true, radio: false, incense: true, milk: false,
-  muted: false, noteIndex: Math.floor(Math.random() * NOTES.length) }, saved);
+const S = Object.assign({ weather: defaultWeather(), lamp: true, lantern: false, radio: false, incense: true, milk: false,
+  muted: false, volAmb: 1, volRadio: 0.8, seen: {}, welcomed: false, candleAt: 0, noteIndex: Math.floor(Math.random() * NOTES.length) }, saved);
 S.radio = false;   // music starts only when the player asks for it
 if (S.milk) { S.food = 'milk'; } delete S.milk;
 const SPEED = {{SPEED}};            // prototype: 1 in-game hour = 1 minute (release build: 1)
@@ -247,6 +266,8 @@ const PLANTS = {
               care: 'Chỉ cần tưới 1 lần', need: [{ water: 1 }, { water: 1 }] },
   fern:     { name: 'Dương Xỉ Rừng', hours: 8, icon: '🌿', gift: 'Lá dương xỉ xanh mướt', meaning: 'Sự tươi mới, hồi phục',
               care: 'Tưới nước + gặp trời mưa 1 lần', need: [{ water: 1 }, { water: 1, rain: 1 }] },
+  pothos:   { name: 'Trầu Bà', hours: 10, icon: '🍃', gift: 'Lá trầu bà hình trái tim', meaning: 'Niềm hy vọng',
+              care: 'Tưới nước + thắp đèn lồng 1 lần', need: [{ water: 1 }, { water: 1, light: 1 }] },
 };
 const PLANT_IMG = {{PLANT_IMG}};
 if (S.leaves) { S.keep = Object.assign({}, S.keep, { leaf: S.leaves }); delete S.leaves; }
@@ -272,7 +293,7 @@ const NA_NOTES = [
   { img: 'na_window', text: 'Mỗi tối đi học về ngước lên thấy cửa sổ nhà bạn sáng đèn, mình và Bánh Quy đều thấy ấm áp lắm. Chúc bạn ngủ ngon!' },
 ];
 const NA_REPLIES = [
-  { icon: '🍓', text: 'Mỗi bông hoa đều cần thời gian để làm quen với khu vườn mới mà.', gift: 'viên kẹo dâu', name: 'một viên kẹo dâu' },
+  { img: 'k_candy', text: 'Mỗi bông hoa đều cần thời gian để làm quen với khu vườn mới mà.', gift: 'viên kẹo dâu', name: 'một viên kẹo dâu' },
   { img: 'k_clip', text: 'Bạn dễ thương như Bánh Quy vậy, rồi mọi người sẽ thích bạn thôi!', gift: 'chiếc kẹp tóc', name: 'chiếc kẹp tóc hình đám mây' },
 ];
 const PLANE_NOTES = [
@@ -308,6 +329,8 @@ const HITS = {
   cat:    { box: [345, 760, 230, 140], label: 'Vuốt ve mèo Bánh Quy' },
   nanote: { box: [474, 786, 60, 64], label: 'Mẩu giấy của bé Na' },
   jar:    { box: [570, 796, 78, 108], label: 'Lọ đom đóm' },
+  welcome:{ box: [592, 862, 58, 44], label: 'Lá thư chào mừng' },
+  lantern:{ box: [546, 940, 76, 64], label: 'Đèn lồng giấy' },
   lamp:   { box: [30, 846, 176, 276], label: 'Đèn bàn' },
   radio:  { box: [208, 940, 196, 182], label: 'Đài radio' },
   incense:{ box: [556, 1010, 92, 116], label: 'Nến thơm' },
@@ -349,9 +372,11 @@ const CAT = {
   look:  { src: '{{PROP_cat_look}}',  box: [336, 726, 319, 172], flip: true },
   eat:   { src: '{{PROP_cat_eat}}',   box: [232, 717, 205, 188], flip: true },
   play:  { src: '{{PROP_cat_play}}',  box: [392, 711, 175, 194], flip: true },
+  back:  { src: '{{PROP_cat_back2}}', box: [398, 698, 137, 200], flip: false },
+  wet:   { src: '{{PROP_cat_wet}}',   box: [388, 702, 166, 196], flip: true },
 };
 let catPose = 'sleep';
-const catUntil = { eat: 0, play: 0, sit: 0 };
+const catUntil = { eat: 0, play: 0, sit: 0, back: 0 };
 function setCatPose(p) {
   if (p === catPose) return; catPose = p; const c = CAT[p], el = $('#p-cat');
   el.src = c.src; place(el, ...c.box); el.style.transform = c.flip ? 'scaleX(-1)' : '';
@@ -363,12 +388,15 @@ function updateCat() {
   const now = performance.now();
   const eating = now < catUntil.eat;
   $('#p-plate').style.opacity = eating ? 0 : 1; if (eating) $('#p-cookies').style.opacity = 0;
-  setCatPose(eating ? 'eat' : now < catUntil.play ? 'play' : now < catUntil.sit ? 'sit'
+  const wet = S.story.na === 3 && !S.story.naWarm && S.weather === 'rain' && naWetShown;
+  setCatPose(eating ? 'eat' : wet ? 'wet' : now < catUntil.play ? 'play' : now < catUntil.sit ? 'sit' : now < catUntil.back ? 'back'
     : Object.values(VIS).some(v => v.here) ? 'look' : 'sleep');
 }
 place($('#p-cat'), ...CAT.sleep.box);
 place($('#p-tea'), 420, 1043, 100, 77.5);
-function applyFood() { $('#p-cookies').style.opacity = S.food === 'milk' ? 1 : 0; }
+function applyFood() { $('#p-cookies').style.opacity = S.food === 'milk' ? 1 : 0; $('#p-seeds').style.opacity = S.food === 'seeds' ? 1 : 0;
+  $('#p-plate').style.visibility = S.food === 'seeds' ? 'hidden' : ''; }
+place($('#p-seeds'), 242, 845, 98, 59);
 function applyTea() { $('#p-tea').style.opacity = S.tea ? 1 : 0; HITS.cup.el.style.display = S.tea ? '' : 'none'; }
 function updatePlant(grew) {
   const el = $('#p-plant'), g = S.garden;
@@ -391,7 +419,7 @@ const skyCanvas = $('#sky'), fxCanvas = $('#fx');
 const skyCtx = skyCanvas.getContext('2d'), fxCtx = fxCanvas.getContext('2d');
 
 // ---------------------------------------------------------------- audio (all sounds are synthesised)
-let AC = null, master, reverb, amb = {}, radioBus;
+let AC = null, master, reverb, amb = {}, radioBus, ambBus, radioVol;
 function makeNoise(seconds, kind) {
   const len = Math.floor(AC.sampleRate * seconds), buf = AC.createBuffer(2, len, AC.sampleRate);
   for (let ch = 0; ch < 2; ch++) {
@@ -433,22 +461,24 @@ function initAudio() {
   NOISE = { white: makeNoise(5, 'white'), pink: makeNoise(6, 'pink'), brown: makeNoise(7, 'brown') };
 
   // rain: hiss + body + random drips
-  amb.rain = gain(0); amb.rain.connect(master);
+  ambBus = gain(S.volAmb); ambBus.connect(master);
+  amb.rain = gain(0); amb.rain.connect(ambBus);
   loopNoise('pink', chain(filt('highpass', 450), filt('lowpass', 3200), gain(0.55), amb.rain));
   loopNoise('brown', chain(filt('lowpass', 520), gain(0.65), amb.rain));
   // night: soft wind + crickets
-  amb.night = gain(0); amb.night.connect(master);
+  amb.night = gain(0); amb.night.connect(ambBus);
   const nightWind = filt('lowpass', 380);
   loopNoise('brown', chain(nightWind, gain(0.38), amb.night));
   lfo(nightWind.frequency, 0.07, 140);
   // sunset: breeze
-  amb.sunset = gain(0); amb.sunset.connect(master);
+  amb.sunset = gain(0); amb.sunset.connect(ambBus);
   const breeze = filt('lowpass', 600); const bg = gain(0.42);
   loopNoise('brown', chain(breeze, bg, amb.sunset));
   lfo(breeze.frequency, 0.05, 260); lfo(bg.gain, 0.09, 0.18);
 
-  radioBus = gain(0); chain(radioBus, filt('lowpass', 3400), filt('highpass', 90), master);
-  const radioRev = gain(0.5); radioBus.connect(radioRev); radioRev.connect(reverb);
+  radioVol = gain(S.volRadio); radioVol.connect(master);
+  radioBus = gain(0); chain(radioBus, filt('lowpass', 3400), filt('highpass', 90), radioVol);
+  const radioRev = gain(0.5); radioBus.connect(radioRev); radioRev.connect(radioVol);
   setAmbience(S.weather, 0.01);
   if (S.incense) {}
 }
@@ -734,9 +764,13 @@ function toast(text, ms = 1800) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), ms);
 }
 function bump(el, cls = 'press') { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+const QUESTIONS = ['Hôm nay bầu trời trong lòng bạn giống thời tiết nào?', 'Có một điều nhỏ xíu nào hôm nay khiến bạn mỉm cười không?',
+  'Hôm nay bạn đã uống đủ nước chưa?', 'Nếu được tặng mình một món quà nhỏ, bạn sẽ chọn gì?', 'Ai là người bạn muốn cảm ơn hôm nay?',
+  'Một mùi hương làm bạn thấy bình yên là gì?', 'Hôm nay bạn đã làm tốt điều gì, dù rất nhỏ?'];
 let showNote = function () {
   S.noteIndex = (S.noteIndex + 1) % NOTES.length; save();
-  $('#note').innerHTML = `“${NOTES[S.noteIndex]}”<small>— một mẩu giấy nhỏ trên bệ cửa —</small>`;
+  const q = QUESTIONS[Math.floor(Date.now() / 864e5) % QUESTIONS.length];
+  $('#note').innerHTML = `<div class="nb"><img src="{{PROP_notebook}}" alt=""><p class="l">${q}</p><p class="r">“${NOTES[S.noteIndex]}”</p></div>`;
   $('#note-wrap').classList.add('show'); SFX.paper();
 }
 let onNoteClose = null;
@@ -756,6 +790,16 @@ function nextOldLetter() {
   if (st.old === 2 && Date.now() - st.oldAt >= 2 * HOUR) return 2;
   return null;
 }
+// the sparrow carries little things: first the spring the old man needs, then a feather, a button, a shell
+function sparrowGift() {
+  if (nextOldLetter() !== null || S.story.old < 1) return false;
+  const GIFTS = [['k_spring', 'một chiếc lò xo nhỏ xíu', !S.story.fixed], ['k_feather', 'một chiếc lông chim sẻ', true],
+    ['k_button', 'một chiếc cúc áo đồng', true], ['k_shell', 'hai vỏ sò nhỏ', true]];
+  const g = GIFTS.find(([k, , ok]) => ok && !S.keep[k]); if (!g || Math.random() < 0.4) return false;
+  S.keep[g[0]] = 1; save();
+  showPaper(`<img class="paper-img" src="${ITEM_IMG[g[0]]}" alt="" style="max-height:6em">Chú chim sẻ đặt xuống bệ cửa ${g[1]} rồi nghiêng đầu nhìn bạn.<small>— món quà nhỏ từ chú chim sẻ —</small>`);
+  return true;
+}
 function showLetter() {
   const i = nextOldLetter();
   if (i === null) {   // no chapter waiting: a small anonymous note
@@ -766,6 +810,7 @@ function showLetter() {
   showPaper(`<img class="paper-img" src="${ITEM_IMG.old_window}" alt="">${L.text}<small>— ${L.from} —</small>`, () => {
     S.story.old = i + 1; S.story.oldAt = Date.now();
     if (i === 0) { S.keep.musicbox = 1; toast('Bạn nhận được hộp nhạc gỗ của bác 🎁 (xem trong hộp kỷ vật)', 3600); }
+    if (i === 1) { S.keep.k_record = 1; toast('Bác gửi sang một đĩa nhạc cũ bác tự sửa 🎁', 3600); }
     if (i === 2) { S.keep.watch = 1; toast('Bạn nhận được chiếc đồng hồ quả quýt 🎁', 3600); }
     save();
   });
@@ -774,7 +819,7 @@ function planeReady() {
   const st = S.story, P = S.garden, now = Date.now();
   switch (st.plane) {
     case 0: return S.weather === 'rain';
-    case 1: return S.weather !== 'night' && !!P && P.stage === 2 && (P.type === 'daisy' || P.type === 'lavender');
+    case 1: return S.weather !== 'night' && (S.lantern || (!!P && P.stage === 2 && (P.type === 'daisy' || P.type === 'lavender')));
     case 2: return S.weather !== 'night' && now - st.planeAt >= 1 * HOUR;
     case 3: return S.weather !== 'night' && now - st.planeAt >= 48 * HOUR;
   }
@@ -804,7 +849,7 @@ function readPlane() {
 // ---------- tea + breathing
 let breathTimers = [];
 function drinkTea() {
-  const html = `<div class="breath"><div class="dot"></div><p id="breath-text">Nhấp một ngụm trà ấm…</p></div><small>Chạm ra ngoài để dừng</small>`;
+  const html = `<div class="breath"><div class="cupv"><img src="{{PROP_tea_top}}" alt=""><img class="dot" src="{{PROP_steam_a}}" alt=""></div><p id="breath-text">Nhấp một ngụm trà ấm…</p></div><small>Chạm ra ngoài để dừng</small>`;
   openPanel(html); onNoteClose = () => breathTimers.forEach(clearTimeout);
   const steps = []; let t = 1800;
   for (let k = 0; k < 3; k++) {
@@ -835,6 +880,23 @@ function waves() {
   for (let k = 0; k < 4; k++) noiseBurst(t + k * 1.7, 2.2, 300, 900, 0.4, 0.16, master, 'brown');
 }
 const CANDLE = { on: ['{{PROP_candle_on}}', [573, 1003, 56, 100]], off: ['{{PROP_candle_off}}', [575, 1023, 53, 80]] };
+function applyLantern() { $('#p-lantern').src = S.lantern ? '{{PROP_lantern_on}}' : '{{PROP_lantern_off}}'; }
+place($('#p-lantern'), 548, 942, 72, 64);
+const FOCUS = 25 * 60e3;
+function candleTick() {
+  const el = $('#candle-t');
+  if (!S.incense || !S.candleAt) { el.style.display = 'none'; return; }
+  const left = S.candleAt + FOCUS - Date.now();
+  if (left <= 0) {
+    S.incense = false; S.candleAt = 0; save(); applyCandle(); el.style.display = 'none';
+    SFX.chime(0.8); setTimeout(() => SFX.chime(0.5), 900);
+    showPaper('Ngọn nến vừa tàn. Bạn đã chăm chú suốt 25 phút rồi đấy! Đứng dậy vươn vai, uống một ngụm nước và nghỉ ngơi 5 phút nhé.<small>— ngọn nến thơm —</small>');
+    return;
+  }
+  const m = Math.floor(left / 60e3), sec = Math.floor(left / 1000) % 60;
+  el.textContent = `${m}:${String(sec).padStart(2, '0')}`; el.style.display = 'block';
+}
+place($('#candle-t'), 566, 1106, 70, 22); setInterval(candleTick, 1000);
 function applyCandle() { const [src, box] = CANDLE[S.incense ? 'on' : 'off']; const el = $('#p-incense'); el.src = src; place(el, ...box); }
 // wall: one painting at a time (S.wallArt = 'painting' | 'alley' | false)
 const WALL = { painting: [446, 950, 86, 90], alley: [452, 946, 74, 94] };
@@ -889,19 +951,29 @@ let naWetShown = false;
 function petCat() {
   const st = S.story;
   if (st.na === 1 && !st.naSent && S.meals >= 3) {
-    if (!S.keep.daisy) { toast('Bánh Quy dụi đầu vào tay bạn… hình như Na thích hoa cúc họa mi 🌼', 3200); return; }
+    if (!S.keep.daisy) { toast('Bánh Quy dụi đầu vào tay bạn… hình như Na thích hoa cúc họa mi 🌼', 3200); return true; }
     openPanel(`<h3>Gửi quà cho Na</h3><p style="text-align:center"><img src="${ITEM_IMG.k_daisy}" alt="" style="height:3.4em"><br>
       Kẹp một bông cúc họa mi ép vào ruy băng của Bánh Quy?</p><button class="reply" id="na-send">Gửi bông hoa 🌼</button>`, true);
     $('#na-send').addEventListener('click', e => {
       e.stopPropagation(); S.keep.daisy--; st.naSent = Date.now(); save(); closeNote(); hearts(); SFX.purr();
       toast('Bánh Quy ngậm bông hoa chạy xuống tầng dưới 🌼', 2800);
     });
-    return;
+    return true;
   }
   if (st.na === 3 && !st.naWarm && S.weather === 'rain') {
-    if (!S.lamp) { toast('Bánh Quy ướt nhẹp, run rẩy… bật đèn vàng cho nó sưởi nhé 💡', 3200); return; }
-    st.naWarm = Date.now(); save(); toast('Bạn lau khô cho Bánh Quy, nó cuộn tròn sưởi bên ánh đèn vàng 💛', 3400);
+    if (!S.lamp) { toast('Bánh Quy ướt nhẹp, run rẩy… bật đèn vàng cho nó sưởi nhé 💡', 3200); return true; }
+    st.naWarm = Date.now(); save(); towelRub();
+    setTimeout(() => { updateCat(); catSit(6); hearts(); SFX.purr(); toast('Bạn lau khô cho Bánh Quy, nó cuộn tròn sưởi bên ánh đèn vàng 💛', 3400); }, 1900);
+    return true;
   }
+}
+function towelRub() {   // the towel comes in, rubs the wet cat a few times, then goes
+  const el = $('#p-towel'), b = CAT.wet.box; place(el, b[0] + 20, b[1] + 60, 120, 72);
+  el.animate([{ opacity: 0, transform: 'translate(60px,40px) rotate(8deg)' }, { opacity: 1, transform: 'translate(0,0) rotate(0)', offset: .2 },
+    { transform: 'translate(-14px,-6px) rotate(-6deg)', offset: .4 }, { transform: 'translate(14px,4px) rotate(6deg)', offset: .6 },
+    { opacity: 1, transform: 'translate(-8px,-4px) rotate(-3deg)', offset: .8 }, { opacity: 0, transform: 'translate(50px,40px) rotate(10deg)' }],
+    { duration: 1900, easing: 'ease-in-out' });
+  if (AC) { const t = AC.currentTime; for (let k = 0; k < 6; k++) noiseBurst(t + 0.35 + k * 0.2, 0.15, 900, 0, 1, 0.05); }
 }
 function tickTock() {
   if (!AC) return; const t = AC.currentTime;
@@ -914,13 +986,18 @@ function jam() {
 function useItem(k) {
   if (k === 'musicbox') {
     if (S.story.fixed) { playMusicBox(); toast('Hộp nhạc hát lại giai điệu cũ của bác 🎶', 3000); return; }
+    if (S.keep.k_spring) {
+      S.story.fixed = true; save(); openKeepsakes(); playMusicBox();
+      toast('Chiếc lò xo chim sẻ tha tới vừa khít… hộp nhạc hát lại rồi 🎶', 3600); return;
+    }
     if (S.keep.cactus) {
       S.keep.cactus--; S.story.fixed = true; save(); openKeepsakes(); playMusicBox();
       toast('Chiếc gai xương rồng vừa khít… hộp nhạc hát lại rồi 🎶', 3600); return;
     }
-    jam(); toast('Hộp nhạc bị kẹt bánh răng. Hình như cần một chiếc gai thật nhỏ… 🌵', 3600); return;
+    jam(); toast('Hộp nhạc bị kẹt bánh răng. Bác cần một chiếc lò xo nhỏ… chim sẻ hay tha đồ lặt vặt tới đấy 🐦 (hoặc thử một chiếc gai thật nhỏ 🌵)', 3600); return;
   }
   if (k === 'watch') { tickTock(); toast('Tích… tắc… kim đồng hồ chỉ vào giờ đẹp nhất trong ngày', 3600); return; }
+  if (k === 'k_record') { if (!S.radio) act('radio'); toast('Đặt đĩa nhạc cũ của bác lên… radio phát một bản piano 🎶', 3000); return; }
   if (k === 'card') { SFX.paper(); toast('Thiệp hoa lưu ly ép khô của cậu họa sĩ 💙', 3000); }
   if (k === 'k_tube') { SFX.paper(); toast('Tuýp màu nước xanh pastel, vẫn còn thơm mùi màu 🎨', 3000); }
   if (k === 'k_marble') { waves(); toast('Áp viên bi lên tai… nghe sóng biển rì rào 🌊', 3600); }
@@ -946,7 +1023,7 @@ function growthCheck() {
   const P = PLANTS[g.type];
   while (g.stage < 2) {
     const need = P.need[g.stage], at = g.planted + (g.stage + 1) / 2 * P.hours * HOUR;
-    if (Date.now() >= at && g.water >= need.water && g.music >= (need.music || 0) && (g.rain || 0) >= (need.rain || 0)) {
+    if (Date.now() >= at && g.water >= need.water && g.music >= (need.music || 0) && (g.rain || 0) >= (need.rain || 0) && (g.light || 0) >= (need.light || 0)) {
       g.stage++; save(); updatePlant(true);
       toast(g.stage === 2 ? `${P.name} đã nở hoa ${P.icon} Chạm để hái nhé` : `${P.name} vừa lớn thêm một chút 🌱`, 3200);
     } else break;
@@ -959,6 +1036,7 @@ function plantStatus() {
   if (g.water < need.water) return `${P.name}: tưới thêm nước nhé 💧`;
   if (g.music < (need.music || 0)) return `${P.name} muốn nghe nhạc 📻`;
   if ((g.rain || 0) < (need.rain || 0)) return `${P.name} đang chờ một cơn mưa 🌧️`;
+  if ((g.light || 0) < (need.light || 0)) return `${P.name} đang chờ ánh đèn lồng 🏮`;
   return `${P.name} đang lớn, ${fmtLeft(left)} nữa 🌱`;
 }
 function tapPlant() {
@@ -979,16 +1057,16 @@ function tapPlant() {
 }
 function openSeedPicker() {
   openPanel(`<h3>Gieo hạt mới</h3>` + Object.entries(PLANTS).map(([k, P]) =>
-    `<button class="seed" data-seed="${k}"><img src="${PLANT_IMG[k + '2'].src}" alt=""><div><b>${P.name}</b>
+    `<button class="seed" data-seed="${k}"><img src="${ITEM_IMG['seed_' + k] || PLANT_IMG[k + '2'].src}" alt=""><div><b>${P.name}</b>
      <span>${P.meaning} · ${P.hours} giờ · ${P.care}</span></div></button>`).join(''), true);
   document.querySelectorAll('.seed').forEach(b => b.addEventListener('click', e => {
     e.stopPropagation();
-    S.garden = { type: b.dataset.seed, stage: 0, planted: Date.now(), water: 0, music: S.radio ? 1 : 0, lastWater: 0, rain: S.weather === 'rain' ? 1 : 0 };
+    S.garden = { type: b.dataset.seed, stage: 0, planted: Date.now(), water: 0, music: S.radio ? 1 : 0, lastWater: 0, rain: S.weather === 'rain' ? 1 : 0, light: S.lantern ? 1 : 0 };
     save(); updatePlant(true); $('#note-wrap').classList.remove('show'); SFX.paper();
     toast(`Đã gieo hạt ${PLANTS[b.dataset.seed].name}. Nhớ tưới nước nhé 💧`, 2800);
   }));
 }
-const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2' };
+const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2' };
 function openKeepsakes() {
   const story = [['musicbox', 'Hộp nhạc gỗ của bác', S.story.fixed ? 'Chạm để nghe nhạc' : 'Đang kẹt bánh răng, chạm để thử'],
     ['watch', 'Đồng hồ quả quýt', 'Chạm để nghe tích tắc'], ['card', 'Thiệp hoa lưu ly ép khô', 'Quà của cậu họa sĩ'],
@@ -996,6 +1074,8 @@ function openKeepsakes() {
     ['painting', 'Tranh “Góc Cửa Ngày Mưa”', S.wallArt === 'painting' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['alley', 'Tranh “Hẻm Hoa Giấy”', S.wallArt === 'alley' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['k_marble', 'Viên bi ve đại dương', 'Chạm để nghe sóng biển'],
+    ['k_record', 'Đĩa nhạc cũ bác sửa', 'Chạm để phát nhạc'], ['k_spring', 'Lò xo nhỏ', S.story.fixed ? 'Đã lắp vào hộp nhạc' : 'Chạm vào hộp nhạc để thử'],
+    ['k_feather', 'Lông chim sẻ', 'Quà của chú chim sẻ'], ['k_button', 'Cúc áo đồng', 'Quà của chú chim sẻ'], ['k_shell', 'Vỏ sò nhỏ', 'Quà của chú chim sẻ'],
     ['na_cat', 'Tranh bút sáp: Bánh Quy', 'Của bé Na'], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', 'Của bé Na'],
     ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', 'Của bé Na']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
@@ -1038,6 +1118,7 @@ function stepChime(dt) {
 const P = [];   // fx particles in scene units
 const rnd = (a, b) => a + Math.random() * (b - a);
 function spawn(p) { if (!reduceMotion || p.keep) P.push(p); }
+const BLINK = [205, 600];   // a window of the house across the alley
 const FLAME = [601, 1036];   // tip of the flame of Vi's candle
 function fxSpawnNote() {
   spawn({ kind: 'note', x: rnd(250, 360), y: 945, vx: rnd(-8, 8), vy: rnd(-30, -22), life: 3.2, t: 0,
@@ -1062,7 +1143,7 @@ const SEEDS = [[278, 883, .3], [288, 886, -.5], [298, 882, 1.2], [304, 886, .1],
 function stepFx(dt) {
   const ctx = fxCtx; ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0); ctx.clearRect(0, 0, SW, SH);
   // milk in the plate
-  if (S.food === 'seeds') {
+  if (false) {
     for (const [x, y, r] of SEEDS) {
       ctx.save(); ctx.translate(x, y); ctx.rotate(r);
       ctx.fillStyle = '#3d3029'; ctx.beginPath(); ctx.ellipse(0, 0, 4.4, 2.2, 0, 0, 7); ctx.fill();
@@ -1074,6 +1155,11 @@ function stepFx(dt) {
   if (S.tea && !reduceMotion && Math.random() < dt * 5)
     spawn({ kind: 'smoke', x: rnd(455, 485), y: 1046, vx: rnd(-2, 2), vy: rnd(-22, -15), life: rnd(2, 3), t: 0, ph: rnd(0, 6) });
   // candle flame: a soft flickering halo
+  if (S.weather === 'night' && started && (S.story.old === 0 || nextOldLetter() !== null)) {
+    const ph = (perfT / 1000) % 7;   // three slow blinks, then a pause
+    if (ph < 3.6) glowDot(ctx, BLINK[0], BLINK[1], Math.max(0, Math.sin(ph / 1.2 * Math.PI)) * 0.9, 2.2);
+  }
+  if (S.lantern) glowDot(ctx, 584, 966, 0.42 + 0.05 * Math.sin(perfT * 0.004), 3.2);
   if (S.incense) glowDot(ctx, FLAME[0], FLAME[1], 0.32 + 0.1 * Math.sin(perfT * 0.013) + 0.06 * Math.sin(perfT * 0.031), 2.4);
   // zzz of the sleeping cat
   zzzT += dt;
@@ -1198,8 +1284,27 @@ function stepSky(dt) {
 }
 
 // ---------------------------------------------------------------- interactions
+const RINGS = { welcome: [584, 846, 74, 74], cat: [392, 752, 150, 140], lamp: [38, 860, 160, 150], plant: [112, 740, 136, 150] };
+function applyRings() {
+  for (const [k, b] of Object.entries(RINGS)) {
+    let el = document.getElementById('ring-' + k);
+    if (S.seen[k] || (k === 'welcome' && S.welcomed)) { if (el) el.remove(); continue; }
+    if (!el) { el = document.createElement('div'); el.className = 'ring'; el.id = 'ring-' + k; const nw = $('#note-wrap'); nw.parentNode.insertBefore(el, nw); place(el, ...b); }
+  }
+}
+function applyWelcome() { const on = !S.welcomed; $('#p-welcome').style.display = on ? '' : 'none'; HITS.welcome.el.style.display = on ? '' : 'none'; }
+place($('#p-welcome'), 598, 872, 44, 30);
+function readWelcome() {
+  showPaper(`Chào bạn mới dọn tới căn gác nhỏ này! Ở đây chẳng có gì phải vội. Bạn cứ chạm vào mọi thứ quanh mình:
+    bật chiếc đèn bàn, vuốt ve chú mèo Bánh Quy hay ghé ngủ nhờ, tưới chậu cây, lắc chuông gió, mở radio nghe nhạc.
+    Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, nhớ để ý bệ cửa nhé.<small>— Bà chủ nhà tầng dưới —</small>`,
+    () => { S.welcomed = true; save(); applyWelcome(); applyRings(); toast('Những chỗ phát sáng là đồ vật bạn chạm được ✨', 3200); });
+}
+const CAT_MOODS = ['Bánh Quy khẽ rừ rừ trong cổ họng…', 'Bánh Quy dụi đầu vào tay bạn 💛', 'Bánh Quy lim dim, đuôi phe phẩy nhẹ…',
+  'Bánh Quy kêu “meo” một tiếng thật khẽ', 'Bánh Quy duỗi người rồi nằm sát lại gần bạn'];
 function act(id) {
   const h = HITS[id];
+  if (RINGS[id] && !S.seen[id]) { S.seen[id] = 1; save(); applyRings(); }
   switch (id) {
     case 'sunset': case 'rain': case 'night': setWeather(id); SFX.click(); break;
     case 'chime': pushChime((Math.random() < 0.5 ? -1 : 1) * rnd(120, 170)); if (Math.random() < 0.5) catAct('play', 3.5); break;
@@ -1217,24 +1322,28 @@ function act(id) {
         }, 9000);
       }, 1200); }
       save(); applyFood(); SFX.click(); break;
-    case 'cat': hearts(); SFX.purr(); zzzT = -3; catSit(7); petCat(); break;
+    case 'cat': hearts(); SFX.purr(); zzzT = -3; catSit(7); if (!petCat()) toast(CAT_MOODS[Math.floor(Math.random() * CAT_MOODS.length)], 2400); break;
+    case 'welcome': readWelcome(); break;
     case 'nanote': { const i = naChapter(); if (i !== null) showNaNote(i); break; }
     case 'jar': releaseFireflies(); SFX.sparkle(); setTimeout(() => catAct('play', 5), 500); break;
     case 'lamp': S.lamp = !S.lamp; save(); SFX.click(); bump($('#p-lamp')); applyLook(); break;
     case 'radio': bump($('#p-radio')); setRadio(!S.radio); toast(S.radio ? 'Đài đêm khuya 94.2 FM 📻' : 'Tắt radio'); break;
-    case 'incense': S.incense = !S.incense; save(); applyCandle(); if (S.incense) SFX.match(); else SFX.click(); break;
+    case 'incense': S.incense = !S.incense; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle();
+      if (S.incense) { SFX.match(); toast('Nến cháy 25 phút: cùng ngồi làm việc, học bài nhé 🕯️ Chạm lần nữa để tắt', 3600); } else SFX.click(); break;
     case 'book': showNote(); break;
     case 'tea':
       if (S.tea) { toast('Tách trà vẫn còn ấm trên bàn, chạm vào để nhấp một ngụm nhé 🍵', 2800); SFX.click(); break; }
       S.tea = true; save(); applyTea(); SFX.water(); toast('Pha một tách trà hoa cúc 🍵', 2400);
       setTimeout(() => { SFX.purr(); zzzT = -2; catSit(6); }, 1800); break;
     case 'cup': drinkTea(); break;
+    case 'lantern': S.lantern = !S.lantern; if (S.lantern && S.garden) S.garden.light = 1; save(); applyLantern();
+      if (S.lantern) { SFX.match(); growthCheck(); } else SFX.click(); break;
     case 'plane': readPlane(); break;
     case 'gift': openKeepsakes(); SFX.paper(); break;
     case 'frog': visitorAct('frog'); toast('Ếch Cốm núp mưa bên chậu cây 🐸'); break;
     case 'owl': visitorAct('owl'); toast('Cú Mèo thức gác đêm cho bạn ngủ 🦉'); break;
     case 'squirrel': visitorAct('squirrel'); toast('Sóc nhỏ phồng má cảm ơn bạn 🐿️'); break;
-    case 'sparrow': SFX.chirp(); showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
+    case 'sparrow': SFX.chirp(); if (!sparrowGift()) showLetter(); sparrowOn = false; setTimeout(() => leave('sparrow', true), 500); scheduleSparrow(); break;
   }
 }
 for (const [id, h] of Object.entries(HITS)) h.el.addEventListener('click', e => { e.stopPropagation(); act(id); });
@@ -1321,11 +1430,19 @@ stage.addEventListener('pointermove', e => {
 });
 addEventListener('pointerup', () => { swipe = null; });
 
-$('#mute').addEventListener('click', e => {
-  e.stopPropagation(); S.muted = !S.muted; save();
-  applyMute();
-  if (AC) master.gain.setTargetAtTime(S.muted ? 0 : 0.42, AC.currentTime, 0.2);
-});
+$('#mute').addEventListener('click', e => { e.stopPropagation(); openSound(); });
+function setMuted(m) { S.muted = m; save(); applyMute(); if (AC) master.gain.setTargetAtTime(S.muted ? 0 : 0.42, AC.currentTime, 0.2); }
+function openSound() {
+  const sl = (id, label, v) => `<label class="vol"><span>${label}</span><input type="range" id="${id}" min="0" max="100" value="${Math.round(v * 100)}"></label>`;
+  openPanel(`<h3>Âm thanh</h3>${sl('v-amb', '🌧️ Mưa, gió, côn trùng', S.volAmb)}${sl('v-radio', '📻 Nhạc radio', S.volRadio)}
+    <button class="reply" id="v-mute">${S.muted ? '🔈 Bật lại âm thanh' : '🔇 Tắt hết âm thanh'}</button>
+    <button class="reply" id="v-done" style="text-align:center">Xong</button>`, true);
+  $('#v-amb').addEventListener('input', e => { S.volAmb = e.target.value / 100; save(); if (ambBus) ambBus.gain.setTargetAtTime(S.volAmb, AC.currentTime, 0.05); });
+  $('#v-radio').addEventListener('input', e => { S.volRadio = e.target.value / 100; save(); if (radioVol) radioVol.gain.setTargetAtTime(S.volRadio, AC.currentTime, 0.05); });
+  $('#v-mute').addEventListener('click', e => { e.stopPropagation(); setMuted(!S.muted); openSound(); });
+  $('#v-done').addEventListener('click', e => { e.stopPropagation(); closeNote(); });
+  $('#note').addEventListener('click', e => e.stopPropagation(), { once: true });
+}
 function applyMute() { $('#mute').style.backgroundImage = `url(${S.muted ? '{{PROP_snd_off}}' : '{{PROP_snd_on}}'})`; }
 applyMute();
 
@@ -1349,8 +1466,9 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 addEventListener('resize', resize);
-resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyNaNote(); applyCandle(); applyChime(); setInterval(growthCheck, 2000);
+resize(); applyLook(); updatePlant(false); applyFood(); applyTea(); applyWallArt(); applyNaNote(); applyCandle(); applyChime(); applyLantern(); applyWelcome(); applyRings(); setInterval(growthCheck, 2000);
 setInterval(() => {
+  if (started && catPose === 'sleep' && Math.random() < 1 / 160) catAct('back', 25);   // now and then she sits and watches the alley
   applyNaNote(); if (started && !$('#note-wrap').classList.contains('show')) finaleCheck();
   if (S.story.na === 3 && !S.story.naWarm && S.weather === 'rain' && started && !naWetShown) {
     naWetShown = true; catSit(4); toast('Bánh Quy chạy về ướt nhẹp, run rẩy… chạm vào mèo để lau khô 🌧️', 3600);
