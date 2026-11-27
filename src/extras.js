@@ -176,6 +176,7 @@ async function makePostcard() {
   const sy = 175 * 1.5, sh = (PH / W) * snap.width;
   ctx.drawImage(snap, 0, sy, snap.width, sh, 40, 40, W - 80, PH - 40);
   ctx.strokeStyle = '#D4C5B0'; ctx.lineWidth = 3; ctx.strokeRect(40, 40, W - 80, PH - 40);
+  if (window.xmasView) { try { await xmasPostcard(ctx, W, PH); } catch (e) {} }   // Giáng Sinh frame
   const today = (S.diary || {})[dayKey()];
   const line = today ? `“${today.a}”` : `“${NOTES[Math.floor(Math.random() * NOTES.length)]}”`;
   ctx.fillStyle = '#4A3525'; ctx.font = '40px "Patrick Hand", cursive'; ctx.textBaseline = 'top';
