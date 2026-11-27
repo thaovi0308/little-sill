@@ -2171,6 +2171,9 @@ function openKeepsakes() {
     ['painting_hanh', 'Ký họa cây đàn bên ô cửa sổ', S.wallArt === 'painting_hanh' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['rose_red', 'Bông hồng cài áo đỏ', 'Quà Vu Lan của bà chủ nhà'], ['rose_white', 'Bông hồng cài áo trắng', 'Quà Vu Lan của bà chủ nhà'],
     ['red_thread', 'Sợi chỉ đỏ may mắn', 'Quà Thất Tịch gửi kèm lá thư'], ['tt_letter', 'Thư Thất Tịch', 'Chạm để đọc lại'],
+    ['sea_seeds', 'Gói hạt giống chợ phiên', 'Quà mùa xuân của bà chủ nhà'], ['sea_sam', 'Ly nước sâm mía lau', 'Quà mùa hạ của chị bán hoa'],
+    ['sea_fan', 'Quạt giấy nhỏ', 'Chiều oi ả phe phẩy cho mát'], ['sea_leaves', 'Ba chiếc lá vàng mùa thu', 'Ép phẳng trong sổ tay, quà của cậu họa sĩ'],
+    ['sea_scarf', 'Khăn len cũ của bác', 'Quà mùa đông của bác sửa đồng hồ'], ['sea_ginger', 'Mấy lát gừng tươi', 'Pha trà gừng cho ấm lòng'],
     ['k_couplet', 'Câu đối “Mừng Xuân – Như Ý”', S.coupletOut ? 'Đang treo hai bên khung cửa, chạm để cất' : 'Chạm để treo hai bên khung cửa']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
       `<div class="keep" data-item="${k}"><span>${ITEM_IMG[k] ? `<img src="${ITEM_IMG[k]}" alt="">` : '<b style="font-size:1.6em;width:1.6em;display:inline-block;text-align:center">🪴</b>'}${name}<span class="hint">${hint}</span></span></div>`);
