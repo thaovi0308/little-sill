@@ -31,7 +31,7 @@ const TET = {
 const LIXI = [
   ['Bác sửa đồng hồ', 'old_window', 'Năm mới bác chúc cháu lúc nào cũng thong dong, chẳng bao giờ phải vội vàng chạy theo kim đồng hồ. Mong mọi khoảnh khắc của cháu đều là giờ đẹp nhất!', 'st_tet_watch', 'Đồng Hồ Mùa Xuân'],
   ['Cậu họa sĩ tầng trên', 'painting', 'Chúc bạn một năm mới rực rỡ như bảng màu mùa xuân, vẽ nên thật nhiều ngày vui và chẳng còn những buổi tối bí ý tưởng hay mệt mỏi nữa!', 'st_tet_brush', 'Cọ Vẽ Hoa Mai'],
-  ['Bé Na & Bánh Quy', 'na_cat', 'Chúc anh/chị năm mới ăn thật ngon, ngủ thật say và lúc nào cũng cười tươi như hoa cúc họa mi ạ! Bánh Quy cũng chúc meo meo nè!', 'st_tet_cat', 'Mèo Đeo Nơ Đỏ'],
+  ['Bé Na & Bánh Quy', 'na_cat', 'Chúc anh chị năm mới ăn thật ngon, ngủ thật say và lúc nào cũng cười tươi như hoa cúc họa mi ạ! Bánh Quy cũng chúc meo meo nè!', 'st_tet_cat', 'Mèo Đeo Nơ Đỏ'],
   ['Chị bán hoa đầu hẻm', 'florist', 'Chúc em năm mới tâm hồn luôn xanh mướt như chậu trầu bà, bình yên như cúc họa mi và kiên cường như xương rồng trên bệ cửa nhé!', 'st_tet_mai', 'Cánh Mai Vàng'],
   ['Minh ở phương xa', 'pc_station', 'Dù đang ở phương xa nhưng lòng mình vẫn hướng về Hẻm Hoa Giấy. Chúc bạn một năm mới đi qua thật nhiều ngày nắng đẹp và sớm ngày tái ngộ!', null, null],
 ];

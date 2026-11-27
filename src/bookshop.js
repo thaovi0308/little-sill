@@ -158,7 +158,8 @@ $('#bks').addEventListener('click', e => {
 });
 function bkSignText() {
   if (S.bk.sortDay !== dayKey()) return 'Bảng phấn: “Hôm nay cần người phụ xếp một ngăn sách. Trả công: được mượn một cuốn.”';
-  return ['Bảng phấn: “Sách cũ, chuyện mới.”', 'Bảng phấn: “Đọc chậm thôi, tiệm không đóng cửa sớm đâu.”', 'Bảng phấn: “Ngăn Sách có hoa: mượn một cuốn, kẹp lại một bông.”'][S.story.khai >= 4 ? 2 : (dayN() | 0) % 2];
+  return ['Bảng phấn: “Sách cũ, chuyện mới.”', 'Bảng phấn: “Đọc chậm thôi, tiệm không đóng cửa sớm đâu.”', 'Bảng phấn: “Ngăn Sách có hoa: mượn một cuốn, kẹp lại một bông.”',
+    'Góc bảng phấn có hình chú mèo nhỏ ngồi trên chồng sách, ký tên cậu họa sĩ tầng trên. Ông Khải bảo: “Cậu ấy vẽ giúp ông, ông chỉ việc giữ cho khỏi lau mất.”'][S.story.khai >= 4 ? 2 : [0, 1, 3][(dayN() | 0) % 3]];
 }
 (function buildBk() {
   const sh = $('#bks');
@@ -318,12 +319,12 @@ function bkAlbumGift() {   // chapter 5: grandma's pressed-flower album, the gol
   S.story.khai = 5; S.keep.bk_album = 1; S.keep.bk_card_gold = 1; S.keep.st_book = 1; S.keep.painting_bookshop = 1; delete S.keep.bk_card; save(); applyBk();
   showPaper(`<img class="paper-img" src="${ITEM_IMG.khai_smile}" alt="" style="max-height:9em">` + staged([KHAI.ch5],
     `<img class="paper-img" src="${ITEM_IMG.bk_album}" alt="" style="max-height:7em"> <img class="paper-img" src="${ITEM_IMG.bk_card_gold}" alt="" style="max-height:6em"><small>— Ông Khải, Tiệm Sách Cuối Hẻm —</small>
-     <small>Nhận: Sổ ép hoa của bà · Thẻ mượn sách vàng · con dấu Quyển Sách Mở 📖 · tranh “Tiệm Sách Cuối Hẻm” (treo lên tường trong Hộp kỷ vật)</small>`), null, true);
+     <small>Nhận: Sổ ép hoa của bà Khải · Thẻ mượn sách vàng · con dấu Quyển Sách Mở 📖 · tranh “Tiệm Sách Cuối Hẻm” (treo lên tường trong Hộp kỷ vật)</small>`), null, true);
   stageReveal(false); SFX.sparkle(); setTimeout(() => SFX.chime(0.4), 600);
 }
 function bkAlbum() {
   const got = Object.keys(BM_FLOWER).filter(k => S.keep[k] > 0 || (S.harvested && S.harvested[k]));
-  openPanel(`<h3>Sổ ép hoa của bà</h3><p style="margin:.2em 0 .6em">Những trang đầu là hoa của bà, những trang cuối là hoa của bạn: ${got.length}/${Object.keys(BM_FLOWER).length}</p>
+  openPanel(`<h3>Sổ ép hoa của bà Khải</h3><p style="margin:.2em 0 .6em">Những trang đầu là hoa của bà, những trang cuối là hoa của bạn: ${got.length}/${Object.keys(BM_FLOWER).length}</p>
     <div class="bk-alb">${Object.entries(BM_FLOWER).map(([k, [name, img, mean]]) => got.includes(k)
       ? `<div><img src="${ITEM_IMG[img]}" alt=""><b>${name}</b><small>${mean}</small></div>` : `<div class="empty"><span>?</span><b>…</b><small>trang còn trống</small></div>`).join('')}</div>
     ${S.bk.flower ? `<small>Bông ${BM_FLOWER[S.bk.flower][0].toLowerCase()} bạn kẹp vẫn nằm ở ngăn “Sách có hoa” dưới tiệm.</small>` : ''}<small>Chạm ra ngoài để đóng</small>`);

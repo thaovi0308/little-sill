@@ -590,7 +590,7 @@ const NOTES = [
 // ---------------------------------------------------------------- state
 // Preview links (?bep, ?album, ?xuan …) play in a separate sandbox save that starts past the welcome letter, so trying a
 // feature never touches the real game and never waits on story progress.
-const TESTMODE = /[?&](bep|album|hanh|hem|sach|tet|xmas|vulan|thattich|trungthu|xuan|dong)\b/.test(location.search);
+const TESTMODE = /[?&](bep|album|hanh|hem|sach|tet|xmas|vulan|thattich|trungthu|xuan|dong|le|mua)\b/.test(location.search);
 const KEY = TESTMODE ? 'littlesill.preview' : 'littlesill.v1';
 function defaultWeather() {
   const h = new Date().getHours();
@@ -661,9 +661,9 @@ S.harvested = S.harvested || Object.fromEntries(Object.keys(PLANTS).filter(k => 
 const NA_NOTES = [
   { img: 'na_cat', text: 'Mình tên là Na. Bánh Quy hay trốn lên tầng thượng lắm. Nếu bạn thấy nó thì cho nó ăn nha, đừng đuổi nó tội nghiệp.' },
   { b: ['Sau ba bữa no nê, mèo Bánh Quy mang về chiếc ruy băng kẹp bông hoa cúc ép từ bạn.', 'Na kể em mới chuyển trường, giờ ra chơi toàn ngồi một mình ở bàn cuối. Bạn liền gửi kèm món quà nhỏ để cổ vũ em.'], text: 'Cảm ơn bông hoa của bạn! Hôm nay mình mới chuyển tới trường mới. Các bạn ở lớp đã chơi thân với nhau hết rồi, mình ngồi một mình ở bàn cuối hơi buồn một chút.', reply: true },
-  { b: ['“Nhờ món quà của anh/chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ!”', '“Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh/chị bức tranh hai đứa em nắm tay nhau nè!”'], img: 'na_friends', text: 'Hôm nay giờ ra chơi, bạn ngồi bàn trên khen {gift} của mình thơm! Tụi mình đã cùng nhau vẽ Bánh Quy vào vở nháp.' },
+  { b: ['“Nhờ món quà của anh chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ!”', '“Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh chị bức tranh hai đứa em nắm tay nhau nè!”'], img: 'na_friends', text: 'Hôm nay giờ ra chơi, bạn ngồi bàn trên khen {gift} của mình thơm! Tụi mình đã cùng nhau vẽ Bánh Quy vào vở nháp.' },
   { b: ['Đêm mưa tầm tã, Bánh Quy chạy lên gác ướt nhẹp và run rẩy. Nhờ ánh đèn vàng và khăn ấm của bạn, chú mèo đã ngủ ngon.', 'Hôm sau Na rối rít cảm ơn và tặng bạn một viên bi ve trong veo, chạm tay vào nghe như có tiếng sóng biển.'], text: 'Tối qua mẹ mình đi làm về muộn, mình lo Bánh Quy bị ướt mưa. Cảm ơn bạn đã sưởi ấm cho nó nha. Mình tặng bạn viên bi ve đẹp nhất của mình nè!', gift: 'k_marble' },
-  { b: ['Khi bệ cửa nhà bạn nở rộ sắc hoa, bé Na gửi lên bức tranh sáp vẽ khung cửa sổ sáng đèn lung linh.', '“Mỗi lần ngước lên nhìn cửa sổ nhà anh/chị sáng đèn, cả em và Bánh Quy đều thấy ấm áp lắm ạ.”'], img: 'na_window', text: 'Mỗi tối đi học về ngước lên thấy cửa sổ nhà bạn sáng đèn, mình và Bánh Quy đều thấy ấm áp lắm. Chúc bạn ngủ ngon!' },
+  { b: ['Khi bệ cửa nhà bạn nở rộ sắc hoa, bé Na gửi lên một bức tranh sáp vẽ khung cửa sổ nhà bạn.', '“Lớp em mới có một bạn chuyển tới, giờ ra chơi bạn ấy ngồi một mình ở bàn cuối giống em hồi trước. Hôm nay em mang bánh quy sang ngồi cạnh bạn ấy rồi. Em học anh chị đó!”'], img: 'na_window', text: 'Lớp em mới có bạn chuyển tới, ngồi một mình ở bàn cuối giống em hồi trước. Hôm nay em sang ngồi cạnh bạn ấy rồi. Em học anh chị đó! Chúc anh chị ngủ ngon!' },
 ];
 const NA_REPLIES = [
   { img: 'k_candy', text: 'Mỗi bông hoa đều cần thời gian để làm quen với khu vườn mới mà.', gift: 'viên kẹo dâu', name: 'một viên kẹo dâu' },
@@ -675,8 +675,8 @@ const PLANE_NOTES = [
   { b: ['“Mình vừa nộp xong bản vẽ rồi! Lần đầu sau nhiều tháng chạy deadline, mình mới lại thấy vui khi cầm cọ.”', '“Cảm ơn lời nhắn và bông hoa ép của bạn nhé. Tặng bạn tuýp màu xanh pastel mình thích nhất này!”'], text: 'Cảm ơn lời nhắn của người bạn giấu mặt! Mình vừa nộp bài xong rồi. Không biết kết quả sao nhưng lần đầu tiên sau nhiều tháng mình thấy vui khi cầm cọ.', sub: 'Kèm theo một tuýp màu nước xanh pastel', gift: ['k_tube'] },
   { b: ['Bức vẽ góc cửa nhà bạn của cậu họa sĩ đã được chọn treo trang trọng tại quán cà phê sách đầu phố.', 'Cậu gửi tặng bạn bức tranh “Góc Cửa Ngày Mưa” kèm tấm thiệp hoa lưu ly ép tím biếc để treo lên tường.'], text: 'Tranh của mình được chọn treo ở góc nhỏ của một quán cà phê sách rồi! Bạn là nguồn cảm hứng đầu tiên của bức tranh đó đấy. Gửi bạn bản vẽ “Góc Cửa Ngày Mưa” và tấm thiệp hoa lưu ly mình tự ép nhé.', gift: ['painting', 'card'] },
 ];
-PLANE_NOTES.push({ narr: true, b: ['Chẳng còn những bản nháp gạch chéo đầy bế tắc rơi xuống bệ cửa sổ nữa.',
-  'Mỗi tối nhìn lên, ô cửa tầng trên đã sáng đèn vàng ấm cúng, nơi có một người trẻ đang hạnh phúc với cây cọ của mình.'] });
+PLANE_NOTES.push({ narr: true, b: ['Chiếc máy bay giấy cuối cùng không còn chở bản nháp gạch chéo nào nữa, mà là một bức ký họa nhỏ: một người đang tưới cây bên bệ cửa, Bánh Quy nằm ngủ cạnh chân.',
+  'Góc giấy ghi: “Lần này mình vẽ người đã giữ cho góc cửa ấy bình yên. Cảm ơn bạn, người bạn giấu mặt.”'] });
 const REPLIES = ['Cứ vẽ những gì làm bạn thấy bình yên nhất thôi.', 'Không cần hoàn hảo ngay đâu, cứ chậm rãi nhé.'];
 const LETTERS = [
   { text: 'Chào bạn trẻ mới chuyển tới. Cảm ơn bản nhạc tối qua của cháu. Chiếc hộp nhạc này bị kẹt bánh răng từ mùa đông năm ngoái, bác gửi sang nhờ cháu giữ hộ ít hôm cho đỡ buồn, khi nào tìm được chiếc lò xo nhỏ bác sẽ sửa nốt.', from: 'Bác sửa đồng hồ bên kia đường' },
@@ -1450,6 +1450,14 @@ let storyLast = 0; const storyShown = new Set();
 function storyGate(id) {
   if (storyShown.has(id)) return true;
   if (!started || $('#note-wrap').classList.contains('show') || outsideOpen() || Date.now() - storyLast < 45000) return false;
+  // pacing (review 27/11): at most 2 new story letters a day so a new player is never flooded; holidays, replies to the
+  // player's own gifts and the first-day tutorial letters keep their date
+  const capped = !TESTMODE && !/^(tt|tet|xmas|vl|qx|hl|album|kit|hanhMail)/.test(id) && !/^(old|plane|na|flo)0$/.test(id);
+  if (capped) {
+    const d = dayKey(); if (!S.storyDay || S.storyDay.d !== d) S.storyDay = { d, n: 0 };
+    if (S.storyDay.n >= 2) return false;
+    S.storyDay.n++; save();
+  }
   storyShown.add(id); storyLast = Date.now(); return true;
 }
 function closeNote() {
@@ -1545,6 +1553,7 @@ const TEA_KINDS = {
   bpea:    { name: 'Trà đậu biếc', top: ITEM_IMG.tea_bpea, need: 'bpea', say: 'Pha một tách trà đậu biếc xanh thẳm 💙', extra: ITEM_IMG.tea_lime },
   jasmine: { name: 'Trà hoa nhài', top: ITEM_IMG.tea_jasmine, need: 'jasmine', say: 'Pha một tách trà nhài thơm dịu, thêm một thìa mật ong 🍯', extra: ITEM_IMG.tea_honey },
   ginger:  { name: 'Trà gừng', top: '{{PROP_tea_top}}', need: 'sea_ginger', say: 'Pha một tách trà gừng cay ấm của bác 🫚' },
+  sam:     { name: 'Nước sâm mía lau', top: ITEM_IMG.sea_sam, need: 'sea_sam', say: 'Rót một ly nước sâm mát lạnh của chị bán hoa 🥤' },
 };
 function openTeaPicker() {
   openPanel('<h3>Hôm nay pha trà gì?</h3>' + Object.entries(TEA_KINDS).filter(([, t]) => !t.need || S.keep[t.need]).map(([k, t]) =>
@@ -1663,9 +1672,12 @@ function finaleLetter() {
     <p>Từ ngày khung cửa sổ nhà bạn sáng đèn, con hẻm yên tĩnh này dường như cũng trở nên ấm áp và có sức sống hơn hẳn.</p>
     ${sign('Bác sửa đồng hồ', 'Cảm ơn cháu vì đã giúp những bánh răng cũ kỹ và cả ký ức của bác được ngân vang trở lại.')}
     ${sign('Cậu họa sĩ tầng trên', 'Cảm ơn góc cửa bình yên của bạn đã cho mình tìm lại niềm vui bên cây cọ sau những ngày mỏi mệt.')}
-    ${sign('Bé Na & mèo Bánh Quy', 'Cảm ơn anh/chị vì những đĩa bánh quy thơm ngon và ánh đèn ấm áp luôn chờ đón chúng em mỗi ngày ạ!')}
+    ${sign('Bé Na & mèo Bánh Quy', 'Cảm ơn anh chị vì những đĩa bánh quy thơm ngon và ánh đèn ấm áp luôn chờ đón chúng em mỗi ngày ạ!')}
     ${sign('Chị chủ tiệm hoa đầu hẻm', 'Cảm ơn em vì đã chia sẻ hơi ấm và sắc xanh từ khung cửa sổ nhỏ, giúp cả góc hẻm này lại rực rỡ hương hoa.')}
-    ${sign('Bà chủ nhà tầng dưới', 'Cảm ơn cháu đã biến căn gác nhỏ này thành một nơi chốn thật dịu dàng để trở về.')}
+    ${(S.story.minh || 0) >= 5 ? sign('Minh ở phương xa', 'Cảm ơn bạn đã giữ cho mình một chỗ ngồi bên khung cửa, để đi xa tới đâu mình cũng biết đường về.') : ''}
+    ${(S.story.khai || 0) >= 5 ? sign('Ông Khải tiệm sách', 'Cảm ơn cháu đã viết tiếp những trang còn trống trong cuốn sổ ép hoa của bà nhà ông.') : ''}
+    ${(S.story.hanh || 0) >= 5 ? sign('Cô Hạnh bên kia hẻm', 'Cảm ơn cháu đã là người nghe đầu tiên, để cây đàn cũ của cô lại có học trò.') : ''}
+    ${sign('Bà chủ nhà tầng dưới', 'Căn gác này ngày xưa là phòng của con trai bà. Cảm ơn cháu đã cho nó sáng đèn trở lại, thành một nơi thật dịu dàng để trở về.')}
     <p>Chúng tôi đã cùng nhau vẽ lại bức tranh “Hẻm Hoa Giấy” này để tặng bạn. Dù ngoài kia cuộc sống có đôi lúc vội vã, mong bạn hãy luôn nhớ rằng ở góc hẻm nhỏ này, vẫn luôn có những ô cửa sáng đèn và những người hàng xóm lặng lẽ mỉm cười chào đón bạn.</p>
     <p style="text-align:center;margin-top:.8em"><b>Cảm ơn bạn đã ở đây.</b></p>`, () => {
     // stage 3: free play
@@ -2053,13 +2065,13 @@ const JOURNAL = [
     { t: 'Góc Nhìn Bình Yên', ok: st => st.plane >= 2, x: 'Một chiếc máy bay giấy lại chao liệng đáp xuống bệ cửa sổ. Cậu họa sĩ tầng trên nhắn rằng sắc hoa nở rộ và ánh đèn lồng dịu dàng nơi góc cửa nhà bạn đã làm dịu đi sự ngột ngạt trong lòng cậu. Cậu xin phép được phác họa lại khung cảnh bình yên này. Một chiếc máy bay giấy mang theo lời nhắn nhủ (cùng cánh hoa ép dịu dàng) đã được thả bay lên, gửi trọn sự ủng hộ tới người bạn hàng xóm.' },
     { t: 'Sắc Màu Của Niềm Vui', ok: st => st.plane >= 3, x: 'Lời nhắn trên máy bay giấy: “Mình vừa nộp xong bản vẽ rồi! Lần đầu tiên sau nhiều tháng trời chạy deadline mệt mỏi, mình mới lại thấy vui khi cầm cây cọ trên tay. Cảm ơn lời động viên (và cả bông hoa ép xinh xắn) của bạn nhé. Tặng bạn tuýp màu xanh pastel mình thích nhất!”' },
     { t: 'Góc Cửa Ngày Mưa', ok: st => st.plane >= 4, x: 'Bức tranh vẽ khung cửa sổ nhà bạn của cậu họa sĩ đã được chọn treo trang trọng tại quán cà phê sách đầu phố. Để cảm ơn nguồn cảm hứng đặc biệt này, cậu gửi tặng bạn bức tranh “Góc Cửa Ngày Mưa” kèm một tấm thiệp ép hoa lưu ly tím biếc. Bức tranh được treo lên tường, mang theo cả sự dịu dàng của những ngày mưa rả rích.' },
-    { t: 'Ánh Đèn Tầng Trên', ok: st => st.plane >= 5, x: 'Chẳng còn những bản nháp gạch chéo đầy bế tắc rơi xuống nữa. Giờ đây, mỗi tối nhìn lên, ô cửa sổ tầng trên đã sáng lên ánh đèn vàng ấm cúng, nơi có một người trẻ đang mỉm cười vẽ nên những điều giản dị làm mình hạnh phúc.' }] },
+    { t: 'Ánh Đèn Tầng Trên', ok: st => st.plane >= 5, x: 'Chiếc máy bay giấy cuối cùng không còn chở bản nháp gạch chéo, mà là bức ký họa chính bạn đang tưới cây bên bệ cửa, Bánh Quy ngủ cạnh chân. Lần này cậu họa sĩ vẽ người đã giữ cho góc cửa ấy bình yên.' }] },
   { who: 'Bé Na Tầng Dưới Và Mèo Bánh Quy', by: 'Ruy băng cổ mèo', img: 'na_cat', ch: [
     { t: 'Mẩu Giấy Trên Ruy Băng', ok: st => st.na >= 1, x: 'Lần đầu Bánh Quy ghé ăn, trên ruy băng cổ mèo có kẹp một mẩu giấy: “Mình tên là Na. Bánh Quy hay trốn lên tầng thượng lắm. Nếu bạn thấy nó thì cho nó ăn nha, đừng đuổi nó tội nghiệp.”' },
     { t: 'Bí Mật Ở Bàn Cuối', ok: st => st.na >= 2, x: 'Sau ba bữa no nê với sữa ấm và bánh quy giòn, chú mèo Bánh Quy mang về chiếc ruy băng kẹp một bông hoa cúc ép từ bạn. Đáp lại món quà nhỏ, bé Na viết mẩu giấy kể rằng em vừa chuyển trường, giờ ra chơi toàn ngồi một mình ở bàn cuối lớp nên hơi buồn. Bạn đã gửi lại một món quà nhỏ xinh cùng lời chúc đầy ấm áp theo chân Bánh Quy trở về.' },
-    { t: 'Những Người Bạn Mới', ok: st => st.na >= 3, x: 'Mẩu giấy nét chữ nắn nót: “Nhờ món quà của anh/chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ! Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh/chị bức tranh hai đứa em nắm tay nhau nè!”' },
+    { t: 'Những Người Bạn Mới', ok: st => st.na >= 3, x: 'Mẩu giấy nét chữ nắn nót: “Nhờ món quà của anh chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ! Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh chị bức tranh hai đứa em nắm tay nhau nè!”' },
     { t: 'Đêm Mưa Và Viên Bi Ve', ok: st => st.na >= 4, x: 'Một đêm mưa tầm tã, Bánh Quy chạy lạc lên gác với bộ lông ướt nhẹp và run rẩy. Nhờ ánh đèn vàng ấm áp và chiếc khăn khô mềm mại của bạn, chú mèo nhỏ đã ngủ một giấc ngon lành. Hôm sau, bé Na rối rít cảm ơn và gửi tặng bạn một viên bi ve trong veo, mỗi khi chạm tay vào, bạn dường như nghe thấy cả tiếng sóng biển rì rào.' },
-    { t: 'Hơi Ấm Khung Cửa', ok: st => st.na >= 5, x: 'Khi góc vườn nhỏ của bạn đã nở rộ sắc hoa, bé Na gửi lên một bức tranh sáp vẽ chính khung cửa sổ nhà bạn đang tỏa sáng lung linh trong đêm. Kèm theo đó là dòng chữ nguệch ngoạc nhưng chân thành: “Mỗi lần ngước lên nhìn cửa sổ nhà anh/chị sáng đèn, cả em và Bánh Quy đều thấy ấm áp lắm ạ.”' }] },
+    { t: 'Hơi Ấm Khung Cửa', ok: st => st.na >= 5, x: 'Khi góc vườn nhỏ của bạn đã nở rộ sắc hoa, bé Na gửi lên bức tranh sáp vẽ khung cửa sổ nhà bạn, kèm tin vui: lớp em có bạn mới chuyển tới ngồi một mình ở bàn cuối, và lần này chính Na là người mang bánh quy sang ngồi cạnh bạn ấy.' }] },
   { who: 'Chị Bán Hoa Đầu Hẻm', by: 'Túi vải ròng rọc', img: 'florist', ch: FLO.map((c, k) => ({ t: c.t, ok: st => (st.flower || 0) > k, x: c.b.join(' ') })) },
 ];
 function openJournal(open) {
@@ -2206,7 +2218,7 @@ function openKeepsakes() {
     ['k_lighthouse', 'Hải đăng gỗ mini', S.lighthouseOut ? 'Đang đặt trên kệ, chạm để cất' : 'Chạm để đặt lên kệ tường'],
     ['k_album', 'Album Bưu Thiếp Phương Xa', 'Có chữ ký của Minh, chạm để xem'],
     ['bk_card', 'Thẻ mượn sách', `Tiệm Sách Cuối Hẻm · ${S.bk ? S.bk.stamps : 0} dấu`], ['bk_card_gold', 'Thẻ mượn sách vàng', 'Mượn bao lâu tuỳ thích'],
-    ['bk_daisy', 'Bông cúc ép của bà', 'Kèm mẩu giấy “Gửi anh, mùa hoa đầu tiên.”'], ['bk_album', 'Sổ ép hoa của bà', 'Chạm để xem các trang hoa ép'],
+    ['bk_daisy', 'Bông cúc ép của bà Khải', 'Kèm mẩu giấy “Gửi anh, mùa hoa đầu tiên.”'], ['bk_album', 'Sổ ép hoa của bà', 'Chạm để xem các trang hoa ép'],
     ['painting_bookshop', 'Tranh “Tiệm Sách Cuối Hẻm”', S.wallArt === 'painting_bookshop' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['album_book', 'Album “Một năm bên khung cửa”', 'Chạm để mở album'],
     ['hanh_sheet', 'Tờ giấy chép nhạc của cô Hạnh', 'Chạm để nghe lại giai điệu'], ['hanh_metronome', 'Máy đếm nhịp bằng gỗ', 'Chạm để thở theo tiếng tích tắc'],
@@ -2215,6 +2227,10 @@ function openKeepsakes() {
     ['red_thread', 'Sợi chỉ đỏ may mắn', 'Quà Thất Tịch gửi kèm lá thư'], ['tt_letter', 'Thư Thất Tịch', 'Chạm để đọc lại'],
     ['sea_seeds', 'Gói hạt giống chợ phiên', 'Hạt Hoa Mười Giờ của bà, gieo ở mục Gieo hạt mới'], ['sea_sam', 'Ly nước sâm mía lau', 'Quà mùa hạ của chị bán hoa'],
     ['sea_fan', 'Quạt giấy nhỏ', 'Chiều oi ả phe phẩy cho mát'], ['sea_leaves', 'Ba chiếc lá vàng mùa thu', 'Ép phẳng trong sổ tay, quà của cậu họa sĩ'],
+    ['hl_card', 'Thiệp trái tim', 'Ngày Của Những Lá Thư'], ['hl_choco', 'Hộp sô-cô-la nhỏ', 'Ngày Của Những Lá Thư'],
+    ['hl_bouquet', 'Bó hoa của chị bán hoa', 'Ngày Của Phụ Nữ'], ['hl_tag', 'Tấm thẻ viết tay', 'Ngày Của Phụ Nữ'], ['hl_carnation', 'Chậu cẩm chướng của bé Na', 'Ngày Nhà Giáo'],
+    ['hl_pumpkin', 'Trái bí ngô', 'Đêm Hóa Trang, đặt trên bệ cửa'], ['hl_candy', 'Giỏ kẹo', 'Thả kẹo cho tụi nhỏ dưới hẻm'],
+    ['hl_cat', 'Mũ phù thủy của Bánh Quy', S.hlCostume ? 'Bánh Quy đang đội, chạm để cởi' : 'Chạm để đội cho Bánh Quy'],
     ['sea_scarf', 'Khăn len cũ của bác', 'Quà mùa đông của bác sửa đồng hồ'], ['sea_ginger', 'Mấy lát gừng tươi', 'Pha trà gừng cho ấm lòng'],
     ['k_couplet', 'Câu đối “Mừng Xuân – Như Ý”', S.coupletOut ? 'Đang treo hai bên khung cửa, chạm để cất' : 'Chạm để treo hai bên khung cửa']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
@@ -2466,7 +2482,7 @@ function applyRings() {
 function applyWelcome() { const on = !S.welcomed; $('#p-welcome').style.display = on ? '' : 'none'; HITS.welcome.el.style.display = on ? '' : 'none'; }
 place($('#p-welcome'), 598, 872, 44, 30);
 function readWelcome() {
-  showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:7em">Chào cháu mới dọn tới căn gác nhỏ này! Ở đây chẳng có gì phải vội. Cháu cứ chạm vào mọi thứ quanh mình:
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:7em">Chào cháu mới dọn tới căn gác nhỏ này! Hôm cháu chuyển đồ lên trời mưa tầm tã, bà thấy cháu mệt lắm. Ở đây chẳng có gì phải vội. Cháu cứ chạm vào mọi thứ quanh mình:
     bật chiếc đèn bàn, vuốt ve chú mèo Bánh Quy hay ghé ngủ nhờ, tưới chậu cây, lắc chuông gió, mở radio nghe nhạc.
     Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, cháu nhớ để ý bệ cửa nhé.<br><br>Hôm nay cháu thử ba việc nhỏ thôi: <b>tưới chậu cây</b>, <b>pha một tách trà</b> rồi <b>viết vài chữ vào sổ tay</b>.<small>— Bà chủ nhà tầng dưới —</small>`,
     () => { S.welcomed = true; save(); applyWelcome(); applyRings(); applyToday(); toast('Những chỗ phát sáng là đồ vật bạn chạm được ✨ Ba việc nhỏ đầu tiên nằm trong nút 📝', 4200); });

@@ -100,7 +100,7 @@ const MINH_HOME = { t: 'Mình Về Rồi', pc: 'pc_alley',
 function minhReady() {
   if (!mapOpen()) return null;
   const st = S.story, m = st.minh, since = Date.now() - (st.minhAt || 0);
-  if (m === 0) return routeDone() || dayN() >= 2 ? 0 : null;
+  if (m === 0) return routeDone() || dayN() >= 4 ? 0 : null;   // Minh writes once the first neighbours are known (pacing 27/11)
   if (m === 1) return st.cloverPlanted && since >= 24 * HOUR ? 1 : null;
   if (m === 2) return st.cloverSent && Date.now() - st.cloverSent >= 24 * HOUR ? 2 : null;
   if (m === 3) return S.weather === 'night' && S.radio && S.radioCh === 'pine' ? 3 : null;
@@ -159,7 +159,10 @@ const LADY = {
   mail: 'Sáng nay chú bưu tá mới bỏ vào hòm thư của cháu một tấm bưu thiếp có hình đẹp lắm đấy. Cháu mở ra xem bạn phương xa nhắn gì đi!',
   talk: ['Hôm nay cháu ăn uống đầy đủ chưa đấy? Trên gác tuy mát nhưng chiều tối gió lùa cũng hơi se lạnh, nhớ khoác thêm áo mỏng nha.',
     'Con mèo Bánh Quy sáng giờ cứ quấn quýt dưới chân cầu thang mãi, chắc nó đang ngóng cháu đặt đĩa bánh quy lên bệ cửa đấy.',
-    'Sống ở hẻm này chẳng cần đi đâu vội vàng cả cháu ạ, cứ thong thả như giàn hoa giấy ngoài ngõ, ngày nào cũng nở một ít là vui rồi.'],
+    'Sống ở hẻm này chẳng cần đi đâu vội vàng cả cháu ạ, cứ thong thả như giàn hoa giấy ngoài ngõ, ngày nào cũng nở một ít là vui rồi.',
+    'Căn gác cháu đang ở ngày xưa là phòng của thằng con trai bà. Nó đi làm ăn xa, mấy năm rồi chưa về ăn Tết. Giờ thấy cửa sổ trên ấy có hoa, có đèn, bà vui lắm.',
+    'Chiều nào nghe chuông điện thoại reo bà cũng giật mình chạy ra, cứ tưởng thằng con gọi về. Người già là vậy đó cháu, thương thì cứ ngóng thôi.',
+    'Hôm qua bé Na khoe với bà là anh chị ở gác trên gửi quà cho nó. Con bé dạo này cười nhiều hẳn ra.'],
   gift: 'Bà mới mua được ít bánh quy gừng nướng giòn thơm lắm, bỏ sẵn vào giỏ đây. Cháu cầm lên gác nhâm nhi với trà nóng nha!',
 };
 let ladyHere = false, ladyQ = [], ladyTalk = 0;
@@ -223,7 +226,9 @@ const SHOP = {
     'Chăm cây cũng giống như chăm sóc bản thân vậy em ạ, cứ tưới tắm từng chút một, không cần vội vàng đâu.',
     'Hồi bé Na còn nhỏ xíu, ngày nào cũng chạy ra đây xin một bông cúc kẹp tóc. Giờ lớn rồi mà vẫn giữ thói quen ấy đấy.',
     'Bác sửa đồng hồ bên kia đường sáng nào cũng ghé mua một cành hoa cắm bàn làm việc. Bác bảo có hoa thì kim đồng hồ chạy cũng hiền hơn.',
-    'Chị đoán mai trời sẽ đổ mưa, mấy chậu dương xỉ trên kệ cứ vươn lá ra như đang chờ ấy.'],
+    'Chị đoán mai trời sẽ đổ mưa, mấy chậu dương xỉ trên kệ cứ vươn lá ra như đang chờ ấy.',
+    'Rằm tháng Bảy năm nào chị cũng để dành cho bà chủ nhà một bông hồng trắng. Bà không nói ra, nhưng chị biết bà nhớ người nhà lắm.',
+    'Tấm bảng giá hoa ở quầy là cậu họa sĩ tầng trên vẽ giúp chị đó. Cậu ấy dạo này vẽ vui lắm, em biết không?'],
   help: 'Mấy chậu hoa này cứ gặp đôi tay của em là lại tươi tỉnh hẳn ra. Chị tặng em nhành hoa khô này mang lên gác làm dấu trang (bookmark) nhé!',
   helpFert: 'Cảm ơn đôi tay khéo léo của em nhé! Chị gửi em túi phân bón hữu cơ, bón cho chậu cây trên gác là lần tới nó lớn nhanh hẳn đấy.',
   pot2: 'Cảm ơn em nhiều nha! Thấy em chăm cây khéo vậy, chị tặng em thêm một chậu đất nhỏ. Mang lên gác đặt cạnh cây nến, vậy là trồng được hai cây cùng lúc rồi!',
