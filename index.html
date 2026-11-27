@@ -435,6 +435,9 @@
   <img class="layer scene" data-w="sunset" data-tet="s" src="img/scene_spring_sunset.c6798b20.webp" alt="">
   <img class="layer scene" data-w="rain" data-tet="s" src="img/scene_spring_rain.ba361df6.webp" alt="">
   <img class="layer scene" data-w="night" data-tet="s" src="img/scene_spring_night.50f10fdc.webp" alt="">
+  <img class="layer scene" data-w="sunset" data-tet="w" src="img/scene_winter_sunset.b33d8f97.webp" alt="">
+  <img class="layer scene" data-w="rain" data-tet="w" src="img/scene_winter_rain.3876496c.webp" alt="">
+  <img class="layer scene" data-w="night" data-tet="w" src="img/scene_winter_night.f580dffe.webp" alt="">
   <img class="layer scene" data-w="night" data-tet="v" src="img/scene_vulan_night.62283eea.webp" alt="">
   <img class="layer scene" data-w="sunset" data-tet="q" src="img/scene_qx_sunset.b0ef9cad.webp" alt="">
   <img class="layer scene" data-w="rain" data-tet="q" src="img/scene_qx_rain.a1a4dfe8.webp" alt="">
@@ -1209,14 +1212,14 @@ const TINT = {
 };
 const GLOW = { rain: 0.75, night: 0.9, sunset: 0.4 };
 // Four seasons (Vi 27/11, drawn one by one): the everyday alley changes with the month; holidays still win.
-// Spring = Feb-Apr ('s'). ?xuan shows it any day. Winter ('w') comes with Vi's winter alley.
-const SEASON_TEST = /[?&]xuan\b/.test(location.search) ? 's' : '';
-function seasonView() { if (SEASON_TEST) return SEASON_TEST; const m = new Date().getMonth() + 1; return m >= 2 && m <= 4 ? 's' : '0'; }
+// Spring = Feb-Apr ('s'), winter = Nov-Jan ('w'); ?xuan / ?dong show them any day. Both of Vi's drawings share one layout.
+const SEASON_TEST = /[?&]xuan\b/.test(location.search) ? 's' : /[?&]dong\b/.test(location.search) ? 'w' : '';
+function seasonView() { if (SEASON_TEST) return SEASON_TEST; const m = new Date().getMonth() + 1; return m >= 2 && m <= 4 ? 's' : m >= 11 || m === 1 ? 'w' : '0'; }
 function applyLook() {
   let tv = typeof tetOn === 'function' && tetOn() ? '1' : typeof xmasOn === 'function' && xmasOn() ? 'x'
     : window.vlqxReady && qxOn() ? 'q' : window.vlqxReady && vlOn() ? 'v' : seasonView();   // Tết / Giáng Sinh / Thất Tịch / Vu Lan: Vi's dressed-up alley in the window
   if (!document.querySelector(`.scene[data-w="${S.weather}"][data-tet="${tv}"]`)) tv = '0';   // Vu Lan only changes the night (full moon)
-  window.seaView = tv === 's';   // a season alley: its own moon and lit windows are painted in, the everyday overlays step aside
+  window.seaView = tv === 's' || tv === 'w';   // a season alley: its own moon and lit windows are painted in, the everyday overlays step aside
   document.querySelectorAll('.scene').forEach(img => img.classList.toggle('on', img.dataset.w === S.weather && img.dataset.tet === tv));
   $('#tint').style.backgroundColor = TINT[S.weather][S.lamp ? 'on' : 'off'];
   $('#glow').style.opacity = S.lamp ? GLOW[S.weather] : 0;
@@ -2213,7 +2216,7 @@ const P = [];   // fx particles in scene units
 const rnd = (a, b) => a + Math.random() * (b - a);
 function spawn(p) { if (!reduceMotion || p.keep) P.push(p); }
 const BLINK = [205, 600];   // a window of the house across the alley
-const BLINK_SPRING = [317, 350];   // the same, in Vi's spring alley
+const BLINK_SPRING = [317, 450];   // the same, in Vi's spring / winter alley
 const FLAME = [601, 1036];   // tip of the flame of Vi's candle
 function fxSpawnNote() {
   spawn({ kind: 'note', x: rnd(250, 360), y: 945, vx: rnd(-8, 8), vy: rnd(-30, -22), life: 3.2, t: 0,
