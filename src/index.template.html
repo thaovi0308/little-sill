@@ -582,7 +582,10 @@ const NOTES = [
 ];
 
 // ---------------------------------------------------------------- state
-const KEY = 'littlesill.v1';
+// Preview links (?bep, ?album, ?xuan …) play in a separate sandbox save that starts past the welcome letter, so trying a
+// feature never touches the real game and never waits on story progress.
+const TESTMODE = /[?&](bep|album|hanh|hem|sach|tet|xmas|vulan|thattich|trungthu|xuan|dong)\b/.test(location.search);
+const KEY = TESTMODE ? 'littlesill.preview' : 'littlesill.v1';
 function defaultWeather() {
   const h = new Date().getHours();
   if (h >= 16 && h < 19) return 'sunset';
@@ -593,6 +596,7 @@ let saved = {};
 try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
 const S = Object.assign({ weather: defaultWeather(), lamp: true, lantern: false, radio: false, incense: true, milk: false,
   muted: false, volAmb: 1, volRadio: 0.8, volMusic: 0.7, seen: {}, welcomed: false, candleAt: 0, noteIndex: Math.floor(Math.random() * NOTES.length) }, saved);
+if (TESTMODE) S.welcomed = true;
 S.radio = false;   // music starts only when the player asks for it
 if (S.milk) { S.food = 'milk'; } delete S.milk;
 const SPEED = {{SPEED}};            // 1 = real time (release); the test build used 60 (1 in-game hour = 1 minute)

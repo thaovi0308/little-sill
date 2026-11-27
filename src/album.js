@@ -130,7 +130,7 @@ document.head.append(ast);
 const _outsideOpenA = outsideOpen; outsideOpen = function () { return _outsideOpenA() || album.classList.contains('show'); };
 let alPages = null, alI = 0, alUrls = [];
 let alBusy = false;
-async function openAlbum() {
+async function openYearAlbum() {
   if (alBusy) return; alBusy = true; window.alOpens = (window.alOpens || 0) + 1;
   try { await openAlbumNow(); } finally { alBusy = false; }
 }
@@ -177,9 +177,9 @@ album.addEventListener('touchstart', e => { alX = e.touches[0].clientX; }, { pas
 album.addEventListener('touchend', e => { if (alX === null || !alPages) return; const dx = e.changedTouches[0].clientX - alX; alX = null;
   if (Math.abs(dx) > 50) { const b = $(dx < 0 ? '#al-next' : '#al-prev'); if (b && !b.disabled) b.click(); } });
 
-document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#al-open')) { e.stopPropagation(); openAlbum(); } }, true);   // the paper may be re-rendered while typing
+document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#al-open')) { e.stopPropagation(); openYearAlbum(); } }, true);   // the paper may be re-rendered while typing
 const _useItemA = useItem;
-useItem = function (k, row) { if (k === 'album_book') { openAlbum(); return; } return _useItemA(k, row); };
+useItem = function (k, row) { if (k === 'album_book') { openYearAlbum(); return; } return _useItemA(k, row); };
 // the album turns up once a year, from Christmas Day to the end of January
 setInterval(() => {
   if (!(albumSeason() || ALBUM_TEST) || !started || !S.welcomed || S.albumYear === albumYear() || $('#note-wrap').classList.contains('show') || outsideOpen()) return;

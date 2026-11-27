@@ -168,3 +168,15 @@ todayQuestion = function () {
   if (S.kit.ateDay === dayKey()) return { theme: 'Góc Bếp Nhỏ', q: KIT_Q[(S.kit.eaten - 1) % KIT_Q.length] };
   return _todayQK();
 };
+
+// ---------------------------------------------------------------- preview links: open the feature right after the intro
+if (TESTMODE && !/[?&]noauto\b/.test(location.search)) {   // &noauto: the automated tests drive the page themselves
+  const q = location.search;
+  $('#intro').addEventListener('click', () => setTimeout(() => {
+    applyWelcome(); if (typeof applyDecoBtn === 'function') applyDecoBtn(); applyKitBtn();
+    toast('Đang xem thử · tiến trình chơi thật của bạn không bị ảnh hưởng', 3500);
+    if (/[?&]bep\b/.test(q)) { S.kit.got = 1; save(); applyKitBtn(); openKitchen(); }
+    else if (/[?&]album\b/.test(q) && typeof openYearAlbum === 'function') openYearAlbum();
+    else if (/[?&]hanh\b/.test(q)) { if (S.story.hanh < 2) { S.story.hanh = 2; S.hanh.mail = null; save(); } setWeather('night'); setTimeout(() => openDuet(), 800); }
+  }, 1600));
+}
