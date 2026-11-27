@@ -20,10 +20,23 @@ sm = np.array(Image.open(f'{G}/work/out/stars_mask.png'))[..., 3]
 ys, xs = np.where(sm > 200); rng = np.random.default_rng(7); pick = rng.choice(len(xs), 110, replace=False)
 t = t.replace('{{STAR_PTS}}', json.dumps([[int(xs[i]), int(ys[i])] for i in pick]))
 t = t.replace('{{ROOM_MASK}}', uri(f'{G}/work/out/room_mask.png', 'image/png'))
-for w in ['sunset', 'rain', 'night', 'tet_sunset', 'tet_rain', 'tet_night']:
-    t = t.replace('{{SCENE_%s}}' % w, uri(f'{G}/work/out/scene_{w}.webp', 'image/webp'))
 import io
-import os, hashlib
+import os, hashlib, glob
+# Big pictures only needed later (shop, map, Tết views, paper pictures) go to img/ as files: the page opens
+# faster and the browser caches them (Vi's plan 27/11: lighter file). Name = content hash, so a new picture
+# never hits an old cache. Small icons stay inline.
+IMG = f'{G}/img'; os.makedirs(IMG, exist_ok=True); used = set()
+SPLIT_KB = 40
+def as_file(data_uri, name):
+    head, b64 = data_uri.split(',', 1)
+    if len(b64) < SPLIT_KB * 1024: return data_uri
+    raw = base64.b64decode(b64); ext = 'webp' if 'webp' in head else 'png'
+    fn = f'{name}.{hashlib.md5(raw).hexdigest()[:8]}.{ext}'; used.add(fn)
+    if not os.path.exists(f'{IMG}/{fn}'): open(f'{IMG}/{fn}', 'wb').write(raw)
+    return f'img/{fn}'
+for w in ['sunset', 'rain', 'night', 'tet_sunset', 'tet_rain', 'tet_night']:
+    u = uri(f'{G}/work/out/scene_{w}.webp', 'image/webp')
+    t = t.replace('{{SCENE_%s}}' % w, as_file(u, 'scene_' + w) if w.startswith('tet') else u)
 CACHE = f'{G}/work/out/uri_cache'; os.makedirs(CACHE, exist_ok=True)
 def prop_uri(p, display_h, soft=False):
     st = os.stat(f'{G}/assets/{p}.png')
@@ -60,8 +73,8 @@ ITEMS['mai_pot'] = 120; ITEMS['tet_tray'] = 140
 ITEMS.update({'seedbag': 80, 'wilted': 100, 'scroll': 80, 'alley_lit': 260, 'stall_empty': 110, 'stall_full': 130, 'stall_wilt': 110, 'stall_mid': 110, 'stall_lit': 130, 'stamp_paw': 60, 'stamp_leaf': 60, 'stamp_moon': 60, 'can': 70, 'bouquet': 90, 'chime_flower': 292, 'mooncake': 90, 'basket': 120, 'keys': 90, 'bag': 90, 'landlady': 180, 'florist': 180, 'rabbit': 130, 'dj': 120, 'alley': 94, 'painting': 90, 'old_window': 170, 'na_cat': 160, 'na_friends': 160, 'na_window': 160, 'pc_station': 200, 'pc_pine': 200, 'pc_lighthouse': 200, 'pc_alley': 200, 'mailbox2': 200, 'shop_bg': 1280, 'shop_front': 410, 'stairs_scene': 600, 'alley_map': 1100, 'badge_home': 40, 'shop_wilt1': 90, 'shop_wilt2': 90, 'shop_leafy': 90, 'shop_succ': 90, 'fert_bag': 150, 'pf_forget': 80, 'pf_hydrangea': 80, 'minh_bag': 110, 'cup2': 49, 'mai_bud': 117, 'tet_couplet_l': 79, 'tet_couplet_r': 79, 'tet_couplet': 200, 'tet_lixi': 120, 'landlady_tet': 2000, 'st_tet_watch': 60, 'st_tet_brush': 60, 'st_tet_cat': 60, 'st_tet_mai': 60})
 # images shown big inside the paper notes (characters, story pictures): keep the full drawing so phones do not upscale it (Vi 26/11: 'hình vỡ')
 PAPER_BIG = ['landlady', 'landlady_tet', 'florist', 'rabbit', 'dj', 'wilted', 'stall_full', 'stall_empty', 'stall_wilt', 'stall_mid', 'stall_lit', 'seedbag', 'scroll', 'mooncake', 'bag', 'can', 'bouquet', 'alley_lit', 'basket', 'keys', 'na_cat', 'na_friends', 'na_window', 'old_window', 'pc_station', 'pc_pine', 'pc_lighthouse', 'pc_alley', 'mailbox2']
-t = t.replace('/*{{OUTSIDE_JS}}*/', open(f'{G}/src/outside.js', encoding='utf-8').read() + '\n' + open(f'{G}/src/tet.js', encoding='utf-8').read())
-t = t.replace('{{ITEM_IMG}}', json.dumps({k: prop_uri(k, 2000 if k in PAPER_BIG else h, soft=k in PAPER_BIG) for k, h in ITEMS.items()}))
+t = t.replace('/*{{OUTSIDE_JS}}*/', open(f'{G}/src/outside.js', encoding='utf-8').read() + '\n' + open(f'{G}/src/tet.js', encoding='utf-8').read() + '\n' + open(f'{G}/src/extras.js', encoding='utf-8').read())
+t = t.replace('{{ITEM_IMG}}', json.dumps({k: as_file(prop_uri(k, 2000 if k in PAPER_BIG else h, soft=k in PAPER_BIG), k) for k, h in ITEMS.items()}))
 t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '1')
 heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'shelf': 68, 'notebook': 380})
 for p, h in heights.items():
@@ -71,6 +84,8 @@ t = t.replace('{{ICON}}', 'data:image/png;base64,' + base64.b64encode(buf.getval
 cv = Image.open(f'{G}/assets/cover.jpg'); buf = io.BytesIO(); cv.save(buf, 'WEBP', quality=86)
 t = t.replace('{{COVER}}', 'data:image/webp;base64,' + base64.b64encode(buf.getvalue()).decode())
 t = t.replace('{{BM_RED}}', prop_uri('bm_red', 160))   # Vi's red-gold paper (sheet 26/11)
+for f in glob.glob(f'{IMG}/*'):
+    if os.path.basename(f) not in used: os.remove(f)          # pictures of older builds
 assert '{{' not in t, t[t.index('{{'):t.index('{{') + 40]
 open(f'{G}/index.html', 'w', encoding='utf-8').write(t)
 print('index.html', len(t) // 1024, 'KB')

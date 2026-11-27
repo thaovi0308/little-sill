@@ -7,10 +7,18 @@
 <link rel="icon" href="{{ICON}}">
 <link rel="apple-touch-icon" href="{{ICON}}">
 <meta name="theme-color" content="#2b2d42">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,500&family=Patrick+Hand&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
 <style>
+  ul.today { list-style: none; margin: .2em 0 .8em; padding: 0; }
+  ul.today li { display: flex; align-items: center; gap: .6em; padding: .45em .2em; border-bottom: 1px dashed var(--paper-line); font-size: .92em; }
+  ul.today li > span { width: 1.6em; text-align: center; flex: none; }
+  ul.today li.ok { color: #6d8b5a; } ul.today li.ok > span { font-weight: 700; }
+  ul.today li b { margin-left: auto; font-weight: 600; }
+  ul.today.wait li { font-size: .85em; opacity: .85; }
+  #note h4 { margin: .6em 0 .1em; font: 600 .9em Quicksand, sans-serif; color: #8a7560; }
   :root {
     --paper: #FDF8EE;
     --paper-line: #D4C5B0;
@@ -243,7 +251,11 @@
   /* ---- Ra ngoài hẻm (Vi 26/11) */
   #mapbtn { position: absolute; right: 3.2%; top: 2.6%; width: 11%; aspect-ratio: 126 / 97; border-radius: 30%; z-index: 5; cursor: pointer;
     border: 1.5px solid var(--paper-line); background: var(--paper); box-shadow: 0 2px 6px rgba(60,35,20,.25); font-size: clamp(14px, calc(2.6 * var(--vh, 1vh)), 22px); padding: 0; }
-  #mapbtn.news::after { content: ''; position: absolute; right: -6%; top: -10%; width: 34%; aspect-ratio: 1; border-radius: 50%;
+  #todaybtn { position: absolute; right: 3.2%; top: calc(2.6% + 7.6%); width: 11%; aspect-ratio: 126 / 97; border-radius: 30%; z-index: 5; cursor: pointer;
+    border: 1.5px solid var(--paper-line); background: var(--paper); box-shadow: 0 2px 6px rgba(60,35,20,.25); font-size: clamp(13px, calc(2.3 * var(--vh, 1vh)), 20px); padding: 0; color: var(--ink); }
+  #todaybtn b { position: absolute; left: 50%; bottom: -34%; transform: translateX(-50%); font: 600 clamp(9px, calc(1.3 * var(--vh, 1vh)), 12px) Quicksand, sans-serif;
+    background: var(--paper); border: 1px solid var(--paper-line); border-radius: 8px; padding: 0 .4em; white-space: nowrap; }
+  #todaybtn.news::after, #mapbtn.news::after { content: ''; position: absolute; right: -6%; top: -10%; width: 34%; aspect-ratio: 1; border-radius: 50%;
     background: radial-gradient(circle, #ffe9a8 30%, rgba(249,199,79,0) 70%); animation: breathe 1.8s ease-in-out infinite; }
   #amap, #mbox, #pcw { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(31,29,43,.4);
     opacity: 0; pointer-events: none; transition: opacity .4s ease; }
@@ -419,6 +431,7 @@
   <div id="hits"></div>
   <button id="mute" aria-label="Tắt / bật âm thanh">♪</button>
   <div id="beam"></div>
+  <button id="todaybtn" aria-label="Việc nhỏ hôm nay" style="display:none"><span>📝</span><b></b></button>
   <button id="mapbtn" aria-label="Bản đồ Hẻm Hoa Giấy" style="display:none"><span>🗺️</span></button>
   <div id="vbub" aria-live="polite"></div>
   <div id="dj" aria-live="polite"><img alt=""><div><small>📻 Tần Số Hẻm Hoa Giấy</small><span></span></div></div>
@@ -536,6 +549,8 @@ S.keep = S.keep || {};
 if (S.garden === undefined) S.garden = { type: 'daisy', stage: 0, planted: Date.now(), water: 0, music: 0, lastWater: 0 };
 const ITEM_IMG = {{ITEM_IMG}};
 document.querySelector('#dj img').src = ITEM_IMG.dj;
+// big pictures are files in img/ (build_html.py): fetch them quietly once the room is shown, so papers open without a blank
+setTimeout(() => { for (const u of Object.values(ITEM_IMG)) if (!u.startsWith('data:')) { const i = new Image(); i.decoding = 'async'; i.src = u; } }, 4000);
 ITEM_IMG.k_sunseed = ITEM_IMG.seedbag; ITEM_IMG.alley = ITEM_IMG.alley_lit;   // Vi 26/11: seed bag, alley painting with lit windows
 ITEM_IMG.k_can = ITEM_IMG.can; ITEM_IMG.k_ttlantern = '{{PROP_lantern_on}}'; ITEM_IMG.k_flowerchime = ITEM_IMG.chime_flower;
 $('#p-bag img').src = ITEM_IMG.bag;
@@ -1212,7 +1227,7 @@ let showNote = function () {
     $('#nb-save').addEventListener('click', () => {
       const a = $('#nb-a').value.trim(); if (!a) { toast('Chỉ cần một chữ hay một biểu tượng thôi cũng được nha', 2200); return; }
       const st = stampPick();
-      S.diary[key] = { theme, q, a, s: st }; save();
+      S.diary[key] = { theme, q, a, s: st }; save(); setTimeout(() => dailyMark('diary'), 2600);
       $('#note .l').innerHTML = `<small class="th">${theme}</small><span class="q">${q}</span><span class="ans">${esc(a)}</span>${stampHtml(st, true)}`;
       SFX.paper(); toast(`Trang hôm nay đã được đóng ${STAMPS[st][1]} ${STAMPS[st][0]}`, 2600);
     });
@@ -1433,6 +1448,7 @@ function drinkTea() {
     p.textContent = text; d.style.transitionDuration = text.startsWith('Thở') ? '6s' : '4s'; d.style.transform = `scale(${sc})`;
   }, at));
   breathTimers.push(setTimeout(() => { S.tea = false; save(); applyTea(); }, t));
+  setTimeout(() => dailyMark('tea'), 1500);
 }
 // ---------- keepsakes that do something
 function playMusicBox() {
@@ -1736,7 +1752,7 @@ function tapPlant(i = 0) {
     toast(`Hái ${P.gift.toLowerCase()} cất vào hộp kỷ vật ${P.icon}`, 2600);
     setTimeout(() => openSeedPicker(i), 1600); return;
   }
-  bump(el, 'wiggle'); waterDrops(i); SFX.water(); if (!S.watered) { S.watered = 1; save(); setTimeout(applyBag, 2500); }
+  bump(el, 'wiggle'); waterDrops(i); SFX.water(); dailyMark('water'); if (!S.watered) { S.watered = 1; save(); setTimeout(applyBag, 2500); }
   if (Date.now() - g.lastWater >= HOUR || !g.lastWater) {
     g.water++; g.lastWater = Date.now(); save();
     setTimeout(() => { toast(plantStatus(i), 2600); growthCheck(); }, 900);
@@ -1917,7 +1933,7 @@ function openJournal(open) {
     const rows = L.ch.map((c, k) => c.ok(st)
       ? `<details class="jc"${open === li + ':' + k ? ' open' : ''}><summary><b>Chương ${k + 1}</b> · ${c.t}</summary><p>${c.x}</p></details>`
       : `<div class="jc lock">Chương ${k + 1} · <i>chưa tới</i></div>`).join('');
-    return `<div class="jl"><div class="jh">${ITEM_IMG[L.img] ? `<img src="${ITEM_IMG[L.img]}" alt="">` : ''}<span><b>${L.who}</b><small>${L.by} · ${got.length}/5 chương</small></span></div>${got.length ? rows : '<div class="jc lock"><i>Chưa có lời nhắn nào…</i></div>'}</div>`;
+    return `<div class="jl"><div class="jh">${ITEM_IMG[L.img] ? `<img src="${ITEM_IMG[L.img]}" alt="">` : ''}<span><b>${L.who}</b><small>${L.by} · ${got.length}/5 chương</small></span></div>${got.length ? rows + epilogueRows(li) : '<div class="jc lock"><i>Chưa có lời nhắn nào…</i></div>'}</div>`;
   }).join('');
   openPanel(`<h3>Lời nhắn</h3><small style="margin:0 0 .8em">Những câu chuyện bạn đã đi qua cùng con hẻm</small>${html}
     <button class="reply" id="j-back" style="text-align:center">‹ Về hộp kỷ vật</button><small>Chạm ra ngoài để đóng</small>`);
@@ -2300,8 +2316,8 @@ place($('#p-welcome'), 598, 872, 44, 30);
 function readWelcome() {
   showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:7em">Chào cháu mới dọn tới căn gác nhỏ này! Ở đây chẳng có gì phải vội. Cháu cứ chạm vào mọi thứ quanh mình:
     bật chiếc đèn bàn, vuốt ve chú mèo Bánh Quy hay ghé ngủ nhờ, tưới chậu cây, lắc chuông gió, mở radio nghe nhạc.
-    Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, cháu nhớ để ý bệ cửa nhé.<small>— Bà chủ nhà tầng dưới —</small>`,
-    () => { S.welcomed = true; save(); applyWelcome(); applyRings(); toast('Những chỗ phát sáng là đồ vật bạn chạm được ✨', 3200); });
+    Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, cháu nhớ để ý bệ cửa nhé.<br><br>Hôm nay cháu thử ba việc nhỏ thôi: <b>tưới chậu cây</b>, <b>pha một tách trà</b> rồi <b>viết vài chữ vào sổ tay</b>.<small>— Bà chủ nhà tầng dưới —</small>`,
+    () => { S.welcomed = true; save(); applyWelcome(); applyRings(); applyToday(); toast('Những chỗ phát sáng là đồ vật bạn chạm được ✨ Ba việc nhỏ đầu tiên nằm trong nút 📝', 4200); });
 }
 const CAT_MOODS = ['Bánh Quy khẽ rừ rừ trong cổ họng…', 'Bánh Quy dụi đầu vào tay bạn 💛', 'Bánh Quy lim dim, đuôi phe phẩy nhẹ…',
   'Bánh Quy kêu “meo” một tiếng thật khẽ', 'Bánh Quy duỗi người rồi nằm sát lại gần bạn'];
