@@ -243,11 +243,28 @@ const SHOP_SEEDS = [
     care: 'Tưới nước 1 lần + nắng chiều · nở sau 8 giờ',
     ok: 'Lá trầu bà xanh mướt luôn! Chị gửi em túi hạt Cỏ Bốn Lá, nghe nói trồng được cây này sẽ gặp nhiều điều dễ thương lắm.',
     hello: 'Nghe nói em có người bạn gửi cỏ bốn lá về hả? Chị cũng để dành một túi nè, trồng thêm chậu nữa cho may mắn nhân đôi.' },
+  // Vi 27/11 evening: four more seed packets (texts by vi-agent, Vi can edit)
+  { k: 'portulaca', name: 'Hoa Mười Giờ', icon: '🌺', cost: { cactus: 1 }, need: 'Cần 1 gai xương rồng',
+    d: 'Túi hạt li ti như hạt cát. Cây trồng trong lon thiếc cũng sống khỏe, cứ nắng lên là nở đúng hẹn, rực rỡ đủ màu.',
+    care: 'Tưới nước 1 lần + nắng chiều · nở sau 8 giờ',
+    ok: 'Xương rồng em trồng gai cứng cáp ghê! Chị đổi em túi hạt Hoa Mười Giờ, loài hoa chịu nắng giỏi nhất hẻm mình.' },
+  { k: 'bpea', name: 'Đậu Biếc', icon: '🫐', cost: { forget: 1 }, need: 'Cần 1 nhành lưu ly ép',
+    d: 'Hạt đậu tròn đen bóng. Dây leo quấn giàn tre nhỏ, nở hoa xanh thẳm. Hoa phơi khô pha trà, vắt chút chanh là trà đổi sang tím.',
+    care: 'Tưới nước 2 lần + gặp mưa 1 lần · nở sau 12 giờ',
+    ok: 'Màu xanh lưu ly với màu xanh đậu biếc đúng là một nhà! Chị gửi em túi hạt, có hoa rồi nhớ pha thử trà nha.' },
+  { k: 'mimosa', name: 'Cây Trinh Nữ', icon: '🌿', cost: { fern: 1 }, need: 'Cần 1 lá dương xỉ',
+    d: 'Gói hạt nhỏ có vẽ bông hoa tím tròn như cục bông. Lá cây rất nhạy, chạm khẽ là khép lại e thẹn.',
+    care: 'Tưới nước 1 lần + nghe nhạc radio · nở sau 10 giờ',
+    ok: 'Lá dương xỉ thơm mùi rừng quá! Chị đổi em hạt Trinh Nữ, lúc cây lớn em thử chạm nhẹ vào lá xem nhé.' },
+  { k: 'jasmine', name: 'Hoa Nhài', icon: '🤍', cost: { hydrangea: 1 }, need: 'Cần 1 chùm cẩm tú cầu khô',
+    d: 'Cành giâm nhỏ gói trong giấy kraft. Trồng trong ca men trắng, tối thắp đèn là hoa nở trắng muốt, thơm cả căn gác.',
+    care: 'Tưới nước 2 lần + thắp đèn lồng 1 lần · nở sau 14 giờ',
+    ok: 'Chùm cẩm tú cầu khô đẹp như tranh! Chị gửi em cành nhài giống, hoa nở rồi em ướp trà uống cho thơm nhé.' },
 ];
 const SEED_NO = ['Hình như trong hộp kỷ vật của em chưa có đủ nhành hoa này rồi. Em cứ thong thả lên gác chăm cây thêm chút nữa nhé, chị luôn để dành hạt giống ở đây chờ em mà!',
   'Không vội đâu em ơi, đợi khi nào cây trên bệ cửa nở hoa rồi mang xuống đổi với chị cũng được nha.'];
-const SEED_ALL = 'Em đã sưu tầm đủ cả 3 loại hạt giống đặc biệt của tiệm hoa rồi! Chúc khu vườn nhỏ trên gác của em lúc nào cũng rực rỡ sắc màu nhé 🌸';
-const COST_NAME = { daisy: 'cúc họa mi ép', fern: 'lá dương xỉ', lavender: 'túi thơm oải hương', pothos: 'lá trầu bà' };
+const SEED_ALL = 'Em đã sưu tầm đủ tất cả hạt giống đặc biệt của tiệm hoa rồi! Chúc khu vườn nhỏ trên gác của em lúc nào cũng rực rỡ sắc màu nhé 🌸';
+const COST_NAME = { daisy: 'cúc họa mi ép', fern: 'lá dương xỉ', lavender: 'túi thơm oải hương', pothos: 'lá trầu bà', cactus: 'gai xương rồng', forget: 'nhành lưu ly ép', hydrangea: 'chùm cẩm tú cầu khô' };
 // shelf pots drawn in Vi's shop picture (scene units); a few look thirsty each day until you water them
 const SHOP_POTS = [[94, 388, 58, 82], [168, 420, 46, 50], [218, 392, 64, 90], [92, 505, 50, 72], [154, 525, 58, 50], [222, 520, 52, 58],
   [86, 600, 64, 78], [160, 630, 46, 48], [214, 596, 56, 82]];

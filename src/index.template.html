@@ -624,6 +624,15 @@ const PLANTS = {
               care: 'Tưới nước 2 lần + gặp mưa 1 lần', need: [{ water: 1 }, { water: 2, rain: 1 }] },
   clover:   { name: 'Cỏ Bốn Lá', hours: 8, icon: '🍀', gift: 'Lá cỏ bốn lá ép', meaning: 'Niềm vui bất ngờ, may mắn', lock: 1,
               care: 'Tưới nước 1 lần + nắng chiều', need: [{ water: 1 }, { water: 1, sun: 1 }] },
+  // Vi 27/11 evening: four more plants from the flower shop basket (seed packet, sprout, bloom, pressed flower; teas from two of them)
+  portulaca:{ name: 'Hoa Mười Giờ', hours: 8, icon: '🌺', gift: 'Nhành mười giờ ép', meaning: 'Niềm vui nhỏ đến đúng hẹn mỗi ngày', lock: 1,
+              care: 'Tưới nước 1 lần + nắng chiều', need: [{ water: 1 }, { water: 1, sun: 1 }] },
+  bpea:     { name: 'Đậu Biếc', hours: 12, icon: '🫐', gift: 'Hoa đậu biếc phơi khô', meaning: 'Sự chân thành, thủy chung', lock: 1,
+              care: 'Tưới nước 2 lần + gặp mưa 1 lần', need: [{ water: 1 }, { water: 2, rain: 1 }] },
+  mimosa:   { name: 'Cây Trinh Nữ', hours: 10, icon: '🌿', gift: 'Nhành trinh nữ ép', meaning: 'Sự e ấp, dịu dàng', lock: 1,
+              care: 'Tưới nước 1 lần + nghe nhạc radio', need: [{ water: 1 }, { water: 1, music: 1 }] },
+  jasmine:  { name: 'Hoa Nhài', hours: 14, icon: '🤍', gift: 'Hoa nhài khô ướp trà', meaning: 'Tình thân ấm áp, thanh khiết', lock: 1,
+              care: 'Tưới nước 2 lần + thắp đèn lồng 1 lần', need: [{ water: 1 }, { water: 2, light: 1 }] },
 };
 const PLANT_IMG = {{PLANT_IMG}};
 if (S.leaves) { S.keep = Object.assign({}, S.keep, { leaf: S.leaves }); delete S.leaves; }
@@ -1530,9 +1539,25 @@ function readPlane() {
   }); stageReveal(false);
 }
 // ---------- tea + breathing
+// Vi 27/11: flower teas once the player has grown butterfly pea / jasmine (and the ginger slices from the winter letter)
+const TEA_KINDS = {
+  daisy:   { name: 'Trà hoa cúc', top: '{{PROP_tea_top}}', say: 'Pha một tách trà hoa cúc 🍵' },
+  bpea:    { name: 'Trà đậu biếc', top: ITEM_IMG.tea_bpea, need: 'bpea', say: 'Pha một tách trà đậu biếc xanh thẳm 💙', extra: ITEM_IMG.tea_lime },
+  jasmine: { name: 'Trà hoa nhài', top: ITEM_IMG.tea_jasmine, need: 'jasmine', say: 'Pha một tách trà nhài thơm dịu, thêm một thìa mật ong 🍯', extra: ITEM_IMG.tea_honey },
+  ginger:  { name: 'Trà gừng', top: '{{PROP_tea_top}}', need: 'sea_ginger', say: 'Pha một tách trà gừng cay ấm của bác 🫚' },
+};
+function openTeaPicker() {
+  openPanel('<h3>Hôm nay pha trà gì?</h3>' + Object.entries(TEA_KINDS).filter(([, t]) => !t.need || S.keep[t.need]).map(([k, t]) =>
+    `<button class="seed" data-tea="${k}"><img src="${t.top}" alt=""><div><b>${t.name}</b></div></button>`).join(''));
+}
+document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-tea]'); if (!b) return; e.stopPropagation(); closeNote(); brewTea(b.dataset.tea); }, true);
+function brewTea(k) {
+  S.tea = true; S.teaKind = k; save(); applyTea(); SFX.water(); toast(TEA_KINDS[k].say, 2400);
+  setTimeout(() => { SFX.purr(); zzzT = -2; catSit(6); }, 1800);
+}
 let breathTimers = [];
 function drinkTea() {
-  const html = `<div class="breath"><div class="cupv"><img src="${window.xmasView ? ITEM_IMG.cocoa_top : '{{PROP_tea_top}}'}" alt=""><img class="dot" src="{{PROP_steam_a}}" alt=""></div><p id="breath-text">${window.xmasView ? 'Hơi ấm của cốc ca cao lan qua lòng bàn tay, thơm mùi sô-cô-la và quế. Hít một hơi thật sâu, thở ra thật chậm...' : 'Làn khói mỏng mang theo hương trà thoang thoảng. Hít một hơi thật sâu, thở ra thật chậm...'}</p></div><small>Chạm ra ngoài để dừng</small>`;
+  const html = `<div class="breath"><div class="cupv"><img id="tea-top" src="${window.xmasView ? ITEM_IMG.cocoa_top : (TEA_KINDS[S.teaKind] || TEA_KINDS.daisy).top}" alt=""><img class="dot" src="{{PROP_steam_a}}" alt=""></div><p id="breath-text">${window.xmasView ? 'Hơi ấm của cốc ca cao lan qua lòng bàn tay, thơm mùi sô-cô-la và quế. Hít một hơi thật sâu, thở ra thật chậm...' : 'Làn khói mỏng mang theo hương trà thoang thoảng. Hít một hơi thật sâu, thở ra thật chậm...'}</p></div><small>Chạm ra ngoài để dừng</small>`;
   openPanel(html); onNoteClose = () => breathTimers.forEach(clearTimeout); SFX.chime(0.15);   // Vi 27/11: every touch has its own sound
   const steps = []; let t = 1800;
   for (let k = 0; k < 3; k++) {
@@ -1546,6 +1571,9 @@ function drinkTea() {
     if (text.startsWith('Hít')) SFX.chime(0.07); else if (text.startsWith('Cảm ơn')) SFX.sparkle();
     p.textContent = text; d.style.transitionDuration = text.startsWith('Thở') ? '6s' : '4s'; d.style.transform = `scale(${sc})`;
   }, at));
+  if (!window.xmasView && S.teaKind === 'bpea') breathTimers.push(setTimeout(() => {   // a squeeze of lime turns the blue tea violet
+    const im = $('#tea-top'); if (!im) return; im.style.transition = 'filter 3s'; im.style.filter = 'hue-rotate(55deg) saturate(1.2)'; toast('Vắt chút chanh, trà đậu biếc chuyển sang tím 💜', 2800); SFX.sparkle();
+  }, 7800));
   breathTimers.push(setTimeout(() => { S.tea = false; save(); applyTea(); }, t));
   setTimeout(() => dailyMark('tea'), 1500);
 }
@@ -1847,7 +1875,12 @@ function tapPlant(i = 0) {
   const g = gardenAt(i), el = $(i ? '#p-plant2' : '#p-plant');
   if (!g) { openSeedPicker(i); return; }
   const P = PLANTS[g.type];
-  if (g.stage === 2) {
+  if (g.stage === 2 && g.type === 'mimosa' && !el.dataset.folded && PLANT_IMG.mimosa_fold) {   // Vi's mimosa: leaves fold shut when touched
+    el.dataset.folded = '1'; el.src = PLANT_IMG.mimosa_fold.src; SFX.paper && SFX.paper(); toast('Lá trinh nữ khép lại e thẹn 🌿 chạm lần nữa để hái', 2600);
+    setTimeout(() => { delete el.dataset.folded; const g2 = gardenAt(i); if (g2 && g2.type === 'mimosa' && g2.stage === 2) el.src = PLANT_IMG.mimosa2.src; }, 5000);
+    return;
+  }
+  if (g.stage === 2) { delete el.dataset.folded;
     S.keep[g.type] = (S.keep[g.type] || 0) + 1; S.harvested[g.type] = 1; setGardenAt(i, null); save();
     if (i) updatePlant(false, 1);
     SFX.sparkle(); bump(el, 'wiggle');
@@ -1874,7 +1907,8 @@ function openSeedPicker(i = 0) {
     toast(`Đã gieo hạt ${PLANTS[b.dataset.seed].name}. Nhớ tưới nước nhé 💧`, 2800);
   }));
 }
-const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2', clover: 'pf_clover', forget: 'pf_forget', hydrangea: 'pf_hydrangea' };
+const KEEP_ICON = { leaf: 'k_leaf', daisy: 'k_daisy', lavender: 'k_lavender', cactus: 'k_cactus', fern: 'fern2', pothos: 'pothos2', clover: 'pf_clover', forget: 'pf_forget', hydrangea: 'pf_hydrangea',
+  portulaca: 'pf_portulaca', bpea: 'pf_bpea', mimosa: 'pf_mimosa', jasmine: 'pf_jasmine' };
 // ---------------------------------------------------------------- route 4: the florist at the head of the alley (lines by Vi)
 // a cloth bag on a pulley rope comes to the window; a small bell rings when it carries a note
 const FLO = [
@@ -2046,7 +2080,9 @@ function openJournal(open) {
 const BM_PAPER = { kraft: ['Giấy kraft nâu'], cream: ['Giấy kem xước'], pastel: ['Giấy xanh pastel', 'k_tube', 'Mở khi nhận tuýp màu của cậu họa sĩ'], red: ['Giấy đỏ nhũ vàng', 'tet', 'Mở trong dịp Tết'], pine: ['Giấy xanh thông', 'xmas', 'Mở vào đêm Giáng Sinh'] };
 const BM_FLOWER = { daisy: ['Cúc họa mi', 'pf_daisy', 'Bình yên'], lavender: ['Oải hương', 'pf_lavender', 'Thư thái'], fern: ['Dương xỉ', 'pf_fern', 'Tươi mới'],
   pothos: ['Trầu bà', 'bm_pothos', 'Gắn bó'], leaf: ['Lá phong', 'pf_maple', 'Quà của sóc'],
-  forget: ['Lưu ly', 'pf_forget', 'Không quên'], hydrangea: ['Cẩm tú cầu', 'pf_hydrangea', 'Biết ơn'], clover: ['Cỏ bốn lá', 'pf_clover', 'May mắn'] };
+  forget: ['Lưu ly', 'pf_forget', 'Không quên'], hydrangea: ['Cẩm tú cầu', 'pf_hydrangea', 'Biết ơn'], clover: ['Cỏ bốn lá', 'pf_clover', 'May mắn'],
+  portulaca: ['Mười giờ', 'pf_portulaca', 'Đúng hẹn'], bpea: ['Đậu biếc', 'pf_bpea', 'Chân thành'], mimosa: ['Trinh nữ', 'pf_mimosa', 'Dịu dàng'], jasmine: ['Hoa nhài', 'pf_jasmine', 'Thanh khiết'],
+  sea_leaves: ['Lá vàng mùa thu', 'sea_leaf2', 'Buông nhẹ'] };
 const BM_RIBBON = { twine: ['Dây thừng gai', '#a8875a', 'rb_twine'], blue: ['Ruy băng xanh của Bánh Quy', '#7fa6d6', 'rb_blue'], red: ['Chỉ đỏ may mắn', '#c8372d'] };   // [2] = Vi's drawn bow
 const BM_QUOTES = ['Chậm lại một nhịp, hoa rồi sẽ nở.', 'Gói một chút nắng cất vào trang sách.', 'Bình yên nằm ở ngay góc cửa này.', 'Hôm nay bạn đã làm rất tốt rồi.'];
 const BM_MAX = 12;
@@ -2177,7 +2213,7 @@ function openKeepsakes() {
     ['painting_hanh', 'Ký họa cây đàn bên ô cửa sổ', S.wallArt === 'painting_hanh' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['rose_red', 'Bông hồng cài áo đỏ', 'Quà Vu Lan của bà chủ nhà'], ['rose_white', 'Bông hồng cài áo trắng', 'Quà Vu Lan của bà chủ nhà'],
     ['red_thread', 'Sợi chỉ đỏ may mắn', 'Quà Thất Tịch gửi kèm lá thư'], ['tt_letter', 'Thư Thất Tịch', 'Chạm để đọc lại'],
-    ['sea_seeds', 'Gói hạt giống chợ phiên', 'Quà mùa xuân của bà chủ nhà'], ['sea_sam', 'Ly nước sâm mía lau', 'Quà mùa hạ của chị bán hoa'],
+    ['sea_seeds', 'Gói hạt giống chợ phiên', 'Hạt Hoa Mười Giờ của bà, gieo ở mục Gieo hạt mới'], ['sea_sam', 'Ly nước sâm mía lau', 'Quà mùa hạ của chị bán hoa'],
     ['sea_fan', 'Quạt giấy nhỏ', 'Chiều oi ả phe phẩy cho mát'], ['sea_leaves', 'Ba chiếc lá vàng mùa thu', 'Ép phẳng trong sổ tay, quà của cậu họa sĩ'],
     ['sea_scarf', 'Khăn len cũ của bác', 'Quà mùa đông của bác sửa đồng hồ'], ['sea_ginger', 'Mấy lát gừng tươi', 'Pha trà gừng cho ấm lòng'],
     ['k_couplet', 'Câu đối “Mừng Xuân – Như Ý”', S.coupletOut ? 'Đang treo hai bên khung cửa, chạm để cất' : 'Chạm để treo hai bên khung cửa']]
@@ -2481,8 +2517,8 @@ function act(id) {
     case 'book': showNote(); break;
     case 'tea':
       if (S.tea) { toast(window.xmasView ? 'Cốc ca cao vẫn còn ấm trên bàn, chạm vào để nhấp một ngụm nhé ☕' : 'Tách trà vẫn còn ấm trên bàn, chạm vào để nhấp một ngụm nhé 🍵', 2800); SFX.click(); break; }
-      S.tea = true; save(); applyTea(); SFX.water(); toast(window.xmasView ? 'Pha một cốc ca cao nóng ☕' : 'Pha một tách trà hoa cúc 🍵', 2400);
-      setTimeout(() => { SFX.purr(); zzzT = -2; catSit(6); }, 1800); break;
+      if (!window.xmasView && (S.keep.bpea || S.keep.jasmine || S.keep.sea_ginger)) { openTeaPicker(); break; }
+      brewTea('daisy'); break;
     case 'cup': drinkTea(); break;
     case 'lantern': S.lantern = !S.lantern; if (S.lantern) S.litOnce = 1; if (S.lantern) allGardens().forEach(g => { g.light = 1; }); save(); applyLantern();
       if (S.lantern) { SFX.match(); growthCheck(); } else SFX.click(); break;

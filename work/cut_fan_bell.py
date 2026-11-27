@@ -22,4 +22,5 @@ def save(name, box, frac=0.08, fade=True, fill=True):
     ys, xs = np.where(m > 20); out = out[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
     cv2.imwrite(f'{G}/assets/{name}.png', out); print(name, out.shape[1], out.shape[0])
 save('kit_fan', (100, 60, 560, 645), fade=False)
-save('cat_sleep_bell', (640, 140, 1205, 545))
+# replaced by work/cut_cat_bell2.py
+# save('cat_sleep_bell', (640, 140, 1205, 545))

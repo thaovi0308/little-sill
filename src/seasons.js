@@ -73,6 +73,7 @@ function applySeasonLetter() {
   const k = calSeason(), id = seasonId(k); S.sea = S.sea || {};
   if (S.sea[id] || !storyGate('sea' + id)) return;
   showPaper(seaLetter(k), () => {
+    if (k === 'xuan') { S.seedsGot = S.seedsGot || {}; S.seedsGot.portulaca = 1; }   // bà's market seeds = Hoa Mười Giờ, ready to sow
     S.sea[id] = Date.now(); SEA[k].gifts.forEach(([g]) => { S.keep[g] = (S.keep[g] || 0) + 1; }); if (ITEM_IMG[SEA[k].stamp[2]]) S.keep[SEA[k].stamp[2]] = 1;
     save(); SFX.sparkle(); toast(`Quà ${SEA[k].name.toLowerCase()} đã cất vào Hộp kỷ vật 🎁`, 3600);
   }); stageReveal(false);
