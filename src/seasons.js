@@ -36,7 +36,6 @@ const SEA = {
       'Một người mà bạn chỉ cần nghĩ đến thôi cũng thấy lòng ấm lại giữa ngày se lạnh?',
       'Nhìn lại một năm sắp khép lại bên khung cửa sổ này, bạn thấy mình đã trưởng thành hay dịu dàng hơn ở điểm nào?'] },
 };
-if (!ITEM_IMG.sea_seeds && ITEM_IMG.seedbag) ITEM_IMG.sea_seeds = ITEM_IMG.seedbag;   // the seed bag from the plant shelf until Vi draws the market one
 const SEA_TEST = (location.search.match(/[?&]mua=(xuan|ha|thu|dong)\b/) || [])[1] || (/[?&]xuan\b/.test(location.search) ? 'xuan' : /[?&]dong\b/.test(location.search) ? 'dong' : '');
 function calSeason() {
   if (SEA_TEST) return SEA_TEST;
