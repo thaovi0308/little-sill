@@ -62,6 +62,9 @@ kst.textContent = `#kitbtn { position: absolute; left: 3.2%; top: calc(2.6% + 15
   .kit-pot.boil .steam { animation: kitSteam 1.6s ease-out infinite; }
   @keyframes kitSteam { 0% { opacity: 0; transform: translate(-50%, .4em) } 40% { opacity: .8 } 100% { opacity: 0; transform: translate(-50%, -1.2em) } }
   .kit-pot.boil .pot { animation: kitBob .5s ease-in-out infinite alternate; display: inline-block; }
+  .kit-pot .stove { filter: brightness(.88) saturate(.8); transition: filter .5s; }
+  .kit-pot.h1 .stove { filter: brightness(.95) } .kit-pot.h2 .stove { filter: brightness(1.03) saturate(1.1) }
+  .kit-pot.h3 .stove { filter: brightness(1.1) saturate(1.25) drop-shadow(0 0 10px rgba(255, 140, 50, .55)) }
   @keyframes kitBob { to { transform: translateY(-3px) rotate(1.5deg) } }`;
 document.head.append(kst);
 const kitBtn = document.createElement('button'); kitBtn.id = 'kitbtn'; kitBtn.setAttribute('aria-label', 'Góc bếp nhỏ'); kitBtn.textContent = '🍲'; kitBtn.style.display = 'none';
@@ -90,7 +93,7 @@ let kFans = 0, kCooking = -1;
 function cook(i) {
   const d = DISHES[i]; kFans = 0; kCooking = i;
   showPaper(`<p class="bub">${d.name}: cho nguyên liệu vào nồi đất, rồi quạt than nhẹ ba nhịp nhé.</p>
-    <div class="kit-pot" id="kit-pot"><span class="steam">♨️</span><span class="pot">${ITEM_IMG.kit_pot ? `<img src="${ITEM_IMG.kit_pot}" alt="" style="height:1.6em">` : '🍲'}</span><span class="ember">🔥🔥🔥</span></div>
+    <div class="kit-pot" id="kit-pot"><span class="steam">♨️</span>${ITEM_IMG.kit_stove ? `<span class="pot"><img class="stove" src="${ITEM_IMG.kit_stove}" alt="" style="height:2.6em"></span>` : '<span class="pot">🍲</span><span class="ember">🔥🔥🔥</span>'}</div>
     <button class="reply" id="kit-fan" style="text-align:center">${ITEM_IMG.kit_fan ? `<img src="${ITEM_IMG.kit_fan}" alt="" style="height:1.4em;vertical-align:middle"> ` : '🪭 '}Quạt than (<span id="kit-n">0</span>/3)</button>`, null, true);
 }
 function fanOnce() {   // the paper may re-render while its text types out, so every lookup is fresh
