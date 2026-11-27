@@ -15,13 +15,13 @@ function dailyState() {
 }
 function dailyMark(what) {
   const d = dailyState(); if (d.done[what]) return;
-  d.done[what] = 1; S.daysPlayed = S.daysPlayed || {}; S.daysPlayed[d.day] = 1; save(); applyToday();
+  d.done[what] = 1; setTimeout(() => SFX.sparkle(), 900); S.daysPlayed = S.daysPlayed || {}; S.daysPlayed[d.day] = 1; save(); applyToday();
   const n = DAILY.filter(([k]) => d.done[k]).length;
   // first day: the landlady guides the first three things, then points to the radio (the sparrow's first letter)
   if (!S.firstDayDone && n === DAILY.length) {
     S.firstDayDone = 1; save();
     setTimeout(() => showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:7em">Giỏi lắm cháu ơi! Cây được tưới, trà được pha, sổ tay có chữ rồi.
-      Căn gác này bắt đầu có hơi người rồi đấy.<br><br>À, chú chim sẻ trong hẻm mê nhạc lắm. Cháu thử bật chiếc radio xem, biết đâu chú lại mang tin gì sang.
+      Căn gác này bắt đầu có hơi người rồi đấy.<br><br>À, chú chim sẻ trong hẻm mê nhạc lắm. Cháu thử bật chiếc radio xem, biết đâu chú lại mang tin gì sang.<br><br>Còn điều này nữa: mọi kỷ niệm của căn gác đang được cất tạm trong trình duyệt này thôi. Thỉnh thoảng cháu nhớ vào nút 📝 cất một bản sao lưu, kẻo lỡ xoá lịch sử hay đổi máy lại mất hết nhé.
       <small>— Bà chủ nhà tầng dưới —</small>`, null), 1400);
   } else if (n < DAILY.length && !S.firstDayDone) {
     setTimeout(() => toast(`Việc nhỏ hôm nay: ${n}/${DAILY.length} ✓`, 2200), 2800);

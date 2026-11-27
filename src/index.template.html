@@ -1435,7 +1435,7 @@ function readPlane() {
 let breathTimers = [];
 function drinkTea() {
   const html = `<div class="breath"><div class="cupv"><img src="{{PROP_tea_top}}" alt=""><img class="dot" src="{{PROP_steam_a}}" alt=""></div><p id="breath-text">Làn khói mỏng mang theo hương trà thoang thoảng. Hít một hơi thật sâu, thở ra thật chậm...</p></div><small>Chạm ra ngoài để dừng</small>`;
-  openPanel(html); onNoteClose = () => breathTimers.forEach(clearTimeout);
+  openPanel(html); onNoteClose = () => breathTimers.forEach(clearTimeout); SFX.chime(0.15);   // Vi 27/11: every touch has its own sound
   const steps = []; let t = 1800;
   for (let k = 0; k < 3; k++) {
     steps.push([t, 'Hít vào thật chậm…', 1.25]); t += 4000;
@@ -1445,6 +1445,7 @@ function drinkTea() {
   steps.push([t, 'Cảm ơn bạn đã dành một phút cho chính mình 🍵', 0.9]);
   breathTimers = steps.map(([at, text, sc]) => setTimeout(() => {
     const p = $('#breath-text'), d = document.querySelector('.breath .dot'); if (!p) return;
+    if (text.startsWith('Hít')) SFX.chime(0.07); else if (text.startsWith('Cảm ơn')) SFX.sparkle();
     p.textContent = text; d.style.transitionDuration = text.startsWith('Thở') ? '6s' : '4s'; d.style.transform = `scale(${sc})`;
   }, at));
   breathTimers.push(setTimeout(() => { S.tea = false; save(); applyTea(); }, t));
