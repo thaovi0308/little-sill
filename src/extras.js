@@ -170,6 +170,8 @@ function wrapText(ctx, text, maxW) {
 async function makePostcard() {
   try { await document.fonts.load('40px "Patrick Hand"'); await document.fonts.load('600 26px Quicksand'); } catch (e) {}
   const snap = sceneSnapshot(), W = 1080, H = 1350, PH = 1150;
+  const today0 = (S.diary || {})[dayKey()], line0 = today0 ? `“${today0.a}”` : `“${NOTES[Math.floor(Math.random() * NOTES.length)]}”`;
+  if (window.xmasView) { try { const xc = await xmasCard(snap, line0); if (xc) return xc; } catch (e) {} }   // Vi's Christmas card frame
   const c = document.createElement('canvas'); c.width = W; c.height = H; const ctx = c.getContext('2d');
   ctx.fillStyle = '#FDF8EE'; ctx.fillRect(0, 0, W, H);
   // the window and the sill: scene units 0..714 wide, 120..~1010 high
@@ -177,8 +179,7 @@ async function makePostcard() {
   ctx.drawImage(snap, 0, sy, snap.width, sh, 40, 40, W - 80, PH - 40);
   ctx.strokeStyle = '#D4C5B0'; ctx.lineWidth = 3; ctx.strokeRect(40, 40, W - 80, PH - 40);
   if (window.xmasView) { try { await xmasPostcard(ctx, W, PH); } catch (e) {} }   // Giáng Sinh frame
-  const today = (S.diary || {})[dayKey()];
-  const line = today ? `“${today.a}”` : `“${NOTES[Math.floor(Math.random() * NOTES.length)]}”`;
+  const line = line0;
   ctx.fillStyle = '#4A3525'; ctx.font = '40px "Patrick Hand", cursive'; ctx.textBaseline = 'top';
   const lines = wrapText(ctx, line, W - 140).slice(0, 3);
   lines.forEach((l, i) => ctx.fillText(l, 70, PH + 28 + i * 46));

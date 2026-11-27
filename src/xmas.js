@@ -158,5 +158,24 @@ async function xmasPostcard(ctx, W, PH) {
   const put = (im, x, y, w, r) => { if (!im) return; const h = w * im.height / im.width; ctx.save(); ctx.translate(x, y); ctx.rotate(r); ctx.drawImage(im, -w / 2, -h / 2, w, h); ctx.restore(); };
   put(bow, 70, 62, 120, -0.15); put(star, W - 72, 70, 96, 0.12); put(bell, 74, PH - 22, 76, 0.1); put(ball, W - 70, PH - 40, 62, -0.05);
 }
+// Vi 27/11: her Christmas postcard (928x1152 sheet): the window photo sits in the green hole, the diary line goes on the dotted lines
+async function xmasCard(snap, line) {
+  const load = src => new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+  const [fr, ic] = await Promise.all([load(ITEM_IMG.xmas_card), load((document.querySelector('link[rel="icon"]') || {}).href || '')]);
+  if (!fr) return null;
+  const K = 1080 / 928, W = 1080, H = Math.round(1152 * K);
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const ctx = c.getContext('2d');
+  ctx.fillStyle = '#FDF8EE'; ctx.fillRect(0, 0, W, H);
+  const hx = 118 * K, hy = 128 * K, hw = 692 * K, hh = 726 * K;
+  const sw = snap.width, ch = sw * hh / hw, sy = Math.max(0, Math.min(175 * 1.5, snap.height - ch));
+  ctx.drawImage(snap, 0, sy, sw, ch, hx, hy, hw, hh);
+  ctx.drawImage(fr, 0, 0, W, H);
+  ctx.fillStyle = '#4A3525'; ctx.font = '38px "Patrick Hand", cursive'; ctx.textBaseline = 'alphabetic';
+  wrapText(ctx, line, 515 * K).slice(0, 3).forEach((l, i) => ctx.fillText(l, 124 * K, [930, 998, 1062][i] * K));
+  if (ic) ctx.drawImage(ic, 788 * K, 1040 * K, 76 * K, 76 * K);
+  ctx.font = '600 20px Quicksand, sans-serif'; ctx.fillStyle = '#8a7560';
+  ctx.fillText('Bên Khung Cửa Nhỏ · thaovi0308.github.io/little-sill', 124 * K, 1118 * K);
+  return c;
+}
 setInterval(applyXmas, 2000);
 applyXmas();
