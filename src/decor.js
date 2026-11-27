@@ -5,6 +5,7 @@
 const DECOR = {
   curtain: { label: '🪟 Rèm cửa', items: {} },    // key: { name, l: src, r: src, boxL: [x,y,w,h], boxR: [x,y,w,h] }
   garland: { label: '✨ Dây treo', items: {} },    // key: { name, src, srcNight?: src, box: [x,y,w,h] }
+  cat: { label: '🐈 Phụ kiện cho Bánh Quy', items: {} },   // key: { name, src (icon), sleep?: {src, box}, sit?: {src, box} } -- a pose without a drawing stays as is
 };
 // pack 1 (Vi 27/11, work/cut_decor1.py)
 const CUR = (name, k, boxL, boxR) => ({ name, l: ITEM_IMG['cu_' + k + '_l'], r: ITEM_IMG['cu_' + k + '_r'], boxL, boxR });
@@ -20,6 +21,20 @@ Object.assign(CHIMES, {
   star: { name: 'Chuông gió sao biển', src: ITEM_IMG.chime_star, box: [114, 140, 132, 330] },
   lantern: { name: 'Chuông gió lồng đèn', src: ITEM_IMG.chime_lantern, box: [112, 140, 135, 330] },
 });
+// Bánh Quy's accessories (Vi 27/11, work/cut_cat_acc.py): drawn at the same scale as cat_sit, feet on the sill (y 898)
+const catAt = (src, w, h, cx, flip = false) => ({ src: ITEM_IMG[src], box: [cx - w / 2, 898 - h, w, h], flip });   // Vi drew the sleepers facing left: flip to face the room like cat_sleep
+Object.assign(DECOR.cat.items, {
+  bow: { name: 'Nơ đỏ', src: ITEM_IMG.acc_bow, sleep: catAt('cat_sleep_bow', 234, 135, 460, true), sit: catAt('cat_sit_bow', 170, 239, 463) },
+  scarf: { name: 'Khăn len caro', src: ITEM_IMG.acc_scarf, sleep: catAt('cat_sleep_scarf', 225, 134, 460, true), sit: catAt('cat_sit_scarf', 150, 221, 463) },
+  bell: { name: 'Vòng cổ chuông', src: ITEM_IMG.acc_bell, sit: catAt('cat_sit_bell', 148, 210, 463) },
+});
+const CAT_ORIG = { sleep: CAT0.sleep, sit: CAT0.sit };   // CAT0 (xmas.js) is what Bánh Quy wears when the Christmas hat is off
+function applyCatAcc() {
+  const a = DECOR.cat.items[S.decor.cat] || {};
+  CAT0.sleep = a.sleep || CAT_ORIG.sleep; CAT0.sit = a.sit || CAT_ORIG.sit;
+  if (!catHatNow) { CAT.sleep = CAT0.sleep; CAT.sit = CAT0.sit; }
+  const p = catPose; catPose = null; setCatPose(p);
+}
 S.decor = S.decor || {};
 if (['bell', 'star', 'lantern'].includes(S.chimeType)) applyChime();
 const decoLayer = document.createElement('div'); decoLayer.id = 'decor';
@@ -57,17 +72,16 @@ function openDecor() {
     entries.map(([k, it]) => `<button class="deco-pick${cur === k ? ' on' : ''}" data-slot="${slot}" data-k="${k}" aria-label="${esc(it.name)}"><img src="${img(it)}" alt="">${esc(it.name)}</button>`).join('') + '</div>';
   let html = `<h3>Trang trí</h3><small style="margin:0 0 .6em">Đổi đồ trang trí cho khung cửa sổ, đổi lúc nào cũng được 🌿</small>`;
   html += sect('chime', '🎐 Chuông gió', chimes, S.chimeType, c => c.src);
-  for (const slot of ['curtain', 'garland']) {
+  for (const slot of ['curtain', 'garland', 'cat']) {
     const items = Object.entries(DECOR[slot].items);
     if (items.length) html += sect(slot, DECOR[slot].label, items, S.decor[slot], it => it.l || it.src);
   }
-  if (!Object.keys(DECOR.curtain.items).length || !Object.keys(DECOR.garland.items).length) html += `<small>Rèm cửa, dây treo và phụ kiện cho Bánh Quy sắp về thêm 🧵</small>`;
   html += `<button class="reply" id="fv-open" style="text-align:center">🪟 Ghé bệ cửa bạn bè</button><small>Chạm ra ngoài để đóng</small>`;
   openPanel(html);
   document.querySelectorAll('#note .deco-pick').forEach(b => b.addEventListener('click', e => {
     e.stopPropagation(); const slot = b.dataset.slot, k = b.dataset.k;
     if (slot === 'chime') { S.chimeType = k; save(); applyChime(); pushChime(150); if (typeof placeThread === 'function' && S.qx) placeThread(); }
-    else { S.decor[slot] = k || null; save(); applyDecor(); SFX.paper(); }
+    else { S.decor[slot] = k || null; save(); applyDecor(); if (slot === 'cat') { applyCatAcc(); if (k) { SFX.purr(); hearts(); } } else SFX.paper(); }
     openDecor();
   }));
   $('#fv-open').addEventListener('click', e => { e.stopPropagation(); openFriends(); });
@@ -83,7 +97,7 @@ const b64u = buf => { let s = ''; for (let i = 0; i < buf.length; i += 0x8000) s
 const unb64u = s => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; };
 function myWindow() {
   const pk = g => g && g.type && PLANT_IMG[g.type + g.stage] ? g.type + g.stage : null;
-  return { v: 1, n: (S.fvName || '').slice(0, 24), m: (S.fvMsg || '').slice(0, 160), w: S.weather, c: S.chimeType, cu: S.decor.curtain || null, g: S.decor.garland || null,
+  return { v: 1, n: (S.fvName || '').slice(0, 24), m: (S.fvMsg || '').slice(0, 160), w: S.weather, c: S.chimeType, cu: S.decor.curtain || null, g: S.decor.garland || null, k: S.decor.cat || null,
     p: [pk(S.garden), S.garden2 === undefined ? null : pk(S.garden2) || 'empty0'], d: Object.keys(S.daysPlayed || {}).length };
 }
 async function windowCode() {
@@ -101,7 +115,7 @@ async function readWindow(code) {
   if (!d || d.v !== 1) throw new Error('code');
   const str = (x, n) => typeof x === 'string' ? x.slice(0, n) : '';
   return { n: str(d.n, 24), m: str(d.m, 160), w: ['sunset', 'rain', 'night'].includes(d.w) ? d.w : 'sunset', c: CHIMES[d.c] ? d.c : 'glass',
-    cu: DECOR.curtain.items[d.cu] ? d.cu : null, g: DECOR.garland.items[d.g] ? d.g : null,
+    cu: DECOR.curtain.items[d.cu] ? d.cu : null, g: DECOR.garland.items[d.g] ? d.g : null, k: DECOR.cat.items[d.k] ? d.k : null,
     p: Array.isArray(d.p) ? d.p.slice(0, 2).map(k => typeof k === 'string' && PLANT_IMG[k] ? k : null) : [null, null], d: +d.d || 0 };
 }
 const loadImg = src => new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
@@ -117,7 +131,7 @@ async function windowCard(f) {
     if (i) { const [cx, by, s] = POT2; box = [cx + (box[0] - 180) * s, by - box[3] * s, box[2] * s, box[3] * s]; }
     await draw(P.src, box);
   }
-  await draw(CAT.sleep.src, CAT.sleep.box, CAT.sleep.flip);
+  const cs = (DECOR.cat.items[f.k] || {}).sleep || CAT_ORIG.sleep; await draw(cs.src, cs.box, cs.flip);
   if (f.w === 'night') { ctx.fillStyle = 'rgba(20,24,60,.12)'; ctx.fillRect(0, 0, SW, SH); }
   // crop the window and the sill (the note is shown under the picture as text)
   const W = 1080, PH = 1060, H = PH + 40, out = document.createElement('canvas'); out.width = W; out.height = H; const o = out.getContext('2d');
@@ -182,3 +196,4 @@ if (fvLink) {
   const t = setInterval(() => { if (started && S.welcomed && !$('#note-wrap').classList.contains('show')) { clearInterval(t); visitFriend(fvLink, true); } }, 1500);
 }
 applyDecor(); applyDecoBtn(); setInterval(applyDecoBtn, 3000);
+if (S.decor.cat) applyCatAcc();
