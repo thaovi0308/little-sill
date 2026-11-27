@@ -18,6 +18,7 @@ const XMAS = {
   lady: ['Cháu ơi, bà vừa mua được chậu thông nhỏ ở chợ hoa, để dưới nhà thì tối quá, cho cháu đặt trên bệ cửa nhé.',
     'Năm nào con hẻm mình cũng treo đèn từ giữa tháng Chạp Tây, nhà nào góp một món treo cây thì nhà ấy may mắn cả năm đấy.'],
   eve: 'Đêm nay mưa phùn lất phất. Ở cuối hẻm, chuông nhà thờ ngân lên từng tiếng xa. Cây thông nhỏ trên bệ cửa sáng lên đủ năm món quà của năm người hàng xóm. Bánh Quy ngồi ngắm, chiếc mũ len lệch sang một bên.',
+  eveHanh: 'Bên kia hẻm, ô cửa nhà cô Hạnh mở toang. Cô đàn bài “Đêm Thánh Vô Cùng”, bé Na với mấy đứa nhỏ trong hẻm ngồi kín phòng khách hát theo. Cô nhắn: “Bài cuối cô đàn tặng căn gác bên kia, người nghe đầu tiên của cô.”',
   eveLady: 'Cả hẻm ai cũng thấy cây thông nhà cháu sáng từ dưới đường đấy. Giáng Sinh vui vẻ nhé, cháu của bà.',
   tree: ['Cây thông nhỏ toả mùi nhựa thông thơm mát.', 'Chạm nhẹ vào cành thông, mấy chiếc lá kim khẽ rung rinh.'],
   treeLit: ['Dây đèn nhấp nháy như những đốm sao nhỏ đậu trên cành thông ✨', 'Năm món quà của năm người hàng xóm, treo chung một cây.'],
@@ -118,7 +119,7 @@ function applyXmas() {
   } else if (x.got >= 5 && !x.eve && (S.weather !== 'sunset') && (!/^\d+$/.test(x.id) || new Date().getDate() >= 24) && storyGate('xmasEve' + x.id)) {
     x.eve = 1; save(); churchBells();
     const face = `<img class="paper-img" src="${ITEM_IMG.xmas_tree_lit}" alt="" style="max-height:7em">`;
-    showPaper(face + staged([XMAS.eve, XMAS.eveLady], `<img class="paper-img" src="${ITEM_IMG.st_xmas_snow}" alt="" style="max-height:4em"><small>Kèm theo lời chúc của bà là con dấu “Bông Tuyết” và một tờ giấy xanh thông cho Góc thủ công</small><small>— Bà chủ nhà tầng dưới —</small>`), () => {
+    showPaper(face + staged([XMAS.eve].concat((S.story.hanh || 0) >= 3 ? [XMAS.eveHanh] : [], [XMAS.eveLady]), `<img class="paper-img" src="${ITEM_IMG.st_xmas_snow}" alt="" style="max-height:4em"><small>Kèm theo lời chúc của bà là con dấu “Bông Tuyết” và một tờ giấy xanh thông cho Góc thủ công</small><small>— Bà chủ nhà tầng dưới${(S.story.hanh || 0) >= 3 ? ' & cô Hạnh' : ''} —</small>`), () => {
       S.keep.st_xmas_snow = 1; S.keep.k_xmas = 1; save();
       if (S.weather === 'night') setWeather('rain');
       toast('Nhận con dấu Bông Tuyết ❄️ và giấy bookmark xanh thông', 3800);

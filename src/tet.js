@@ -21,7 +21,7 @@ const TET = {
   florist: ['Sạp hoa đầu hẻm hôm nay rực rỡ nhất năm đấy! Chị gửi tặng em một chậu Mai Vàng nhỏ đặt trên bệ cửa.',
     'Nhớ tưới nước và cho em ấy tắm chút nắng chiều để em ấy nở đúng dịp Tết nha!'],
   lady: ['Tết tới đầu ngõ rồi cháu ơi! Bà vừa gói xong nồi bánh chưng, mang lên cho cháu một đĩa nhỏ với khay mứt gừng để ăn lấy thảo nè.',
-    'Năm nay có cháu ở căn gác nhỏ này, con hẻm nhà mình rộn ràng hẳn lên. Bà chúc cháu một năm mới cứ thong thả, bình an như những ngày ngồi bên ô cửa này nhé!'],
+    'Thằng con bà năm nay lại không về được, nó hẹn gọi điện chúc Tết. Bà quen rồi cháu ạ, mà năm nay có cháu ở căn gác nhỏ này, con hẻm nhà mình rộn ràng hẳn lên. Bà chúc cháu một năm mới cứ thong thả, bình an như những ngày ngồi bên ô cửa này nhé!'],
   tray: 'Một miếng mứt gừng cay ấm, một viên kẹo lạc giòn tan... Tết ở căn gác nhỏ tuy giản dị nhưng ngọt ngào đến lạ.',
   mai: 'Những cánh mai vàng mỏng manh rung rinh trong gió xuân, mang theo hương thơm dịu nhẹ báo hiệu một năm mới bình an.',
   couplet: 'Tấm giấy đỏ thắm thơm mùi mực tàu, lưu giữ lại hơi ấm của mùa Tết đầu tiên tại căn gác nhỏ Hẻm Hoa Giấy.',
@@ -97,7 +97,7 @@ function openLixi() {
   });
 }
 function giveCouplet() {
-  showPaper(`<img class="paper-img" src="${ITEM_IMG.tet_couplet}" alt="" style="max-height:8em"><p class="bub">Đủ lời chúc của cả con hẻm rồi! Bà treo giúp cháu đôi câu đối “Mừng Xuân – Như Ý” bên khung cửa nhé.</p><p>${TET.couplet}</p><small>— Bà chủ nhà tầng dưới —</small>`, () => {
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.tet_couplet}" alt="" style="max-height:8em"><p class="bub">Đủ lời chúc của cả con hẻm rồi! Bà treo giúp cháu đôi câu đối “Mừng Xuân – Như Ý” bên khung cửa nhé.</p><p class="bub">Sáng mùng Một thằng con bà gọi về rồi cháu ạ. Bà kể cho nó nghe về căn gác của nó giờ có hoa, có mèo, có người ở. Nó bảo năm sau nhất định về, còn muốn lên gác chào cháu đấy.</p><p>${TET.couplet}</p><small>— Bà chủ nhà tầng dưới —</small>`, () => {
     S.keep.k_couplet = 1; S.coupletOut = 1; save(); applyTet(); toast('Đôi câu đối đỏ đã treo hai bên khung cửa 🧧', 3600);
   });
 }

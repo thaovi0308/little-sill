@@ -2001,6 +2001,7 @@ const TT = {
   lady: ['Cốc cốc... Bà mang lên cho cháu một đĩa bánh nướng đậu xanh với ấm trà hoa cúc đây. Đêm nay trăng rằm đẹp lắm, đừng ngồi một mình mãi nhé!',
     'Ngày xưa, cứ tới rằm tháng Tám là cả con hẻm lại rước đèn rộn ràng. Giờ mọi người bận rộn cả, chỉ còn bà giữ thói quen treo chiếc đèn lồng cũ này thôi.',
     'À, ban nãy bà thấy có chú thỏ trắng đi lạc ngoài đầu ngõ, chắc đánh hơi thấy mùi bánh nướng nên chạy theo lên gác đấy. Cháu chia cho nó miếng bánh nhé!'],
+  giftNa: 'Bà kể ngày xưa cả hẻm mình rước đèn vui lắm, nên tối nay em rủ các bạn trong hẻm đi rước đèn lại nè! Tụi em vừa đi ngang dưới cửa sổ nhà anh chị đó, anh chị có nghe trống không? Em tặng anh chị chiếc đèn kéo quân, bà bảo thắp lên cho ấm cửa ấm nhà.',
   gift: 'Thấy căn gác sáng đèn và rộn tiếng cười thế này, bà mừng lắm. Bà tặng cháu chiếc đèn lồng kéo quân nhỏ này, thắp lên cho ấm cửa ấm nhà nha.',
   rabbit: ['Khịt khịt... Mùi bánh nướng thơm quá đi mất! Cho tớ ghé mũi ngửi một chút được không?',
     'Ngon tuyệt! Đôi tai của tớ đang vẫy lên vì vui sướng này!',
@@ -2041,8 +2042,10 @@ function tapRabbit() {
     t.step = 4; say2(TT.rabbit[3]);
     setTimeout(() => { applyTT(); }, 5000);
     setTimeout(() => {
-      showPaper(`<img class="paper-img" src="${ITEM_IMG.landlady}" alt="" style="max-height:5em">` + staged([TT.gift], `<img class="paper-img" src="${ITEM_IMG.k_ttlantern}" alt="" style="max-height:4em"><small>— Bà chủ nhà tầng dưới —</small>`), () => {
-        t.step = 5; S.keep.k_ttlantern = 1; save(); toast('Bạn nhận được: Đèn lồng kéo quân của bà 🏮', 3600);
+      const na = S.story.na >= 1;   // review 27/11: bé Na revives the lantern walk bà remembers
+      if (na) toast('Dưới hẻm rộn tiếng trống, tụi nhỏ rước đèn đi ngang cửa sổ 🏮', 3600);
+      showPaper(`<img class="paper-img" src="${ITEM_IMG[na ? 'na_cat' : 'landlady']}" alt="" style="max-height:5em">` + staged([na ? TT.giftNa : TT.gift], `<img class="paper-img" src="${ITEM_IMG.k_ttlantern}" alt="" style="max-height:4em"><small>— ${na ? 'Bé Na & Bánh Quy' : 'Bà chủ nhà tầng dưới'} —</small>`), () => {
+        t.step = 5; S.keep.k_ttlantern = 1; save(); toast(`Bạn nhận được: Đèn lồng kéo quân của ${na ? 'bé Na' : 'bà'} 🏮`, 3600);
       }); stageReveal(false);
     }, 6500);
   }
@@ -2211,7 +2214,7 @@ function openKeepsakes() {
     ['na_cat', 'Tranh bút sáp: Bánh Quy', pinHint('na_cat')], ['na_friends', 'Tranh bút sáp: hai bạn nhỏ', pinHint('na_friends')],
     ['na_window', 'Tranh bút sáp: cửa sổ sáng đèn', pinHint('na_window')],
     ['k_sunseed', 'Túi hạt giống hướng dương', 'Quà của chị bán hoa. Rắc lên đĩa để mời bạn sóc'], ['bouquet', 'Bó hoa khô thơm dịu', S.bouquetOut ? 'Đang đặt trên bệ cửa, chạm để cất' : 'Chạm để đặt lên bệ cửa sổ'], ['k_can', 'Bình tưới bằng đồng', 'Quà của chị bán hoa. Cây lớn nhanh hơn một chút'],
-    ['k_ttlantern', 'Đèn lồng kéo quân', 'Quà Trung Thu của bà chủ nhà'],
+    ['k_ttlantern', 'Đèn lồng kéo quân', 'Quà đêm Trung Thu'],
     ['k_flowerchime', 'Chuông gió thủy tinh vẽ hoa', 'Chọn ở hàng chuông gió phía trên'],
     ['k_cassette', 'Băng cassette “Gió Đồi Thông”', S.radio && S.radioCh === 'pine' ? 'Đang phát trên radio' : 'Chạm để bỏ vào radio'],
     ['k_compass', 'La bàn đồng của Minh', 'Chạm để xem kim chỉ về đâu'],
