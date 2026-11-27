@@ -52,14 +52,22 @@ xHit.tree.setAttribute('aria-label', 'Cây thông nhỏ'); xHit.gift.setAttribut
 hitsEl.append(xHit.tree, xHit.gift, xHit.hat);
 place(xHit.tree, 646, 680, 68, 226);
 const GIFT_BOX = [596, 884, 40, 46]; place(xHit.gift, 588, 872, 58, 64);
-// the hat on Bánh Quy: per pose [x, y, w, rotation] in scene units (only the poses where the head is easy to find)
-const HAT_ON = {};   // Vi 27/11: a pasted hat on the head looks odd -> the hat lies on the sill by the cat until Vi draws Bánh Quy wearing it
+// the hat: Vi drew Bánh Quy wearing it (sleep + sit, 27/11) -> those poses swap to her drawings; other poses leave the hat on the sill
+const HAT_HIT = { sleep: [486, 714, 90, 84], sit: [420, 658, 124, 120] };   // tap the hat on the head to take it off
 const HAT_OFF = [262, 858, 62, -14];   // on the sill by the plate
+const CAT0 = { sleep: CAT.sleep, sit: CAT.sit };
+const CATH = { sleep: { src: ITEM_IMG.cat_sleep_hat, box: [352, 715, 218, 183], flip: false }, sit: { src: ITEM_IMG.cat_sit_hat, box: [384, 661, 157, 237], flip: false } };
+let catHatNow = false;
 function placeHat() {
   const x = S.xmas, on = xmasOn() && x && x.hat;
-  let spot = null;
-  if (on === 'on') spot = HAT_ON[catPose] || null; else if (on === 'off') spot = HAT_OFF;
-  if (on === 'on' && !spot) spot = HAT_OFF;   // a pose without a head spot: the hat waits on the sill
+  const wear = on === 'on';
+  if (wear !== catHatNow) {   // swap Bánh Quy's sleep/sit pictures and redraw the current pose
+    catHatNow = wear; CAT.sleep = wear ? CATH.sleep : CAT0.sleep; CAT.sit = wear ? CATH.sit : CAT0.sit;
+    const p = catPose; catPose = null; _setCatPose(p);
+  }
+  const head = wear ? HAT_HIT[catPose] : null;
+  if (head) { xHat.style.display = 'none'; xHit.hat.style.display = ''; place(xHit.hat, ...head); return; }
+  const spot = on ? HAT_OFF : null;
   xHat.style.display = spot ? '' : 'none'; xHit.hat.style.display = spot ? '' : 'none';
   if (!spot) return;
   const [cx, cy, w, rot] = spot, h = w * 166 / 209;
@@ -133,7 +141,7 @@ function openXGift() {
   showPaper(`<small>${esc(how)}</small>` + face + `<p class="bub">${esc(note)}</p><img class="paper-img" src="${item}" alt="" style="max-height:${orn === 'lights' ? 4.5 : 3.4}em">${more}<small>— ${esc(who)} —</small>`, () => {
     x.got++; if (extra === 'hat') x.hat = 'on'; else if (extra) S.keep[extra] = 1; save(); applyXmas();
     if (orn === 'lights') { bump(xTree, 'hop'); SFX.sparkle(); setTimeout(() => SFX.chime(0.5), 400); toast('Cây thông sáng đèn rồi! ✨ đủ năm món quà của năm người hàng xóm', 4400); }
-    else { const e = xOrn[orn]; if (e) bump(e, 'hop'); SFX.chime(0.3); toast(extra === 'hat' ? 'Đã treo lên cây 🎄 Chiếc mũ len đỏ của Bánh Quy đặt cạnh đĩa sữa, chạm vào mũ thử xem' : 'Đã treo lên cây thông 🎄', 3200); }
+    else { const e = xOrn[orn]; if (e) bump(e, 'hop'); SFX.chime(0.3); toast(extra === 'hat' ? 'Đã treo lên cây 🎄 Bánh Quy đội mũ len rồi, chạm vào mũ để cởi ra nhé' : 'Đã treo lên cây thông 🎄', 3200); }
   });
 }
 xHit.gift.addEventListener('click', e => { e.stopPropagation(); bump(xGift, 'hop'); openXGift(); });
@@ -145,8 +153,9 @@ xHit.tree.addEventListener('click', e => {
 });
 xHit.hat.addEventListener('click', e => {
   e.stopPropagation(); const x = S.xmas; if (!x || !x.hat) return;
-  bump(xHat, 'hop'); SFX.purr(); catSit(5); hearts(); playS(['sfx_meow', 'sfx_meow2'], 0.25);
-  toast(['Bánh Quy hít hít chiếc mũ len, rồi dụi má vào lớp lông trắng mềm 🎅', 'Bánh Quy gác cằm lên mũ len đỏ, kêu rừ rừ khe khẽ', 'Bánh Quy khều quả bông trên mũ len, đuôi phe phẩy 🧶'][Math.floor(Math.random() * 3)], 2800);
+  x.hat = x.hat === 'on' ? 'off' : 'on'; save(); placeHat(); SFX.purr();
+  if (x.hat === 'on') { catSit(5); hearts(); playS(['sfx_meow', 'sfx_meow2'], 0.25); bump($('#p-cat'), 'hop'); toast('Bánh Quy đội mũ len đỏ, trông ấm áp hẳn 🎅', 2600); }
+  else { SFX.click(); bump(xHat, 'hop'); toast('Cất mũ len lên bệ cửa, chạm lần nữa để đội lại cho Bánh Quy', 2600); }
 });
 // postcard: a little garland in the corners during the season (see makePostcard)
 async function xmasPostcard(ctx, W, PH) {
