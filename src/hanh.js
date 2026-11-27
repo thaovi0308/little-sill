@@ -89,6 +89,7 @@ hst.textContent = `#hwin { position: absolute; pointer-events: none; border-radi
   #hduet .hd-keys.img > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
   #hduet .hk { flex: 1; border: 0; border-radius: 0 0 6px 6px; background: linear-gradient(#fffdf6, #efe6d4); box-shadow: inset 0 -4px 0 rgba(0,0,0,.08); cursor: pointer; position: relative; z-index: 1; transition: background .15s; }
   #hduet .hd-keys.img .hk { background: none; box-shadow: none; border-radius: 0; }
+  #hduet .hd-keys.img { height: auto; aspect-ratio: 449 / 270; }   /* Vi's keyboard: 8 white keys C..C */
   #hduet .hk.cue { background: radial-gradient(circle at 50% 75%, rgba(255,205,110,.95), rgba(255,226,160,.55) 60%, rgba(255,240,200,.2)); }
   #hduet .hk.next { box-shadow: inset 0 0 0 3px rgba(240,180,70,.9); animation: hkpulse 1.2s ease-in-out infinite; }
   #hduet .hk.hit { background: radial-gradient(circle at 50% 75%, rgba(170,220,160,.95), rgba(220,240,200,.5) 60%, rgba(255,255,240,.2)); }
