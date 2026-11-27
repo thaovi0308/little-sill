@@ -7,6 +7,10 @@
 S.story.hanh = S.story.hanh || 0;
 S.hanh = S.hanh || { d: 0, total: 0, duetDay: '', song: 0, mail: null, nextAt: 0, heard: 0, clipAt: 0 };
 const HTEST = /[?&]hanh\b/.test(location.search);
+// Vi's set 27/11 (work/cut_hanh.py): until the boat letter / envelope and a separate metronome are drawn, letters carry the
+// round picture of her house and the metronome is a close crop of the one on her piano
+ITEM_IMG.hanh_boat = ITEM_IMG.hanh_boat || ITEM_IMG.hanh_badge; ITEM_IMG.hanh_env = ITEM_IMG.hanh_env || ITEM_IMG.hanh_badge;
+ITEM_IMG.hanh_metronome = ITEM_IMG.hanh_metronome || ITEM_IMG.hanh_metronome_crop;
 const hpic = (k, emoji, h = 6) => ITEM_IMG[k] ? `<img class="paper-img" src="${ITEM_IMG[k]}" alt="" style="max-height:${h}em">` : `<div style="font-size:${h * 0.55}em;text-align:center;line-height:1.2">${emoji}</div>`;
 const H = {
   heard: 'Vài nốt đàn ngập ngừng vọng sang từ ô cửa sổ bên kia hẻm, rồi im bặt.',
@@ -211,7 +215,7 @@ function applyHanh() {
     showPaper(`<small>Mảnh giấy nhỏ kẹp trong ruy băng của Bánh Quy</small><p class="bub">${H.na2}</p><small>${naName()}</small>`, () => { S.story.hanh = 3; S.hanh.d = 0; save(); applyHanh(); });
   } else if (st.hanh === 3 && h.d >= 2 && S.weather === 'sunset' && storyGate('hanh4')) {
     farTune([0, 2, 2, 4, 3, 2, 0], 0.65, 0.06);
-    showPaper(`<p class="bub">${H.ch4}</p>`, () => hSend(4, 'Lát nữa xuống hòm thư xem nhé, cô Hạnh có gửi gì đó 🎼'));
+    showPaper(`${hpic('hanh_room', '🎹', 9)}<p class="bub">${H.ch4}</p>`, () => hSend(4, 'Lát nữa xuống hòm thư xem nhé, cô Hạnh có gửi gì đó 🎼'));
     S.hanh.d = -99; save();
   } else if (st.hanh === 4 && h.d >= 2 && S.weather === 'night' && hView() && storyGate('hanh5')) {
     hWin.classList.add('blink'); setTimeout(() => hWin.classList.remove('blink'), 2200);
@@ -221,7 +225,7 @@ function applyHanh() {
 hHit.addEventListener('click', e => {
   e.stopPropagation(); const st = S.story;
   if (st.hanh === 0 && S.hanh.heard && !S.hanh.mail) {
-    showPaper(`<p class="bub">${H.heard}</p><p class="bub">Bạn viết một mẩu giấy hỏi thăm, thả vào hòm thư dưới chân cầu thang:</p>${H.ask.map((t, i) => `<button class="reply" data-ha="${i}">✉️ “${t}”</button>`).join('')}`, null, true);
+    showPaper(`${hpic('hanh_badge', '🏠🎹', 6)}<p class="bub">${H.heard}</p><p class="bub">Bạn viết một mẩu giấy hỏi thăm, thả vào hòm thư dưới chân cầu thang:</p>${H.ask.map((t, i) => `<button class="reply" data-ha="${i}">✉️ “${t}”</button>`).join('')}`, null, true);
     document.querySelectorAll('#note [data-ha]').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); closeNote(); hSend(1); }));
     return;
   }
