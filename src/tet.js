@@ -5,7 +5,7 @@
 // -> one lì xì a day from the neighbours (one more when the mai blooms), each with a wish and a spring stamp -> the couplet pair.
 function tetSeason() {
   if (/[?&]tet\b/.test(location.search)) return 'test';
-  const D = { 2027: '2027-02-06', 2028: '2028-01-26', 2029: '2029-02-13', 2030: '2030-02-03', 2031: '2031-01-23' };   // mùng 1
+  const D = { 2027: '2027-02-06', 2028: '2028-01-26', 2029: '2029-02-13', 2030: '2030-02-02', 2031: '2031-01-23' };   // mùng 1
   const now = Date.now();
   for (const y in D) { const t = new Date(D[y] + 'T00:00:00').getTime(); if (now >= t - 6 * 864e5 && now < t + 5 * 864e5) return y; }   // 25 Chạp .. end of mùng 5
   return null;
