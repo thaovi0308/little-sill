@@ -46,9 +46,11 @@ function openToday() {
     <ul class="today">${tasks}</ul>
     ${waits.length ? `<h4>Đang chờ</h4><ul class="today wait">${waits.map(w => `<li>${w}</li>`).join('')}</ul>` : ''}
     ${collectionsHtml()}
+    ${rareState().letters.length ? `<button class="reply" id="td-post" style="text-align:center">✉️ Thư lạc địa chỉ (${rareState().letters.length})</button>` : ''}
     <button class="reply" id="td-card" style="text-align:center">📮 Gửi một tấm bưu thiếp</button>
     <button class="reply" id="td-save" style="text-align:center">💾 Sao lưu / khôi phục</button>
     <small>Chạm ra ngoài để đóng</small>`);
+  if ($('#td-post')) $('#td-post').addEventListener('click', e => { e.stopPropagation(); openPostLetters(); });
   $('#td-card').addEventListener('click', e => { e.stopPropagation(); openPostcard(); });
   $('#td-save').addEventListener('click', e => { e.stopPropagation(); openBackup(); });
   $('#note').addEventListener('click', e => e.stopPropagation(), { once: true });
@@ -63,6 +65,7 @@ function collectionsHtml() {
   const chimes = Object.keys(CHIMES).filter(k => !CHIMES[k].need || S.keep[CHIMES[k].need]);
   const rows = [['🌱 Cây đã trồng', planted.length, Object.keys(PLANTS).length], ['🌸 Hoa lá ép', pressed.length, Object.keys(BM_FLOWER).length],
     ['🖋️ Con dấu', stamps.length, STAMPS.length], ['🎐 Chuông gió', chimes.length, Object.keys(CHIMES).length],
+    ['🌟 Khách hiếm', (rareState().ff ? 1 : 0) + (rareState().post ? 1 : 0), 2],
     ['📖 Chương truyện', JOURNAL.reduce((n, L) => n + L.ch.filter(c => c.ok(S.story)).length, 0), JOURNAL.length * 5]];
   return `<h4>Bộ sưu tập</h4><ul class="today coll">${rows.map(([t, a, b]) => `<li class="${a >= b ? 'ok' : ''}"><span>${a >= b ? '★' : ''}</span>${t}<b>${a}/${b}</b></li>`).join('')}</ul>`;
 }
@@ -244,10 +247,82 @@ function epilogueRows(li) {
   return EPILOGUE[li].slice(0, e.n).map((t, k) => `<details class="jc"><summary><b>Thư sau đó ${k + 1}</b></summary><p>${t}</p></details>`).join('');
 }
 
+// ---------- rare visitors (Vi's drawings 27/11): seen now and then, never on a schedule the player can count on
+// the lost firefly: some nights it drifts in the window; tap it and it finds the jar
+// the postman: some days his bicycle bell rings in the alley and a letter with no right address waits on the desk
+const POST_LETTERS = [
+  ['Gửi bà Tư nhà số 12', 'Con đỗ đại học rồi bà ơi! Tết này con về, bà nhớ để dành cho con nồi chè đậu nhé.', 'Hẻm mình làm gì có nhà số 12 hả cháu, chắc người gửi nhớ nhầm.'],
+  ['Gửi người ở căn gác có chậu cây', 'Sáng nào đi làm ngang qua, tôi cũng ngước nhìn bệ cửa nhà bạn. Cảm ơn bạn đã cho con đường một chút màu xanh.', 'Lá này thì chú đoán là của cháu rồi, cả hẻm chỉ có bệ cửa nhà cháu là xanh thế.'],
+  ['Gửi tôi của mười năm sau', 'Mong là bạn vẫn còn thích ngắm mưa, vẫn pha trà mỗi tối, và vẫn tha thứ cho mình dễ dàng như bây giờ.', 'Thư không có địa chỉ người nhận, chỉ có dòng chữ này. Chú nghĩ ai đọc được thì người ấy nhận.'],
+  ['Gửi mẹ', 'Ở thành phố con ăn uống đầy đủ, mẹ đừng lo. Chỉ là thỉnh thoảng trời mưa, con lại nhớ nồi canh chua mẹ nấu.', 'Tem bị nhoè hết rồi, chú không đọc được tên xã. Cháu giữ giùm, chú còn hỏi bưu cục thêm.'],
+  ['Gửi cậu bạn ngồi bàn cuối', 'Hồi đó tớ chưa kịp nói cảm ơn vì cậu cho tớ mượn chiếc ô hôm mưa to. Giờ thì nói được rồi: cảm ơn cậu nhiều lắm.', 'Thư này đi lòng vòng ba bưu cục rồi mới tới đây đấy cháu.'],
+];
+const FF_BOX = [290, 370, 84, 82];
+const ffEl = document.createElement('img'); ffEl.id = 'p-firefly'; ffEl.className = 'prop'; ffEl.alt = ''; ffEl.src = ITEM_IMG.firefly; ffEl.style.display = 'none';
+const ffHit = document.createElement('button'); ffHit.className = 'hit'; ffHit.setAttribute('aria-label', 'Chú đom đóm lạc'); ffHit.style.display = 'none';
+const envEl = document.createElement('img'); envEl.id = 'p-envelope'; envEl.className = 'prop'; envEl.alt = ''; envEl.src = ITEM_IMG.envelope_odd; envEl.style.cssText = 'display:none;transform:rotate(-8deg)';
+const envHit = document.createElement('button'); envHit.className = 'hit'; envHit.setAttribute('aria-label', 'Lá thư lạc địa chỉ'); envHit.style.display = 'none';
+$('#p-tea2').after(ffEl, envEl); hitsEl.append(ffHit, envHit);
+place(ffEl, ...FF_BOX); place(ffHit, FF_BOX[0] - 20, FF_BOX[1] - 20, FF_BOX[2] + 40, FF_BOX[3] + 40);
+place(envEl, 418, 972, 84, 66); place(envHit, 412, 962, 96, 84);
+let ffTimer = null;
+function rareState() { S.rare = S.rare || { ff: 0, ffAt: 0, post: 0, postAt: 0, letters: [] }; return S.rare; }
+const RARE_GAP = { ff: 3 * 24 * 3600e3, post: 4 * 24 * 3600e3 };
+function rareFree() { return started && !$('#note-wrap').classList.contains('show') && !outsideOpen() && Object.keys(S.daysPlayed || {}).length >= 2; }
+function fireflyCome() {
+  const r = rareState(); r.ffAt = Date.now(); save();
+  ffEl.style.display = ''; ffHit.style.display = ''; ffEl.classList.add('drift'); SFX.sparkle();
+  setTimeout(() => { if (ffEl.style.display === '') toast('Có một đốm sáng nhỏ lạc vào khung cửa sổ… ✨', 3000); }, 1500);
+  ffTimer = setTimeout(() => fireflyGo(false), 90000);
+}
+function fireflyGo(home) {
+  clearTimeout(ffTimer); ffHit.style.display = 'none';
+  const j = HITS.jar.box, dx = (j[0] + j[2] / 2 - FF_BOX[0] - FF_BOX[2] / 2) * scale, dy = (j[1] + j[3] / 3 - FF_BOX[1] - FF_BOX[3] / 2) * scale;
+  ffEl.classList.remove('drift');
+  const a = ffEl.animate(home ? [{ translate: '0 0', scale: 1, opacity: 1 }, { translate: `${dx * 0.5}px ${dy * 0.3 - 40}px`, scale: 0.8, offset: 0.5 }, { translate: `${dx}px ${dy}px`, scale: 0.3, opacity: 0 }]
+    : [{ translate: '0 0', opacity: 1 }, { translate: '-60px -220px', opacity: 0 }], { duration: home ? 2600 : 2000, easing: 'ease-in-out' });
+  a.onfinish = () => { ffEl.style.display = 'none'; };
+  if (home) {
+    const r = rareState(); r.ff++; save();
+    setTimeout(() => { releaseFireflies(); SFX.chime(0.2); }, 2400);
+    setTimeout(() => toast(r.ff === 1 ? 'Chú đom đóm lạc đã tìm thấy chiếc hũ thủy tinh. Cả hũ như sáng ấm hơn một chút 🌟' : 'Đom đóm lạc lại ghé, rồi chui vào hũ ngủ cùng các bạn 🌟', 4200), 2800);
+  }
+}
+function postmanCome() {
+  const r = rareState(); r.postAt = Date.now(); save();
+  SFX.chime(0.5); setTimeout(() => SFX.chime(0.5), 260);
+  toast('Kính coong! Có tiếng chuông xe đạp dưới hẻm 🚲', 3200);
+  setTimeout(() => { envEl.style.display = ''; envHit.style.display = ''; bump(envEl, 'hop'); SFX.paper(); }, 2600);
+}
+function readPostLetter() {
+  const r = rareState(); envEl.style.display = 'none'; envHit.style.display = 'none';
+  const i = r.post % POST_LETTERS.length, [to, body, note] = POST_LETTERS[i];
+  r.post++; if (!r.letters.includes(i)) r.letters.push(i); save();
+  const intro = r.post === 1 ? 'Chào cháu, chú là người đưa thư của khu này, tuần nào cũng đạp xe ngang qua hẻm. ' : '';
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.postman}" alt="" style="max-height:9em">${intro}${note} Cháu giữ giùm chú nhé, thư lạc mà có người đọc thì cũng đỡ buồn.<small>— Chú đưa thư —</small>`,
+    () => setTimeout(() => showPaper(`<img class="paper-img" src="${ITEM_IMG.envelope_odd}" alt="" style="max-height:5em"><b>${to}</b><br>${body}`, null), 400), true);
+}
+function openPostLetters() {
+  const r = rareState();
+  openPanel(`<h3>Thư lạc địa chỉ</h3><small style="margin:0 0 .8em">Chú đưa thư gửi cháu giữ giùm</small>` +
+    r.letters.map(i => `<details class="jc"><summary><b>${POST_LETTERS[i][0]}</b></summary><p>${POST_LETTERS[i][1]}</p></details>`).join('') +
+    `<button class="reply" id="pl-back" style="text-align:center">‹ Việc nhỏ hôm nay</button><small>Chạm ra ngoài để đóng</small>`);
+  document.querySelectorAll('#note details').forEach(d => d.addEventListener('click', e => e.stopPropagation()));
+  $('#pl-back').addEventListener('click', e => { e.stopPropagation(); openToday(); });
+}
+ffHit.addEventListener('click', e => { e.stopPropagation(); fireflyGo(true); });
+envHit.addEventListener('click', e => { e.stopPropagation(); readPostLetter(); });
+function rareTick() {
+  if (!rareFree()) return;
+  const r = rareState(), now = Date.now();
+  if (ffEl.style.display === 'none' && S.weather === 'night' && now - r.ffAt > RARE_GAP.ff && Math.random() < 0.06) { fireflyCome(); return; }
+  if (envEl.style.display === 'none' && S.weather !== 'night' && now - r.postAt > RARE_GAP.post && Math.random() < 0.04) postmanCome();
+}
+
 // ---------- the button, the timers
 $('#todaybtn').addEventListener('click', e => { e.stopPropagation(); SFX.click(); openToday(); });
 applyToday();
-setInterval(() => { applyToday(); epilogueTick(); backupNudge(); }, 20000);
+setInterval(() => { applyToday(); epilogueTick(); backupNudge(); rareTick(); }, 20000);
 try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
 // installable page (manifest + service worker), only on the real site
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});

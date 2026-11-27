@@ -12,6 +12,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,500&family=Patrick+Hand&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
 <style>
+  #p-firefly { filter: drop-shadow(0 0 6px rgba(255,236,140,.95)) drop-shadow(0 0 14px rgba(255,214,90,.6)); }
+  #p-firefly.drift { animation: ffdrift 7s ease-in-out infinite; }
+  @keyframes ffdrift { 0%,100% { translate: 0 0; rotate: -6deg; } 25% { translate: 28px -18px; rotate: 4deg; } 50% { translate: 6px -34px; rotate: -2deg; } 75% { translate: -24px -12px; rotate: 6deg; } }
   ul.today { list-style: none; margin: .2em 0 .8em; padding: 0; }
   ul.today li { display: flex; align-items: center; gap: .6em; padding: .45em .2em; border-bottom: 1px dashed var(--paper-line); font-size: .92em; }
   ul.today li > span { width: 1.6em; text-align: center; flex: none; }
