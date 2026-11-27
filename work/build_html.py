@@ -34,9 +34,9 @@ def as_file(data_uri, name):
     fn = f'{name}.{hashlib.md5(raw).hexdigest()[:8]}.{ext}'; used.add(fn)
     if not os.path.exists(f'{IMG}/{fn}'): open(f'{IMG}/{fn}', 'wb').write(raw)
     return f'img/{fn}'
-for w in ['sunset', 'rain', 'night', 'tet_sunset', 'tet_rain', 'tet_night', 'xmas_sunset', 'xmas_rain', 'xmas_night', 'vulan_night', 'qx_sunset', 'qx_rain', 'qx_night']:
+for w in ['sunset', 'rain', 'night', 'tet_sunset', 'tet_rain', 'tet_night', 'xmas_sunset', 'xmas_rain', 'xmas_night', 'vulan_night', 'qx_sunset', 'qx_rain', 'qx_night', 'spring_sunset', 'spring_rain', 'spring_night']:
     u = uri(f'{G}/work/out/scene_{w}.webp', 'image/webp')
-    t = t.replace('{{SCENE_%s}}' % w, as_file(u, 'scene_' + w) if w.startswith(('tet', 'xmas', 'vulan', 'qx')) else u)
+    t = t.replace('{{SCENE_%s}}' % w, as_file(u, 'scene_' + w) if w.startswith(('tet', 'xmas', 'vulan', 'qx', 'spring')) else u)
 CACHE = f'{G}/work/out/uri_cache'; os.makedirs(CACHE, exist_ok=True)
 def prop_uri(p, display_h, soft=False):
     st = os.stat(f'{G}/assets/{p}.png')

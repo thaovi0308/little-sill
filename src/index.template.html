@@ -432,6 +432,9 @@
   <img class="layer scene" data-w="sunset" data-tet="x" src="{{SCENE_xmas_sunset}}" alt="">
   <img class="layer scene" data-w="rain" data-tet="x" src="{{SCENE_xmas_rain}}" alt="">
   <img class="layer scene" data-w="night" data-tet="x" src="{{SCENE_xmas_night}}" alt="">
+  <img class="layer scene" data-w="sunset" data-tet="s" src="{{SCENE_spring_sunset}}" alt="">
+  <img class="layer scene" data-w="rain" data-tet="s" src="{{SCENE_spring_rain}}" alt="">
+  <img class="layer scene" data-w="night" data-tet="s" src="{{SCENE_spring_night}}" alt="">
   <img class="layer scene" data-w="night" data-tet="v" src="{{SCENE_vulan_night}}" alt="">
   <img class="layer scene" data-w="sunset" data-tet="q" src="{{SCENE_qx_sunset}}" alt="">
   <img class="layer scene" data-w="rain" data-tet="q" src="{{SCENE_qx_rain}}" alt="">
@@ -1205,10 +1208,15 @@ const TINT = {
   sunset: { on: 'rgba(255,236,215,1)', off: 'rgba(250,222,200,1)' },
 };
 const GLOW = { rain: 0.75, night: 0.9, sunset: 0.4 };
+// Four seasons (Vi 27/11, drawn one by one): the everyday alley changes with the month; holidays still win.
+// Spring = Feb-Apr ('s'). ?xuan shows it any day. Winter ('w') comes with Vi's winter alley.
+const SEASON_TEST = /[?&]xuan\b/.test(location.search) ? 's' : '';
+function seasonView() { if (SEASON_TEST) return SEASON_TEST; const m = new Date().getMonth() + 1; return m >= 2 && m <= 4 ? 's' : '0'; }
 function applyLook() {
   let tv = typeof tetOn === 'function' && tetOn() ? '1' : typeof xmasOn === 'function' && xmasOn() ? 'x'
-    : window.vlqxReady && qxOn() ? 'q' : window.vlqxReady && vlOn() ? 'v' : '0';   // Tết / Giáng Sinh / Thất Tịch / Vu Lan: Vi's dressed-up alley in the window
+    : window.vlqxReady && qxOn() ? 'q' : window.vlqxReady && vlOn() ? 'v' : seasonView();   // Tết / Giáng Sinh / Thất Tịch / Vu Lan: Vi's dressed-up alley in the window
   if (!document.querySelector(`.scene[data-w="${S.weather}"][data-tet="${tv}"]`)) tv = '0';   // Vu Lan only changes the night (full moon)
+  window.seaView = tv === 's';   // a season alley: its own moon and lit windows are painted in, the everyday overlays step aside
   document.querySelectorAll('.scene').forEach(img => img.classList.toggle('on', img.dataset.w === S.weather && img.dataset.tet === tv));
   $('#tint').style.backgroundColor = TINT[S.weather][S.lamp ? 'on' : 'off'];
   $('#glow').style.opacity = S.lamp ? GLOW[S.weather] : 0;
@@ -2205,6 +2213,7 @@ const P = [];   // fx particles in scene units
 const rnd = (a, b) => a + Math.random() * (b - a);
 function spawn(p) { if (!reduceMotion || p.keep) P.push(p); }
 const BLINK = [205, 600];   // a window of the house across the alley
+const BLINK_SPRING = [317, 350];   // the same, in Vi's spring alley
 const FLAME = [601, 1036];   // tip of the flame of Vi's candle
 function fxSpawnNote() {
   spawn({ kind: 'note', x: rnd(250, 360), y: 945, vx: rnd(-8, 8), vy: rnd(-30, -22), life: 3.2, t: 0,
@@ -2242,8 +2251,8 @@ function stepFx(dt) {
     spawn({ kind: 'smoke', x: rnd(455, 485), y: 1046, vx: rnd(-2, 2), vy: rnd(-22, -15), life: rnd(2, 3), t: 0, ph: rnd(0, 6) });
   // candle flame: a soft flickering halo
   if (S.weather === 'night' && started && !(window.tetView || window.xmasView) && nextOldLetter() !== null) {
-    const ph = (perfT / 1000) % 7;   // three slow blinks, then a pause
-    if (ph < 3.6) glowDot(ctx, BLINK[0], BLINK[1], Math.max(0, Math.sin(ph / 1.2 * Math.PI)) * 0.9, 2.2);
+    const ph = (perfT / 1000) % 7, bl = window.seaView ? BLINK_SPRING : BLINK;   // three slow blinks, then a pause
+    if (ph < 3.6) glowDot(ctx, bl[0], bl[1], Math.max(0, Math.sin(ph / 1.2 * Math.PI)) * 0.9, 2.2);
   }
   if (S.lantern) glowDot(ctx, 564, 958, 0.42 + 0.05 * Math.sin(perfT * 0.004), 3.2);
   if (S.incense) glowDot(ctx, FLAME[0], FLAME[1], 0.32 + 0.1 * Math.sin(perfT * 0.013) + 0.06 * Math.sin(perfT * 0.031), 2.4);
@@ -2324,7 +2333,7 @@ function stepSky(dt) {
   }
   const L = sky.level;
   const lv = L.night + L.rain * 0.85 + L.sunset * 0.15;
-  if (lv > 0.02 && !(window.tetView || window.xmasView)) {
+  if (lv > 0.02 && !(window.tetView || window.xmasView || window.seaView)) {
     WINDOWS.slice(0, litShown || 0).forEach(([x, y, w, h], i) => {
       const fresh = i === litShown - 1 ? Math.min(1, (performance.now() - litFlash) / 2500) : 1;
       const a = lv * fresh * (0.82 + 0.06 * Math.sin(perfT * 0.002 + i));
@@ -2344,7 +2353,7 @@ function stepSky(dt) {
     if (Math.random() < dt * 6 * L.rain) SFX.drip();
   }
   if (window.tetView) stepFireworks(ctx, dt, L.night);
-  if (L.night > 0.01 && !(window.tetView || window.xmasView)) {
+  if (L.night > 0.01 && !(window.tetView || window.xmasView || window.seaView)) {
     if (!window.qxView) for (const s of sky.stars) {
       const a = (0.45 + 0.55 * Math.sin(perfT * 0.001 * s.s + s.p)) * L.night;
       ctx.fillStyle = `rgba(255,250,225,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill();

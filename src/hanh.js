@@ -65,11 +65,13 @@ const PHRASES = [[0, 2, 4, 4, 2, 0], [4, 5, 4, 2, 0, 2], [7, 4, 5, 4, 2, 4], [2,
 function farTune(notes, gap = 0.55, vol = 0.05) { notes.forEach((n, k) => piano(n, vol, true, k * gap + Math.random() * 0.05)); }
 
 // ---------------------------------------------------------------- her window across the alley
-const HWIN = [200, 545, 62, 98];
+const HWIN = [200, 545, 62, 98], HWIN_SPRING = [233, 393, 24, 44];   // her window; in Vi's spring alley the lit one behind the bougainvillea
+let hwinAt = null;
+function placeHWin() { const b = window.seaView ? HWIN_SPRING : HWIN; if (hwinAt === b) return; hwinAt = b; place(hWin, ...b); place(hHit, b[0] - 14, b[1] - 14, b[2] + 28, b[3] + 28); }
 const hWin = document.createElement('div'); hWin.id = 'hwin';
 const hHit = document.createElement('button'); hHit.className = 'hit'; hHit.setAttribute('aria-label', 'Ô cửa sổ nhà cô Hạnh bên kia hẻm');
 $('#p-chime').before(hWin); hitsEl.append(hHit);
-place(hWin, ...HWIN); place(hHit, HWIN[0] - 14, HWIN[1] - 14, HWIN[2] + 28, HWIN[3] + 28);
+placeHWin();
 const hst = document.createElement('style');
 hst.textContent = `#hwin { position: absolute; pointer-events: none; border-radius: 3px; opacity: 0; transition: opacity 1.5s;
     background: radial-gradient(ellipse at 50% 55%, rgba(255,214,140,.7), rgba(255,196,110,.35) 55%, rgba(255,190,100,0) 80%); mix-blend-mode: screen; }
@@ -192,6 +194,7 @@ const _mailNewsH = mailNews; mailNews = function () { return _mailNewsH() || hMa
 
 // ---------------------------------------------------------------- the story, one tick
 function applyHanh() {
+  placeHWin();
   const st = S.story, h = S.hanh, lit = hView() && hDark() && (h.heard || st.hanh >= 1);
   hWin.classList.toggle('on', lit); hHit.style.display = lit ? '' : 'none';
   if (!started || !S.welcomed || $('#note-wrap').classList.contains('show') || outsideOpen()) return;
