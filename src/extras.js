@@ -203,25 +203,25 @@ async function openPostcard() {
 // ---------- letters after a story: once a neighbour's 5 chapters are lived, they keep writing now and then (about a week apart)
 const EPILOGUE = [
   // 0 bác sửa đồng hồ (thư chim sẻ)
-  ['Sáng nay bác lau lại tủ kính, xếp mấy chiếc đồng hồ cũ thành hàng. Có cậu bé ghé hỏi sửa giúp chiếc đồng hồ của ông nội. Bác làm chậm thôi, mà lòng vui lắm.',
-    'Chiều qua mưa to, bác mở hộp nhạc nghe lại bản nhạc của cháu. Lạ thật, cùng một giai điệu mà mỗi lần nghe lại thấy một chuyện khác.',
-    'Bác học được cách pha trà hoa cúc giống cháu rồi. Ngồi bên cửa sổ, nhìn kim đồng hồ chạy, bác không còn thấy mình vội nữa.'],
+  ['Sáng nay bác lau lại tủ kính, xếp mấy chiếc đồng hồ cũ ngay ngắn thành hàng. Có cậu bé ghé nhờ sửa giúp chiếc đồng hồ của ông nội. Bác tỉ mẩn làm chậm thôi, vậy mà trong lòng vui lắm.',
+    'Chiều qua trời mưa rào, bác mở hộp nhạc nghe lại bản nhạc của cháu. Lạ thật đấy, vẫn một giai điệu ấy mà mỗi lần nghe lại thấy gợi về một chuyện khác.',
+    'Bác cũng học được cách pha trà hoa cúc giống cháu rồi. Ngồi bên hiên cửa sổ, thong thả nhìn kim đồng hồ nhích từng nhịp, bác chẳng còn thấy mình phải vội nữa.'],
   // 1 cậu họa sĩ (máy bay giấy)
-  ['Tuần này mình vẽ một bức chỉ để cho vui, không có deadline nào cả. Hoá ra mình vẫn còn thích vẽ đến vậy.',
-    'Mình treo bức "Góc Cửa Ngày Mưa" ở bàn làm việc. Mỗi lần bí ý tưởng, mình nhìn nó rồi uống một ngụm nước, thế là ổn.',
-    'Bé Na nhờ mình dạy vẽ mèo. Bánh Quy ngồi làm mẫu được đúng hai phút rồi bỏ đi ngủ. Tụi mình cười mãi.'],
+  ['Tuần này mình vẽ một bức chỉ để cho vui, chẳng vướng bận deadline nào cả. Hóa ra, mình vẫn còn thích vẽ đến thế.',
+    'Mình treo bức “Góc Cửa Ngày Mưa” ngay trước bàn làm việc. Mỗi lần bí ý tưởng, mình lại ngước nhìn nó một chút rồi nhấp ngụm nước, tự nhiên thấy lòng dịu lại.',
+    'Bé Na nhờ mình dạy vẽ mèo. Bánh Quy chịu ngồi làm mẫu được đúng hai phút rồi ngáp dài, quay lưng đi ngủ. Hai anh em nhìn nhau cười mãi.'],
   // 2 bé Na (ruy băng mèo)
-  ['Hôm nay lớp em đi dã ngoại, em ngồi cạnh bạn Thảo suốt đường đi. Em kể bạn nghe về Bánh Quy và cửa sổ nhà bạn đó.',
-    'Bánh Quy béo lên rồi nha, chắc tại bạn cho ăn nhiều quá. Mẹ em bảo phải cho nó chạy nhảy nhiều hơn.',
-    'Em được điểm mười môn vẽ! Em vẽ con hẻm có nhà bạn với chậu cây trên bệ cửa. Cô khen màu đẹp lắm.'],
+  ['Hôm nay lớp em đi dã ngoại, em ngồi cạnh bạn Thảo suốt cả chặng đường. Em kể cho bạn ấy nghe bao nhiêu chuyện về Bánh Quy và khung cửa sổ nhỏ nhà bạn đó!',
+    'Bánh Quy dạo này tròn quay rồi nha, chắc tại bạn cho ăn nhiều quá đó. Mẹ em bảo phải rủ nó chạy nhảy nhiều hơn mới được.',
+    'Hôm nay em được điểm mười môn vẽ nè! Em vẽ con hẻm nhà mình có khung cửa sổ và chậu cây xanh của bạn. Cô giáo khen em tô màu ấm áp lắm.'],
   // 3 chị bán hoa (túi vải)
-  ['Dạo này tiệm đông khách hơn rồi em. Có cô khách ngày nào cũng ghé mua một bông cúc, bảo để trên bàn làm việc cho dễ thở.',
-    'Chị mới nhập mấy chậu sen đá nhỏ xíu, nhìn đáng yêu lắm. Bữa nào ghé tiệm chị để dành cho em một chậu.',
-    'Tối qua chị ngồi gói hoa dưới ánh đèn lồng, nghe tiếng radio từ căn gác của em vọng xuống. Cảm ơn em vì con hẻm có thêm tiếng nhạc.'],
+  ['Dạo này tiệm hoa đông khách hơn rồi em ạ. Có cô khách chiều nào cũng ghé mua một cành cúc nhỏ, bảo đặt trên bàn làm việc nhìn cho dễ thở.',
+    'Chị mới về thêm mấy chậu sen đá nhỏ xíu, nhìn cưng lắm. Bữa nào rảnh ghé qua tiệm nhé, chị để dành sẵn cho em một chậu xinh nhất.',
+    'Tối qua chị ngồi bó hoa dưới ánh đèn lồng vàng, nghe tiếng radio từ căn gác của em khe khẽ vọng xuống. Cảm ơn em vì đã mang thêm tiếng nhạc ấm về cho con hẻm.'],
   // 4 Minh (hòm thư)
-  ['Về hẻm được mấy hôm, sáng nào mình cũng ra đầu hẻm ăn bánh mì. Đi xa nhiều nơi rồi mà vẫn thấy ở đây ngon nhất.',
-    'Mình đang tập trồng cỏ bốn lá trong hộp sữa cũ, chưa thấy lá nào đủ bốn cánh cả. Chắc phải xin bí quyết của bạn thôi.',
-    'Tối nay mình bật lại cuộn băng Gió Đồi Thông. Nhắm mắt lại vẫn nghe như có gió thổi qua rừng thông, mà mở mắt ra thì đang ở nhà rồi.'],
+  ['Về lại hẻm được mấy hôm, sáng nào mình cũng ghé xe đầu hẻm mua ổ bánh mì nóng. Đi xa bao nhiêu nơi rồi, cuối cùng vẫn thấy hương vị ở đây là ngon nhất.',
+    'Mình đang tập gieo cỏ bốn lá trong chiếc hộp sữa cũ, mà mãi chưa thấy nhánh nào đủ bốn cánh cả. Chắc hôm nào phải sang xin bí quyết chăm cây của bạn thôi.',
+    'Tối nay mình bật nghe lại cuộn băng Gió Đồi Thông. Nhắm mắt lại vẫn thấy tiếng gió rì rào qua rừng thông, còn khi mở mắt ra, mình biết mình đang ở nhà rồi.'],
 ];
 const EPI_GAP = 7 * 24 * 3600e3;
 function routeFinished(li) { return JOURNAL[li].ch.every(c => c.ok(S.story)); }
