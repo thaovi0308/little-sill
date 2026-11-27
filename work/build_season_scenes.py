@@ -13,7 +13,7 @@ def place_view(img):
     canvas[max(0, y0):bottom, x0:x1] = np.array(v)[max(0, -y0):]
     return canvas
 a = np.array(Image.open(f'{OUT}/sky_mask.png'))[..., 3].astype(np.float32)[..., None] / 255
-SEASONS = ['spring', 'winter']
+SEASONS = ['spring', 'winter', 'autumn']
 for SEA in SEASONS:
   night = Image.open(f'{G}/src/view_{SEA}_night.jpg').convert('RGB')
   # drizzle: the night alley a little greyer and softer (no stars), the streaks are drawn live
