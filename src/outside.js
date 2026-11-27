@@ -8,7 +8,7 @@ S.radioCh = S.radioCh || 'fm';
 const dayN = () => (Date.now() - S.born) / (24 * HOUR);
 const forceMap = /[?&]hem\b/.test(location.search);   // testing: ?hem opens the alley map at once
 function mapOpen() { return forceMap || (S.story.flower || 0) >= 2 || dayN() >= 1 || S.story.minh > 0; }
-function routeDone() { const st = S.story; return st.plane >= 5 || st.na >= 5 || (st.flower || 0) >= 5 || !!st.sparrowCh5; }
+function routeDone() { const st = S.story; return st.plane >= 5 || st.na >= 5 || (st.flower || 0) >= 5 || !!st.sparrowCh5 || (st.khai || 0) >= 5; }
 
 // ---------- audio: the map / mailbox keep the room sound a little lower; the shop has its own air
 let duckLevel = 1;

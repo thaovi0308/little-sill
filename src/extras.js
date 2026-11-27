@@ -225,7 +225,10 @@ const EPILOGUE = [
   // 4 Minh (hòm thư)
   ['Về lại hẻm được mấy hôm, sáng nào mình cũng ghé xe đầu hẻm mua ổ bánh mì nóng. Đi xa bao nhiêu nơi rồi, cuối cùng vẫn thấy hương vị ở đây là ngon nhất.',
     'Mình đang tập gieo cỏ bốn lá trong chiếc hộp sữa cũ, mà mãi chưa thấy nhánh nào đủ bốn cánh cả. Chắc hôm nào phải sang xin bí quyết chăm cây của bạn thôi.',
-    'Tối nay mình bật nghe lại cuộn băng Gió Đồi Thông. Nhắm mắt lại vẫn thấy tiếng gió rì rào qua rừng thông, còn khi mở mắt ra, mình biết mình đang ở nhà rồi.'],
+    'Tối nay mình bật nghe lại cuộn băng Gió Đồi Thông. Nhắm mắt lại vẫn thấy tiếng gió rì rào qua rừng thông, còn khi mở mắt ra, mình biết mình đang ở nhà rồi.'],  // 5 ông Khải (thẻ mượn sách)
+  ['Ngăn “Sách có hoa” giờ đã có mười hai bông rồi cháu ạ. Có cô sinh viên kẹp vào cả một chiếc lá bàng đỏ, ông thấy cũng tính là hoa.',
+    'Hôm nay ông lau kính xong, đọc được trọn một chương sách mà không cần ai đọc giúp. Vui như hồi mới biết chữ.',
+    'Tối qua ông mở sổ ép hoa ra xem, thấy trang cuối đã có thêm nét chữ của cháu. Bà nhà ông mà biết, chắc bà vui và cười hiền lắm.'],
 ];
 const EPI_GAP = 7 * 24 * 3600e3;
 function routeFinished(li) { return JOURNAL[li].ch.every(c => c.ok(S.story)); }
