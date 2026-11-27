@@ -508,7 +508,7 @@ const S = Object.assign({ weather: defaultWeather(), lamp: true, lantern: false,
   muted: false, volAmb: 1, volRadio: 0.8, volMusic: 0.7, seen: {}, welcomed: false, candleAt: 0, noteIndex: Math.floor(Math.random() * NOTES.length) }, saved);
 S.radio = false;   // music starts only when the player asks for it
 if (S.milk) { S.food = 'milk'; } delete S.milk;
-const SPEED = {{SPEED}};            // prototype: 1 in-game hour = 1 minute (release build: 1)
+const SPEED = {{SPEED}};            // 1 = real time (release); the test build used 60 (1 in-game hour = 1 minute)
 const HOUR = 3600e3 / SPEED;
 const PLANTS = {
   daisy:    { name: 'Cúc Họa Mi', hours: 6, icon: '🌼', gift: 'Hoa cúc ép khô', meaning: 'Sự bình yên giản dị',

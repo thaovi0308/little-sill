@@ -62,7 +62,7 @@ ITEMS.update({'seedbag': 80, 'wilted': 100, 'scroll': 80, 'alley_lit': 260, 'sta
 PAPER_BIG = ['landlady', 'landlady_tet', 'florist', 'rabbit', 'dj', 'wilted', 'stall_full', 'stall_empty', 'stall_wilt', 'stall_mid', 'stall_lit', 'seedbag', 'scroll', 'mooncake', 'bag', 'can', 'bouquet', 'alley_lit', 'basket', 'keys', 'na_cat', 'na_friends', 'na_window', 'old_window', 'pc_station', 'pc_pine', 'pc_lighthouse', 'pc_alley', 'mailbox2']
 t = t.replace('/*{{OUTSIDE_JS}}*/', open(f'{G}/src/outside.js', encoding='utf-8').read() + '\n' + open(f'{G}/src/tet.js', encoding='utf-8').read())
 t = t.replace('{{ITEM_IMG}}', json.dumps({k: prop_uri(k, 2000 if k in PAPER_BIG else h, soft=k in PAPER_BIG) for k, h in ITEMS.items()}))
-t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '60')
+t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '1')
 heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'shelf': 68, 'notebook': 380})
 for p, h in heights.items():
     t = t.replace('{{PROP_%s}}' % p, prop_uri(p, h))
