@@ -6,14 +6,31 @@ const DECOR = {
   curtain: { label: '🪟 Rèm cửa', items: {} },    // key: { name, l: src, r: src, boxL: [x,y,w,h], boxR: [x,y,w,h] }
   garland: { label: '✨ Dây treo', items: {} },    // key: { name, src, srcNight?: src, box: [x,y,w,h] }
 };
+// pack 1 (Vi 27/11, work/cut_decor1.py)
+const CUR = (name, k, boxL, boxR) => ({ name, l: ITEM_IMG['cu_' + k + '_l'], r: ITEM_IMG['cu_' + k + '_r'], boxL, boxR });
+const CU_L = [38, 112, 214, 640], CU_R = [462, 112, 214, 640];
+Object.assign(DECOR.curtain.items, { linen: CUR('Rèm vải lanh', 'linen', CU_L, CU_R), lace: CUR('Rèm ren trắng', 'lace', CU_L, CU_R), floral: CUR('Rèm hoa nhí', 'floral', CU_L, CU_R) });
+Object.assign(DECOR.garland.items, {
+  bulbs: { name: 'Dây bóng đèn', src: ITEM_IMG.ga_bulbs, srcNight: ITEM_IMG.ga_bulbs_on, box: [186, 150, 396, 124] },
+  bunting: { name: 'Dây cờ vải', src: ITEM_IMG.ga_bunting, box: [176, 150, 410, 124] },
+  cranes: { name: 'Dây hạc giấy', src: ITEM_IMG.ga_cranes, box: [200, 150, 380, 191] },
+});
+Object.assign(CHIMES, {
+  bell: { name: 'Chuông gió sứ xanh', src: ITEM_IMG.chime_bell, box: [131, 140, 98, 330] },
+  star: { name: 'Chuông gió sao biển', src: ITEM_IMG.chime_star, box: [114, 140, 132, 330] },
+  lantern: { name: 'Chuông gió lồng đèn', src: ITEM_IMG.chime_lantern, box: [112, 140, 135, 330] },
+});
 S.decor = S.decor || {};
+if (['bell', 'star', 'lantern'].includes(S.chimeType)) applyChime();
 const decoLayer = document.createElement('div'); decoLayer.id = 'decor';
 $('#p-chime').before(decoLayer);   // behind every prop on the sill, in front of the window
 function applyDecor() {
   decoLayer.innerHTML = '';
-  const add = (src, box) => { if (!src) return; const im = document.createElement('img'); im.className = 'prop'; im.alt = ''; im.src = src; place(im, ...box); decoLayer.append(im); };
+  const add = (src, box, lit) => { if (!src) return; const im = document.createElement('img'); im.className = 'prop'; im.alt = ''; im.src = src; if (lit) im.dataset.lit = 1; place(im, ...box); decoLayer.append(im); };
   const cu = DECOR.curtain.items[S.decor.curtain]; if (cu) { add(cu.l, cu.boxL); add(cu.r, cu.boxR); }
-  const ga = DECOR.garland.items[S.decor.garland]; if (ga) add(S.weather === 'night' && ga.srcNight ? ga.srcNight : ga.src, ga.box);
+  const ga = DECOR.garland.items[S.decor.garland]; if (ga) { const on = S.weather !== 'sunset' && ga.srcNight; add(on || ga.src, ga.box, on); }
+  const dim = { night: 'brightness(.84) saturate(.85)', rain: 'brightness(.93) saturate(.9)' }[S.weather] || '';
+  decoLayer.querySelectorAll('img:not([data-lit])').forEach(im => im.style.filter = dim);   // lit bulbs keep their glow
 }
 const _setWeatherDeco = setWeather;
 setWeather = function () { const r = _setWeatherDeco.apply(this, arguments); applyDecor(); return r; };
