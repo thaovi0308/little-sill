@@ -4,7 +4,7 @@
 import sys
 import cv2, numpy as np
 G = sys.argv[1] if len(sys.argv) > 1 else '.'
-for SEA in ('spring', 'winter', 'autumn'):
+for SEA in ('spring', 'winter', 'autumn', 'summer'):
   im = cv2.imread(f'{G}/src/vi_1127/{SEA}_alley.jpg')
   m = np.zeros(im.shape[:2], np.uint8); cv2.circle(m, (1222, 663), 22, 255, -1)
   im = cv2.inpaint(im, m, 9, cv2.INPAINT_TELEA)
