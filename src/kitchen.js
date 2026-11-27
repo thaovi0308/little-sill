@@ -94,7 +94,7 @@ function cook(i) {
   const d = DISHES[i]; kFans = 0; kCooking = i;
   showPaper(`<p class="bub">${d.name}: cho nguyên liệu vào nồi đất, rồi quạt than nhẹ ba nhịp nhé.</p>
     <div class="kit-pot" id="kit-pot"><span class="steam">♨️</span>${ITEM_IMG.kit_stove ? `<span class="pot"><img class="stove" src="${ITEM_IMG.kit_stove}" alt="" style="height:2.6em"></span>` : '<span class="pot">🍲</span><span class="ember">🔥🔥🔥</span>'}</div>
-    <button class="reply" id="kit-fan" style="text-align:center">${ITEM_IMG.kit_fan ? `<img src="${ITEM_IMG.kit_fan}" alt="" style="height:1.4em;vertical-align:middle"> ` : '🪭 '}Quạt than (<span id="kit-n">0</span>/3)</button>`, null, true);
+    <button class="reply" id="kit-fan" style="text-align:center">${ITEM_IMG.kit_fan ? `<img src="${ITEM_IMG.kit_fan}" alt="" style="height:2.2em;vertical-align:middle;margin-right:.2em"> ` : '🪭 '}Quạt than (<span id="kit-n">0</span>/3)</button>`, null, true);
 }
 function fanOnce() {   // the paper may re-render while its text types out, so every lookup is fresh
   const i = kCooking; if (i < 0 || kFans >= 3) return;

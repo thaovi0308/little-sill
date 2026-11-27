@@ -26,7 +26,7 @@ const catAt = (src, w, h, cx, flip = false) => ({ src: ITEM_IMG[src], box: [cx -
 Object.assign(DECOR.cat.items, {
   bow: { name: 'Nơ đỏ', src: ITEM_IMG.acc_bow, sleep: catAt('cat_sleep_bow', 234, 135, 460, true), sit: catAt('cat_sit_bow', 170, 239, 463) },
   scarf: { name: 'Khăn len caro', src: ITEM_IMG.acc_scarf, sleep: catAt('cat_sleep_scarf', 225, 134, 460, true), sit: catAt('cat_sit_scarf', 150, 221, 463) },
-  bell: { name: 'Vòng cổ chuông', src: ITEM_IMG.acc_bell, sit: catAt('cat_sit_bell', 148, 210, 463) },
+  bell: { name: 'Vòng cổ chuông', src: ITEM_IMG.acc_bell, sleep: catAt('cat_sleep_bell', 214, 150, 460, true), sit: catAt('cat_sit_bell', 148, 210, 463) },
 });
 const CAT_ORIG = { sleep: CAT0.sleep, sit: CAT0.sit };   // CAT0 (xmas.js) is what Bánh Quy wears when the Christmas hat is off
 function applyCatAcc() {
