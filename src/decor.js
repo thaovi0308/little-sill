@@ -76,10 +76,16 @@ function openDecor() {
     const items = Object.entries(DECOR[slot].items);
     if (items.length) html += sect(slot, DECOR[slot].label, items, S.decor[slot], it => it.l || it.src);
   }
+  if (typeof AL_STYLES !== 'undefined' && (S.keep.album_book || ALBUM_TEST)) {   // the year-end album's cover (album.js)
+    const cur = alStyle() === AL_STYLES.green ? 'green' : 'moss';
+    html += `<h4>📔 Album cuối năm</h4><div class="deco-row">` + Object.entries(AL_STYLES).filter(([, a]) => ITEM_IMG[a.cover]).map(([k, a]) =>
+      `<button class="deco-pick${cur === k ? ' on' : ''}" data-slot="album" data-k="${k}" aria-label="${esc(a.name)}"><img src="${ITEM_IMG[a.cover]}" alt="">${esc(a.name)}</button>`).join('') + '</div>';
+  }
   html += `<button class="reply" id="fv-open" style="text-align:center">🪟 Ghé bệ cửa bạn bè</button><small>Chạm ra ngoài để đóng</small>`;
   openPanel(html);
   document.querySelectorAll('#note .deco-pick').forEach(b => b.addEventListener('click', e => {
     e.stopPropagation(); const slot = b.dataset.slot, k = b.dataset.k;
+    if (slot === 'album') { S.albumStyle = k; save(); SFX.paper(); openDecor(); return; }
     if (slot === 'chime') { S.chimeType = k; save(); applyChime(); pushChime(150); if (typeof placeThread === 'function' && S.qx) placeThread(); }
     else { S.decor[slot] = k || null; save(); applyDecor(); if (slot === 'cat') { applyCatAcc(); if (k) { SFX.purr(); hearts(); } } else SFX.paper(); }
     openDecor();

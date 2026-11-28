@@ -3,10 +3,18 @@
 // stays in the keepsake box. Every page is drawn on a canvas -- Vi's page with two photo slots, the photos tucked under
 // her paper corners (assets/album_corners.png) -- so each page can be saved or shared as a picture. ?album to try.
 const ALBUM_TEST = /[?&]album\b/.test(location.search);
-ITEM_IMG.album_book = ITEM_IMG.album_cover2;
+// Two albums (Vi 27/11): 'green' = album2 (linen cover with a stamp label, one photo per page above 4 writing lines,
+// work/cut_album2.py) is the default; 'moss' = the first one (cloud label, two photos per page) stays as a choice in 🎨 Trang trí.
+const AL_STYLES = {
+  green: { name: 'Album vải xanh lá', cover: 'album_cover3', page: 'album_page3', corners: 'album_corners3', W: 860, H: 1013,
+    label: [278, 222], slots: [[290, 118, 391, 535]], lines: [[222, 750, 540], [222, 800, 540], [222, 848, 540], [222, 898, 460]], crop: 0.73 },
+  moss: { name: 'Album vải xanh rêu', cover: 'album_cover2', page: 'album_page', corners: 'album_corners', W: 860, H: 1336,
+    label: [245, 215], slots: [[158, 70, 592, 512], [158, 716, 592, 528]], crop: 1.156 },
+};
+const alStyle = () => AL_STYLES[S.albumStyle] && ITEM_IMG[AL_STYLES[S.albumStyle].cover] ? AL_STYLES[S.albumStyle] : ITEM_IMG.album_cover3 ? AL_STYLES.green : AL_STYLES.moss;
+Object.defineProperty(ITEM_IMG, 'album_book', { get: () => ITEM_IMG[alStyle().cover], enumerable: true, configurable: true });
 function albumSeason() { const d = new Date(), m = d.getMonth() + 1; return (m === 12 && d.getDate() >= 25) || m === 1; }
 const albumYear = () => { const d = new Date(); return d.getMonth() === 0 ? d.getFullYear() - 1 : d.getFullYear(); };
-const AP_W = 860, AP_H = 1336, SLOTS = [[158, 70, 592, 512], [158, 716, 592, 528]];
 const INK = '#4A3525', INK2 = '#8a7360';
 function wrapText(ctx, text, maxW) {
   const out = []; let line = '';
@@ -26,9 +34,9 @@ function fitDraw(ctx, img, r, mode = 'cover', pad = 0) {
   else ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
 }
 async function windowPhoto(w, t, low) {   // the player's own window (decor, plants, cat) under a given weather / season scene
-  const f = Object.assign(myWindow(), { w, t, raw: 1 });   // slot ratio 1.156: the full width of the scene, 618 units tall --
-  const c = await windowCard(f), k = c.width / SW, y0 = low ? 290 : 130, h = SW / 1.156;   // the top (chime, garland, alley) or the sill (Bánh Quy)
-  const out = document.createElement('canvas'); out.width = 1000; out.height = Math.round(1000 / 1.156);
+  const f = Object.assign(myWindow(), { w, t, raw: 1 }), r = alStyle().crop;   // slot ratio: the full width of the scene --
+  const c = await windowCard(f), k = c.width / SW, h = SW / r, y0 = r < 1 ? (low ? 200 : 110) : (low ? 290 : 130);   // the top (chime, garland, alley) or the sill (Bánh Quy)
+  const out = document.createElement('canvas'); out.width = 1000; out.height = Math.round(1000 / r);
   out.getContext('2d').drawImage(c, 0, y0 * k, SW * k, h * k, 0, 0, out.width, out.height); return out;
 }
 function albumData() {
@@ -45,20 +53,27 @@ function albumData() {
   return { Y, days, diary, best, routes, letters, flowers, stamps, seasons, plants: Object.keys(S.harvested || {}).length };
 }
 async function albumPages() {
-  const A = albumData(), pages = [];
-  const [cover, paper, corners] = await Promise.all([loadImg(ITEM_IMG.album_cover2), loadImg(ITEM_IMG.album_page), loadImg(ITEM_IMG.album_corners)]);
+  const A = albumData(), pages = [], ST = alStyle(), AP_W = ST.W, AP_H = ST.H, SLOTS = ST.slots, one = SLOTS.length === 1;
+  const [cover, paper, corners] = await Promise.all([loadImg(ITEM_IMG[ST.cover]), loadImg(ITEM_IMG[ST.page]), loadImg(ITEM_IMG[ST.corners])]);
   const newPage = () => { const c = document.createElement('canvas'); c.width = AP_W; c.height = AP_H; const ctx = c.getContext('2d'); ctx.drawImage(paper, 0, 0, AP_W, AP_H); return [c, ctx]; };
   const caption = (ctx, i, text) => {   // the bottom caption shrinks to stay clear of Vi's paw print and vine (from x ~460)
+    if (ST.lines) {   // green album: handwriting on Vi's lines, the last line kept short of the paw print
+      ctx.fillStyle = INK; ctx.font = '36px "Patrick Hand", cursive'; ctx.textAlign = 'left';
+      let lines = wrapText(ctx, text, ST.lines[0][2]);
+      if (lines.length > 4) { lines = lines.slice(0, 4); lines[3] = lines[3].replace(/\s*\S*$/, '') + '…'; }
+      lines.forEach((l, j) => ctx.fillText(l, ST.lines[j][0], ST.lines[j][1] - 9)); return;
+    }
     ctx.fillStyle = INK; let px = 32; ctx.font = `${px}px "Patrick Hand", cursive`;
     if (i) while (px > 23 && ctx.measureText(text).width > 290) ctx.font = `${--px}px "Patrick Hand", cursive`;
     drawLines(ctx, text, SLOTS[i][0] + 6, SLOTS[i][1] + SLOTS[i][3] + (i ? 44 : 52), i ? 292 : 590, 34, i ? 1 : 2, 'left');
   };
   const photoPage = async items => {   // items: [{ img, mode, text, bg }]
+    if (one && items.length > 1) { for (const it of items) if (it && !it.filler) await photoPage([it]); return; }   // green album: one photo a page
     const [c, ctx] = newPage();
     items.forEach((it, i) => {
       if (!it) return; const r = SLOTS[i];
       ctx.fillStyle = it.bg || '#fffaf0'; ctx.fillRect(r[0] + 10, r[1] + 10, r[2] - 20, r[3] - 20);
-      if (it.img) fitDraw(ctx, it.img, r, it.mode || 'cover', it.mode === 'contain' ? 40 : 10);
+      if (it.img) fitDraw(ctx, it.img, r, it.mode || 'cover', it.mode === 'contain' ? 40 : one ? 0 : 10);
       if (it.draw) it.draw(ctx, r);
       if (it.text) caption(ctx, i, it.text);
     });
@@ -67,7 +82,7 @@ async function albumPages() {
   // 1 cover: title in Vi's cloud label
   { const c = document.createElement('canvas'); c.width = AP_W; c.height = Math.round(AP_W * cover.height / cover.width); const ctx = c.getContext('2d');
     ctx.fillStyle = '#FDF8EE'; ctx.fillRect(0, 0, c.width, c.height);   // JPEG has no alpha: paper behind the tie
-    ctx.drawImage(cover, 0, 0, c.width, c.height); const k = c.width / cover.width, cx = 245 * k, cy = 215 * k;
+    ctx.drawImage(cover, 0, 0, c.width, c.height); const k = c.width / cover.width, cx = ST.label[0] * k, cy = ST.label[1] * k;
     ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.font = '600 46px Lora, serif'; ctx.fillText('Một năm', cx, cy - 34); ctx.fillText('bên khung cửa', cx, cy + 22);
     ctx.font = '36px "Patrick Hand", cursive'; ctx.fillStyle = INK2; ctx.fillText(A.Y + (S.fvName ? ' · ' + S.fvName.slice(0, 18) : ''), cx, cy + 76); pages.push(c); }
   // 2 the window, a sunny evening and a quiet night
@@ -81,7 +96,7 @@ async function albumPages() {
   for (let i = 0; i < A.routes.length; i += 2) {
     const two = A.routes.slice(i, i + 2);
     const items = await Promise.all(two.map(async ({ L, n }) => ({ img: await loadImg(ITEM_IMG[L.img]), mode: 'contain', text: `${L.who} · ${n === 5 ? 'trọn 5 chương' : n + '/5 chương'}` })));
-    if (items.length === 1) items.push({ draw: (ctx, r) => { ctx.fillStyle = INK2; ctx.font = '38px "Patrick Hand", cursive'; drawLines(ctx, 'Còn những lá thư khác đang trên đường tới khung cửa…', r[0] + r[2] / 2, r[1] + r[3] / 2 - 20, r[2] - 120, 44, 3); } });
+    if (items.length === 1) items.push({ filler: 1, draw: (ctx, r) => { ctx.fillStyle = INK2; ctx.font = '38px "Patrick Hand", cursive'; drawLines(ctx, 'Còn những lá thư khác đang trên đường tới khung cửa…', r[0] + r[2] / 2, r[1] + r[3] / 2 - 20, r[2] - 120, 44, 3); } });
     await photoPage(items);
   }
   // 5 two pages of the notebook
@@ -103,14 +118,15 @@ async function albumPages() {
         if (names) { ctx.fillStyle = INK2; ctx.font = '24px Quicksand, sans-serif'; ctx.textAlign = 'center'; ctx.fillText(names[i], x + cw / 2, y + ch - 8); } });
     };
     await photoPage([A.flowers.length ? { draw: grid(fl, Math.min(4, Math.max(2, Math.ceil(Math.sqrt(fl.length)))), A.flowers.map(f => f[0])), text: 'Hoa lá ép trong năm' } : null,
-      A.stamps.length ? { draw: grid(st, Math.min(5, Math.max(3, Math.ceil(Math.sqrt(st.length * 1.4))))), text: 'Những con dấu đã đóng trong sổ tay' } : null]);
+      A.stamps.length ? { draw: grid(st, one ? Math.min(3, Math.max(2, Math.ceil(Math.sqrt(st.length)))) : Math.min(5, Math.max(3, Math.ceil(Math.sqrt(st.length * 1.4))))), text: 'Những con dấu đã đóng trong sổ tay' } : null]);
   }
   // 7 the year in numbers + Bánh Quy
   const cat = await loadImg(CAT.sleep.src);
   await photoPage([{ draw: (ctx, r) => {
     const rows = [[A.days, 'ngày bên khung cửa'], [A.diary.length, 'trang sổ tay'], [A.letters, 'lá thư của hàng xóm'], [A.plants, 'loài cây đã trồng']];
-    rows.forEach(([n, t], i) => { const y = r[1] + 110 + i * 105; ctx.textAlign = 'right'; ctx.fillStyle = INK; ctx.font = '600 64px Lora, serif'; ctx.fillText(String(n), r[0] + 220, y);
-      ctx.textAlign = 'left'; ctx.font = '38px "Patrick Hand", cursive'; ctx.fillText(t, r[0] + 250, y - 6); });
+    const q = Math.min(1, r[2] / 592);   // the green album's slot is narrower: smaller numbers, same layout
+    rows.forEach(([n, t], i) => { const y = r[1] + (q < 1 ? 120 : 110) + i * (q < 1 ? 115 : 105); ctx.textAlign = 'right'; ctx.fillStyle = INK; ctx.font = `600 ${q < 1 ? 56 : 64}px Lora, serif`; ctx.fillText(String(n), r[0] + (q < 1 ? 120 : 220), y);
+      ctx.textAlign = 'left'; ctx.font = `${q < 1 ? 31 : 38}px "Patrick Hand", cursive`; ctx.fillText(t, r[0] + (q < 1 ? 138 : 250), y - 6); });
   }, text: `Năm ${A.Y} của mình` }, { img: cat, mode: 'contain', text: 'Cảm ơn bạn đã ở đây. Hẹn năm sau nhé ♡' }]);
   return pages;
 }
@@ -186,7 +202,7 @@ setInterval(() => {
   if (Object.keys(S.daysPlayed || {}).length < 2 && !ALBUM_TEST) return;
   if (!storyGate('album' + albumYear())) return;
   S.albumYear = albumYear(); S.keep.album_book = 1; save(); bump($('#p-cat'), 'hop'); SFX.purr();
-  showPaper(`<img class="paper-img" src="${ITEM_IMG.album_cover2}" alt="" style="max-height:8em">` + staged(['Cuối năm rồi. Bánh Quy tha từ dưới gầm bàn ra một cuốn album bọc vải xanh, góc còn dính cánh hoa giấy.',
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.album_book}" alt="" style="max-height:8em">` + staged(['Cuối năm rồi. Bánh Quy tha từ dưới gầm bàn ra một cuốn album bọc vải xanh, góc còn dính cánh hoa giấy.',
     'Lật trang đầu, trong đó là khung cửa sổ của bạn, những lá thư hàng xóm, hoa lá ép và vài dòng sổ tay của cả một năm.'],
     '<button class="reply" id="al-open">📔 Mở album “Một năm bên khung cửa”</button><small>Album được cất trong hộp kỷ vật, mở lại lúc nào cũng được</small>'), null, true);
   stageReveal(true);
