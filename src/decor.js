@@ -128,7 +128,7 @@ const loadImg = src => new Promise(res => { const im = new Image(); im.onload = 
 async function windowCard(f) {
   const K = 1.5, c = document.createElement('canvas'); c.width = SW * K; c.height = SH * K; const ctx = c.getContext('2d'); ctx.scale(K, K);
   const draw = async (src, box, flip) => { const im = await loadImg(src); if (!im) return; ctx.save(); if (flip) { ctx.translate(box[0] * 2 + box[2], 0); ctx.scale(-1, 1); } ctx.drawImage(im, box[0], box[1], box[2], box[3]); ctx.restore(); };
-  const scene = document.querySelector(`.scene[data-w="${f.w}"][data-tet="${f.t || '0'}"]`); if (scene) await draw(scene.src, [0, 0, SW, SH]);
+  const scene = document.querySelector(`.scene[data-w="${f.w}"][data-tet="${f.t || '0'}"]`); if (scene) await draw(wakeScene(scene).src, [0, 0, SW, SH]);
   const cu = DECOR.curtain.items[f.cu]; if (cu) { await draw(cu.l, cu.boxL); await draw(cu.r, cu.boxR); }
   const ga = DECOR.garland.items[f.g]; if (ga) await draw(f.w === 'night' && ga.srcNight ? ga.srcNight : ga.src, ga.box);
   const ch = CHIMES[f.c]; await draw(ch.src, ch.box);

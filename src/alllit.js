@@ -43,7 +43,7 @@ const _applyLookLit = applyLook;
 applyLook = function () {
   _applyLookLit();
   window.litView = litOn();
-  const img = document.querySelector('.scene[data-w="night"][data-tet="L"]');
+  const img = wakeScene(document.querySelector('.scene[data-w="night"][data-tet="L"]'));
   if (window.litView && img) {
     window.seaView = true;   // its own moon, stars and lit windows are painted in: the everyday overlays step aside
     document.querySelectorAll('.scene').forEach(el => el.classList.toggle('on', el === img));

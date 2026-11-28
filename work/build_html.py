@@ -15,18 +15,18 @@ for n, (cx, bottom, h) in VIS.items():
     iw, ih = Image.open(f'{G}/assets/{n}.png').size; w = h * iw / ih
     vis[n] = [round(cx - w / 2, 1), bottom - h, round(w, 1), h]
 t = t.replace('{{LAYOUT}}', json.dumps({'W': L.get('W', 714), 'H': L.get('H', 1280), 'boxes': L['boxes'], 'visitors': vis}))
-t = t.replace('{{SKY_MASK}}', uri(f'{G}/work/out/sky_mask.png', 'image/png'))
+SKY_MASK_URI = uri(f'{G}/work/out/sky_mask.png', 'image/png')
 sm = np.array(Image.open(f'{G}/work/out/stars_mask.png'))[..., 3]
 ys, xs = np.where(sm > 200); rng = np.random.default_rng(7); pick = rng.choice(len(xs), 110, replace=False)
 t = t.replace('{{STAR_PTS}}', json.dumps([[int(xs[i]), int(ys[i])] for i in pick]))
-t = t.replace('{{ROOM_MASK}}', uri(f'{G}/work/out/room_mask.png', 'image/png'))
+ROOM_MASK_URI = uri(f'{G}/work/out/room_mask.png', 'image/png')
 import io
 import os, hashlib, glob
 # Big pictures only needed later (shop, map, Tết views, paper pictures) go to img/ as files: the page opens
 # faster and the browser caches them (Vi's plan 27/11: lighter file). Name = content hash, so a new picture
 # never hits an old cache. Small icons stay inline.
 IMG = f'{G}/img'; os.makedirs(IMG, exist_ok=True); used = set()
-SPLIT_KB = 40
+SPLIT_KB = 6   # speed review 28/11: almost every picture is a file now (page 5.9 MB -> well under 1 MB)
 def as_file(data_uri, name):
     head, b64 = data_uri.split(',', 1)
     if len(b64) < SPLIT_KB * 1024: return data_uri
@@ -36,7 +36,7 @@ def as_file(data_uri, name):
     return f'img/{fn}'
 for w in ['sunset', 'rain', 'night', 'tet_sunset', 'tet_rain', 'tet_night', 'xmas_sunset', 'xmas_rain', 'xmas_night', 'vulan_night', 'qx_sunset', 'qx_rain', 'qx_night', 'spring_sunset', 'spring_rain', 'spring_night', 'winter_sunset', 'winter_rain', 'winter_night', 'autumn_sunset', 'autumn_rain', 'autumn_night', 'summer_sunset', 'summer_rain', 'summer_night', 'alllit_night']:
     u = uri(f'{G}/work/out/scene_{w}.webp', 'image/webp')
-    t = t.replace('{{SCENE_%s}}' % w, as_file(u, 'scene_' + w) if w.startswith(('alllit', 'tet', 'xmas', 'vulan', 'qx', 'spring', 'winter', 'autumn', 'summer')) else u)
+    t = t.replace('{{SCENE_%s}}' % w, as_file(u, 'scene_' + w))
 CACHE = f'{G}/work/out/uri_cache'; os.makedirs(CACHE, exist_ok=True)
 def prop_uri(p, display_h, soft=False):
     st = os.stat(f'{G}/assets/{p}.png')
@@ -67,7 +67,7 @@ for kind in ['daisy', 'lavender', 'cactus', 'fern', 'pothos', 'forget', 'hydrang
         if kind in ('forget', 'hydrangea', 'clover', 'portulaca', 'bpea', 'mimosa', 'jasmine'): PS = 0.73 * 110 / (xs.max() - xs.min())   # Vi's 26/11 sheets: same pot size as the daisy
         w, h = im.width * PS, im.height * PS
         box = [round(POT_CX - pcx * PS, 1), round(POT_BOTTOM - h, 1), round(w, 1), round(h, 1)]
-        plant_img[n] = {'src': prop_uri(n, h), 'box': box}
+        plant_img[n] = {'src': as_file(prop_uri(n, h), n), 'box': box}
 ITEMS = {k: 60 for k in ['musicbox', 'watch', 'card', 'k_leaf', 'k_daisy', 'k_lavender', 'k_cactus', 'k_tube', 'k_marble', 'k_clip', 'fern2', 'pothos2', 'k_spring', 'k_record', 'k_feather', 'k_button', 'k_shell', 'k_candy', 'bm_fern', 'bm_lavender', 'bm_pothos', 'seed_daisy', 'seed_lavender', 'seed_cactus', 'seed_pothos', 'pf_daisy', 'pf_lavender', 'pf_fern', 'pf_maple', 'pf_clover', 'st_paw', 'st_moon', 'st_watch', 'rb_twine', 'rb_blue', 'seed_forget', 'seed_hydrangea', 'seed_clover', 'cassette', 'compass', 'lighthouse', 'badge_plane', 'badge_mailbox', 'badge_shop', 'butterfly', 'mai_pot', 'tet_tray']}
 ITEMS['mai_pot'] = 120; ITEMS['tet_tray'] = 140
 ITEMS.update({'xmas_tree': 200, 'xmas_tree_lit': 206, 'orn_bow': 70, 'orn_ball': 70, 'orn_bell': 70, 'orn_cane': 70, 'orn_star': 70, 'orn_lights': 70, 'xmas_hat': 80, 'cocoa': 160, 'cocoa_top': 200, 'xmas_card': 1340, 'cat_sleep_hat': 205, 'cat_sit_hat': 237, 'rose_red': 150, 'rose_white': 150, 'vl_basin_empty': 300, 'vl_herb': 240, 'st_lotus': 70, 'landlady_sit': 520, 'hoadang_off': 140, 'hoadang_on': 140, 'red_thread': 200, 'magpie1': 130, 'magpie2': 130, 'tt_envelope': 90, 'tt_letter': 120, 'chedaudo': 120, 'st_magpie': 70, 'st_xmas_snow': 60, 'st_xmas_bell': 60})
@@ -83,16 +83,17 @@ t = t.replace('/*{{OUTSIDE_JS}}*/', open(f'{G}/src/outside.js', encoding='utf-8'
 LANG_ON = os.path.exists(f'{G}/i18n/ENABLED')
 t = t.replace('/*{{LANG_JS}}*/', open(f'{G}/src/lang.js', encoding='utf-8').read() if LANG_ON else '')
 t = t.replace('{{LANG_HEAD}}', open(f'{G}/src/lang_head.html', encoding='utf-8').read() if LANG_ON else '')
+t = t.replace('{{SKY_MASK}}', as_file(SKY_MASK_URI, 'sky_mask')).replace('{{ROOM_MASK}}', as_file(ROOM_MASK_URI, 'room_mask'))
 t = t.replace('{{ITEM_IMG}}', json.dumps({k: as_file(prop_uri(k, 2000 if k in PAPER_BIG else h, soft=k in PAPER_BIG), k) for k, h in ITEMS.items()}))
 t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '1')
 heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'shelf': 68, 'notebook': 380})
 for p, h in heights.items():
-    t = t.replace('{{PROP_%s}}' % p, prop_uri(p, h))
+    t = t.replace('{{PROP_%s}}' % p, as_file(prop_uri(p, h), p))
 ic = Image.open(f'{G}/assets/icon.png').resize((192, 192), Image.LANCZOS); buf = io.BytesIO(); ic.save(buf, 'PNG', optimize=True)
-t = t.replace('{{ICON}}', 'data:image/png;base64,' + base64.b64encode(buf.getvalue()).decode())
+t = t.replace('{{ICON}}', as_file('data:image/png;base64,' + base64.b64encode(buf.getvalue()).decode(), 'icon192'))
 cv = Image.open(f'{G}/assets/cover.jpg'); buf = io.BytesIO(); cv.save(buf, 'WEBP', quality=86)
 t = t.replace('{{COVER}}', 'data:image/webp;base64,' + base64.b64encode(buf.getvalue()).decode())
-t = t.replace('{{BM_RED}}', prop_uri('bm_red', 160))   # Vi's red-gold paper (sheet 26/11)
+t = t.replace('{{BM_RED}}', as_file(prop_uri('bm_red', 160), 'bm_red'))   # Vi's red-gold paper (sheet 26/11)
 for f in glob.glob(f'{IMG}/*'):
     if os.path.basename(f) not in used: os.remove(f)          # pictures of older builds
 assert '{{' not in t, t[t.index('{{'):t.index('{{') + 40]
