@@ -1,0 +1,1250 @@
+[
+ {
+  "id": 781,
+  "file": "src/index.template.html",
+  "line": 2523,
+  "vi": "Hôm nay cháu thử ba việc nhỏ thôi:"
+ },
+ {
+  "id": 782,
+  "file": "src/index.template.html",
+  "line": 2523,
+  "vi": "tưới chậu cây"
+ },
+ {
+  "id": 783,
+  "file": "src/index.template.html",
+  "line": 2523,
+  "vi": "pha một tách trà"
+ },
+ {
+  "id": 784,
+  "file": "src/index.template.html",
+  "line": 2523,
+  "vi": "rồi"
+ },
+ {
+  "id": 785,
+  "file": "src/index.template.html",
+  "line": 2523,
+  "vi": "viết vài chữ vào sổ tay"
+ },
+ {
+  "id": 786,
+  "file": "src/index.template.html",
+  "line": 2702,
+  "vi": "Âm thanh"
+ },
+ {
+  "id": 787,
+  "file": "src/album.js",
+  "line": 9,
+  "vi": "Album vải xanh lá"
+ },
+ {
+  "id": 788,
+  "file": "src/album.js",
+  "line": 11,
+  "vi": "Album vải xanh rêu"
+ },
+ {
+  "id": 789,
+  "file": "src/album.js",
+  "line": 51,
+  "vi": "Tết đến bên khung cửa"
+ },
+ {
+  "id": 790,
+  "file": "src/album.js",
+  "line": 51,
+  "vi": "Giáng Sinh bên khung cửa"
+ },
+ {
+  "id": 791,
+  "file": "src/album.js",
+  "line": 52,
+  "vi": "Đêm rằm Vu Lan"
+ },
+ {
+  "id": 792,
+  "file": "src/album.js",
+  "line": 52,
+  "vi": "Thất Tịch mưa ngâu"
+ },
+ {
+  "id": 793,
+  "file": "src/album.js",
+  "line": 86,
+  "vi": "Một năm"
+ },
+ {
+  "id": 794,
+  "file": "src/album.js",
+  "line": 86,
+  "vi": "bên khung cửa"
+ },
+ {
+  "id": 795,
+  "file": "src/album.js",
+  "line": 89,
+  "vi": "Khung cửa của mình, những buổi chiều nắng"
+ },
+ {
+  "id": 796,
+  "file": "src/album.js",
+  "line": 89,
+  "vi": "và những đêm yên bên bệ cửa"
+ },
+ {
+  "id": 797,
+  "file": "src/album.js",
+  "line": 98,
+  "vi": "${L.who} · ${n === 5 ? 'trọn 5 chương' : n + '/5 chương'}"
+ },
+ {
+  "id": 798,
+  "file": "src/album.js",
+  "line": 99,
+  "vi": "Còn những lá thư khác đang trên đường tới khung cửa…"
+ },
+ {
+  "id": 799,
+  "file": "src/album.js",
+  "line": 109,
+  "vi": "Vài dòng trong sổ tay năm nay"
+ },
+ {
+  "id": 800,
+  "file": "src/album.js",
+  "line": 120,
+  "vi": "Hoa lá ép trong năm"
+ },
+ {
+  "id": 801,
+  "file": "src/album.js",
+  "line": 121,
+  "vi": "Những con dấu đã đóng trong sổ tay"
+ },
+ {
+  "id": 802,
+  "file": "src/album.js",
+  "line": 126,
+  "vi": "ngày bên khung cửa"
+ },
+ {
+  "id": 803,
+  "file": "src/album.js",
+  "line": 126,
+  "vi": "trang sổ tay"
+ },
+ {
+  "id": 804,
+  "file": "src/album.js",
+  "line": 126,
+  "vi": "lá thư của hàng xóm"
+ },
+ {
+  "id": 805,
+  "file": "src/album.js",
+  "line": 126,
+  "vi": "loài cây đã trồng"
+ },
+ {
+  "id": 806,
+  "file": "src/album.js",
+  "line": 130,
+  "vi": "Năm ${A.Y} của mình"
+ },
+ {
+  "id": 807,
+  "file": "src/album.js",
+  "line": 130,
+  "vi": "Cảm ơn bạn đã ở đây. Hẹn năm sau nhé ♡"
+ },
+ {
+  "id": 808,
+  "file": "src/album.js",
+  "line": 134,
+  "vi": "Album Một năm bên khung cửa"
+ },
+ {
+  "id": 809,
+  "file": "src/album.js",
+  "line": 154,
+  "vi": "<div class=\"al-wait\">Đang mở album… 📔</div>"
+ },
+ {
+  "id": 810,
+  "file": "src/album.js",
+  "line": 155,
+  "vi": "Album chưa mở được, thử lại sau nhé"
+ },
+ {
+  "id": 811,
+  "file": "src/album.js",
+  "line": 172,
+  "vi": "<div class=\"al-bar\"><button id=\"al-prev\" aria-label=\"Trang trước\" ${i ? '' : 'disabled'}>‹</button><span>${i + 1} / ${n}</span><button id=\"al-next\" aria-label=\"Trang sau\" ${i < n - 1 ? '' : 'disabled'}>›</button></div>\n    <div class=\"al-bar\">${canShare ? '<button id=\"al-share\">📮 Gửi trang này</button>' : ''}<button id=\"al-dl\">⬇️ Lưu trang</button><button id=\"al-x\">Đóng</button></div>"
+ },
+ {
+  "id": 812,
+  "file": "src/album.js",
+  "line": 181,
+  "vi": "Trình duyệt này chưa cho lưu ảnh, thử Chrome hoặc Safari nhé"
+ },
+ {
+  "id": 813,
+  "file": "src/album.js",
+  "line": 182,
+  "vi": "Đã lưu trang album 📔"
+ },
+ {
+  "id": 814,
+  "file": "src/album.js",
+  "line": 186,
+  "vi": "Một năm bên khung cửa"
+ },
+ {
+  "id": 815,
+  "file": "src/album.js",
+  "line": 186,
+  "vi": "Album một năm bên khung cửa 🌿 thaovi0308.github.io/little-sill"
+ },
+ {
+  "id": 816,
+  "file": "src/album.js",
+  "line": 205,
+  "vi": "Cuối năm rồi. Bánh Quy tha từ dưới gầm bàn ra một cuốn album bọc vải xanh, góc còn dính cánh hoa giấy."
+ },
+ {
+  "id": 817,
+  "file": "src/album.js",
+  "line": 206,
+  "vi": "Lật trang đầu, trong đó là khung cửa sổ của bạn, những lá thư hàng xóm, hoa lá ép và vài dòng sổ tay của cả một năm."
+ },
+ {
+  "id": 818,
+  "file": "src/album.js",
+  "line": 207,
+  "vi": "<button class=\"reply\" id=\"al-open\">📔 Mở album “Một năm bên khung cửa”</button><small>Album được cất trong hộp kỷ vật, mở lại lúc nào cũng được</small>"
+ },
+ {
+  "id": 819,
+  "file": "src/alllit.js",
+  "line": 10,
+  "vi": "Tối nay vừa mở cửa sổ, bạn thấy con hẻm sáng lên từng ô cửa một, như có ai khẽ đếm: một, hai, ba…"
+ },
+ {
+  "id": 820,
+  "file": "src/alllit.js",
+  "line": 11,
+  "vi": "Tiệm đồng hồ của bác bật đèn trước tiên. Rồi tầng trên của cậu họa sĩ, ô cửa nhà cô Hạnh có tiếng đàn, tiệm hoa của chị Thảo, và tận cuối hẻm là tấm biển “Old Bookstore” của ông Khải."
+ },
+ {
+  "id": 821,
+  "file": "src/alllit.js",
+  "line": 12,
+  "vi": "Dưới hẻm, bé Na với tụi nhỏ giăng một dây lồng đèn giấy ngang qua đầu ngõ. Bà chủ nhà đứng dưới chân cầu thang, ngước lên nhìn căn gác của bạn và mỉm cười."
+ },
+ {
+  "id": 822,
+  "file": "src/alllit.js",
+  "line": 13,
+  "vi": "Bác sửa đồng hồ"
+ },
+ {
+  "id": 823,
+  "file": "src/alllit.js",
+  "line": 13,
+  "vi": "Đồng hồ cả tiệm bác chỉnh cho chạy cùng một nhịp rồi. Tối nay cả hẻm cùng một giờ với cháu."
+ },
+ {
+  "id": 824,
+  "file": "src/alllit.js",
+  "line": 14,
+  "vi": "Cậu họa sĩ tầng trên"
+ },
+ {
+  "id": 825,
+  "file": "src/alllit.js",
+  "line": 14,
+  "vi": "Mình đang vẽ con hẻm này, lần này ô cửa nào cũng sáng. Ô của bạn mình tô sáng nhất."
+ },
+ {
+  "id": 826,
+  "file": "src/alllit.js",
+  "line": 15,
+  "vi": "Bé Na & Bánh Quy"
+ },
+ {
+  "id": 827,
+  "file": "src/alllit.js",
+  "line": 15,
+  "vi": "Tụi em hẹn nhau bật đèn cùng lúc đó! Anh chị nhìn thấy dây lồng đèn tụi em treo không?"
+ },
+ {
+  "id": 828,
+  "file": "src/alllit.js",
+  "line": 16,
+  "vi": "Chị bán hoa đầu hẻm"
+ },
+ {
+  "id": 829,
+  "file": "src/alllit.js",
+  "line": 16,
+  "vi": "Chị để đèn tiệm sáng tới khuya, chậu nào em từng tưới chị cũng đặt ra ngoài hiên hết."
+ },
+ {
+  "id": 830,
+  "file": "src/alllit.js",
+  "line": 17,
+  "vi": "Minh ở phương xa"
+ },
+ {
+  "id": 831,
+  "file": "src/alllit.js",
+  "line": 17,
+  "vi": "Bà gửi ảnh con hẻm cho mình rồi. Đi xa mấy, nhìn ảnh này mình cũng biết đường về."
+ },
+ {
+  "id": 832,
+  "file": "src/alllit.js",
+  "line": 18,
+  "vi": "Ông Khải tiệm sách"
+ },
+ {
+  "id": 833,
+  "file": "src/alllit.js",
+  "line": 18,
+  "vi": "Ông kẹp một bông giấy hồng vào cuốn sổ ép hoa, trang của đêm nay."
+ },
+ {
+  "id": 834,
+  "file": "src/alllit.js",
+  "line": 19,
+  "vi": "Cô Hạnh bên kia hẻm"
+ },
+ {
+  "id": 835,
+  "file": "src/alllit.js",
+  "line": 19,
+  "vi": "Bài đầu tiên cô đàn tối nay là bài cháu hay ngân theo đó."
+ },
+ {
+  "id": 836,
+  "file": "src/alllit.js",
+  "line": 20,
+  "vi": "Bà chủ nhà tầng dưới"
+ },
+ {
+  "id": 837,
+  "file": "src/alllit.js",
+  "line": 20,
+  "vi": "Bao nhiêu năm rồi bà mới lại thấy cả hẻm sáng đèn như ngày xưa. Bà chụp lại một tấm, cháu giữ lấy nhé."
+ },
+ {
+  "id": 838,
+  "file": "src/alllit.js",
+  "line": 23,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.k_alllit}\" alt=\"Con hẻm đêm, mọi ô cửa cùng sáng đèn\" style=\"max-height:11em;width:auto;border-radius:6px\">"
+ },
+ {
+  "id": 839,
+  "file": "src/alllit.js",
+  "line": 25,
+  "vi": "${lines}<small>${again ? 'Tấm ảnh đêm cả hẻm sáng đèn' : 'Bà gửi kèm tấm ảnh đêm nay, đã cất vào Hộp kỷ vật'} 🏮</small>"
+ },
+ {
+  "id": 840,
+  "file": "src/alllit.js",
+  "line": 32,
+  "vi": "Đêm nay cả hẻm sáng đèn 🏮 bật lại lúc nào cũng được trong bảng Âm thanh"
+ },
+ {
+  "id": 841,
+  "file": "src/alllit.js",
+  "line": 67,
+  "vi": "🏮 Đêm Cả Hẻm Sáng Đèn: đang bật"
+ },
+ {
+  "id": 842,
+  "file": "src/alllit.js",
+  "line": 67,
+  "vi": "🏮 Đêm Cả Hẻm Sáng Đèn: đang tắt"
+ },
+ {
+  "id": 843,
+  "file": "src/alllit.js",
+  "line": 70,
+  "vi": "Cả hẻm lại sáng đèn 🏮"
+ },
+ {
+  "id": 844,
+  "file": "src/alllit.js",
+  "line": 70,
+  "vi": "Chuyển sang trời đêm để thấy cả hẻm sáng đèn 🏮"
+ },
+ {
+  "id": 845,
+  "file": "src/bookshop.js",
+  "line": 15,
+  "vi": "Ồ, khách hiếm đây. Cháu là người ở căn gác có cây trên bệ cửa phải không? Ông nghe bà chủ nhà kể rồi."
+ },
+ {
+  "id": 846,
+  "file": "src/bookshop.js",
+  "line": 16,
+  "vi": "Mắt ông dạo này kém, mấy ngăn sách lộn xộn hết cả. Cháu phụ ông xếp lại một ngăn nhé, xếp theo màu thôi, cho nhìn vui mắt."
+ },
+ {
+  "id": 847,
+  "file": "src/bookshop.js",
+  "line": 17,
+  "vi": "Ở tiệm ông, ai phụ một ngăn sách được mượn một cuốn. Luật của bà nhà ông đặt ra từ hồi xưa đấy."
+ },
+ {
+  "id": 848,
+  "file": "src/bookshop.js",
+  "line": 18,
+  "vi": "Chữ của bà nhà ông đấy. Bà có thói quen ép hoa vào sách, cuốn nào đọc xong cũng để lại một bông."
+ },
+ {
+  "id": 849,
+  "file": "src/bookshop.js",
+  "line": 19,
+  "vi": "Ông cứ tưởng mình cất hết rồi, hóa ra vẫn còn sót lại trên kệ. Cháu giữ giúp ông bông cúc này thêm vài hôm nhé, ông vẫn chưa đủ can đảm để nhìn lâu."
+ },
+ {
+  "id": 850,
+  "file": "src/bookshop.js",
+  "line": 20,
+  "vi": "Cháu đọc to cho ông nghe một trang được không? Không cần đọc hay, đọc chậm thôi. Lâu rồi tiệm này không có tiếng người đọc sách."
+ },
+ {
+  "id": 851,
+  "file": "src/bookshop.js",
+  "line": 21,
+  "vi": "Bà nhà ông cũng thích câu đó. Hai người có duyên với nhau thật."
+ },
+ {
+  "id": 852,
+  "file": "src/bookshop.js",
+  "line": 22,
+  "vi": "Trước khi cất sách lên kệ, cháu có muốn kẹp gì vào trong không?"
+ },
+ {
+  "id": 853,
+  "file": "src/bookshop.js",
+  "line": 23,
+  "vi": "Cháu cũng ép hoa à? Cái thói quen dễ thương ấy ông cứ tưởng mất theo bà rồi. Ông nghĩ ra rồi: ông sẽ để riêng một ngăn “Sách có hoa”, ai mượn cũng được kẹp lại một bông. Cho tiệm có thêm chút mùa xuân."
+ },
+ {
+  "id": 854,
+  "file": "src/bookshop.js",
+  "line": 24,
+  "vi": "Cháu chưa có bông hoa ép nào à? Không sao, lúc nào cây trên gác cho hoa, cháu ép một bông rồi mang xuống cũng được. Ông giữ cuốn này ở quầy chờ cháu."
+ },
+ {
+  "id": 855,
+  "file": "src/bookshop.js",
+  "line": 25,
+  "vi": "Cuốn này ông cất trong ngăn kéo đã lâu. Là sổ ép hoa của bà nhà ông, vẫn còn trống mấy trang ở cuối. Ông nghĩ cháu sẽ điền tiếp những trang còn lại đẹp hơn ông. Thẻ mượn sách của cháu cũng đóng đủ dấu rồi, từ nay ông đổi cho cháu thẻ vàng, mượn bao lâu tuỳ thích."
+ },
+ {
+  "id": 856,
+  "file": "src/bookshop.js",
+  "line": 26,
+  "vi": "Luật của bà nhà ông: phụ một ngăn sách thì mượn được một cuốn. Hôm nay cháu xếp giúp ông một ngăn đã nhé."
+ },
+ {
+  "id": 857,
+  "file": "src/bookshop.js",
+  "line": 27,
+  "vi": "Ngăn này nhìn vui mắt hẳn. Cảm ơn cháu, mắt ông nhờ cháu mà sáng thêm được một ngăn."
+ },
+ {
+  "id": 858,
+  "file": "src/bookshop.js",
+  "line": 28,
+  "vi": "Đỏ, cam, vàng, xanh… cứ như cầu vồng nằm ngủ trên kệ. Bà nhà ông mà thấy chắc khen cháu khéo tay lắm."
+ },
+ {
+  "id": 859,
+  "file": "src/bookshop.js",
+  "line": 29,
+  "vi": "Xếp xong rồi à? Nhanh hơn ông ngày xưa nhiều. Hồi trẻ ông xếp theo tên tác giả, bà lại thích xếp theo màu, hai ông bà cãi nhau suốt."
+ },
+ {
+  "id": 860,
+  "file": "src/bookshop.js",
+  "line": 30,
+  "vi": "Hôm nay ngăn sách gọn gàng rồi. Mai cháu ghé phụ ông ngăn khác nhé, bụi ở tiệm này không bao giờ hết đâu."
+ },
+ {
+  "id": 861,
+  "file": "src/bookshop.js",
+  "line": 31,
+  "vi": "Cuốn này ông để dành cho cháu. Mỗi ngày đọc một trang thôi nhé, sách cũ cũng như người già, không thích bị vội."
+ },
+ {
+  "id": 862,
+  "file": "src/bookshop.js",
+  "line": 32,
+  "vi": "Cuốn sách cháu mượn đọc tới đâu rồi? Cứ thong thả, đọc xong trang cuối rồi hẵng đem trả."
+ },
+ {
+  "id": 863,
+  "file": "src/bookshop.js",
+  "line": 33,
+  "vi": "Trả đúng hẹn, lại còn giữ sách phẳng phiu. Cháu là độc giả ông quý nhất tiệm đấy."
+ },
+ {
+  "id": 864,
+  "file": "src/bookshop.js",
+  "line": 34,
+  "vi": "Cuốn này đọc thấy thế nào? Lần sau kể ông nghe với nhé, ông thích nghe người trẻ kể chuyện sách."
+ },
+ {
+  "id": 865,
+  "file": "src/bookshop.js",
+  "line": 35,
+  "vi": "Tiệm này mở từ hồi hai vợ chồng ông còn trẻ. Ngày ấy hẻm chưa có giàn hoa giấy, chỉ có mỗi cây đèn đường vàng vọt."
+ },
+ {
+  "id": 866,
+  "file": "src/bookshop.js",
+  "line": 36,
+  "vi": "Cái kính lão này ông đeo mười năm rồi, giờ thì nó với ông cùng mờ như nhau, ha ha."
+ },
+ {
+  "id": 867,
+  "file": "src/bookshop.js",
+  "line": 37,
+  "vi": "Đừng sợ làm quăn sách cháu ạ. Sách được đọc nhiều mới có nếp, như mặt người được cười nhiều mới có nếp nhăn."
+ },
+ {
+  "id": 868,
+  "file": "src/bookshop.js",
+  "line": 38,
+  "vi": "Trời mưa là tiệm vắng, nhưng ông lại thích. Nghe mưa gõ mái tôn, đọc một chương, thế là đủ một buổi chiều."
+ },
+ {
+  "id": 869,
+  "file": "src/bookshop.js",
+  "line": 39,
+  "vi": "Thẻ vàng rồi, cháu cứ chọn cuốn nào mình thích. Đọc xong nhớ kể ông nghe với nhé."
+ },
+ {
+  "id": 870,
+  "file": "src/bookshop.js",
+  "line": 41,
+  "vi": "Cuối hẻm có tiệm sách của ông Khải, dạo này ông ấy cần người phụ một tay. Cháu rảnh thì ghé qua, ông vui lắm đấy."
+ },
+ {
+  "id": 871,
+  "file": "src/bookshop.js",
+  "line": 44,
+  "vi": "Mùa Mưa Ở Phố Cũ"
+ },
+ {
+  "id": 872,
+  "file": "src/bookshop.js",
+  "line": 45,
+  "vi": "Mùa mưa năm ấy, phố cũ có một tiệm trà nhỏ nằm nép dưới mái hiên. Người ta ghé vào trú mưa, rồi ở lại lâu hơn mình định."
+ },
+ {
+  "id": 873,
+  "file": "src/bookshop.js",
+  "line": 46,
+  "vi": "Cô chủ tiệm không bao giờ hỏi khách muốn uống gì. Cô nhìn ai đó một lúc, rồi rót cho họ đúng loại trà họ cần."
+ },
+ {
+  "id": 874,
+  "file": "src/bookshop.js",
+  "line": 47,
+  "vi": "Đến cuối mùa, cô chỉ nói: “Mưa nào rồi cũng tạnh. Mình chỉ cần một chỗ ấm để chờ thôi.”"
+ },
+ {
+  "id": 875,
+  "file": "src/bookshop.js",
+  "line": 48,
+  "vi": "Những Lá Thư Không Gửi"
+ },
+ {
+  "id": 876,
+  "file": "src/bookshop.js",
+  "line": 49,
+  "vi": "Có những lá thư người ta viết xong rồi cất trong ngăn kéo. Không phải vì không muốn gửi, mà vì viết ra đã là đủ."
+ },
+ {
+  "id": 877,
+  "file": "src/bookshop.js",
+  "line": 50,
+  "vi": "Ông lão bưu tá về hưu vẫn giữ thói quen đi bộ qua từng con hẻm cũ, chào từng hộp thư như chào người quen."
+ },
+ {
+  "id": 878,
+  "file": "src/bookshop.js",
+  "line": 51,
+  "vi": "Ông bảo: “Thư đến chậm một chút cũng không sao. Miễn là người nhận vẫn còn ngóng.”"
+ },
+ {
+  "id": 879,
+  "file": "src/bookshop.js",
+  "line": 52,
+  "vi": "Khu Vườn Trên Mái"
+ },
+ {
+  "id": 880,
+  "file": "src/bookshop.js",
+  "line": 53,
+  "vi": "Trên mái một khu tập thể cũ có người trồng cả một khu vườn trong những chiếc thùng sơn. Cà chua, rau thơm, vài khóm cúc."
+ },
+ {
+  "id": 881,
+  "file": "src/bookshop.js",
+  "line": 54,
+  "vi": "Hàng xóm mỗi người góp một ít: người cho hạt, người cho đất, người chỉ ghé lên tưới giùm lúc chủ vườn đi vắng."
+ },
+ {
+  "id": 882,
+  "file": "src/bookshop.js",
+  "line": 55,
+  "vi": "Đến mùa hoa, cả khu leo lên mái ngắm hoàng hôn. Chẳng ai nhớ ra khu vườn ấy bắt đầu từ ai nữa."
+ },
+ {
+  "id": 883,
+  "file": "src/bookshop.js",
+  "line": 56,
+  "vi": "Người Giữ Đèn"
+ },
+ {
+  "id": 884,
+  "file": "src/bookshop.js",
+  "line": 57,
+  "vi": "Ở một thị trấn ven biển có người giữ đèn già, mỗi tối lên ngọn tháp lau kính rồi thắp đèn."
+ },
+ {
+  "id": 885,
+  "file": "src/bookshop.js",
+  "line": 58,
+  "vi": "Có năm tàu thuyền chẳng còn đi qua nữa, ông vẫn thắp. Ông bảo đèn không chỉ để dẫn đường, đèn còn để ai đó biết mình không ở một mình."
+ },
+ {
+  "id": 886,
+  "file": "src/bookshop.js",
+  "line": 59,
+  "vi": "Khi ông không leo nổi cầu thang nữa, bọn trẻ trong thị trấn thay nhau lên thắp. Ngọn đèn chưa tắt đêm nào."
+ },
+ {
+  "id": 887,
+  "file": "src/bookshop.js",
+  "line": 60,
+  "vi": "Chiếc Ô Màu Vàng"
+ },
+ {
+  "id": 888,
+  "file": "src/bookshop.js",
+  "line": 61,
+  "vi": "Cô bé có một chiếc ô màu vàng, ngày nắng cũng mang theo."
+ },
+ {
+  "id": 889,
+  "file": "src/bookshop.js",
+  "line": 62,
+  "vi": "Ai hỏi, cô bảo: “Để lỡ ai đó quên ô thì mình che chung.”"
+ },
+ {
+  "id": 890,
+  "file": "src/bookshop.js",
+  "line": 63,
+  "vi": "Lớn lên cô mới hiểu, chiếc ô ấy che cho cô nhiều hơn là cô che cho người khác."
+ },
+ {
+  "id": 891,
+  "file": "src/bookshop.js",
+  "line": 64,
+  "vi": "Bản Đồ Những Điều Nhỏ"
+ },
+ {
+  "id": 892,
+  "file": "src/bookshop.js",
+  "line": 65,
+  "vi": "Cậu thanh niên vẽ một tấm bản đồ không có đường đi, chỉ có những điều nhỏ: chỗ bán bánh mì thơm nhất, bậc thềm có nắng sớm, gốc cây có mèo ngủ."
+ },
+ {
+  "id": 893,
+  "file": "src/bookshop.js",
+  "line": 66,
+  "vi": "Mỗi lần buồn, cậu mở bản đồ ra và đi lại đúng một điểm."
+ },
+ {
+  "id": 894,
+  "file": "src/bookshop.js",
+  "line": 67,
+  "vi": "Cậu bảo tấm bản đồ ấy không giúp cậu đi xa hơn, mà giúp cậu nhớ ra mình đang ở đâu."
+ },
+ {
+  "id": 895,
+  "file": "src/bookshop.js",
+  "line": 69,
+  "vi": "Buổi sáng hôm ấy, bà mở cửa tiệm sớm hơn mọi ngày."
+ },
+ {
+  "id": 896,
+  "file": "src/bookshop.js",
+  "line": 69,
+  "vi": "Nắng chưa lên hẳn, chỉ có mùi giấy cũ và tiếng chim sẻ ríu rít ngoài hiên."
+ },
+ {
+  "id": 897,
+  "file": "src/bookshop.js",
+  "line": 70,
+  "vi": "Bà đặt một bông cúc vào giữa trang sách, khép lại thật khẽ, như sợ làm bông hoa giật mình."
+ },
+ {
+  "id": 898,
+  "file": "src/bookshop.js",
+  "line": 71,
+  "vi": "Có những điều chỉ cần được giữ lại, không cần được nói ra."
+ },
+ {
+  "id": 899,
+  "file": "src/bookshop.js",
+  "line": 71,
+  "vi": "Hoa ép không còn tươi, nhưng mùa xuân thì vẫn còn ở trong đó."
+ },
+ {
+  "id": 900,
+  "file": "src/bookshop.js",
+  "line": 72,
+  "vi": "Một trang sách đọc chậm đáng giá hơn mười trang đọc vội."
+ },
+ {
+  "id": 901,
+  "file": "src/bookshop.js",
+  "line": 96,
+  "vi": "<small class=\"more\">Chạm để nghe tiếp…</small>"
+ },
+ {
+  "id": 902,
+  "file": "src/bookshop.js",
+  "line": 113,
+  "vi": "📚 Xếp ngăn sách"
+ },
+ {
+  "id": 903,
+  "file": "src/bookshop.js",
+  "line": 114,
+  "vi": "↩️ Trả sách"
+ },
+ {
+  "id": 904,
+  "file": "src/bookshop.js",
+  "line": 115,
+  "vi": "📖 Mượn sách"
+ },
+ {
+  "id": 905,
+  "file": "src/bookshop.js",
+  "line": 116,
+  "vi": "🌼 Kẹp hoa ép vào sách"
+ },
+ {
+  "id": 906,
+  "file": "src/bookshop.js",
+  "line": 128,
+  "vi": "Ồ, cháu mang sách xuống trả đấy à? Đưa ông đóng dấu vào thẻ nào."
+ },
+ {
+  "id": 907,
+  "file": "src/bookshop.js",
+  "line": 130,
+  "vi": "Cuốn sách cháu trả ông vẫn để ở quầy đây. Có bông hoa ép nào thì kẹp vào giúp ông nhé."
+ },
+ {
+  "id": 908,
+  "file": "src/bookshop.js",
+  "line": 131,
+  "vi": "Cháu đến rồi đấy à. Ngăn sách hôm nay lại bụi rồi, cháu phụ ông một tay nhé."
+ },
+ {
+  "id": 909,
+  "file": "src/bookshop.js",
+  "line": 154,
+  "vi": "Con mèo mướp của tiệm sách ngủ khì trong thùng sách cũ, chỉ hé một mắt nhìn bạn 🐈"
+ },
+ {
+  "id": 910,
+  "file": "src/bookshop.js",
+  "line": 155,
+  "vi": "Chiếc kính lúp cán gỗ ông Khải dùng để đọc chữ nhỏ trên gáy sách 🔍"
+ },
+ {
+  "id": 911,
+  "file": "src/bookshop.js",
+  "line": 156,
+  "vi": "Kệ trầu bà trên nóc tủ sách, lá rủ xuống mấy gáy sách cũ 🌿"
+ },
+ {
+  "id": 912,
+  "file": "src/bookshop.js",
+  "line": 160,
+  "vi": "Bảng phấn: “Hôm nay cần người phụ xếp một ngăn sách. Trả công: được mượn một cuốn.”"
+ },
+ {
+  "id": 913,
+  "file": "src/bookshop.js",
+  "line": 161,
+  "vi": "Bảng phấn: “Sách cũ, chuyện mới.”"
+ },
+ {
+  "id": 914,
+  "file": "src/bookshop.js",
+  "line": 161,
+  "vi": "Bảng phấn: “Đọc chậm thôi, tiệm không đóng cửa sớm đâu.”"
+ },
+ {
+  "id": 915,
+  "file": "src/bookshop.js",
+  "line": 161,
+  "vi": "Bảng phấn: “Ngăn Sách có hoa: mượn một cuốn, kẹp lại một bông.”"
+ },
+ {
+  "id": 916,
+  "file": "src/bookshop.js",
+  "line": 162,
+  "vi": "Góc bảng phấn có hình chú mèo nhỏ ngồi trên chồng sách, ký tên cậu họa sĩ tầng trên. Ông Khải bảo: “Cậu ấy vẽ giúp ông, ông chỉ việc giữ cho khỏi lau mất.”"
+ },
+ {
+  "id": 917,
+  "file": "src/bookshop.js",
+  "line": 177,
+  "vi": "Ông Khải"
+ },
+ {
+  "id": 918,
+  "file": "src/bookshop.js",
+  "line": 178,
+  "vi": "Ngăn sách bụi"
+ },
+ {
+  "id": 919,
+  "file": "src/bookshop.js",
+  "line": 179,
+  "vi": "Chồng sách cho mượn"
+ },
+ {
+  "id": 920,
+  "file": "src/bookshop.js",
+  "line": 180,
+  "vi": "Đèn bàn xanh"
+ },
+ {
+  "id": 921,
+  "file": "src/bookshop.js",
+  "line": 181,
+  "vi": "Mèo ngủ trong thùng sách"
+ },
+ {
+  "id": 922,
+  "file": "src/bookshop.js",
+  "line": 182,
+  "vi": "Kính lúp"
+ },
+ {
+  "id": 923,
+  "file": "src/bookshop.js",
+  "line": 183,
+  "vi": "Kệ trầu bà"
+ },
+ {
+  "id": 924,
+  "file": "src/bookshop.js",
+  "line": 184,
+  "vi": "Bảng phấn"
+ },
+ {
+  "id": 925,
+  "file": "src/bookshop.js",
+  "line": 198,
+  "vi": "<img class=\"bs-b${i === bsSel ? ' sel' : ''}\" data-i=\"${i}\" src=\"${ITEM_IMG['book_' + c]}\" alt=\"Sách gáy ${c}\" draggable=\"false\" style=\"height:${(BK_BOOK_H[c] / 272 * 100).toFixed(1)}%\">"
+ },
+ {
+  "id": 926,
+  "file": "src/bookshop.js",
+  "line": 243,
+  "vi": "Tên của bạn (không bắt buộc)"
+ },
+ {
+  "id": 927,
+  "file": "src/bookshop.js",
+  "line": 249,
+  "vi": "Thẻ mượn sách đã cất vào hộp kỷ vật 📇 Giờ có thể mượn một cuốn mang về gác"
+ },
+ {
+  "id": 928,
+  "file": "src/bookshop.js",
+  "line": 268,
+  "vi": "Mượn cuốn “${BOOKS[n].t}” 📖 Ông Khải đã đặt sẵn trên bàn ở gác, mỗi ngày đọc một trang nhé"
+ },
+ {
+  "id": 929,
+  "file": "src/bookshop.js",
+  "line": 273,
+  "vi": "Đọc xong “${B.t}” rồi 📚 Ra bản đồ, mang sách xuống trả ông Khải nhé"
+ },
+ {
+  "id": 930,
+  "file": "src/bookshop.js",
+  "line": 274,
+  "vi": "Hôm nay đọc một trang thôi, sách cũ không thích bị vội 📖 (ông Khải dặn)"
+ },
+ {
+  "id": 931,
+  "file": "src/bookshop.js",
+  "line": 278,
+  "vi": "<small class=\"more\">Chạm để đọc tiếp…</small><div class=\"after\" hidden><p class=\"bub\">Lật sang trang cuối, một bông cúc ép khô rơi ra, kẹp cùng mẩu giấy nhỏ viết tay: “Gửi anh, mùa hoa đầu tiên.”</p>"
+ },
+ {
+  "id": 932,
+  "file": "src/bookshop.js",
+  "line": 279,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.bk_daisy}\" alt=\"\" style=\"max-height:5em\"> <img class=\"paper-img\" src=\"${ITEM_IMG.bk_note}\" alt=\"\" style=\"max-height:5em\"><small>Đã cất vào hộp kỷ vật. Mang sách xuống trả ông Khải nhé.</small></div>"
+ },
+ {
+  "id": 933,
+  "file": "src/bookshop.js",
+  "line": 280,
+  "vi": "<small>Đọc xong rồi. Ra bản đồ, mang sách xuống trả ông Khải nhé 📚</small>"
+ },
+ {
+  "id": 934,
+  "file": "src/bookshop.js",
+  "line": 280,
+  "vi": "<small>Mai đọc tiếp trang sau nhé.</small>"
+ },
+ {
+  "id": 935,
+  "file": "src/bookshop.js",
+  "line": 286,
+  "vi": "Cộp! Thẻ mượn sách được đóng thêm một dấu (${S.bk.stamps}) 📇"
+ },
+ {
+  "id": 936,
+  "file": "src/bookshop.js",
+  "line": 297,
+  "vi": "<p>Đọc xong, bạn muốn chép câu nào vào sổ tay?</p>${QUOTE_PICK.map((q, i) => "
+ },
+ {
+  "id": 937,
+  "file": "src/bookshop.js",
+  "line": 302,
+  "vi": "Câu tâm đắc đã chép vào Sổ tay (xem ở Trang cũ) ✍️"
+ },
+ {
+  "id": 938,
+  "file": "src/bookshop.js",
+  "line": 309,
+  "vi": "<h3>Kẹp một bông hoa ép vào sách</h3><p>${KHAI.ch4ask}</p><div class=\"bm-pick\">${have.map(k => "
+ },
+ {
+  "id": 939,
+  "file": "src/bookshop.js",
+  "line": 309,
+  "vi": ").join('')}</div><small>Chạm ra ngoài để để sau</small>"
+ },
+ {
+  "id": 940,
+  "file": "src/bookshop.js",
+  "line": 315,
+  "vi": "Bông ${BM_FLOWER[k][0].toLowerCase()} ép đã nằm trong ngăn “Sách có hoa” của tiệm 🌼"
+ },
+ {
+  "id": 941,
+  "file": "src/bookshop.js",
+  "line": 321,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.bk_album}\" alt=\"\" style=\"max-height:7em\"> <img class=\"paper-img\" src=\"${ITEM_IMG.bk_card_gold}\" alt=\"\" style=\"max-height:6em\"><small>— Ông Khải, Tiệm Sách Cuối Hẻm —</small>\n     <small>Nhận: Sổ ép hoa của bà Khải · Thẻ mượn sách vàng · con dấu Quyển Sách Mở 📖 · tranh “Tiệm Sách Cuối Hẻm” (treo lên tường trong Hộp kỷ vật)</small>"
+ },
+ {
+  "id": 942,
+  "file": "src/bookshop.js",
+  "line": 327,
+  "vi": "<h3>Sổ ép hoa của bà Khải</h3><p style=\"margin:.2em 0 .6em\">Những trang đầu là hoa của bà, những trang cuối là hoa của bạn: ${got.length}/${Object.keys(BM_FLOWER).length}</p>\n    <div class=\"bk-alb\">${Object.entries(BM_FLOWER).map(([k, [name, img, mean]]) => got.includes(k)\n      ? "
+ },
+ {
+  "id": 943,
+  "file": "src/bookshop.js",
+  "line": 330,
+  "vi": " : ''}<small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 944,
+  "file": "src/bookshop.js",
+  "line": 335,
+  "vi": "<div style=\"position:relative;display:inline-block\"><img class=\"paper-img\" src=\"${ITEM_IMG[gold ? 'bk_card_gold' : 'bk_card']}\" alt=\"\" style=\"max-height:11em\">\n    <b style=\"position:absolute;left:0;right:0;top:4%;font:1.05em 'Patrick Hand',cursive;color:#3c4a7a;transform:rotate(-3deg)\">${esc(S.bk.name || 'Cháu ở căn gác')}</b></div>\n    <p>${gold ? 'Thẻ mượn sách vàng: mượn bao lâu tuỳ thích.' : 'Thẻ mượn sách của Tiệm Sách Cuối Hẻm.'} Đã đóng ${S.bk.stamps} dấu.</p>"
+ },
+ {
+  "id": 945,
+  "file": "src/bookshop.js",
+  "line": 369,
+  "vi": "Ông Khải Tiệm Sách"
+ },
+ {
+  "id": 946,
+  "file": "src/bookshop.js",
+  "line": 370,
+  "vi": "Ngăn Sách Bụi"
+ },
+ {
+  "id": 947,
+  "file": "src/bookshop.js",
+  "line": 370,
+  "vi": "Cuối hẻm có tiệm sách cũ của ông Khải. Mắt ông kém dần, mấy ngăn sách lộn xộn hết cả. Bạn phụ ông xếp lại một ngăn theo màu gáy, ông viết tên bạn lên một tấm thẻ mượn sách: “Luật của bà nhà ông đặt ra từ hồi xưa đấy.”"
+ },
+ {
+  "id": 948,
+  "file": "src/bookshop.js",
+  "line": 371,
+  "vi": "Bông Cúc Trong Trang Sách"
+ },
+ {
+  "id": 949,
+  "file": "src/bookshop.js",
+  "line": 371,
+  "vi": "Cuốn sách đầu tiên mượn về, đọc tới trang cuối thì rơi ra một bông cúc ép và dòng chữ nhỏ “Gửi anh, mùa hoa đầu tiên.” Là chữ của bà nhà ông Khải. Ông nhờ bạn giữ giúp bông cúc thêm vài hôm, ông chưa đủ can đảm để nhìn lâu."
+ },
+ {
+  "id": 950,
+  "file": "src/bookshop.js",
+  "line": 372,
+  "vi": "Đọc To Một Trang"
+ },
+ {
+  "id": 951,
+  "file": "src/bookshop.js",
+  "line": 372,
+  "vi": "Ông Khải nhờ bạn đọc to một trang sách: lâu rồi tiệm không có tiếng người đọc. Bạn chép một câu tâm đắc vào sổ tay, ông bảo bà nhà ông cũng thích câu ấy."
+ },
+ {
+  "id": 952,
+  "file": "src/bookshop.js",
+  "line": 373,
+  "vi": "Bông Hoa Của Cháu"
+ },
+ {
+  "id": 953,
+  "file": "src/bookshop.js",
+  "line": 373,
+  "vi": "Bạn kẹp một bông hoa ép của mình vào cuốn sách trả lại. Ông Khải mở riêng một ngăn “Sách có hoa”: ai mượn cũng được kẹp lại một bông, cho tiệm có thêm chút mùa xuân."
+ },
+ {
+  "id": 954,
+  "file": "src/bookshop.js",
+  "line": 374,
+  "vi": "Cuốn Sổ Ép Hoa"
+ },
+ {
+  "id": 955,
+  "file": "src/bookshop.js",
+  "line": 374,
+  "vi": "Ông Khải trao cho bạn cuốn sổ ép hoa của bà, còn trống mấy trang cuối để bạn điền tiếp, cùng tấm thẻ mượn sách vàng và bức tranh “Tiệm Sách Cuối Hẻm”."
+ },
+ {
+  "id": 956,
+  "file": "src/decor.js",
+  "line": 6,
+  "vi": "🪟 Rèm cửa"
+ },
+ {
+  "id": 957,
+  "file": "src/decor.js",
+  "line": 7,
+  "vi": "✨ Dây treo"
+ },
+ {
+  "id": 958,
+  "file": "src/decor.js",
+  "line": 8,
+  "vi": "🐈 Phụ kiện cho Bánh Quy"
+ },
+ {
+  "id": 959,
+  "file": "src/decor.js",
+  "line": 13,
+  "vi": "Rèm vải lanh"
+ },
+ {
+  "id": 960,
+  "file": "src/decor.js",
+  "line": 13,
+  "vi": "Rèm ren trắng"
+ },
+ {
+  "id": 961,
+  "file": "src/decor.js",
+  "line": 13,
+  "vi": "Rèm hoa nhí"
+ },
+ {
+  "id": 962,
+  "file": "src/decor.js",
+  "line": 15,
+  "vi": "Dây bóng đèn"
+ },
+ {
+  "id": 963,
+  "file": "src/decor.js",
+  "line": 16,
+  "vi": "Dây cờ vải"
+ },
+ {
+  "id": 964,
+  "file": "src/decor.js",
+  "line": 17,
+  "vi": "Dây hạc giấy"
+ },
+ {
+  "id": 965,
+  "file": "src/decor.js",
+  "line": 20,
+  "vi": "Chuông gió sứ xanh"
+ },
+ {
+  "id": 966,
+  "file": "src/decor.js",
+  "line": 21,
+  "vi": "Chuông gió sao biển"
+ },
+ {
+  "id": 967,
+  "file": "src/decor.js",
+  "line": 22,
+  "vi": "Chuông gió lồng đèn"
+ },
+ {
+  "id": 968,
+  "file": "src/decor.js",
+  "line": 27,
+  "vi": "Nơ đỏ"
+ },
+ {
+  "id": 969,
+  "file": "src/decor.js",
+  "line": 28,
+  "vi": "Khăn len caro"
+ },
+ {
+  "id": 970,
+  "file": "src/decor.js",
+  "line": 29,
+  "vi": "Vòng cổ chuông"
+ },
+ {
+  "id": 971,
+  "file": "src/decor.js",
+  "line": 64,
+  "vi": "Trang trí"
+ },
+ {
+  "id": 972,
+  "file": "src/decor.js",
+  "line": 71,
+  "vi": "<button class=\"deco-pick${!cur ? ' on' : ''}\" data-slot=\"${slot}\" data-k=\"\">Không</button>"
+ },
+ {
+  "id": 973,
+  "file": "src/decor.js",
+  "line": 73,
+  "vi": "<h3>Trang trí</h3><small style=\"margin:0 0 .6em\">Đổi đồ trang trí cho khung cửa sổ, đổi lúc nào cũng được 🌿</small>"
+ },
+ {
+  "id": 974,
+  "file": "src/decor.js",
+  "line": 74,
+  "vi": "🎐 Chuông gió"
+ },
+ {
+  "id": 975,
+  "file": "src/decor.js",
+  "line": 81,
+  "vi": "<h4>📔 Album cuối năm</h4><div class=\"deco-row\">"
+ },
+ {
+  "id": 976,
+  "file": "src/decor.js",
+  "line": 84,
+  "vi": "<button class=\"reply\" id=\"fv-open\" style=\"text-align:center\">🪟 Ghé bệ cửa bạn bè</button><small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 977,
+  "file": "src/decor.js",
+  "line": 153,
+  "vi": "Mã bệ cửa này không đọc được, bạn kiểm tra lại giúp nhé"
+ },
+ {
+  "id": 978,
+  "file": "src/decor.js",
+  "line": 156,
+  "vi": "Một người bạn"
+ },
+ {
+  "id": 979,
+  "file": "src/decor.js",
+  "line": 157,
+  "vi": "Đang ghé bệ cửa của bạn… 🚪"
+ },
+ {
+  "id": 980,
+  "file": "src/decor.js",
+  "line": 159,
+  "vi": " : 'Bệ cửa của một người bạn'}</h3>\n    ${url ? "
+ },
+ {
+  "id": 981,
+  "file": "src/decor.js",
+  "line": 162,
+  "vi": " : ''}\n    <button class=\"reply\" id=\"fv-back\" style=\"text-align:center\">🪟 Gửi lại mã bệ cửa của mình</button><small>Chạm ra ngoài để về căn gác</small>"
+ },
+ {
+  "id": 982,
+  "file": "src/decor.js",
+  "line": 170,
+  "vi": "<h3>Ghé bệ cửa bạn bè</h3><small style=\"margin:0 0 .6em\">Mã bệ cửa chứa khung cửa sổ, chuông gió, cây trên bệ cửa và một lời nhắn của bạn. Gửi cho bạn bè, họ dán vào đây là ghé thăm được.</small>\n    <h4>Bệ cửa của bạn</h4>\n    <input class=\"fv-in\" id=\"fv-name\" maxlength=\"24\" placeholder=\"Tên của bạn (không bắt buộc)\" value=\"${esc(S.fvName || '')}\">\n    <textarea class=\"fv-in\" id=\"fv-msg\" maxlength=\"160\" rows=\"3\" placeholder=\"Một lời nhắn cho người ghé thăm…\">${esc(S.fvMsg || '')}</textarea>\n    <button class=\"reply\" id=\"fv-link\" style=\"text-align:center\">🔗 Chép đường link ghé thăm</button>\n    <button class=\"reply\" id=\"fv-code\" style=\"text-align:center\">📋 Chép mã bệ cửa</button>\n    <h4>Ghé thăm</h4>\n    <textarea class=\"fv-in\" id=\"fv-in\" rows=\"2\" placeholder=\"Dán mã bệ cửa hoặc đường link của bạn bè…\"></textarea>\n    <button class=\"reply\" id=\"fv-go\" style=\"text-align:center\">🚪 Ghé thăm</button>\n    ${list.length ? "
+ },
+ {
+  "id": 983,
+  "file": "src/decor.js",
+  "line": 179,
+  "vi": " : ''}\n    <small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 984,
+  "file": "src/decor.js",
+  "line": 186,
+  "vi": "Mã đã hiện ở ô Ghé thăm, bạn tự chép giúp nhé"
+ },
+ {
+  "id": 985,
+  "file": "src/decor.js",
+  "line": 190,
+  "vi": "Ghé bệ cửa của mình nhé 🪟"
+ },
+ {
+  "id": 986,
+  "file": "src/decor.js",
+  "line": 191,
+  "vi": "Đã chép đường link. Gửi cho bạn bè để họ ghé bệ cửa của bạn nhé 🪟"
+ },
+ {
+  "id": 987,
+  "file": "src/decor.js",
+  "line": 193,
+  "vi": "Đã chép mã bệ cửa 📋"
+ },
+ {
+  "id": 988,
+  "file": "src/decor.js",
+  "line": 194,
+  "vi": "Dán mã bệ cửa của bạn bè trước nhé"
+ }
+]

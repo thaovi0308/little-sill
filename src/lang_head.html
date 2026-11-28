@@ -1,0 +1,5 @@
+<script>/* first visit: open the version in the phone's language (not on localhost test runs, not when the player chose) */
+try { (function () { var here = document.documentElement.lang === 'en' ? 'en' : 'vi', pick = localStorage.getItem('ls_lang');
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]lang=/.test(location.search)) return;
+  var want = pick || ((navigator.language || '').toLowerCase().indexOf('vi') === 0 ? 'vi' : 'en');
+  if (want !== here) location.replace((want === 'en' ? 'en.html' : 'index.html') + location.search + location.hash); })(); } catch (e) {}</script>

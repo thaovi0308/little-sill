@@ -1,0 +1,296 @@
+[
+ {
+  "id": 1510,
+  "file": "src/vulan_qx.js",
+  "line": 169,
+  "vi": "Tối nay rằm, chuyển sang trời đêm để xuống hiên thả hoa đăng cùng bà 🌕"
+ },
+ {
+  "id": 1511,
+  "file": "src/vulan_qx.js",
+  "line": 195,
+  "vi": "Nhận con dấu Chim Ô Thước 🐦"
+ },
+ {
+  "id": 1512,
+  "file": "src/vulan_qx.js",
+  "line": 199,
+  "vi": "— Một người bạn cũ —"
+ },
+ {
+  "id": 1513,
+  "file": "src/vulan_qx.js",
+  "line": 200,
+  "vi": "<small>Phong thư giấy kraft gắn dấu sáp đỏ in hình đôi chim ô thước</small>"
+ },
+ {
+  "id": 1514,
+  "file": "src/vulan_qx.js",
+  "line": 203,
+  "vi": "Sợi chỉ đỏ đã buộc lên chuông gió 🧵 chạm vào để gửi một lời chúc"
+ },
+ {
+  "id": 1515,
+  "file": "src/vulan_qx.js",
+  "line": 224,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.rose_red}\" alt=\"\" style=\"max-height:4em\"> <img class=\"paper-img\" src=\"${ITEM_IMG.rose_white}\" alt=\"\" style=\"max-height:4em\"><small>— Bà chủ nhà tầng dưới —</small>"
+ },
+ {
+  "id": 1516,
+  "file": "src/vulan_qx.js",
+  "line": 229,
+  "vi": "<p class=\"bub\">${VL.call}</p><button class=\"reply\" id=\"vl-go\">🪷 Xuống hiên thắp nến cùng bà</button><button class=\"reply\" id=\"vl-later\">Để lát nữa</button>"
+ },
+ {
+  "id": 1517,
+  "file": "src/vulan_qx.js",
+  "line": 231,
+  "vi": "Chạm vào bông hồng trên bệ cửa khi muốn xuống hiên nhà bà nhé 🌹"
+ },
+ {
+  "id": 1518,
+  "file": "src/vulan_qx.js",
+  "line": 237,
+  "vi": "<p class=\"bub\">${QX.open}</p><small>— Chiều mùng Bảy tháng Bảy —</small>"
+ },
+ {
+  "id": 1519,
+  "file": "src/vulan_qx.js",
+  "line": 241,
+  "vi": "Có phong thư dấu sáp đỏ của Minh trên bệ cửa ✉️"
+ },
+ {
+  "id": 1520,
+  "file": "src/vulan_qx.js",
+  "line": 241,
+  "vi": "Có một phong thư dấu sáp đỏ lạ trên bệ cửa ✉️"
+ },
+ {
+  "id": 1521,
+  "file": "src/vulan_qx.js",
+  "line": 244,
+  "vi": "<small>Túi vải ròng rọc của chị bán hoa thả xuống một chén chè nhỏ còn ấm</small><img class=\"paper-img\" src=\"${ITEM_IMG.florist}\" alt=\"\" style=\"max-height:6em\"><p class=\"bub\">${QX.florist}</p>\n        <img class=\"paper-img\" src=\"${ITEM_IMG.chedaudo}\" alt=\"\" style=\"max-height:3.6em\"><small>— Chị Bán Hoa Đầu Hẻm —</small>"
+ },
+ {
+  "id": 1522,
+  "file": "src/vulan_qx.js",
+  "line": 246,
+  "vi": "Chén chè đậu đỏ đã đặt trên bệ cửa, chạm để ăn cho ấm bụng 🫘"
+ },
+ {
+  "id": 1523,
+  "file": "src/vulan_qx.js",
+  "line": 272,
+  "vi": "Mùa Thất Tịch"
+ },
+ {
+  "id": 1524,
+  "file": "src/vulan_qx.js",
+  "line": 273,
+  "vi": "Mùa Vu Lan"
+ },
+ {
+  "id": 1525,
+  "file": "src/xmas.js",
+  "line": 18,
+  "vi": "Cháu ơi, bà vừa mua được chậu thông nhỏ ở chợ hoa, để dưới nhà thì tối quá, cho cháu đặt trên bệ cửa nhé."
+ },
+ {
+  "id": 1526,
+  "file": "src/xmas.js",
+  "line": 19,
+  "vi": "Năm nào con hẻm mình cũng treo đèn từ giữa tháng Chạp Tây, nhà nào góp một món treo cây thì nhà ấy may mắn cả năm đấy."
+ },
+ {
+  "id": 1527,
+  "file": "src/xmas.js",
+  "line": 20,
+  "vi": "Đêm nay mưa phùn lất phất. Ở cuối hẻm, chuông nhà thờ ngân lên từng tiếng xa. Cây thông nhỏ trên bệ cửa sáng lên đủ năm món quà của năm người hàng xóm. Bánh Quy ngồi ngắm, chiếc mũ len lệch sang một bên."
+ },
+ {
+  "id": 1528,
+  "file": "src/xmas.js",
+  "line": 21,
+  "vi": "Bên kia hẻm, ô cửa nhà cô Hạnh mở toang. Cô đàn bài “Đêm Thánh Vô Cùng”, bé Na với mấy đứa nhỏ trong hẻm ngồi kín phòng khách hát theo. Cô nhắn: “Bài cuối cô đàn tặng căn gác bên kia, người nghe đầu tiên của cô.”"
+ },
+ {
+  "id": 1529,
+  "file": "src/xmas.js",
+  "line": 22,
+  "vi": "Cả hẻm ai cũng thấy cây thông nhà cháu sáng từ dưới đường đấy. Giáng Sinh vui vẻ nhé, cháu của bà."
+ },
+ {
+  "id": 1530,
+  "file": "src/xmas.js",
+  "line": 23,
+  "vi": "Cây thông nhỏ toả mùi nhựa thông thơm mát."
+ },
+ {
+  "id": 1531,
+  "file": "src/xmas.js",
+  "line": 23,
+  "vi": "Chạm nhẹ vào cành thông, mấy chiếc lá kim khẽ rung rinh."
+ },
+ {
+  "id": 1532,
+  "file": "src/xmas.js",
+  "line": 24,
+  "vi": "Dây đèn nhấp nháy như những đốm sao nhỏ đậu trên cành thông ✨"
+ },
+ {
+  "id": 1533,
+  "file": "src/xmas.js",
+  "line": 24,
+  "vi": "Năm món quà của năm người hàng xóm, treo chung một cây."
+ },
+ {
+  "id": 1534,
+  "file": "src/xmas.js",
+  "line": 28,
+  "vi": "Bác tháo được chiếc chuông nhỏ từ một chiếc đồng hồ báo thức cũ. Treo lên cây, mỗi lần gió lùa qua nó lại ngân lên một tiếng, như nhắc mình nghỉ tay một chút."
+ },
+ {
+  "id": 1535,
+  "file": "src/xmas.js",
+  "line": 28,
+  "vi": "Chú chim sẻ đưa thư vừa thả xuống bệ cửa một gói nhỏ"
+ },
+ {
+  "id": 1536,
+  "file": "src/xmas.js",
+  "line": 29,
+  "vi": "Ngôi sao này mình cắt từ bìa cứng rồi tự tay tô màu vàng ấm đấy. Đỉnh cây là chỗ của nó nhé!"
+ },
+ {
+  "id": 1537,
+  "file": "src/xmas.js",
+  "line": 29,
+  "vi": "Một chiếc máy bay giấy chở theo món quà nhỏ"
+ },
+ {
+  "id": 1538,
+  "file": "src/xmas.js",
+  "line": 30,
+  "vi": "Em cắt cây kẹo gậy bằng giấy học thủ công, sọc hơi méo một chút. Còn cái mũ len là mẹ em đan cho Bánh Quy, bạn đội cho nó giùm em nha!"
+ },
+ {
+  "id": 1539,
+  "file": "src/xmas.js",
+  "line": 30,
+  "vi": "Sợi ruy băng mèo buộc một gói quà nhỏ"
+ },
+ {
+  "id": 1540,
+  "file": "src/xmas.js",
+  "line": 31,
+  "vi": "Chị xin một đoạn ruy băng đỏ ở sạp gói hoa, thắt thành chiếc nơ cho cây thông của em. Treo lên nhìn cây có hồn hẳn em ạ."
+ },
+ {
+  "id": 1541,
+  "file": "src/xmas.js",
+  "line": 31,
+  "vi": "Túi vải ròng rọc thả xuống một món quà"
+ },
+ {
+  "id": 1542,
+  "file": "src/xmas.js",
+  "line": 32,
+  "vi": "Dây đèn này mình mua ở chợ phiên một thị trấn miền núi, cất trong ba lô mãi. Giờ thì nó có chỗ để sáng rồi."
+ },
+ {
+  "id": 1543,
+  "file": "src/xmas.js",
+  "line": 32,
+  "vi": "Hòm thư cầu thang có một gói nhỏ gửi bạn"
+ },
+ {
+  "id": 1544,
+  "file": "src/xmas.js",
+  "line": 34,
+  "vi": "Bà tìm thấy dây đèn nhỏ cất trong tủ từ mấy năm trước. Cháu quấn lên cây cho ấm nhé, đủ năm món là cây sáng rồi đấy."
+ },
+ {
+  "id": 1545,
+  "file": "src/xmas.js",
+  "line": 34,
+  "vi": "Bà chủ nhà gõ cửa, đưa lên một cuộn dây đèn"
+ },
+ {
+  "id": 1546,
+  "file": "src/xmas.js",
+  "line": 52,
+  "vi": "Cây thông nhỏ"
+ },
+ {
+  "id": 1547,
+  "file": "src/xmas.js",
+  "line": 52,
+  "vi": "Món quà treo cây"
+ },
+ {
+  "id": 1548,
+  "file": "src/xmas.js",
+  "line": 52,
+  "vi": "Mũ len đỏ"
+ },
+ {
+  "id": 1549,
+  "file": "src/xmas.js",
+  "line": 115,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.xmas_tree}\" alt=\"\" style=\"max-height:6.5em\"><small>— Bà chủ nhà tầng dưới —</small>"
+ },
+ {
+  "id": 1550,
+  "file": "src/xmas.js",
+  "line": 117,
+  "vi": "Chậu thông nhỏ đã đứng ở góc bệ cửa 🎄 mỗi ngày sẽ có một món quà treo cây"
+ },
+ {
+  "id": 1551,
+  "file": "src/xmas.js",
+  "line": 123,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.st_xmas_snow}\" alt=\"\" style=\"max-height:4em\"><small>Kèm theo lời chúc của bà là con dấu “Bông Tuyết” và một tờ giấy xanh thông cho Góc thủ công</small><small>— Bà chủ nhà tầng dưới${(S.story.hanh || 0) >= 3 ? ' & cô Hạnh' : ''} —</small>"
+ },
+ {
+  "id": 1552,
+  "file": "src/xmas.js",
+  "line": 126,
+  "vi": "Nhận con dấu Bông Tuyết ❄️ và giấy bookmark xanh thông"
+ },
+ {
+  "id": 1553,
+  "file": "src/xmas.js",
+  "line": 142,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG[extra]}\" alt=\"\" style=\"max-height:3.6em\"><small>Kèm theo con dấu “Chuông Giáng Sinh”</small>"
+ },
+ {
+  "id": 1554,
+  "file": "src/xmas.js",
+  "line": 145,
+  "vi": "Cây thông sáng đèn rồi! ✨ đủ năm món quà của năm người hàng xóm"
+ },
+ {
+  "id": 1555,
+  "file": "src/xmas.js",
+  "line": 146,
+  "vi": "Đã treo lên cây 🎄 Bánh Quy đội mũ len rồi, chạm vào mũ để cởi ra nhé"
+ },
+ {
+  "id": 1556,
+  "file": "src/xmas.js",
+  "line": 146,
+  "vi": "Đã treo lên cây thông 🎄"
+ },
+ {
+  "id": 1557,
+  "file": "src/xmas.js",
+  "line": 159,
+  "vi": "Bánh Quy đội mũ len đỏ, trông ấm áp hẳn 🎅"
+ },
+ {
+  "id": 1558,
+  "file": "src/xmas.js",
+  "line": 160,
+  "vi": "Cất mũ len lên bệ cửa, chạm lần nữa để đội lại cho Bánh Quy"
+ }
+]

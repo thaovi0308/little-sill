@@ -1,0 +1,932 @@
+[
+ {
+  "id": 989,
+  "file": "src/extras.js",
+  "line": 7,
+  "vi": "Tưới chậu cây trên bệ cửa"
+ },
+ {
+  "id": 990,
+  "file": "src/extras.js",
+  "line": 8,
+  "vi": "Pha một tách trà rồi nhấp từng ngụm"
+ },
+ {
+  "id": 991,
+  "file": "src/extras.js",
+  "line": 9,
+  "vi": "Viết vài chữ vào sổ tay"
+ },
+ {
+  "id": 992,
+  "file": "src/extras.js",
+  "line": 23,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.landlady}\" alt=\"\" style=\"max-height:7em\">Giỏi lắm cháu ơi! Cây được tưới, trà được pha, sổ tay có chữ rồi.\n      Căn gác này bắt đầu có hơi người rồi đấy.<br><br>À, chú chim sẻ trong hẻm mê nhạc lắm. Cháu thử bật chiếc radio xem, biết đâu chú lại mang tin gì sang.<br><br>Còn điều này nữa: mọi kỷ niệm của căn gác đang được cất tạm trong trình duyệt này thôi. Thỉnh thoảng cháu nhớ vào nút 📝 cất một bản sao lưu, kẻo lỡ xoá lịch sử hay đổi máy lại mất hết nhé.\n      <small>— Bà chủ nhà tầng dưới —</small>"
+ },
+ {
+  "id": 993,
+  "file": "src/extras.js",
+  "line": 27,
+  "vi": "Việc nhỏ hôm nay: ${n}/${DAILY.length} ✓"
+ },
+ {
+  "id": 994,
+  "file": "src/extras.js",
+  "line": 42,
+  "vi": "Tiệm hoa đầu hẻm có ${t} chậu đang khát 🪴"
+ },
+ {
+  "id": 995,
+  "file": "src/extras.js",
+  "line": 43,
+  "vi": "Có phong lì xì đang chờ trên bàn 🧧"
+ },
+ {
+  "id": 996,
+  "file": "src/extras.js",
+  "line": 44,
+  "vi": "Nến thơm còn ${Math.ceil(left / 60e3)} phút 🕯️"
+ },
+ {
+  "id": 997,
+  "file": "src/extras.js",
+  "line": 45,
+  "vi": "<h3>Việc nhỏ hôm nay</h3><small style=\"margin:0 0 .6em\">Không cần làm hết đâu, làm được việc nào hay việc ấy 🌿</small>\n    <ul class=\"today\">${tasks}</ul>\n    ${waits.length ? "
+ },
+ {
+  "id": 998,
+  "file": "src/extras.js",
+  "line": 49,
+  "vi": " : ''}\n    <button class=\"reply\" id=\"td-card\" style=\"text-align:center\">📮 Gửi một tấm bưu thiếp</button>\n    <button class=\"reply\" id=\"td-save\" style=\"text-align:center\">💾 Sao lưu / khôi phục</button>\n    <small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 999,
+  "file": "src/extras.js",
+  "line": 66,
+  "vi": "🌱 Cây đã trồng"
+ },
+ {
+  "id": 1000,
+  "file": "src/extras.js",
+  "line": 66,
+  "vi": "🌸 Hoa lá ép"
+ },
+ {
+  "id": 1001,
+  "file": "src/extras.js",
+  "line": 67,
+  "vi": "🖋️ Con dấu"
+ },
+ {
+  "id": 1002,
+  "file": "src/extras.js",
+  "line": 68,
+  "vi": "🌟 Khách hiếm"
+ },
+ {
+  "id": 1003,
+  "file": "src/extras.js",
+  "line": 69,
+  "vi": "📖 Chương truyện"
+ },
+ {
+  "id": 1004,
+  "file": "src/extras.js",
+  "line": 70,
+  "vi": "<h4>Bộ sưu tập</h4><ul class=\"today coll\">${rows.map(([t, a, b]) => "
+ },
+ {
+  "id": 1005,
+  "file": "src/extras.js",
+  "line": 98,
+  "vi": "<h3>Sổ lưu trữ</h3><small style=\"margin:0 0 .6em\">Căn gác chỉ được cất trong trình duyệt này. Cất một bản sao để không lỡ mất khi đổi máy hay xoá lịch sử nhé.</small>\n    <button class=\"reply\" id=\"bk-copy\" style=\"text-align:center\">📋 Chép mã sao lưu</button>\n    <button class=\"reply\" id=\"bk-file\" style=\"text-align:center\">⬇️ Tải tệp sao lưu</button>\n    <h4>Khôi phục</h4>\n    <textarea id=\"bk-in\" rows=\"3\" placeholder=\"Dán mã sao lưu vào đây…\" style=\"width:100%;box-sizing:border-box;border-radius:10px;border:1.5px solid var(--paper-line);padding:.5em;font:inherit;font-size:.8em\"></textarea>\n    <label class=\"reply\" style=\"text-align:center;display:block;cursor:pointer\">📂 Chọn tệp sao lưu<input id=\"bk-pick\" type=\"file\" accept=\".txt,text/plain\" hidden></label>\n    <button class=\"reply\" id=\"bk-restore\" style=\"text-align:center\">↺ Khôi phục căn gác</button>\n    ${S.backupAt ? "
+ },
+ {
+  "id": 1006,
+  "file": "src/extras.js",
+  "line": 110,
+  "vi": "Đã chép mã. Dán vào ghi chú hay tin nhắn cho chính mình để cất nhé 📋"
+ },
+ {
+  "id": 1007,
+  "file": "src/extras.js",
+  "line": 111,
+  "vi": "Mã đã hiện trong ô bên dưới, bạn tự chép giúp nhé"
+ },
+ {
+  "id": 1008,
+  "file": "src/extras.js",
+  "line": 117,
+  "vi": "Đã tải tệp sao lưu 💾"
+ },
+ {
+  "id": 1009,
+  "file": "src/extras.js",
+  "line": 123,
+  "vi": "Dán mã hoặc chọn tệp sao lưu trước nhé"
+ },
+ {
+  "id": 1010,
+  "file": "src/extras.js",
+  "line": 124,
+  "vi": "Mã này không đọc được, bạn kiểm tra lại giúp nhé"
+ },
+ {
+  "id": 1011,
+  "file": "src/extras.js",
+  "line": 125,
+  "vi": "Mã này không phải căn gác của Bên Khung Cửa Nhỏ"
+ },
+ {
+  "id": 1012,
+  "file": "src/extras.js",
+  "line": 126,
+  "vi": "Căn gác hiện tại sẽ được thay bằng bản sao lưu. Tiếp tục nhé?"
+ },
+ {
+  "id": 1013,
+  "file": "src/extras.js",
+  "line": 127,
+  "vi": "Trình duyệt không cho lưu, thử lại sau nhé"
+ },
+ {
+  "id": 1014,
+  "file": "src/extras.js",
+  "line": 136,
+  "vi": "Căn gác đã có nhiều kỷ niệm rồi. Cất một bản sao lưu trong 📝 Việc nhỏ hôm nay nhé 💾"
+ },
+ {
+  "id": 1015,
+  "file": "src/extras.js",
+  "line": 187,
+  "vi": "Bên Khung Cửa Nhỏ · thaovi0308.github.io/little-sill"
+ },
+ {
+  "id": 1016,
+  "file": "src/extras.js",
+  "line": 191,
+  "vi": "Đang chụp khung cửa sổ… 📮"
+ },
+ {
+  "id": 1017,
+  "file": "src/extras.js",
+  "line": 192,
+  "vi": "Chưa chụp được, thử lại sau nhé"
+ },
+ {
+  "id": 1018,
+  "file": "src/extras.js",
+  "line": 194,
+  "vi": "Trình duyệt này chưa cho chụp ảnh, thử mở bằng Chrome hoặc Safari nhé"
+ },
+ {
+  "id": 1019,
+  "file": "src/extras.js",
+  "line": 197,
+  "vi": "<h3>Bưu thiếp hôm nay</h3><img src=\"${url}\" alt=\"\" style=\"width:100%;border-radius:10px;box-shadow:0 4px 12px rgba(60,35,20,.25)\">\n    ${canShare ? '<button class=\"reply\" id=\"pc-share\" style=\"text-align:center\">📮 Gửi đi</button>' : ''}\n    <a class=\"reply\" id=\"pc-dl\" href=\"${url}\" download=\"${file.name}\" style=\"text-align:center;display:block;text-decoration:none;color:inherit\">⬇️ Tải ảnh về máy</a>\n    <small>Câu trên bưu thiếp lấy từ sổ tay hôm nay của bạn. Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 1020,
+  "file": "src/extras.js",
+  "line": 202,
+  "vi": "Một góc cửa sổ bình yên 🌿 thaovi0308.github.io/little-sill"
+ },
+ {
+  "id": 1021,
+  "file": "src/extras.js",
+  "line": 211,
+  "vi": "Sáng nay bác lau lại tủ kính, xếp mấy chiếc đồng hồ cũ ngay ngắn thành hàng. Có cậu bé ghé nhờ sửa giúp chiếc đồng hồ của ông nội. Bác tỉ mẩn làm chậm thôi, vậy mà trong lòng vui lắm."
+ },
+ {
+  "id": 1022,
+  "file": "src/extras.js",
+  "line": 212,
+  "vi": "Chiều qua trời mưa rào, bác mở hộp nhạc nghe lại bản nhạc của cháu. Lạ thật đấy, vẫn một giai điệu ấy mà mỗi lần nghe lại thấy gợi về một chuyện khác."
+ },
+ {
+  "id": 1023,
+  "file": "src/extras.js",
+  "line": 213,
+  "vi": "Bác cũng học được cách pha trà hoa cúc giống cháu rồi. Ngồi bên hiên cửa sổ, thong thả nhìn kim đồng hồ nhích từng nhịp, bác chẳng còn thấy mình phải vội nữa."
+ },
+ {
+  "id": 1024,
+  "file": "src/extras.js",
+  "line": 215,
+  "vi": "Tuần này mình vẽ một bức chỉ để cho vui, chẳng vướng bận deadline nào cả. Hóa ra, mình vẫn còn thích vẽ đến thế."
+ },
+ {
+  "id": 1025,
+  "file": "src/extras.js",
+  "line": 216,
+  "vi": "Mình treo bức “Góc Cửa Ngày Mưa” ngay trước bàn làm việc. Mỗi lần bí ý tưởng, mình lại ngước nhìn nó một chút rồi nhấp ngụm nước, tự nhiên thấy lòng dịu lại."
+ },
+ {
+  "id": 1026,
+  "file": "src/extras.js",
+  "line": 217,
+  "vi": "Bé Na nhờ mình dạy vẽ mèo. Bánh Quy chịu ngồi làm mẫu được đúng hai phút rồi ngáp dài, quay lưng đi ngủ. Hai anh em nhìn nhau cười mãi."
+ },
+ {
+  "id": 1027,
+  "file": "src/extras.js",
+  "line": 219,
+  "vi": "Hôm nay lớp em đi dã ngoại, em ngồi cạnh bạn Thảo suốt cả chặng đường. Em kể cho bạn ấy nghe bao nhiêu chuyện về Bánh Quy và khung cửa sổ nhỏ nhà bạn đó!"
+ },
+ {
+  "id": 1028,
+  "file": "src/extras.js",
+  "line": 220,
+  "vi": "Bánh Quy dạo này tròn quay rồi nha, chắc tại bạn cho ăn nhiều quá đó. Mẹ em bảo phải rủ nó chạy nhảy nhiều hơn mới được."
+ },
+ {
+  "id": 1029,
+  "file": "src/extras.js",
+  "line": 221,
+  "vi": "Hôm nay em được điểm mười môn vẽ nè! Em vẽ con hẻm nhà mình có khung cửa sổ và chậu cây xanh của bạn. Cô giáo khen em tô màu ấm áp lắm."
+ },
+ {
+  "id": 1030,
+  "file": "src/extras.js",
+  "line": 223,
+  "vi": "Dạo này tiệm hoa đông khách hơn rồi em ạ. Có cô khách chiều nào cũng ghé mua một cành cúc nhỏ, bảo đặt trên bàn làm việc nhìn cho dễ thở."
+ },
+ {
+  "id": 1031,
+  "file": "src/extras.js",
+  "line": 224,
+  "vi": "Chị mới về thêm mấy chậu sen đá nhỏ xíu, nhìn cưng lắm. Bữa nào rảnh ghé qua tiệm nhé, chị để dành sẵn cho em một chậu xinh nhất."
+ },
+ {
+  "id": 1032,
+  "file": "src/extras.js",
+  "line": 225,
+  "vi": "Tối qua chị ngồi bó hoa dưới ánh đèn lồng vàng, nghe tiếng radio từ căn gác của em khe khẽ vọng xuống. Cảm ơn em vì đã mang thêm tiếng nhạc ấm về cho con hẻm."
+ },
+ {
+  "id": 1033,
+  "file": "src/extras.js",
+  "line": 227,
+  "vi": "Về lại hẻm được mấy hôm, sáng nào mình cũng ghé xe đầu hẻm mua ổ bánh mì nóng. Đi xa bao nhiêu nơi rồi, cuối cùng vẫn thấy hương vị ở đây là ngon nhất."
+ },
+ {
+  "id": 1034,
+  "file": "src/extras.js",
+  "line": 228,
+  "vi": "Mình đang tập gieo cỏ bốn lá trong chiếc hộp sữa cũ, mà mãi chưa thấy nhánh nào đủ bốn cánh cả. Chắc hôm nào phải sang xin bí quyết chăm cây của bạn thôi."
+ },
+ {
+  "id": 1035,
+  "file": "src/extras.js",
+  "line": 229,
+  "vi": "Tối nay mình bật nghe lại cuộn băng Gió Đồi Thông. Nhắm mắt lại vẫn thấy tiếng gió rì rào qua rừng thông, còn khi mở mắt ra, mình biết mình đang ở nhà rồi."
+ },
+ {
+  "id": 1036,
+  "file": "src/extras.js",
+  "line": 230,
+  "vi": "Ngăn “Sách có hoa” giờ đã có mười hai bông rồi cháu ạ. Có cô sinh viên kẹp vào cả một chiếc lá bàng đỏ, ông thấy cũng tính là hoa."
+ },
+ {
+  "id": 1037,
+  "file": "src/extras.js",
+  "line": 231,
+  "vi": "Hôm nay ông lau kính xong, đọc được trọn một chương sách mà không cần ai đọc giúp. Vui như hồi mới biết chữ."
+ },
+ {
+  "id": 1038,
+  "file": "src/extras.js",
+  "line": 232,
+  "vi": "Tối qua ông mở sổ ép hoa ra xem, thấy trang cuối đã có thêm nét chữ của cháu. Bà nhà ông mà biết, chắc bà vui và cười hiền lắm."
+ },
+ {
+  "id": 1039,
+  "file": "src/extras.js",
+  "line": 252,
+  "vi": "<details class=\"jc\"><summary><b>Thư sau đó ${k + 1}</b></summary><p>${t}</p></details>"
+ },
+ {
+  "id": 1040,
+  "file": "src/extras.js",
+  "line": 259,
+  "vi": "Gửi bà Tư nhà số 12"
+ },
+ {
+  "id": 1041,
+  "file": "src/extras.js",
+  "line": 259,
+  "vi": "Con đỗ đại học rồi bà ơi! Tết này con về, bà nhớ để dành cho con nồi chè đậu nhé."
+ },
+ {
+  "id": 1042,
+  "file": "src/extras.js",
+  "line": 259,
+  "vi": "Hẻm mình làm gì có nhà số 12 hả cháu, chắc người gửi nhớ nhầm."
+ },
+ {
+  "id": 1043,
+  "file": "src/extras.js",
+  "line": 260,
+  "vi": "Gửi người ở căn gác có chậu cây"
+ },
+ {
+  "id": 1044,
+  "file": "src/extras.js",
+  "line": 260,
+  "vi": "Sáng nào đi làm ngang qua, tôi cũng ngước nhìn bệ cửa nhà bạn. Cảm ơn bạn đã cho con đường một chút màu xanh."
+ },
+ {
+  "id": 1045,
+  "file": "src/extras.js",
+  "line": 260,
+  "vi": "Lá này thì chú đoán là của cháu rồi, cả hẻm chỉ có bệ cửa nhà cháu là xanh thế."
+ },
+ {
+  "id": 1046,
+  "file": "src/extras.js",
+  "line": 261,
+  "vi": "Gửi tôi của mười năm sau"
+ },
+ {
+  "id": 1047,
+  "file": "src/extras.js",
+  "line": 261,
+  "vi": "Mong là bạn vẫn còn thích ngắm mưa, vẫn pha trà mỗi tối, và vẫn tha thứ cho mình dễ dàng như bây giờ."
+ },
+ {
+  "id": 1048,
+  "file": "src/extras.js",
+  "line": 261,
+  "vi": "Thư không có địa chỉ người nhận, chỉ có dòng chữ này. Chú nghĩ ai đọc được thì người ấy nhận."
+ },
+ {
+  "id": 1049,
+  "file": "src/extras.js",
+  "line": 262,
+  "vi": "Gửi mẹ"
+ },
+ {
+  "id": 1050,
+  "file": "src/extras.js",
+  "line": 262,
+  "vi": "Ở thành phố con ăn uống đầy đủ, mẹ đừng lo. Chỉ là thỉnh thoảng trời mưa, con lại nhớ nồi canh chua mẹ nấu."
+ },
+ {
+  "id": 1051,
+  "file": "src/extras.js",
+  "line": 262,
+  "vi": "Tem bị nhoè hết rồi, chú không đọc được tên xã. Cháu giữ giùm, chú còn hỏi bưu cục thêm."
+ },
+ {
+  "id": 1052,
+  "file": "src/extras.js",
+  "line": 263,
+  "vi": "Gửi cậu bạn ngồi bàn cuối"
+ },
+ {
+  "id": 1053,
+  "file": "src/extras.js",
+  "line": 263,
+  "vi": "Hồi đó tớ chưa kịp nói cảm ơn vì cậu cho tớ mượn chiếc ô hôm mưa to. Giờ thì nói được rồi: cảm ơn cậu nhiều lắm."
+ },
+ {
+  "id": 1054,
+  "file": "src/extras.js",
+  "line": 263,
+  "vi": "Thư này đi lòng vòng ba bưu cục rồi mới tới đây đấy cháu."
+ },
+ {
+  "id": 1055,
+  "file": "src/extras.js",
+  "line": 267,
+  "vi": "Chú đom đóm lạc"
+ },
+ {
+  "id": 1056,
+  "file": "src/extras.js",
+  "line": 269,
+  "vi": "Lá thư lạc địa chỉ"
+ },
+ {
+  "id": 1057,
+  "file": "src/extras.js",
+  "line": 280,
+  "vi": "Có một đốm sáng nhỏ lạc vào khung cửa sổ… ✨"
+ },
+ {
+  "id": 1058,
+  "file": "src/extras.js",
+  "line": 293,
+  "vi": "Chú đom đóm lạc đã tìm thấy chiếc hũ thủy tinh. Cả hũ như sáng ấm hơn một chút 🌟"
+ },
+ {
+  "id": 1059,
+  "file": "src/extras.js",
+  "line": 293,
+  "vi": "Đom đóm lạc lại ghé, rồi chui vào hũ ngủ cùng các bạn 🌟"
+ },
+ {
+  "id": 1060,
+  "file": "src/extras.js",
+  "line": 299,
+  "vi": "Kính coong! Có tiếng chuông xe đạp dưới hẻm 🚲"
+ },
+ {
+  "id": 1061,
+  "file": "src/extras.js",
+  "line": 306,
+  "vi": "Chào cháu, chú là người đưa thư của khu này, tuần nào cũng đạp xe ngang qua hẻm. "
+ },
+ {
+  "id": 1062,
+  "file": "src/extras.js",
+  "line": 307,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.postman}\" alt=\"\" style=\"max-height:9em\">${intro}${note} Cháu giữ giùm chú nhé, thư lạc mà có người đọc thì cũng đỡ buồn.<small>— Chú đưa thư —</small>"
+ },
+ {
+  "id": 1063,
+  "file": "src/extras.js",
+  "line": 312,
+  "vi": "<h3>Thư lạc địa chỉ</h3><small style=\"margin:0 0 .8em\">Chú đưa thư gửi cháu giữ giùm</small>"
+ },
+ {
+  "id": 1064,
+  "file": "src/extras.js",
+  "line": 314,
+  "vi": "<button class=\"reply\" id=\"pl-back\" style=\"text-align:center\">‹ Việc nhỏ hôm nay</button><small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 1065,
+  "file": "src/hanh.js",
+  "line": 16,
+  "vi": "Vài nốt đàn ngập ngừng vọng sang từ ô cửa sổ bên kia hẻm, rồi im bặt."
+ },
+ {
+  "id": 1066,
+  "file": "src/hanh.js",
+  "line": 17,
+  "vi": "Cháu ở căn gác bên này. Tiếng đàn tối qua hay lắm, sao cô không đàn tiếp ạ?"
+ },
+ {
+  "id": 1067,
+  "file": "src/hanh.js",
+  "line": 17,
+  "vi": "Cô ơi, tối nào cháu cũng mong nghe thêm vài nốt đàn nữa."
+ },
+ {
+  "id": 1068,
+  "file": "src/hanh.js",
+  "line": 18,
+  "vi": "Cảm ơn mẩu giấy của cháu. Cô là Hạnh, dạy đàn ở trường tiểu học gần bốn mươi năm."
+ },
+ {
+  "id": 1069,
+  "file": "src/hanh.js",
+  "line": 19,
+  "vi": "Cô mới về hưu, tai dạo này nghe kém đi nhiều, sợ mình đánh sai nhịp làm phiền hàng xóm nên không dám mở nắp đàn nữa."
+ },
+ {
+  "id": 1070,
+  "file": "src/hanh.js",
+  "line": 20,
+  "vi": "Không ngờ trong hẻm vẫn có người chờ nghe."
+ },
+ {
+  "id": 1071,
+  "file": "src/hanh.js",
+  "line": 21,
+  "vi": "Cô cứ đàn cho vui hẻm ạ. Sai nhịp thì mình đàn lại, ai nghe cũng thích."
+ },
+ {
+  "id": 1072,
+  "file": "src/hanh.js",
+  "line": 21,
+  "vi": "Cô với cháu cùng chọn mấy bài êm êm, quen quen, đàn chậm thôi cô nhé."
+ },
+ {
+  "id": 1073,
+  "file": "src/hanh.js",
+  "line": 22,
+  "vi": "Bắc Kim Thang"
+ },
+ {
+  "id": 1074,
+  "file": "src/hanh.js",
+  "line": 22,
+  "vi": "Lý Cây Đa"
+ },
+ {
+  "id": 1075,
+  "file": "src/hanh.js",
+  "line": 23,
+  "vi": "Tối qua cô mở nắp đàn, phủi bụi từng phím một. Cô đàn bài “{song}” cháu chọn, chậm thôi, có chỗ cô không nghe rõ tiếng mình."
+ },
+ {
+  "id": 1076,
+  "file": "src/hanh.js",
+  "line": 24,
+  "vi": "Vậy mà hóa ra cảm giác đầu ngón tay chạm lên phím đàn vẫn nhớ hết giai điệu cũ."
+ },
+ {
+  "id": 1077,
+  "file": "src/hanh.js",
+  "line": 25,
+  "vi": "Cô gửi cháu tờ nhạc này, cô chép từ hồi còn đi dạy. Từ nay tối nào thấy đèn nhà cô sáng, cháu chạm vào cửa sổ, cô cháu mình đàn chung một bài nhé."
+ },
+ {
+  "id": 1078,
+  "file": "src/hanh.js",
+  "line": 26,
+  "vi": "Anh/chị ơi, tối qua em nghe có tiếng đàn hay ơi là hay. Em chạy sang đứng ngoài cửa sổ nghe lén, có một bà tóc búi đang đàn. Em đứng nghe hết ba bài luôn mà không dám gõ cửa."
+ },
+ {
+  "id": 1079,
+  "file": "src/hanh.js",
+  "line": 27,
+  "vi": "Tối qua cô thấy một cái đầu nhỏ nhấp nhô ngoài cửa sổ, nghe tới bài thứ ba thì vỗ tay rồi chạy mất. Cô vui lắm cháu ạ, bốn mươi năm đi dạy chưa có khán giả nào dễ thương vậy."
+ },
+ {
+  "id": 1080,
+  "file": "src/hanh.js",
+  "line": 28,
+  "vi": "Cháu chuyển giúp cô chiếc kẹp khóa Sol này cho bé nhé. Cháu nhắn bé chiều mai sang nhà cô, cô dạy bé bấm những nốt đầu tiên."
+ },
+ {
+  "id": 1081,
+  "file": "src/hanh.js",
+  "line": 29,
+  "vi": "Em kẹp cái kẹp khóa Sol lên tóc rồi! Chiều mai em sang học đàn. Em hồi hộp quá nên tối nay chắc em tập bấm trên mặt bàn trước."
+ },
+ {
+  "id": 1082,
+  "file": "src/hanh.js",
+  "line": 30,
+  "vi": "Chiều nay hẻm nhỏ rộn ràng hơn hẳn. Từ ô cửa bên kia hẻm vọng sang tiếng đàn ngọng nghịu của bé Na, xen lẫn tiếng cười hiền của cô Hạnh. Thỉnh thoảng có một nốt sai, rồi cả hai cùng cười."
+ },
+ {
+  "id": 1083,
+  "file": "src/hanh.js",
+  "line": 31,
+  "vi": "Bé Na học nhanh lắm, mới một buổi mà đã bấm được năm nốt. Cô gửi cháu chiếc máy đếm nhịp này, nó theo cô suốt những năm đi dạy. Bác sửa đồng hồ bên kia đường vừa lên dây lại giúp cô, giờ nó gõ đều lắm."
+ },
+ {
+  "id": 1084,
+  "file": "src/hanh.js",
+  "line": 32,
+  "vi": "Nhờ có căn gác của cháu lắng nghe mà cây đàn cũ của cô mới có dịp thức dậy."
+ },
+ {
+  "id": 1085,
+  "file": "src/hanh.js",
+  "line": 33,
+  "vi": "Lúc nào thấy lòng mình vội quá, cháu bật nó lên, thở theo tiếng tích tắc nhé."
+ },
+ {
+  "id": 1086,
+  "file": "src/hanh.js",
+  "line": 34,
+  "vi": "Cô quyết định rồi cháu ạ. Từ tuần này, sáng thứ Bảy và Chủ nhật cô mở một góc dạy đàn nhỏ trong nhà, miễn phí, đứa nhỏ nào trong hẻm thích thì sang. Bé Na xin làm “lớp trưởng”, đã đi rủ được ba bạn rồi."
+ },
+ {
+  "id": 1087,
+  "file": "src/hanh.js",
+  "line": 35,
+  "vi": "Cô gửi cháu bức ký họa cây đàn bên ô cửa sổ. Sáng cuối tuần nào rảnh, cháu sang ngồi nghe bọn nhỏ đàn nhé, cô để dành cho cháu một chiếc ghế. Cảm ơn cháu đã là người nghe đầu tiên."
+ },
+ {
+  "id": 1088,
+  "file": "src/hanh.js",
+  "line": 36,
+  "vi": "Bên kia hẻm, cô Hạnh đặt tay lên phím đàn, chờ cháu."
+ },
+ {
+  "id": 1089,
+  "file": "src/hanh.js",
+  "line": 37,
+  "vi": "Không sao, cô đàn lại nốt đó nhé."
+ },
+ {
+  "id": 1090,
+  "file": "src/hanh.js",
+  "line": 38,
+  "vi": "Ô cửa bên kia hẻm nháy đèn hai cái. Cô Hạnh đang vẫy tay."
+ },
+ {
+  "id": 1091,
+  "file": "src/hanh.js",
+  "line": 38,
+  "vi": "Tiếng đàn hai bên hòa vào nhau, như hai người nói chuyện mà không cần lời."
+ },
+ {
+  "id": 1092,
+  "file": "src/hanh.js",
+  "line": 39,
+  "vi": "Bánh Quy vểnh tai nghe hết bài rồi mới chịu nằm xuống."
+ },
+ {
+  "id": 1093,
+  "file": "src/hanh.js",
+  "line": 40,
+  "vi": "Hôm nay cô cháu mình đàn xong rồi. Mai mình đàn tiếp nhé."
+ },
+ {
+  "id": 1094,
+  "file": "src/hanh.js",
+  "line": 42,
+  "vi": "Có bài hát nào chỉ cần nghe vài nốt đầu là bạn nhớ cả một thời?"
+ },
+ {
+  "id": 1095,
+  "file": "src/hanh.js",
+  "line": 42,
+  "vi": "Bạn từng học được điều gì từ một người thầy, người cô mà đến giờ vẫn còn giữ?"
+ },
+ {
+  "id": 1096,
+  "file": "src/hanh.js",
+  "line": 44,
+  "vi": "Nét chữ nốt nhạc nghiêng nghiêng, góc giấy còn vết cà phê từ hồi cô còn đi dạy."
+ },
+ {
+  "id": 1097,
+  "file": "src/hanh.js",
+  "line": 45,
+  "vi": "Tích… tắc… tích… tắc… Hít vào bốn nhịp, thở ra bốn nhịp."
+ },
+ {
+  "id": 1098,
+  "file": "src/hanh.js",
+  "line": 47,
+  "vi": "Khóa Sol"
+ },
+ {
+  "id": 1099,
+  "file": "src/hanh.js",
+  "line": 49,
+  "vi": "— Một cô bé tầng dưới —"
+ },
+ {
+  "id": 1100,
+  "file": "src/hanh.js",
+  "line": 72,
+  "vi": "Ô cửa sổ nhà cô Hạnh bên kia hẻm"
+ },
+ {
+  "id": 1101,
+  "file": "src/hanh.js",
+  "line": 102,
+  "vi": "Hòa tấu cùng cô Hạnh"
+ },
+ {
+  "id": 1102,
+  "file": "src/hanh.js",
+  "line": 115,
+  "vi": "<div class=\"hd-card\"><div class=\"hd-head\">🎹 HÒA TẤU CÙNG CÔ <button id=\"hd-x\" aria-label=\"Đóng\">✕</button></div>\n    <div class=\"hd-who\">${hpic('hanh_play', '👵🏻🎹', 8)}</div>\n    <div class=\"hd-keys${keys ? ' img' : ''}\">${keys ? "
+ },
+ {
+  "id": 1103,
+  "file": "src/hanh.js",
+  "line": 117,
+  "vi": "Phím ${k + 1}"
+ },
+ {
+  "id": 1104,
+  "file": "src/hanh.js",
+  "line": 152,
+  "vi": "Mẩu giấy đã thả vào hòm thư dưới chân cầu thang ✉️"
+ },
+ {
+  "id": 1105,
+  "file": "src/hanh.js",
+  "line": 157,
+  "vi": "<small>— Cô Hạnh —</small>"
+ },
+ {
+  "id": 1106,
+  "file": "src/hanh.js",
+  "line": 160,
+  "vi": "<small>— Cô Hạnh, bên kia hẻm —</small>"
+ },
+ {
+  "id": 1107,
+  "file": "src/hanh.js",
+  "line": 160,
+  "vi": "Tối nay nếu đèn bên kia hẻm sáng, có khi cô sẽ đàn lại 🎹"
+ },
+ {
+  "id": 1108,
+  "file": "src/hanh.js",
+  "line": 163,
+  "vi": "<small>Đã cất tờ giấy chép nhạc vào hộp kỷ vật</small>"
+ },
+ {
+  "id": 1109,
+  "file": "src/hanh.js",
+  "line": 165,
+  "vi": "Tối nào thấy đèn bên kia hẻm sáng, chạm vào ô cửa để hòa tấu cùng cô 🎹"
+ },
+ {
+  "id": 1110,
+  "file": "src/hanh.js",
+  "line": 168,
+  "vi": "<button class=\"reply\" id=\"h-clip\">🎀 Kẹp khóa Sol vào ruy băng của Bánh Quy</button>"
+ },
+ {
+  "id": 1111,
+  "file": "src/hanh.js",
+  "line": 169,
+  "vi": "Bánh Quy chạy tót xuống cầu thang, chiếc kẹp khóa Sol lấp lánh trên ruy băng 🐈"
+ },
+ {
+  "id": 1112,
+  "file": "src/hanh.js",
+  "line": 172,
+  "vi": "<small>Đã cất máy đếm nhịp vào hộp kỷ vật</small>"
+ },
+ {
+  "id": 1113,
+  "file": "src/hanh.js",
+  "line": 176,
+  "vi": "<small>— Cô Hạnh, Lớp Đàn Nhỏ Bên Kia Hẻm —</small><small>Nhận tranh ký họa cây đàn bên ô cửa sổ và con dấu Khóa Sol 🎼</small>"
+ },
+ {
+  "id": 1114,
+  "file": "src/hanh.js",
+  "line": 189,
+  "vi": "Có một chiếc thuyền giấy gấp từ giấy chép nhạc kẹp ở khe hòm thư."
+ },
+ {
+  "id": 1115,
+  "file": "src/hanh.js",
+  "line": 189,
+  "vi": "Có một phong thư nhỏ in hình khóa Sol nằm trong hòm thư."
+ },
+ {
+  "id": 1116,
+  "file": "src/hanh.js",
+  "line": 189,
+  "vi": "<button class=\"reply\" id=\"mb-hanh\">🎹 Mở thư của cô Hạnh</button>"
+ },
+ {
+  "id": 1117,
+  "file": "src/hanh.js",
+  "line": 202,
+  "vi": "Có thuyền giấy của cô Hạnh trong hòm thư dưới chân cầu thang ⛵"
+ },
+ {
+  "id": 1118,
+  "file": "src/hanh.js",
+  "line": 202,
+  "vi": "Có thư khóa Sol của cô Hạnh trong hòm thư 🎼"
+ },
+ {
+  "id": 1119,
+  "file": "src/hanh.js",
+  "line": 207,
+  "vi": "<p class=\"bub\">Bạn muốn viết gì gửi cô Hạnh?</p>${H.cheer.map((t, i) => "
+ },
+ {
+  "id": 1120,
+  "file": "src/hanh.js",
+  "line": 210,
+  "vi": "<p class=\"bub\">Cùng cô chọn một bài êm dịu, tối nay cô sẽ đàn bài đó:</p>${H.songs.map((t, i) => "
+ },
+ {
+  "id": 1121,
+  "file": "src/hanh.js",
+  "line": 216,
+  "vi": "<small>Mảnh giấy nhỏ kẹp trong ruy băng của Bánh Quy</small>${ITEM_IMG.na_cat ? '' : ''}<p class=\"bub\">${H.na1}</p><small>${naName()}</small>"
+ },
+ {
+  "id": 1122,
+  "file": "src/hanh.js",
+  "line": 216,
+  "vi": "Cô Hạnh chắc cũng đã thấy vị khán giả nhí rồi 🎹"
+ },
+ {
+  "id": 1123,
+  "file": "src/hanh.js",
+  "line": 219,
+  "vi": "<small>Mảnh giấy nhỏ kẹp trong ruy băng của Bánh Quy</small><p class=\"bub\">${H.na2}</p><small>${naName()}</small>"
+ },
+ {
+  "id": 1124,
+  "file": "src/hanh.js",
+  "line": 222,
+  "vi": "Lát nữa xuống hòm thư xem nhé, cô Hạnh có gửi gì đó 🎼"
+ },
+ {
+  "id": 1125,
+  "file": "src/hanh.js",
+  "line": 226,
+  "vi": "Ô cửa bên kia hẻm sáng hơn mọi hôm. Có thư của cô Hạnh trong hòm thư 🎼"
+ },
+ {
+  "id": 1126,
+  "file": "src/hanh.js",
+  "line": 232,
+  "vi": "${hpic('hanh_badge', '🏠🎹', 6)}<p class=\"bub\">${H.heard}</p><p class=\"bub\">Bạn viết một mẩu giấy hỏi thăm, thả vào hòm thư dưới chân cầu thang:</p>${H.ask.map((t, i) => "
+ },
+ {
+  "id": 1127,
+  "file": "src/hanh.js",
+  "line": 237,
+  "vi": "Ô cửa bên kia hẻm sáng đèn vàng. Cô Hạnh chưa mở nắp đàn."
+ },
+ {
+  "id": 1128,
+  "file": "src/hanh.js",
+  "line": 237,
+  "vi": "Ô cửa bên kia hẻm vẫn sáng đèn 🎹"
+ },
+ {
+  "id": 1129,
+  "file": "src/hanh.js",
+  "line": 256,
+  "vi": "Tiếng đàn bên kia hẻm"
+ },
+ {
+  "id": 1130,
+  "file": "src/hanh.js",
+  "line": 259,
+  "vi": "Thư thuyền giấy"
+ },
+ {
+  "id": 1131,
+  "file": "src/hanh.js",
+  "line": 260,
+  "vi": "Tiếng Đàn Vọng Qua Hẻm"
+ },
+ {
+  "id": 1132,
+  "file": "src/hanh.js",
+  "line": 260,
+  "vi": "Tối muộn, vài nốt piano ngập ngừng vọng sang từ ô cửa sổ bên kia hẻm rồi tắt hẳn. Cô Hạnh, cô giáo dạy đàn mới về hưu, tai nghe kém dần nên không dám mở nắp đàn nữa."
+ },
+ {
+  "id": 1133,
+  "file": "src/hanh.js",
+  "line": 261,
+  "vi": "Bản Nhạc Không Cần Nghe Bằng Tai"
+ },
+ {
+  "id": 1134,
+  "file": "src/hanh.js",
+  "line": 261,
+  "vi": "Bạn động viên cô cứ đàn cho vui hẻm và cùng cô chọn một bài êm dịu. Cô gửi tờ giấy chép nhạc ngả màu: đầu ngón tay cô vẫn nhớ hết giai điệu cũ."
+ },
+ {
+  "id": 1135,
+  "file": "src/hanh.js",
+  "line": 262,
+  "vi": "Khán Giả Nhí Đầu Tiên"
+ },
+ {
+  "id": 1136,
+  "file": "src/hanh.js",
+  "line": 262,
+  "vi": "Bé Na đứng ngoài cửa sổ nghe lén tiếng đàn. Cô Hạnh nhờ bạn chuyển cho bé chiếc kẹp khóa Sol và rủ bé sang tập những nốt đầu tiên."
+ },
+ {
+  "id": 1137,
+  "file": "src/hanh.js",
+  "line": 263,
+  "vi": "Buổi Học Đàn Chiều Thứ Bảy"
+ },
+ {
+  "id": 1138,
+  "file": "src/hanh.js",
+  "line": 263,
+  "vi": "Tiếng đàn ngọng nghịu của bé Na xen tiếng cười hiền của cô Hạnh. Cô tặng bạn chiếc máy đếm nhịp đã theo cô suốt những năm đi dạy."
+ },
+ {
+  "id": 1139,
+  "file": "src/hanh.js",
+  "line": 264,
+  "vi": "Lớp Đàn Nhỏ Bên Kia Hẻm"
+ },
+ {
+  "id": 1140,
+  "file": "src/hanh.js",
+  "line": 264,
+  "vi": "Cô Hạnh mở góc dạy đàn miễn phí mỗi cuối tuần cho trẻ con trong hẻm, tặng bạn bức ký họa cây đàn bên ô cửa sổ và con dấu Khóa Sol."
+ },
+ {
+  "id": 1141,
+  "file": "src/hanh.js",
+  "line": 267,
+  "vi": "Hôm nay bé Na đánh trọn được bài \\'Con cò bé bé\\' rồi cháu ạ. Con bé khoe sẽ về đàn lại cho mèo Bánh Quy nghe, không biết Bánh Quy có chịu ngồi yên không nữa."
+ },
+ {
+  "id": 1142,
+  "file": "src/hanh.js",
+  "line": 268,
+  "vi": "Cô mới lau lại toàn bộ phím đàn bằng khăn mềm, tiện tay cắm thêm một bình hoa cúc nhỏ chị bán hoa tặng trên nóc đàn. Góc phòng tự nhiên sáng bừng lên."
+ },
+ {
+  "id": 1143,
+  "file": "src/hanh.js",
+  "line": 269,
+  "vi": "Chiều nay trời đổ mưa, cô mở cửa sổ đàn một bản nhạc chậm. Nghe tiếng mưa gõ nhịp ngoài hiên, cô thấy tai mình chẳng cần nghe rõ hết mọi âm thanh vẫn thấy cuộc đời thật êm."
+ }
+]

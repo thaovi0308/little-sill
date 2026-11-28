@@ -1,0 +1,1934 @@
+[
+ {
+  "id": 459,
+  "file": "src/index.template.html",
+  "line": 2075,
+  "vi": "Ánh Đèn Tầng Trên"
+ },
+ {
+  "id": 460,
+  "file": "src/index.template.html",
+  "line": 2075,
+  "vi": "Chiếc máy bay giấy cuối cùng không còn chở bản nháp gạch chéo, mà là bức ký họa chính bạn đang tưới cây bên bệ cửa, Bánh Quy ngủ cạnh chân. Lần này cậu họa sĩ vẽ người đã giữ cho góc cửa ấy bình yên."
+ },
+ {
+  "id": 461,
+  "file": "src/index.template.html",
+  "line": 2076,
+  "vi": "Bé Na Tầng Dưới Và Mèo Bánh Quy"
+ },
+ {
+  "id": 462,
+  "file": "src/index.template.html",
+  "line": 2076,
+  "vi": "Ruy băng cổ mèo"
+ },
+ {
+  "id": 463,
+  "file": "src/index.template.html",
+  "line": 2077,
+  "vi": "Mẩu Giấy Trên Ruy Băng"
+ },
+ {
+  "id": 464,
+  "file": "src/index.template.html",
+  "line": 2077,
+  "vi": "Lần đầu Bánh Quy ghé ăn, trên ruy băng cổ mèo có kẹp một mẩu giấy: “Mình tên là Na. Bánh Quy hay trốn lên tầng thượng lắm. Nếu bạn thấy nó thì cho nó ăn nha, đừng đuổi nó tội nghiệp.”"
+ },
+ {
+  "id": 465,
+  "file": "src/index.template.html",
+  "line": 2078,
+  "vi": "Bí Mật Ở Bàn Cuối"
+ },
+ {
+  "id": 466,
+  "file": "src/index.template.html",
+  "line": 2078,
+  "vi": "Sau ba bữa no nê với sữa ấm và bánh quy giòn, chú mèo Bánh Quy mang về chiếc ruy băng kẹp một bông hoa cúc ép từ bạn. Đáp lại món quà nhỏ, bé Na viết mẩu giấy kể rằng em vừa chuyển trường, giờ ra chơi toàn ngồi một mình ở bàn cuối lớp nên hơi buồn. Bạn đã gửi lại một món quà nhỏ xinh cùng lời chúc đầy ấm áp theo chân Bánh Quy trở về."
+ },
+ {
+  "id": 467,
+  "file": "src/index.template.html",
+  "line": 2079,
+  "vi": "Những Người Bạn Mới"
+ },
+ {
+  "id": 468,
+  "file": "src/index.template.html",
+  "line": 2079,
+  "vi": "Mẩu giấy nét chữ nắn nót: “Nhờ món quà của anh chị mà hôm nay ở lớp có bạn đã bắt chuyện với em rồi ạ! Chúng em còn chơi chung với nhau nữa. Em vẽ tặng anh chị bức tranh hai đứa em nắm tay nhau nè!”"
+ },
+ {
+  "id": 469,
+  "file": "src/index.template.html",
+  "line": 2080,
+  "vi": "Đêm Mưa Và Viên Bi Ve"
+ },
+ {
+  "id": 470,
+  "file": "src/index.template.html",
+  "line": 2080,
+  "vi": "Một đêm mưa tầm tã, Bánh Quy chạy lạc lên gác với bộ lông ướt nhẹp và run rẩy. Nhờ ánh đèn vàng ấm áp và chiếc khăn khô mềm mại của bạn, chú mèo nhỏ đã ngủ một giấc ngon lành. Hôm sau, bé Na rối rít cảm ơn và gửi tặng bạn một viên bi ve trong veo, mỗi khi chạm tay vào, bạn dường như nghe thấy cả tiếng sóng biển rì rào."
+ },
+ {
+  "id": 471,
+  "file": "src/index.template.html",
+  "line": 2081,
+  "vi": "Hơi Ấm Khung Cửa"
+ },
+ {
+  "id": 472,
+  "file": "src/index.template.html",
+  "line": 2081,
+  "vi": "Khi góc vườn nhỏ của bạn đã nở rộ sắc hoa, bé Na gửi lên bức tranh sáp vẽ khung cửa sổ nhà bạn, kèm tin vui: lớp em có bạn mới chuyển tới ngồi một mình ở bàn cuối, và lần này chính Na là người mang bánh quy sang ngồi cạnh bạn ấy."
+ },
+ {
+  "id": 473,
+  "file": "src/index.template.html",
+  "line": 2082,
+  "vi": "Chị Bán Hoa Đầu Hẻm"
+ },
+ {
+  "id": 474,
+  "file": "src/index.template.html",
+  "line": 2082,
+  "vi": "Túi vải ròng rọc"
+ },
+ {
+  "id": 475,
+  "file": "src/index.template.html",
+  "line": 2089,
+  "vi": "<details class=\"jc\"${open === li + ':' + k ? ' open' : ''}><summary><b>Chương ${k + 1}</b> · ${c.t}</summary><p>${c.x}</p></details>"
+ },
+ {
+  "id": 476,
+  "file": "src/index.template.html",
+  "line": 2090,
+  "vi": "<div class=\"jc lock\">Chương ${k + 1} · <i>chưa tới</i></div>"
+ },
+ {
+  "id": 477,
+  "file": "src/index.template.html",
+  "line": 2091,
+  "vi": " : ''}<span><b>${L.who}</b><small>${L.by} · ${got.length}/5 chương</small></span></div>${got.length ? rows + epilogueRows(li) : '<div class=\"jc lock\"><i>Chưa có lời nhắn nào…</i></div>'}</div>"
+ },
+ {
+  "id": 478,
+  "file": "src/index.template.html",
+  "line": 2093,
+  "vi": "<h3>Lời nhắn</h3><small style=\"margin:0 0 .8em\">Những câu chuyện bạn đã đi qua cùng con hẻm</small>${html}\n    <button class=\"reply\" id=\"j-back\" style=\"text-align:center\">‹ Về hộp kỷ vật</button><small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 479,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Giấy kraft nâu"
+ },
+ {
+  "id": 480,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Giấy kem xước"
+ },
+ {
+  "id": 481,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Giấy xanh pastel"
+ },
+ {
+  "id": 482,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Mở khi nhận tuýp màu của cậu họa sĩ"
+ },
+ {
+  "id": 483,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Giấy đỏ nhũ vàng"
+ },
+ {
+  "id": 484,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Mở trong dịp Tết"
+ },
+ {
+  "id": 485,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Giấy xanh thông"
+ },
+ {
+  "id": 486,
+  "file": "src/index.template.html",
+  "line": 2099,
+  "vi": "Mở vào đêm Giáng Sinh"
+ },
+ {
+  "id": 487,
+  "file": "src/index.template.html",
+  "line": 2100,
+  "vi": "Cúc họa mi"
+ },
+ {
+  "id": 488,
+  "file": "src/index.template.html",
+  "line": 2100,
+  "vi": "Bình yên"
+ },
+ {
+  "id": 489,
+  "file": "src/index.template.html",
+  "line": 2100,
+  "vi": "Oải hương"
+ },
+ {
+  "id": 490,
+  "file": "src/index.template.html",
+  "line": 2100,
+  "vi": "Thư thái"
+ },
+ {
+  "id": 491,
+  "file": "src/index.template.html",
+  "line": 2100,
+  "vi": "Dương xỉ"
+ },
+ {
+  "id": 492,
+  "file": "src/index.template.html",
+  "line": 2100,
+  "vi": "Tươi mới"
+ },
+ {
+  "id": 493,
+  "file": "src/index.template.html",
+  "line": 2101,
+  "vi": "Trầu bà"
+ },
+ {
+  "id": 494,
+  "file": "src/index.template.html",
+  "line": 2101,
+  "vi": "Gắn bó"
+ },
+ {
+  "id": 495,
+  "file": "src/index.template.html",
+  "line": 2101,
+  "vi": "Lá phong"
+ },
+ {
+  "id": 496,
+  "file": "src/index.template.html",
+  "line": 2101,
+  "vi": "Quà của sóc"
+ },
+ {
+  "id": 497,
+  "file": "src/index.template.html",
+  "line": 2102,
+  "vi": "Lưu ly"
+ },
+ {
+  "id": 498,
+  "file": "src/index.template.html",
+  "line": 2102,
+  "vi": "Không quên"
+ },
+ {
+  "id": 499,
+  "file": "src/index.template.html",
+  "line": 2102,
+  "vi": "Cẩm tú cầu"
+ },
+ {
+  "id": 500,
+  "file": "src/index.template.html",
+  "line": 2102,
+  "vi": "Biết ơn"
+ },
+ {
+  "id": 501,
+  "file": "src/index.template.html",
+  "line": 2102,
+  "vi": "Cỏ bốn lá"
+ },
+ {
+  "id": 502,
+  "file": "src/index.template.html",
+  "line": 2102,
+  "vi": "May mắn"
+ },
+ {
+  "id": 503,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Mười giờ"
+ },
+ {
+  "id": 504,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Đúng hẹn"
+ },
+ {
+  "id": 505,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Đậu biếc"
+ },
+ {
+  "id": 506,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Chân thành"
+ },
+ {
+  "id": 507,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Trinh nữ"
+ },
+ {
+  "id": 508,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Dịu dàng"
+ },
+ {
+  "id": 509,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Hoa nhài"
+ },
+ {
+  "id": 510,
+  "file": "src/index.template.html",
+  "line": 2103,
+  "vi": "Thanh khiết"
+ },
+ {
+  "id": 511,
+  "file": "src/index.template.html",
+  "line": 2104,
+  "vi": "Lá vàng mùa thu"
+ },
+ {
+  "id": 512,
+  "file": "src/index.template.html",
+  "line": 2104,
+  "vi": "Buông nhẹ"
+ },
+ {
+  "id": 513,
+  "file": "src/index.template.html",
+  "line": 2105,
+  "vi": "Dây thừng gai"
+ },
+ {
+  "id": 514,
+  "file": "src/index.template.html",
+  "line": 2105,
+  "vi": "Ruy băng xanh của Bánh Quy"
+ },
+ {
+  "id": 515,
+  "file": "src/index.template.html",
+  "line": 2105,
+  "vi": "Chỉ đỏ may mắn"
+ },
+ {
+  "id": 516,
+  "file": "src/index.template.html",
+  "line": 2106,
+  "vi": "Chậm lại một nhịp, hoa rồi sẽ nở."
+ },
+ {
+  "id": 517,
+  "file": "src/index.template.html",
+  "line": 2106,
+  "vi": "Gói một chút nắng cất vào trang sách."
+ },
+ {
+  "id": 518,
+  "file": "src/index.template.html",
+  "line": 2106,
+  "vi": "Bình yên nằm ở ngay góc cửa này."
+ },
+ {
+  "id": 519,
+  "file": "src/index.template.html",
+  "line": 2106,
+  "vi": "Hôm nay bạn đã làm rất tốt rồi."
+ },
+ {
+  "id": 520,
+  "file": "src/index.template.html",
+  "line": 2122,
+  "vi": "Trên bàn có một cuốn sách dày chuyên dùng để ép hoa khô, kèm theo vài dải ruy băng và những tờ giấy bìa xinh xắn."
+ },
+ {
+  "id": 521,
+  "file": "src/index.template.html",
+  "line": 2123,
+  "vi": "Nếu trong hộp kỷ vật đang có hoa ép hay lá khô, bạn có thể thử tự tay làm một chiếc dấu trang thật dịu dàng cho riêng mình đấy!"
+ },
+ {
+  "id": 522,
+  "file": "src/index.template.html",
+  "line": 2133,
+  "vi": "<small>Chưa có hoa lá ép nào. Hái từ chậu cây, nhặt lá phong của sóc, hoặc thắp nến 25 phút nhé.</small>"
+ },
+ {
+  "id": 523,
+  "file": "src/index.template.html",
+  "line": 2138,
+  "vi": "<h3>Góc thủ công</h3>\n    <div class=\"bm-prev\">${bmHtml(d)}</div>\n    <small>1. Phôi giấy</small><div class=\"bm-row\">${papers}</div>\n    <small>2. Hoa lá ép (chọn 1–2)</small><div class=\"bm-row\">${flowers}</div>\n    <small>3. Dây buộc</small><div class=\"bm-row\">${ribbons}</div>\n    <small>Con dấu</small><div class=\"bm-row\">${stamps}</div>\n    <small>4. Một câu nhỏ</small><div class=\"bm-row\">${quotes}</div>\n    <input id=\"bm-t\" maxlength=\"40\" placeholder=\"…hoặc tự viết (tối đa 40 chữ)\" value=\"${BM_QUOTES.includes(d.t) ? '' : esc(d.t)}\" style=\"width:100%;box-sizing:border-box;padding:.5em .7em;border-radius:10px;border:1.5px solid var(--paper-line);font:inherit;background:rgba(255,255,255,.6)\">\n    ${full ? "
+ },
+ {
+  "id": 524,
+  "file": "src/index.template.html",
+  "line": 2146,
+  "vi": "}\n    <button class=\"reply\" id=\"bm-list\" style=\"text-align:center\">🔖 Bộ sưu tập (${S.bookmarks.length}/${BM_MAX})</button>\n    <small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 525,
+  "file": "src/index.template.html",
+  "line": 2168,
+  "vi": "<h3>Chiếc dấu trang của bạn</h3><div style=\"display:flex;justify-content:center;font-size:15px;padding:3.4em 0 .6em\">${bmHtml(S.bookmarks[0])}</div>\n      <p style=\"text-align:center\">Bạn miết nhẹ cho cánh hoa nằm phẳng rồi buộc dây. Chiếc dấu trang đã được kẹp vào cuốn sổ tay 🔖</p><small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 526,
+  "file": "src/index.template.html",
+  "line": 2173,
+  "vi": "Chiếc dấu trang xinh quá! Màu giấy với cánh hoa phối khéo thật, bạn có con mắt của người vẽ tranh đấy. Mình kẹp nó vào cuốn sổ ký họa rồi."
+ },
+ {
+  "id": 527,
+  "file": "src/index.template.html",
+  "line": 2173,
+  "vi": "— Cậu họa sĩ tầng trên —"
+ },
+ {
+  "id": 528,
+  "file": "src/index.template.html",
+  "line": 2174,
+  "vi": "Chị treo chiếc dấu trang của em lên sạp hoa đầu hẻm rồi, khách nào ghé cũng hỏi ai làm mà khéo thế!"
+ },
+ {
+  "id": 529,
+  "file": "src/index.template.html",
+  "line": 2174,
+  "vi": "— Chị bán hoa đầu hẻm —"
+ },
+ {
+  "id": 530,
+  "file": "src/index.template.html",
+  "line": 2177,
+  "vi": "<h3>Bộ sưu tập dấu trang</h3>${L.length ? "
+ },
+ {
+  "id": 531,
+  "file": "src/index.template.html",
+  "line": 2177,
+  "vi": " : '<p style=\"text-align:center\">Chưa có chiếc nào. Thử làm chiếc đầu tiên nhé!</p>'}\n    <button class=\"reply\" id=\"bm-new\" style=\"text-align:center\">✂️ Làm dấu trang mới</button><small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 532,
+  "file": "src/index.template.html",
+  "line": 2185,
+  "vi": "<h3>Dấu trang</h3><div style=\"display:flex;justify-content:center;font-size:15px;padding:3.4em 0 .6em\">${bmHtml(b)}</div>\n    <button class=\"reply\" id=\"bm-clip\" style=\"text-align:center\">${S.bmClip === i ? '🔖 Đang kẹp trong sổ tay' : '🔖 Kẹp vào sổ tay'}</button>\n    ${canP ? '<button class=\"reply\" data-give=\"painter\" style=\"text-align:center\">✈️ Gửi cậu họa sĩ theo máy bay giấy</button>' : ''}\n    ${canF ? '<button class=\"reply\" data-give=\"florist\" style=\"text-align:center\">🧺 Gửi chị bán hoa qua túi vải</button>' : ''}\n    <button class=\"reply\" id=\"bm-back\" style=\"text-align:center\">‹ Bộ sưu tập</button><small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 533,
+  "file": "src/index.template.html",
+  "line": 2196,
+  "vi": "Máy bay giấy chở chiếc dấu trang bay lên tầng trên ✈️"
+ },
+ {
+  "id": 534,
+  "file": "src/index.template.html",
+  "line": 2196,
+  "vi": "Túi vải chở chiếc dấu trang về phía đầu hẻm 🧺"
+ },
+ {
+  "id": 535,
+  "file": "src/index.template.html",
+  "line": 2203,
+  "vi": "Dấu trang kẹp trong sổ tay"
+ },
+ {
+  "id": 536,
+  "file": "src/index.template.html",
+  "line": 2208,
+  "vi": "Đang dán trên khung cửa, chạm để gỡ"
+ },
+ {
+  "id": 537,
+  "file": "src/index.template.html",
+  "line": 2208,
+  "vi": "Chạm để dán lên khung cửa sổ"
+ },
+ {
+  "id": 538,
+  "file": "src/index.template.html",
+  "line": 2210,
+  "vi": "Hộp nhạc gỗ của bác"
+ },
+ {
+  "id": 539,
+  "file": "src/index.template.html",
+  "line": 2210,
+  "vi": "Chạm để nghe nhạc"
+ },
+ {
+  "id": 540,
+  "file": "src/index.template.html",
+  "line": 2210,
+  "vi": "Đang kẹt bánh răng, chạm để thử"
+ },
+ {
+  "id": 541,
+  "file": "src/index.template.html",
+  "line": 2211,
+  "vi": "Đồng hồ quả quýt"
+ },
+ {
+  "id": 542,
+  "file": "src/index.template.html",
+  "line": 2211,
+  "vi": "Chạm để nghe tích tắc"
+ },
+ {
+  "id": 543,
+  "file": "src/index.template.html",
+  "line": 2211,
+  "vi": "Thiệp hoa lưu ly ép khô"
+ },
+ {
+  "id": 544,
+  "file": "src/index.template.html",
+  "line": 2212,
+  "vi": "Tuýp màu nước xanh pastel"
+ },
+ {
+  "id": 545,
+  "file": "src/index.template.html",
+  "line": 2212,
+  "vi": "Mở thêm con dấu xanh pastel trong sổ tay"
+ },
+ {
+  "id": 546,
+  "file": "src/index.template.html",
+  "line": 2213,
+  "vi": "Tranh “Góc Cửa Ngày Mưa”"
+ },
+ {
+  "id": 547,
+  "file": "src/index.template.html",
+  "line": 2213,
+  "vi": "Đang treo trên tường, chạm để cất"
+ },
+ {
+  "id": 548,
+  "file": "src/index.template.html",
+  "line": 2213,
+  "vi": "Chạm để treo lên tường"
+ },
+ {
+  "id": 549,
+  "file": "src/index.template.html",
+  "line": 2214,
+  "vi": "Tranh “Hẻm Hoa Giấy”"
+ },
+ {
+  "id": 550,
+  "file": "src/index.template.html",
+  "line": 2215,
+  "vi": "Viên bi ve đại dương"
+ },
+ {
+  "id": 551,
+  "file": "src/index.template.html",
+  "line": 2215,
+  "vi": "Chạm để nghe sóng biển"
+ },
+ {
+  "id": 552,
+  "file": "src/index.template.html",
+  "line": 2216,
+  "vi": "Đĩa nhạc cũ bác sửa"
+ },
+ {
+  "id": 553,
+  "file": "src/index.template.html",
+  "line": 2216,
+  "vi": "Chạm để phát nhạc"
+ },
+ {
+  "id": 554,
+  "file": "src/index.template.html",
+  "line": 2216,
+  "vi": "Lò xo nhỏ"
+ },
+ {
+  "id": 555,
+  "file": "src/index.template.html",
+  "line": 2216,
+  "vi": "Đã lắp vào hộp nhạc"
+ },
+ {
+  "id": 556,
+  "file": "src/index.template.html",
+  "line": 2216,
+  "vi": "Chạm vào hộp nhạc để thử"
+ },
+ {
+  "id": 557,
+  "file": "src/index.template.html",
+  "line": 2217,
+  "vi": "Lông chim sẻ"
+ },
+ {
+  "id": 558,
+  "file": "src/index.template.html",
+  "line": 2217,
+  "vi": "Mở thêm con dấu lông chim trong sổ tay"
+ },
+ {
+  "id": 559,
+  "file": "src/index.template.html",
+  "line": 2217,
+  "vi": "Cúc áo đồng"
+ },
+ {
+  "id": 560,
+  "file": "src/index.template.html",
+  "line": 2217,
+  "vi": "Mở thêm con dấu cúc áo trong sổ tay"
+ },
+ {
+  "id": 561,
+  "file": "src/index.template.html",
+  "line": 2217,
+  "vi": "Vỏ sò nhỏ"
+ },
+ {
+  "id": 562,
+  "file": "src/index.template.html",
+  "line": 2217,
+  "vi": "Quà của chú chim sẻ"
+ },
+ {
+  "id": 563,
+  "file": "src/index.template.html",
+  "line": 2218,
+  "vi": "Tranh bút sáp: Bánh Quy"
+ },
+ {
+  "id": 564,
+  "file": "src/index.template.html",
+  "line": 2218,
+  "vi": "Tranh bút sáp: hai bạn nhỏ"
+ },
+ {
+  "id": 565,
+  "file": "src/index.template.html",
+  "line": 2219,
+  "vi": "Tranh bút sáp: cửa sổ sáng đèn"
+ },
+ {
+  "id": 566,
+  "file": "src/index.template.html",
+  "line": 2220,
+  "vi": "Túi hạt giống hướng dương"
+ },
+ {
+  "id": 567,
+  "file": "src/index.template.html",
+  "line": 2220,
+  "vi": "Quà của chị bán hoa. Rắc lên đĩa để mời bạn sóc"
+ },
+ {
+  "id": 568,
+  "file": "src/index.template.html",
+  "line": 2220,
+  "vi": "Bó hoa khô thơm dịu"
+ },
+ {
+  "id": 569,
+  "file": "src/index.template.html",
+  "line": 2220,
+  "vi": "Đang đặt trên bệ cửa, chạm để cất"
+ },
+ {
+  "id": 570,
+  "file": "src/index.template.html",
+  "line": 2220,
+  "vi": "Chạm để đặt lên bệ cửa sổ"
+ },
+ {
+  "id": 571,
+  "file": "src/index.template.html",
+  "line": 2220,
+  "vi": "Bình tưới bằng đồng"
+ },
+ {
+  "id": 572,
+  "file": "src/index.template.html",
+  "line": 2220,
+  "vi": "Quà của chị bán hoa. Cây lớn nhanh hơn một chút"
+ },
+ {
+  "id": 573,
+  "file": "src/index.template.html",
+  "line": 2221,
+  "vi": "Đèn lồng kéo quân"
+ },
+ {
+  "id": 574,
+  "file": "src/index.template.html",
+  "line": 2221,
+  "vi": "Quà đêm Trung Thu"
+ },
+ {
+  "id": 575,
+  "file": "src/index.template.html",
+  "line": 2222,
+  "vi": "Chọn ở hàng chuông gió phía trên"
+ },
+ {
+  "id": 576,
+  "file": "src/index.template.html",
+  "line": 2223,
+  "vi": "Băng cassette “Gió Đồi Thông”"
+ },
+ {
+  "id": 577,
+  "file": "src/index.template.html",
+  "line": 2223,
+  "vi": "Đang phát trên radio"
+ },
+ {
+  "id": 578,
+  "file": "src/index.template.html",
+  "line": 2223,
+  "vi": "Chạm để bỏ vào radio"
+ },
+ {
+  "id": 579,
+  "file": "src/index.template.html",
+  "line": 2224,
+  "vi": "La bàn đồng của Minh"
+ },
+ {
+  "id": 580,
+  "file": "src/index.template.html",
+  "line": 2224,
+  "vi": "Chạm để xem kim chỉ về đâu"
+ },
+ {
+  "id": 581,
+  "file": "src/index.template.html",
+  "line": 2225,
+  "vi": "Đang đặt trên kệ, chạm để cất"
+ },
+ {
+  "id": 582,
+  "file": "src/index.template.html",
+  "line": 2225,
+  "vi": "Chạm để đặt lên kệ tường"
+ },
+ {
+  "id": 583,
+  "file": "src/index.template.html",
+  "line": 2226,
+  "vi": "Album Bưu Thiếp Phương Xa"
+ },
+ {
+  "id": 584,
+  "file": "src/index.template.html",
+  "line": 2226,
+  "vi": "Có chữ ký của Minh, chạm để xem"
+ },
+ {
+  "id": 585,
+  "file": "src/index.template.html",
+  "line": 2227,
+  "vi": "Thẻ mượn sách"
+ },
+ {
+  "id": 586,
+  "file": "src/index.template.html",
+  "line": 2227,
+  "vi": "Tiệm Sách Cuối Hẻm · ${S.bk ? S.bk.stamps : 0} dấu"
+ },
+ {
+  "id": 587,
+  "file": "src/index.template.html",
+  "line": 2227,
+  "vi": "Thẻ mượn sách vàng"
+ },
+ {
+  "id": 588,
+  "file": "src/index.template.html",
+  "line": 2227,
+  "vi": "Mượn bao lâu tuỳ thích"
+ },
+ {
+  "id": 589,
+  "file": "src/index.template.html",
+  "line": 2228,
+  "vi": "Bông cúc ép của bà Khải"
+ },
+ {
+  "id": 590,
+  "file": "src/index.template.html",
+  "line": 2228,
+  "vi": "Kèm mẩu giấy “Gửi anh, mùa hoa đầu tiên.”"
+ },
+ {
+  "id": 591,
+  "file": "src/index.template.html",
+  "line": 2228,
+  "vi": "Sổ ép hoa của bà"
+ },
+ {
+  "id": 592,
+  "file": "src/index.template.html",
+  "line": 2228,
+  "vi": "Chạm để xem các trang hoa ép"
+ },
+ {
+  "id": 593,
+  "file": "src/index.template.html",
+  "line": 2229,
+  "vi": "Tranh “Tiệm Sách Cuối Hẻm”"
+ },
+ {
+  "id": 594,
+  "file": "src/index.template.html",
+  "line": 2230,
+  "vi": "Album “Một năm bên khung cửa”"
+ },
+ {
+  "id": 595,
+  "file": "src/index.template.html",
+  "line": 2230,
+  "vi": "Chạm để mở album"
+ },
+ {
+  "id": 596,
+  "file": "src/index.template.html",
+  "line": 2231,
+  "vi": "Ảnh “Đêm cả hẻm sáng đèn”"
+ },
+ {
+  "id": 597,
+  "file": "src/index.template.html",
+  "line": 2231,
+  "vi": "Bà chụp tặng, chạm để xem lại"
+ },
+ {
+  "id": 598,
+  "file": "src/index.template.html",
+  "line": 2232,
+  "vi": "Tờ giấy chép nhạc của cô Hạnh"
+ },
+ {
+  "id": 599,
+  "file": "src/index.template.html",
+  "line": 2232,
+  "vi": "Chạm để nghe lại giai điệu"
+ },
+ {
+  "id": 600,
+  "file": "src/index.template.html",
+  "line": 2232,
+  "vi": "Máy đếm nhịp bằng gỗ"
+ },
+ {
+  "id": 601,
+  "file": "src/index.template.html",
+  "line": 2232,
+  "vi": "Chạm để thở theo tiếng tích tắc"
+ },
+ {
+  "id": 602,
+  "file": "src/index.template.html",
+  "line": 2233,
+  "vi": "Ký họa cây đàn bên ô cửa sổ"
+ },
+ {
+  "id": 603,
+  "file": "src/index.template.html",
+  "line": 2234,
+  "vi": "Bông hồng cài áo đỏ"
+ },
+ {
+  "id": 604,
+  "file": "src/index.template.html",
+  "line": 2234,
+  "vi": "Quà Vu Lan của bà chủ nhà"
+ },
+ {
+  "id": 605,
+  "file": "src/index.template.html",
+  "line": 2234,
+  "vi": "Bông hồng cài áo trắng"
+ },
+ {
+  "id": 606,
+  "file": "src/index.template.html",
+  "line": 2235,
+  "vi": "Sợi chỉ đỏ may mắn"
+ },
+ {
+  "id": 607,
+  "file": "src/index.template.html",
+  "line": 2235,
+  "vi": "Quà Thất Tịch gửi kèm lá thư"
+ },
+ {
+  "id": 608,
+  "file": "src/index.template.html",
+  "line": 2235,
+  "vi": "Thư Thất Tịch"
+ },
+ {
+  "id": 609,
+  "file": "src/index.template.html",
+  "line": 2235,
+  "vi": "Chạm để đọc lại"
+ },
+ {
+  "id": 610,
+  "file": "src/index.template.html",
+  "line": 2236,
+  "vi": "Gói hạt giống chợ phiên"
+ },
+ {
+  "id": 611,
+  "file": "src/index.template.html",
+  "line": 2236,
+  "vi": "Hạt Hoa Mười Giờ của bà, gieo ở mục Gieo hạt mới"
+ },
+ {
+  "id": 612,
+  "file": "src/index.template.html",
+  "line": 2236,
+  "vi": "Ly nước sâm mía lau"
+ },
+ {
+  "id": 613,
+  "file": "src/index.template.html",
+  "line": 2236,
+  "vi": "Quà mùa hạ của chị bán hoa"
+ },
+ {
+  "id": 614,
+  "file": "src/index.template.html",
+  "line": 2237,
+  "vi": "Quạt giấy nhỏ"
+ },
+ {
+  "id": 615,
+  "file": "src/index.template.html",
+  "line": 2237,
+  "vi": "Chiều oi ả phe phẩy cho mát"
+ },
+ {
+  "id": 616,
+  "file": "src/index.template.html",
+  "line": 2237,
+  "vi": "Ba chiếc lá vàng mùa thu"
+ },
+ {
+  "id": 617,
+  "file": "src/index.template.html",
+  "line": 2237,
+  "vi": "Ép phẳng trong sổ tay, quà của cậu họa sĩ"
+ },
+ {
+  "id": 618,
+  "file": "src/index.template.html",
+  "line": 2238,
+  "vi": "Thiệp trái tim"
+ },
+ {
+  "id": 619,
+  "file": "src/index.template.html",
+  "line": 2238,
+  "vi": "Ngày Của Những Lá Thư"
+ },
+ {
+  "id": 620,
+  "file": "src/index.template.html",
+  "line": 2238,
+  "vi": "Hộp sô-cô-la nhỏ"
+ },
+ {
+  "id": 621,
+  "file": "src/index.template.html",
+  "line": 2239,
+  "vi": "Bó hoa của chị bán hoa"
+ },
+ {
+  "id": 622,
+  "file": "src/index.template.html",
+  "line": 2239,
+  "vi": "Ngày Của Phụ Nữ"
+ },
+ {
+  "id": 623,
+  "file": "src/index.template.html",
+  "line": 2239,
+  "vi": "Tấm thẻ viết tay"
+ },
+ {
+  "id": 624,
+  "file": "src/index.template.html",
+  "line": 2239,
+  "vi": "Chậu cẩm chướng của bé Na"
+ },
+ {
+  "id": 625,
+  "file": "src/index.template.html",
+  "line": 2239,
+  "vi": "Ngày Nhà Giáo"
+ },
+ {
+  "id": 626,
+  "file": "src/index.template.html",
+  "line": 2240,
+  "vi": "Trái bí ngô"
+ },
+ {
+  "id": 627,
+  "file": "src/index.template.html",
+  "line": 2240,
+  "vi": "Đêm Hóa Trang, đặt trên bệ cửa"
+ },
+ {
+  "id": 628,
+  "file": "src/index.template.html",
+  "line": 2240,
+  "vi": "Giỏ kẹo"
+ },
+ {
+  "id": 629,
+  "file": "src/index.template.html",
+  "line": 2240,
+  "vi": "Thả kẹo cho tụi nhỏ dưới hẻm"
+ },
+ {
+  "id": 630,
+  "file": "src/index.template.html",
+  "line": 2241,
+  "vi": "Mũ phù thủy của Bánh Quy"
+ },
+ {
+  "id": 631,
+  "file": "src/index.template.html",
+  "line": 2241,
+  "vi": "Bánh Quy đang đội, chạm để cởi"
+ },
+ {
+  "id": 632,
+  "file": "src/index.template.html",
+  "line": 2241,
+  "vi": "Chạm để đội cho Bánh Quy"
+ },
+ {
+  "id": 633,
+  "file": "src/index.template.html",
+  "line": 2242,
+  "vi": "Khăn len cũ của bác"
+ },
+ {
+  "id": 634,
+  "file": "src/index.template.html",
+  "line": 2242,
+  "vi": "Quà mùa đông của bác sửa đồng hồ"
+ },
+ {
+  "id": 635,
+  "file": "src/index.template.html",
+  "line": 2242,
+  "vi": "Mấy lát gừng tươi"
+ },
+ {
+  "id": 636,
+  "file": "src/index.template.html",
+  "line": 2242,
+  "vi": "Pha trà gừng cho ấm lòng"
+ },
+ {
+  "id": 637,
+  "file": "src/index.template.html",
+  "line": 2243,
+  "vi": "Câu đối “Mừng Xuân – Như Ý”"
+ },
+ {
+  "id": 638,
+  "file": "src/index.template.html",
+  "line": 2243,
+  "vi": "Đang treo hai bên khung cửa, chạm để cất"
+ },
+ {
+  "id": 639,
+  "file": "src/index.template.html",
+  "line": 2243,
+  "vi": "Chạm để treo hai bên khung cửa"
+ },
+ {
+  "id": 640,
+  "file": "src/index.template.html",
+  "line": 2246,
+  "vi": "Lá phong khô (Sóc tặng)"
+ },
+ {
+  "id": 641,
+  "file": "src/index.template.html",
+  "line": 2249,
+  "vi": "Gửi bé Na qua ruy băng của Bánh Quy"
+ },
+ {
+  "id": 642,
+  "file": "src/index.template.html",
+  "line": 2249,
+  "vi": "Sửa hộp nhạc kẹt của bác"
+ },
+ {
+  "id": 643,
+  "file": "src/index.template.html",
+  "line": 2249,
+  "vi": "Kẹp vào máy bay giấy gửi cậu họa sĩ"
+ },
+ {
+  "id": 644,
+  "file": "src/index.template.html",
+  "line": 2250,
+  "vi": "Lót gói quà gửi chị bán hoa, hoặc kẹp máy bay giấy"
+ },
+ {
+  "id": 645,
+  "file": "src/index.template.html",
+  "line": 2250,
+  "vi": "Gửi Minh qua hòm thư chân cầu thang"
+ },
+ {
+  "id": 646,
+  "file": "src/index.template.html",
+  "line": 2250,
+  "vi": "Quà của bạn sóc. Mở con dấu lá phong trong sổ tay"
+ },
+ {
+  "id": 647,
+  "file": "src/index.template.html",
+  "line": 2255,
+  "vi": "</div><small style=\"margin:.2em 0 .8em\">Chạm để đổi chuông gió bên cửa sổ</small>"
+ },
+ {
+  "id": 648,
+  "file": "src/index.template.html",
+  "line": 2257,
+  "vi": "<button class=\"reply\" id=\"k-journal\" style=\"text-align:center\">📖 Lời nhắn (${nJ}/${JOURNAL.length * 5} chương)</button>"
+ },
+ {
+  "id": 649,
+  "file": "src/index.template.html",
+  "line": 2258,
+  "vi": "<button class=\"reply\" id=\"k-craft\" style=\"text-align:center\">✂️ Góc thủ công: làm dấu trang (${S.bookmarks.length}/${BM_MAX})</button>"
+ },
+ {
+  "id": 650,
+  "file": "src/index.template.html",
+  "line": 2259,
+  "vi": "<h3>Hộp kỷ vật</h3>${jbtn}${chimes}${rows.length ? rows.join('') : '<p style=\"text-align:center\">Hộp còn trống. Hãy chăm cây và chờ các vị khách nhỏ nhé.</p>'}\n    <small>Chạm ra ngoài để đóng</small>"
+ },
+ {
+  "id": 651,
+  "file": "src/index.template.html",
+  "line": 2430,
+  "vi": "Tối nay, bên kia hẻm sẽ có thêm một ô cửa sáng đèn vì bạn 💡"
+ },
+ {
+  "id": 652,
+  "file": "src/index.template.html",
+  "line": 2430,
+  "vi": "Bên kia hẻm, một ô cửa vừa bật đèn vàng 💡"
+ },
+ {
+  "id": 653,
+  "file": "src/index.template.html",
+  "line": 2521,
+  "vi": "<img class=\"paper-img\" src=\"${ITEM_IMG.landlady}\" alt=\"\" style=\"max-height:7em\">Chào cháu mới dọn tới căn gác nhỏ này! Hôm cháu chuyển đồ lên trời mưa tầm tã, bà thấy cháu mệt lắm. Ở đây chẳng có gì phải vội. Cháu cứ chạm vào mọi thứ quanh mình:\n    bật chiếc đèn bàn, vuốt ve chú mèo Bánh Quy hay ghé ngủ nhờ, tưới chậu cây, lắc chuông gió, mở radio nghe nhạc.\n    Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, cháu nhớ để ý bệ cửa nhé.<br><br>Hôm nay cháu thử ba việc nhỏ thôi: <b>tưới chậu cây</b>, <b>pha một tách trà</b> rồi <b>viết vài chữ vào sổ tay</b>.<small>— Bà chủ nhà tầng dưới —</small>"
+ },
+ {
+  "id": 654,
+  "file": "src/index.template.html",
+  "line": 2524,
+  "vi": "Những chỗ phát sáng là đồ vật bạn chạm được ✨ Ba việc nhỏ đầu tiên nằm trong nút 📝"
+ },
+ {
+  "id": 655,
+  "file": "src/index.template.html",
+  "line": 2526,
+  "vi": "Bánh Quy khẽ rừ rừ trong cổ họng…"
+ },
+ {
+  "id": 656,
+  "file": "src/index.template.html",
+  "line": 2526,
+  "vi": "Bánh Quy dụi đầu vào tay bạn 💛"
+ },
+ {
+  "id": 657,
+  "file": "src/index.template.html",
+  "line": 2526,
+  "vi": "Bánh Quy lim dim, đuôi phe phẩy nhẹ…"
+ },
+ {
+  "id": 658,
+  "file": "src/index.template.html",
+  "line": 2527,
+  "vi": "Bánh Quy kêu “meo” một tiếng thật khẽ"
+ },
+ {
+  "id": 659,
+  "file": "src/index.template.html",
+  "line": 2527,
+  "vi": "Bánh Quy duỗi người rồi nằm sát lại gần bạn"
+ },
+ {
+  "id": 660,
+  "file": "src/index.template.html",
+  "line": 2541,
+  "vi": "Ngọn hải đăng gỗ của Minh. Tối nay đèn sẽ quét một vòng vàng ấm 🗼"
+ },
+ {
+  "id": 661,
+  "file": "src/index.template.html",
+  "line": 2541,
+  "vi": "Ngọn hải đăng nhỏ quét ánh vàng qua căn gác, như đang chỉ đường về 🗼"
+ },
+ {
+  "id": 662,
+  "file": "src/index.template.html",
+  "line": 2546,
+  "vi": "Cất chiếc lá phong khô vào hộp kỷ vật 🍂"
+ },
+ {
+  "id": 663,
+  "file": "src/index.template.html",
+  "line": 2548,
+  "vi": "Rắc ít hạt hướng dương lên đĩa 🌻"
+ },
+ {
+  "id": 664,
+  "file": "src/index.template.html",
+  "line": 2549,
+  "vi": "Đặt sữa và bánh quy cho Bánh Quy 🍪"
+ },
+ {
+  "id": 665,
+  "file": "src/index.template.html",
+  "line": 2554,
+  "vi": "Bánh Quy ăn sạch bánh quy rồi, no căng bụng 😽"
+ },
+ {
+  "id": 666,
+  "file": "src/index.template.html",
+  "line": 2565,
+  "vi": "Tắt radio"
+ },
+ {
+  "id": 667,
+  "file": "src/index.template.html",
+  "line": 2566,
+  "vi": "Tần Số Hẻm Hoa Giấy · 94.2 FM 📻"
+ },
+ {
+  "id": 668,
+  "file": "src/index.template.html",
+  "line": 2566,
+  "vi": "Radio 94.2 FM 📻 (ban đêm có DJ trò chuyện)"
+ },
+ {
+  "id": 669,
+  "file": "src/index.template.html",
+  "line": 2568,
+  "vi": "Nến cháy 25 phút: cùng ngồi làm việc, học bài nhé 🕯️ Chạm lần nữa để tắt"
+ },
+ {
+  "id": 670,
+  "file": "src/index.template.html",
+  "line": 2571,
+  "vi": "Cốc ca cao vẫn còn ấm trên bàn, chạm vào để nhấp một ngụm nhé ☕"
+ },
+ {
+  "id": 671,
+  "file": "src/index.template.html",
+  "line": 2571,
+  "vi": "Tách trà vẫn còn ấm trên bàn, chạm vào để nhấp một ngụm nhé 🍵"
+ },
+ {
+  "id": 672,
+  "file": "src/index.template.html",
+  "line": 2583,
+  "vi": "Chíp chíp! Hôm nay bay ngang đầu hẻm, tớ nghe chị bán hoa bảo chị thích mùi oải hương và sức sống của trầu bà lắm đấy!"
+ },
+ {
+  "id": 673,
+  "file": "src/index.template.html",
+  "line": 2609,
+  "vi": "Ộp... Mưa ngoài kia to quá, cho tớ trú nhờ dưới tán lá dương xỉ một chút nhé?"
+ },
+ {
+  "id": 674,
+  "file": "src/index.template.html",
+  "line": 2609,
+  "vi": "Tí tách, tí tách... Đứng ở bệ cửa nhà bạn nghe tiếng mưa rơi êm tai thật đấy!"
+ },
+ {
+  "id": 675,
+  "file": "src/index.template.html",
+  "line": 2610,
+  "vi": "Da tớ hơi ướt một chút, nhưng ngồi cạnh ánh đèn lồng ấm áp này thấy dễ chịu hẳn."
+ },
+ {
+  "id": 676,
+  "file": "src/index.template.html",
+  "line": 2610,
+  "vi": "Cảm ơn bạn đã không đuổi tớ đi. Tớ sẽ hát tặng bạn một khúc đồng dao ngày mưa nhé!"
+ },
+ {
+  "id": 677,
+  "file": "src/index.template.html",
+  "line": 2611,
+  "vi": "Trời tạnh rồi, cầu vồng sắp lên kia kìa! Tạm biệt bạn, hẹn gặp lại vào cơn mưa sau nha!"
+ },
+ {
+  "id": 678,
+  "file": "src/index.template.html",
+  "line": 2612,
+  "vi": "Hù... Đêm khuya rồi mà ô cửa nhà bạn vẫn sáng đèn à? Tớ ghé qua gác đêm cùng bạn một lát nhé."
+ },
+ {
+  "id": 679,
+  "file": "src/index.template.html",
+  "line": 2612,
+  "vi": "Con hẻm giờ này ngủ say cả rồi, chỉ còn gió mát và mùi hoa oải hương nhà bạn thoang thoảng thôi."
+ },
+ {
+  "id": 680,
+  "file": "src/index.template.html",
+  "line": 2613,
+  "vi": "Đừng thức khuya quá nhé người bạn nhỏ. Nếu thấy mỏi mắt, hãy thử pha một tách trà ấm xem sao."
+ },
+ {
+  "id": 681,
+  "file": "src/index.template.html",
+  "line": 2613,
+  "vi": "Tớ đang canh chừng sự bình yên cho cả con hẻm này đây. Bạn cứ yên tâm nghỉ ngơi nha!"
+ },
+ {
+  "id": 682,
+  "file": "src/index.template.html",
+  "line": 2614,
+  "vi": "Trời sắp hửng sáng rồi, đến giờ tớ đi ngủ đây. Chúc bạn một ngày mới thật dịu dàng!"
+ },
+ {
+  "id": 683,
+  "file": "src/index.template.html",
+  "line": 2615,
+  "vi": "Chít chít! Mùi hạt hướng dương thơm quá đi mất, tớ xin phép nhâm nhi một chút nhé!"
+ },
+ {
+  "id": 684,
+  "file": "src/index.template.html",
+  "line": 2615,
+  "vi": "Hôm nay nắng đẹp quá, bệ cửa nhà bạn đúng là chỗ lý tưởng nhất để phơi nắng và ăn vặt!"
+ },
+ {
+  "id": 685,
+  "file": "src/index.template.html",
+  "line": 2616,
+  "vi": "Rộp rộp... Ngon tuyệt! Má tớ phồng lên như hai chiếc bánh bao rồi này!"
+ },
+ {
+  "id": 686,
+  "file": "src/index.template.html",
+  "line": 2616,
+  "vi": "Bạn trồng hoa khéo thật đấy, chú cúc họa mi kia cứ đung đưa theo gió trông vui mắt ghê."
+ },
+ {
+  "id": 687,
+  "file": "src/index.template.html",
+  "line": 2617,
+  "vi": "Cảm ơn bữa ăn ngon lành nhé! Tớ nhặt được chiếc lá phong đỏ rực này ngoài công viên, tặng bạn làm kỷ niệm nè!"
+ },
+ {
+  "id": 688,
+  "file": "src/index.template.html",
+  "line": 2656,
+  "vi": "Một chiếc máy bay giấy vừa đáp xuống bệ cửa ✈️"
+ },
+ {
+  "id": 689,
+  "file": "src/index.template.html",
+  "line": 2702,
+  "vi": "<h3>Âm thanh</h3>${sl('v-amb', '🌧️ Mưa, chim, côn trùng', S.volAmb)}${sl('v-radio', '📻 Nhạc radio', S.volRadio)}${sl('v-music', '🎵 Nhạc nền', S.volMusic ?? 0.7)}\n    ${tetUnlocked() && !tetSeason() ? "
+ },
+ {
+  "id": 690,
+  "file": "src/index.template.html",
+  "line": 2703,
+  "vi": "🧧 Không Khí Tết: đang bật"
+ },
+ {
+  "id": 691,
+  "file": "src/index.template.html",
+  "line": 2703,
+  "vi": "🧧 Không Khí Tết: đang tắt"
+ },
+ {
+  "id": 692,
+  "file": "src/index.template.html",
+  "line": 2704,
+  "vi": "🎄 Không Khí Giáng Sinh: đang bật"
+ },
+ {
+  "id": 693,
+  "file": "src/index.template.html",
+  "line": 2704,
+  "vi": "🎄 Không Khí Giáng Sinh: đang tắt"
+ },
+ {
+  "id": 694,
+  "file": "src/index.template.html",
+  "line": 2705,
+  "vi": "🪷 Không Khí Vu Lan: đang bật"
+ },
+ {
+  "id": 695,
+  "file": "src/index.template.html",
+  "line": 2705,
+  "vi": "🪷 Không Khí Vu Lan: đang tắt"
+ },
+ {
+  "id": 696,
+  "file": "src/index.template.html",
+  "line": 2706,
+  "vi": "🐦 Không Khí Thất Tịch: đang bật"
+ },
+ {
+  "id": 697,
+  "file": "src/index.template.html",
+  "line": 2706,
+  "vi": "🐦 Không Khí Thất Tịch: đang tắt"
+ },
+ {
+  "id": 698,
+  "file": "src/index.template.html",
+  "line": 2707,
+  "vi": "🌕 Đêm Trăng Rằm: đang bật"
+ },
+ {
+  "id": 699,
+  "file": "src/index.template.html",
+  "line": 2707,
+  "vi": "🌑 Đêm Trăng Rằm: đang tắt"
+ },
+ {
+  "id": 700,
+  "file": "src/index.template.html",
+  "line": 2707,
+  "vi": " : ''}\n    <button class=\"reply\" id=\"v-mute\">${S.muted ? '🔈 Bật lại âm thanh' : '🔇 Tắt hết âm thanh'}</button>\n    <button class=\"reply\" id=\"v-done\" style=\"text-align:center\">Xong</button>"
+ },
+ {
+  "id": 701,
+  "file": "src/index.template.html",
+  "line": 2714,
+  "vi": "Con hẻm đã giăng đèn dây, Giáng Sinh về rồi 🎄"
+ },
+ {
+  "id": 702,
+  "file": "src/index.template.html",
+  "line": 2716,
+  "vi": "Con hẻm đã treo đèn lồng đỏ, Tết về rồi 🧧"
+ },
+ {
+  "id": 703,
+  "file": "src/index.template.html",
+  "line": 2719,
+  "vi": "Tháng Bảy về trên con hẻm nhỏ, đêm nay trăng rằm 🪷"
+ },
+ {
+  "id": 704,
+  "file": "src/index.template.html",
+  "line": 2721,
+  "vi": "Mưa ngâu lất phất, Thất Tịch về rồi 🐦"
+ },
+ {
+  "id": 705,
+  "file": "src/index.template.html",
+  "line": 2723,
+  "vi": "Đêm nay bà chủ nhà sẽ ghé ngắm trăng cùng bạn 🌕"
+ },
+ {
+  "id": 706,
+  "file": "src/index.template.html",
+  "line": 2723,
+  "vi": "Chuyển sang trời đêm để ngắm trăng cùng bà chủ nhà nhé 🌕"
+ },
+ {
+  "id": 707,
+  "file": "src/index.template.html",
+  "line": 2744,
+  "vi": "Chạm vào đồ vật để tương tác ✨"
+ },
+ {
+  "id": 708,
+  "file": "src/index.template.html",
+  "line": 2766,
+  "vi": "Bánh Quy chạy về ướt nhẹp, run rẩy… chạm vào mèo để lau khô 🌧️"
+ },
+ {
+  "id": 709,
+  "file": "src/index.template.html",
+  "line": 6,
+  "vi": "Bên Khung Cửa Nhỏ"
+ },
+ {
+  "id": 710,
+  "file": "src/index.template.html",
+  "line": 505,
+  "vi": "📻 Tần Số Hẻm Hoa Giấy"
+ },
+ {
+  "id": 711,
+  "file": "src/index.template.html",
+  "line": 518,
+  "vi": "🗺️ Bản đồ"
+ },
+ {
+  "id": 712,
+  "file": "src/index.template.html",
+  "line": 518,
+  "vi": "Về Gác"
+ },
+ {
+  "id": 713,
+  "file": "src/index.template.html",
+  "line": 527,
+  "vi": "Kéo một cuốn sang chỗ khác, hoặc chạm hai cuốn để đổi chỗ. Đỏ ở bên trái, nâu ở bên phải."
+ },
+ {
+  "id": 714,
+  "file": "src/index.template.html",
+  "line": 529,
+  "vi": "Để lát nữa xếp tiếp"
+ },
+ {
+  "id": 715,
+  "file": "src/index.template.html",
+  "line": 534,
+  "vi": "Căn Gác Nhỏ"
+ },
+ {
+  "id": 716,
+  "file": "src/index.template.html",
+  "line": 535,
+  "vi": "Hòm Thư Chân Cầu Thang"
+ },
+ {
+  "id": 717,
+  "file": "src/index.template.html",
+  "line": 536,
+  "vi": "Tiệm Hoa Đầu Hẻm"
+ },
+ {
+  "id": 718,
+  "file": "src/index.template.html",
+  "line": 537,
+  "vi": "Tiệm Sách Cuối Hẻm"
+ },
+ {
+  "id": 719,
+  "file": "src/index.template.html",
+  "line": 539,
+  "vi": "Chạm ra ngoài để đóng"
+ },
+ {
+  "id": 720,
+  "file": "src/index.template.html",
+  "line": 544,
+  "vi": "📮 HÒM THƯ CHÂN CẦU THANG"
+ },
+ {
+  "id": 721,
+  "file": "src/index.template.html",
+  "line": 558,
+  "vi": "Mở khung cửa nhỏ"
+ },
+ {
+  "id": 722,
+  "file": "src/index.template.html",
+  "line": 559,
+  "vi": "Nên đeo tai nghe để nghe tiếng mưa 🎧"
+ },
+ {
+  "id": 723,
+  "file": "src/index.template.html",
+  "line": 1327,
+  "vi": "Cất trang này"
+ },
+ {
+  "id": 724,
+  "file": "src/index.template.html",
+  "line": 1329,
+  "vi": "Trang cũ ›"
+ },
+ {
+  "id": 725,
+  "file": "src/index.template.html",
+  "line": 1366,
+  "vi": "Gửi chính mình của những ngày đã qua"
+ },
+ {
+  "id": 726,
+  "file": "src/index.template.html",
+  "line": 1367,
+  "vi": "Gửi tôi của ngày hôm nay,"
+ },
+ {
+  "id": 727,
+  "file": "src/index.template.html",
+  "line": 1370,
+  "vi": "Cảm ơn tôi vì đã kiên nhẫn ở lại, đã thắp sáng khung cửa sổ này, và đã tự vỗ về chính mình thật tốt. Dù ngày mai ngoài kia có bận rộn thế nào, hãy luôn nhớ rằng bên trong tôi vẫn có một góc gác nhỏ bình yên như thế này để trở về."
+ },
+ {
+  "id": 728,
+  "file": "src/index.template.html",
+  "line": 1371,
+  "vi": "Ký tên: Người bạn ở căn gác nhỏ"
+ },
+ {
+  "id": 729,
+  "file": "src/index.template.html",
+  "line": 1375,
+  "vi": "Lá thư được cất trong sổ tay · Chạm ra ngoài để đóng"
+ },
+ {
+  "id": 730,
+  "file": "src/index.template.html",
+  "line": 1379,
+  "vi": "Sổ tay của bạn"
+ },
+ {
+  "id": 731,
+  "file": "src/index.template.html",
+  "line": 1382,
+  "vi": "Câu tâm đắc · đọc to ở Tiệm Sách Cuối Hẻm"
+ },
+ {
+  "id": 732,
+  "file": "src/index.template.html",
+  "line": 1435,
+  "vi": "Chạm để đọc tiếp…"
+ },
+ {
+  "id": 733,
+  "file": "src/index.template.html",
+  "line": 1488,
+  "vi": "— món quà nhỏ từ chú chim sẻ —"
+ },
+ {
+  "id": 734,
+  "file": "src/index.template.html",
+  "line": 1489,
+  "vi": "Chú chim sẻ nhỏ lại sà xuống bệ cửa, mang theo một chiếc lò xo bé xíu sáng bóng."
+ },
+ {
+  "id": 735,
+  "file": "src/index.template.html",
+  "line": 1489,
+  "vi": "Chạm vào hộp nhạc trong hộp kỷ vật để lắp thử"
+ },
+ {
+  "id": 736,
+  "file": "src/index.template.html",
+  "line": 1501,
+  "vi": "— một người hàng xóm giấu tên —"
+ },
+ {
+  "id": 737,
+  "file": "src/index.template.html",
+  "line": 1562,
+  "vi": "Hôm nay pha trà gì?"
+ },
+ {
+  "id": 738,
+  "file": "src/index.template.html",
+  "line": 1572,
+  "vi": "Chạm ra ngoài để dừng"
+ },
+ {
+  "id": 739,
+  "file": "src/index.template.html",
+  "line": 1623,
+  "vi": "Ngọn nến vừa tàn. Bạn đã chăm chú suốt 25 phút rồi đấy! Đứng dậy vươn vai, uống một ngụm nước và nghỉ ngơi 5 phút nhé."
+ },
+ {
+  "id": 740,
+  "file": "src/index.template.html",
+  "line": 1660,
+  "vi": "🎀 Mở cuộn giấy"
+ },
+ {
+  "id": 741,
+  "file": "src/index.template.html",
+  "line": 1674,
+  "vi": "Gửi người bạn ở căn gác nhỏ,"
+ },
+ {
+  "id": 742,
+  "file": "src/index.template.html",
+  "line": 1675,
+  "vi": "Từ ngày khung cửa sổ nhà bạn sáng đèn, con hẻm yên tĩnh này dường như cũng trở nên ấm áp và có sức sống hơn hẳn."
+ },
+ {
+  "id": 743,
+  "file": "src/index.template.html",
+  "line": 1684,
+  "vi": "Chúng tôi đã cùng nhau vẽ lại bức tranh “Hẻm Hoa Giấy” này để tặng bạn. Dù ngoài kia cuộc sống có đôi lúc vội vã, mong bạn hãy luôn nhớ rằng ở góc hẻm nhỏ này, vẫn luôn có những ô cửa sáng đèn và những người hàng xóm lặng lẽ mỉm cười chào đón bạn."
+ },
+ {
+  "id": 744,
+  "file": "src/index.template.html",
+  "line": 1685,
+  "vi": "Cảm ơn bạn đã ở đây."
+ },
+ {
+  "id": 745,
+  "file": "src/index.template.html",
+  "line": 1687,
+  "vi": "Bức tranh “Hẻm Hoa Giấy” đã được treo trang trọng trên tường. Câu chuyện của những người hàng xóm đã trọn vẹn, nhưng căn gác nhỏ này vẫn luôn mở cửa. Bạn cứ thong thả chăm cây, nghe đài và tận hưởng những ngày bình yên tiếp theo nhé!"
+ },
+ {
+  "id": 746,
+  "file": "src/index.template.html",
+  "line": 1711,
+  "vi": "— Na, tầng dưới —"
+ },
+ {
+  "id": 747,
+  "file": "src/index.template.html",
+  "line": 1716,
+  "vi": "Kẹp lại vào ruy băng của Bánh Quy:"
+ },
+ {
+  "id": 748,
+  "file": "src/index.template.html",
+  "line": 1741,
+  "vi": "Gửi quà cho Na"
+ },
+ {
+  "id": 749,
+  "file": "src/index.template.html",
+  "line": 1741,
+  "vi": "Kẹp một bông cúc họa mi ép vào ruy băng của Bánh Quy?"
+ },
+ {
+  "id": 750,
+  "file": "src/index.template.html",
+  "line": 1742,
+  "vi": "Gửi bông hoa 🌼"
+ },
+ {
+  "id": 751,
+  "file": "src/index.template.html",
+  "line": 1823,
+  "vi": "Lắp lò xo vào chiếc hộp nhạc gỗ, những bánh răng rỉ sét bỗng chuyển động và ngân lên giai điệu du dương."
+ },
+ {
+  "id": 752,
+  "file": "src/index.template.html",
+  "line": 1913,
+  "vi": "Gieo hạt mới"
+ },
+ {
+  "id": 753,
+  "file": "src/index.template.html",
+  "line": 1976,
+  "vi": "Gửi vào túi vải"
+ },
+ {
+  "id": 754,
+  "file": "src/index.template.html",
+  "line": 1991,
+  "vi": "P.S. Lá dương xỉ em lót quanh nhánh hoa xanh mướt quá, chị cắm chung vào bình trên quầy rồi đấy."
+ },
+ {
+  "id": 755,
+  "file": "src/index.template.html",
+  "line": 2034,
+  "vi": "— Bà chủ nhà tầng dưới —"
+ },
+ {
+  "id": 756,
+  "file": "src/index.template.html",
+  "line": 2090,
+  "vi": "chưa tới"
+ },
+ {
+  "id": 757,
+  "file": "src/index.template.html",
+  "line": 2091,
+  "vi": "Chưa có lời nhắn nào…"
+ },
+ {
+  "id": 758,
+  "file": "src/index.template.html",
+  "line": 2093,
+  "vi": "Lời nhắn"
+ },
+ {
+  "id": 759,
+  "file": "src/index.template.html",
+  "line": 2093,
+  "vi": "Những câu chuyện bạn đã đi qua cùng con hẻm"
+ },
+ {
+  "id": 760,
+  "file": "src/index.template.html",
+  "line": 2094,
+  "vi": "‹ Về hộp kỷ vật"
+ },
+ {
+  "id": 761,
+  "file": "src/index.template.html",
+  "line": 2133,
+  "vi": "Chưa có hoa lá ép nào. Hái từ chậu cây, nhặt lá phong của sóc, hoặc thắp nến 25 phút nhé."
+ },
+ {
+  "id": 762,
+  "file": "src/index.template.html",
+  "line": 2138,
+  "vi": "Góc thủ công"
+ },
+ {
+  "id": 763,
+  "file": "src/index.template.html",
+  "line": 2140,
+  "vi": "1. Phôi giấy"
+ },
+ {
+  "id": 764,
+  "file": "src/index.template.html",
+  "line": 2141,
+  "vi": "2. Hoa lá ép (chọn 1–2)"
+ },
+ {
+  "id": 765,
+  "file": "src/index.template.html",
+  "line": 2142,
+  "vi": "3. Dây buộc"
+ },
+ {
+  "id": 766,
+  "file": "src/index.template.html",
+  "line": 2143,
+  "vi": "Con dấu"
+ },
+ {
+  "id": 767,
+  "file": "src/index.template.html",
+  "line": 2144,
+  "vi": "4. Một câu nhỏ"
+ },
+ {
+  "id": 768,
+  "file": "src/index.template.html",
+  "line": 2146,
+  "vi": "Ép xong ✨"
+ },
+ {
+  "id": 769,
+  "file": "src/index.template.html",
+  "line": 2168,
+  "vi": "Chiếc dấu trang của bạn"
+ },
+ {
+  "id": 770,
+  "file": "src/index.template.html",
+  "line": 2169,
+  "vi": "Bạn miết nhẹ cho cánh hoa nằm phẳng rồi buộc dây. Chiếc dấu trang đã được kẹp vào cuốn sổ tay 🔖"
+ },
+ {
+  "id": 771,
+  "file": "src/index.template.html",
+  "line": 2177,
+  "vi": "Bộ sưu tập dấu trang"
+ },
+ {
+  "id": 772,
+  "file": "src/index.template.html",
+  "line": 2177,
+  "vi": "Chưa có chiếc nào. Thử làm chiếc đầu tiên nhé!"
+ },
+ {
+  "id": 773,
+  "file": "src/index.template.html",
+  "line": 2178,
+  "vi": "✂️ Làm dấu trang mới"
+ },
+ {
+  "id": 774,
+  "file": "src/index.template.html",
+  "line": 2185,
+  "vi": "Dấu trang"
+ },
+ {
+  "id": 775,
+  "file": "src/index.template.html",
+  "line": 2187,
+  "vi": "✈️ Gửi cậu họa sĩ theo máy bay giấy"
+ },
+ {
+  "id": 776,
+  "file": "src/index.template.html",
+  "line": 2188,
+  "vi": "🧺 Gửi chị bán hoa qua túi vải"
+ },
+ {
+  "id": 777,
+  "file": "src/index.template.html",
+  "line": 2189,
+  "vi": "‹ Bộ sưu tập"
+ },
+ {
+  "id": 778,
+  "file": "src/index.template.html",
+  "line": 2255,
+  "vi": "Chạm để đổi chuông gió bên cửa sổ"
+ },
+ {
+  "id": 779,
+  "file": "src/index.template.html",
+  "line": 2259,
+  "vi": "Hộp còn trống. Hãy chăm cây và chờ các vị khách nhỏ nhé."
+ },
+ {
+  "id": 780,
+  "file": "src/index.template.html",
+  "line": 2521,
+  "vi": "Chào cháu mới dọn tới căn gác nhỏ này! Hôm cháu chuyển đồ lên trời mưa tầm tã, bà thấy cháu mệt lắm. Ở đây chẳng có gì phải vội. Cháu cứ chạm vào mọi thứ quanh mình:\n    bật chiếc đèn bàn, vuốt ve chú mèo Bánh Quy hay ghé ngủ nhờ, tưới chậu cây, lắc chuông gió, mở radio nghe nhạc.\n    Thỉnh thoảng hàng xóm sẽ gửi sang vài mẩu giấy nhỏ, cháu nhớ để ý bệ cửa nhé."
+ }
+]

@@ -1,0 +1,4 @@
+{
+ "`Bệ cửa của ${esc(f.n)}`": "`${esc(f.n)}’s windowsill`",
+ "`<small>Bạn ấy đã ngồi bên khung cửa ${f.d} ngày</small>`": "`<small>They’ve sat by their window for ${f.d} days</small>`"
+}
