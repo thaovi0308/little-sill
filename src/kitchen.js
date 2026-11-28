@@ -67,7 +67,7 @@ kst.textContent = `#kitbtn { position: absolute; left: 3.2%; top: calc(2.6% + 15
   .kit-pot.h3 .stove { filter: brightness(1.1) saturate(1.25) drop-shadow(0 0 10px rgba(255, 140, 50, .55)) }
   @keyframes kitBob { to { transform: translateY(-3px) rotate(1.5deg) } }`;
 document.head.append(kst);
-const kitBtn = document.createElement('button'); kitBtn.id = 'kitbtn'; kitBtn.setAttribute('aria-label', 'Góc bếp nhỏ'); kitBtn.textContent = '🍲'; kitBtn.style.display = 'none';
+const kitBtn = document.createElement('button'); kitBtn.id = 'kitbtn'; kitBtn.setAttribute('aria-label', 'Góc bếp nhỏ'); kitBtn.innerHTML = '<img class="sbic" src="{{PROP_ic_kitchen}}" alt="">'; kitBtn.style.display = 'none';
 $('#decobtn').after(kitBtn);
 function applyKitBtn() {
   kitBtn.style.display = S.welcomed && S.kit.got ? '' : 'none';

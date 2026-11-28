@@ -257,6 +257,8 @@
     box-shadow: 0 0 30px rgba(244,197,140,.7); transform: scale(.7); transition: transform 4s ease-in-out; }
   .breath p { margin: 0; font-family: 'Lora', serif; font-style: italic; font-size: 1.25em; min-height: 1.5em; text-align: center; }
   /* ---- Ra ngoài hẻm (Vi 26/11) */
+  /* Vi's hand-drawn side-button icons (28/11) replace the emoji */
+  .sbic { position: absolute; left: 13%; top: 9%; width: 74%; height: 82%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 1px 1px rgba(60,35,20,.18)); }
   #mapbtn { position: absolute; right: 3.2%; top: 2.6%; width: 11%; aspect-ratio: 126 / 97; border-radius: 30%; z-index: 5; cursor: pointer;
     border: 1.5px solid var(--paper-line); background: var(--paper); box-shadow: 0 2px 6px rgba(60,35,20,.25); font-size: clamp(14px, calc(2.6 * var(--vh, 1vh)), 22px); padding: 0; }
   #todaybtn { position: absolute; right: 3.2%; top: calc(2.6% + 7.6%); width: 11%; aspect-ratio: 126 / 97; border-radius: 30%; z-index: 5; cursor: pointer;
@@ -506,8 +508,8 @@
   <div id="hits"></div>
   <button id="mute" aria-label="Tắt / bật âm thanh">♪</button>
   <div id="beam"></div>
-  <button id="todaybtn" aria-label="Việc nhỏ hôm nay" style="display:none"><span>📝</span><b></b></button>
-  <button id="mapbtn" aria-label="Bản đồ Hẻm Hoa Giấy" style="display:none"><span>🗺️</span></button>
+  <button id="todaybtn" aria-label="Việc nhỏ hôm nay" style="display:none"><img class="sbic" src="{{PROP_ic_today}}" alt=""><b></b></button>
+  <button id="mapbtn" aria-label="Bản đồ Hẻm Hoa Giấy" style="display:none"><img class="sbic" src="{{PROP_ic_map}}" alt=""></button>
   <div id="vbub" aria-live="polite"></div>
   <div id="dj" aria-live="polite"><img alt=""><div><small>📻 Tần Số Hẻm Hoa Giấy</small><span></span></div></div>
   <div id="toast"></div>

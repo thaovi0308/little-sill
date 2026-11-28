@@ -61,7 +61,7 @@ dst.textContent = `#decobtn { position: absolute; left: 3.2%; top: calc(2.6% + 7
   .fv-msg { font-family: "Patrick Hand", cursive; font-size: 1.15em; line-height: 1.35; background: #fffaf0; border-radius: 10px; padding: .6em .8em; margin: .5em 0; box-shadow: inset 0 0 0 1px var(--paper-line); }
   .fv-list button { display: block; width: 100%; }`;
 document.head.append(dst);
-const decoBtn = document.createElement('button'); decoBtn.id = 'decobtn'; decoBtn.setAttribute('aria-label', 'Trang trí'); decoBtn.innerHTML = '<span>🎨</span>'; decoBtn.style.display = 'none';
+const decoBtn = document.createElement('button'); decoBtn.id = 'decobtn'; decoBtn.setAttribute('aria-label', 'Trang trí'); decoBtn.innerHTML = '<img class="sbic" src="{{PROP_ic_decor}}" alt="">'; decoBtn.style.display = 'none';
 $('#todaybtn').after(decoBtn);
 function applyDecoBtn() { decoBtn.style.display = S.welcomed ? '' : 'none'; }
 

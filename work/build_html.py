@@ -86,7 +86,7 @@ t = t.replace('{{LANG_HEAD}}', open(f'{G}/src/lang_head.html', encoding='utf-8')
 t = t.replace('{{SKY_MASK}}', as_file(SKY_MASK_URI, 'sky_mask')).replace('{{ROOM_MASK}}', as_file(ROOM_MASK_URI, 'room_mask'))
 t = t.replace('{{ITEM_IMG}}', json.dumps({k: as_file(prop_uri(k, 2000 if k in PAPER_BIG else h, soft=k in PAPER_BIG), k) for k, h in ITEMS.items()}))
 t = t.replace('{{PLANT_IMG}}', json.dumps(plant_img)).replace('{{SPEED}}', '1')
-heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'shelf': 68, 'notebook': 380})
+heights.update({'cookies': 50, 'tea': 77.5, 'cat_sleep': 143, 'cat_sit': 210, 'cat_look': 172, 'plate': 54, 'cat_eat': 188, 'cat_play': 194, 'w_sunset': 68, 'w_rain': 68, 'w_night': 68, 'snd_on': 50, 'snd_off': 50, 'na_note': 40, 'painting': 90, 'candle_on': 100, 'candle_off': 80, 'chime_bamboo': 292, 'chime_shell': 292, 'cat_wet': 196, 'towel': 72, 'lantern_on': 64, 'lantern_off': 64, 'tea_top': 300, 'steam_a': 150, 'cat_back2': 200, 'seeds_plate': 59, 'shelf': 68, 'notebook': 380, 'ic_decor': 64, 'ic_today': 64, 'ic_map': 64, 'ic_kitchen': 64})
 for p, h in heights.items():
     t = t.replace('{{PROP_%s}}' % p, as_file(prop_uri(p, h), p))
 ic = Image.open(f'{G}/assets/icon.png').resize((192, 192), Image.LANCZOS); buf = io.BytesIO(); ic.save(buf, 'PNG', optimize=True)
