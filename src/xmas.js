@@ -118,7 +118,8 @@ function applyXmas() {
     }); stageReveal(false);
   } else if (x.got >= 5 && !x.eve && (S.weather !== 'sunset') && (!/^\d+$/.test(x.id) || new Date().getDate() >= 24) && storyGate('xmasEve' + x.id)) {
     x.eve = 1; save(); churchBells();
-    const face = `<img class="paper-img" src="${ITEM_IMG.xmas_tree_lit}" alt="" style="max-height:7em">`;
+    const hw = (S.story.hanh || 0) >= 3 && ITEM_IMG.hanh_xmas;   // Vi 28/11: Ms Hạnh playing at her open window, the kids singing
+    const face = `<img class="paper-img" src="${ITEM_IMG[hw ? 'hanh_xmas' : 'xmas_tree_lit']}" alt="" style="max-height:${hw ? 8 : 7}em">`;
     showPaper(face + staged([XMAS.eve].concat((S.story.hanh || 0) >= 3 ? [XMAS.eveHanh] : [], [XMAS.eveLady]), `<img class="paper-img" src="${ITEM_IMG.st_xmas_snow}" alt="" style="max-height:4em"><small>Kèm theo lời chúc của bà là con dấu “Bông Tuyết” và một tờ giấy xanh thông cho Góc thủ công</small><small>— Bà chủ nhà tầng dưới${(S.story.hanh || 0) >= 3 ? ' & cô Hạnh' : ''} —</small>`), () => {
       S.keep.st_xmas_snow = 1; S.keep.k_xmas = 1; save();
       if (S.weather === 'night') setWeather('rain');

@@ -2044,7 +2044,8 @@ function tapRabbit() {
     setTimeout(() => {
       const na = S.story.na >= 1;   // review 27/11: bé Na revives the lantern walk bà remembers
       if (na) toast('Dưới hẻm rộn tiếng trống, tụi nhỏ rước đèn đi ngang cửa sổ 🏮', 3600);
-      showPaper(`<img class="paper-img" src="${ITEM_IMG[na ? 'na_cat' : 'landlady']}" alt="" style="max-height:5em">` + staged([na ? TT.giftNa : TT.gift], `<img class="paper-img" src="${ITEM_IMG.k_ttlantern}" alt="" style="max-height:4em"><small>— ${na ? 'Bé Na & Bánh Quy' : 'Bà chủ nhà tầng dưới'} —</small>`), () => {
+      const walk = na && ITEM_IMG.tt_walk;   // Vi 28/11: the kids' lantern walk under the window
+      showPaper(`<img class="paper-img" src="${ITEM_IMG[walk ? 'tt_walk' : na ? 'na_cat' : 'landlady']}" alt="" style="max-height:${walk ? 8 : 5}em">` + staged([na ? TT.giftNa : TT.gift], `<img class="paper-img" src="${ITEM_IMG.k_ttlantern}" alt="" style="max-height:4em"><small>— ${na ? 'Bé Na & Bánh Quy' : 'Bà chủ nhà tầng dưới'} —</small>`), () => {
         t.step = 5; S.keep.k_ttlantern = 1; save(); toast(`Bạn nhận được: Đèn lồng kéo quân của ${na ? 'bé Na' : 'bà'} 🏮`, 3600);
       }); stageReveal(false);
     }, 6500);

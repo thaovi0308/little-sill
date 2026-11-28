@@ -97,7 +97,7 @@ function openLixi() {
   });
 }
 function giveCouplet() {
-  showPaper(`<img class="paper-img" src="${ITEM_IMG.tet_couplet}" alt="" style="max-height:8em"><p class="bub">Đủ lời chúc của cả con hẻm rồi! Bà treo giúp cháu đôi câu đối “Mừng Xuân – Như Ý” bên khung cửa nhé.</p><p class="bub">Sáng mùng Một thằng con bà gọi về rồi cháu ạ. Bà kể cho nó nghe về căn gác của nó giờ có hoa, có mèo, có người ở. Nó bảo năm sau nhất định về, còn muốn lên gác chào cháu đấy.</p><p>${TET.couplet}</p><small>— Bà chủ nhà tầng dưới —</small>`, () => {
+  showPaper(`<img class="paper-img" src="${ITEM_IMG.tet_couplet}" alt="" style="max-height:8em"><p class="bub">Đủ lời chúc của cả con hẻm rồi! Bà treo giúp cháu đôi câu đối “Mừng Xuân – Như Ý” bên khung cửa nhé.</p>${ITEM_IMG.son_frame ? `<img class="paper-img" src="${ITEM_IMG.son_frame}" alt="Ảnh con trai bà bên chiếc điện thoại bàn" style="max-height:5.5em">` : ''}<p class="bub">Sáng mùng Một thằng con bà gọi về rồi cháu ạ. Bà kể cho nó nghe về căn gác của nó giờ có hoa, có mèo, có người ở. Nó bảo năm sau nhất định về, còn muốn lên gác chào cháu đấy.</p><p>${TET.couplet}</p><small>— Bà chủ nhà tầng dưới —</small>`, () => {
     S.keep.k_couplet = 1; S.coupletOut = 1; save(); applyTet(); toast('Đôi câu đối đỏ đã treo hai bên khung cửa 🧧', 3600);
   });
 }
