@@ -445,6 +445,7 @@
   <img class="layer scene" data-w="rain" data-tet="h" src="{{SCENE_summer_rain}}" alt="">
   <img class="layer scene" data-w="night" data-tet="h" src="{{SCENE_summer_night}}" alt="">
   <img class="layer scene" data-w="night" data-tet="v" src="{{SCENE_vulan_night}}" alt="">
+  <img class="layer scene" data-w="night" data-tet="L" src="{{SCENE_alllit_night}}" alt="">
   <img class="layer scene" data-w="sunset" data-tet="q" src="{{SCENE_qx_sunset}}" alt="">
   <img class="layer scene" data-w="rain" data-tet="q" src="{{SCENE_qx_rain}}" alt="">
   <img class="layer scene" data-w="night" data-tet="q" src="{{SCENE_qx_night}}" alt="">
@@ -590,7 +591,7 @@ const NOTES = [
 // ---------------------------------------------------------------- state
 // Preview links (?bep, ?album, ?xuan …) play in a separate sandbox save that starts past the welcome letter, so trying a
 // feature never touches the real game and never waits on story progress.
-const TESTMODE = /[?&](bep|album|hanh|hem|sach|tet|xmas|vulan|thattich|trungthu|xuan|dong|le|mua)\b/.test(location.search);
+const TESTMODE = /[?&](bep|album|hanh|hem|sach|tet|xmas|vulan|thattich|trungthu|xuan|dong|le|mua|sang)\b/.test(location.search);
 const KEY = TESTMODE ? 'littlesill.preview' : 'littlesill.v1';
 function defaultWeather() {
   const h = new Date().getHours();
@@ -1452,7 +1453,7 @@ function storyGate(id) {
   if (!started || $('#note-wrap').classList.contains('show') || outsideOpen() || Date.now() - storyLast < 45000) return false;
   // pacing (review 27/11): at most 2 new story letters a day so a new player is never flooded; holidays, replies to the
   // player's own gifts and the first-day tutorial letters keep their date
-  const capped = !TESTMODE && !/^(tt|tet|xmas|vl|qx|hl|album|kit|hanhMail)/.test(id) && !/^(old|plane|na|flo)0$/.test(id);
+  const capped = !TESTMODE && !/^(tt|tet|xmas|vl|qx|hl|album|kit|hanhMail|allLit)/.test(id) && !/^(old|plane|na|flo)0$/.test(id);
   if (capped) {
     const d = dayKey(); if (!S.storyDay || S.storyDay.d !== d) S.storyDay = { d, n: 0 };
     if (S.storyDay.n >= 2) return false;
@@ -2225,6 +2226,7 @@ function openKeepsakes() {
     ['bk_daisy', 'Bông cúc ép của bà Khải', 'Kèm mẩu giấy “Gửi anh, mùa hoa đầu tiên.”'], ['bk_album', 'Sổ ép hoa của bà', 'Chạm để xem các trang hoa ép'],
     ['painting_bookshop', 'Tranh “Tiệm Sách Cuối Hẻm”', S.wallArt === 'painting_bookshop' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['album_book', 'Album “Một năm bên khung cửa”', 'Chạm để mở album'],
+    ['k_alllit', 'Ảnh “Đêm cả hẻm sáng đèn”', 'Bà chụp tặng, chạm để xem lại'],
     ['hanh_sheet', 'Tờ giấy chép nhạc của cô Hạnh', 'Chạm để nghe lại giai điệu'], ['hanh_metronome', 'Máy đếm nhịp bằng gỗ', 'Chạm để thở theo tiếng tích tắc'],
     ['painting_hanh', 'Ký họa cây đàn bên ô cửa sổ', S.wallArt === 'painting_hanh' ? 'Đang treo trên tường, chạm để cất' : 'Chạm để treo lên tường'],
     ['rose_red', 'Bông hồng cài áo đỏ', 'Quà Vu Lan của bà chủ nhà'], ['rose_white', 'Bông hồng cài áo trắng', 'Quà Vu Lan của bà chủ nhà'],
