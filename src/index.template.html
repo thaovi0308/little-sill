@@ -1245,6 +1245,7 @@ function applyLook() {
   $('#tint').style.backgroundColor = TINT[S.weather][S.lamp ? 'on' : 'off'];
   $('#glow').style.opacity = S.lamp ? GLOW[S.weather] : 0;
   $('#sunlight').style.opacity = S.weather === 'sunset' ? 0.85 : 0;
+  const sb = $('#p-sunbeam'); if (sb) sb.classList.toggle('on', S.weather === 'sunset');
   $('#p-lamp').classList.toggle('off', !S.lamp); $('#note-wrap').dataset.w = S.weather;
   const src = document.querySelector(`.scene[data-w="${S.weather}"][data-tet="${tv}"]`).src;
   $('#backdrop').style.backgroundImage = `url(${src})`;
@@ -2291,6 +2292,17 @@ const FXI = {};
 function fxImg(n) { const src = ITEM_IMG['fx_' + n]; if (!src) return null; if (!FXI[n]) { FXI[n] = new Image(); FXI[n].src = src; } return FXI[n].complete && FXI[n].naturalWidth ? FXI[n] : null; }
 ['heart', 'drop', 'sparkle', 'ripple1', 'ripple2', 'ripple3'].forEach(fxImg);
 if (ITEM_IMG.fx_petals) document.documentElement.style.setProperty('--petal-img', `url(${ITEM_IMG.fx_petals})`);
+// Vi's slanted afternoon sunbeam with floating dust: falls from the window across the sill and desk on sunny afternoons
+if (ITEM_IMG.sunbeam) {
+  const sb = document.createElement('img'); sb.className = 'prop'; sb.id = 'p-sunbeam'; sb.alt = ''; sb.src = ITEM_IMG.sunbeam;
+  $('#fx').parentNode.insertBefore(sb, $('#fx')); place(sb, -60, 470, 840, 640);
+  const st = document.createElement('style');
+  st.textContent = `#p-sunbeam { pointer-events: none; mix-blend-mode: screen; opacity: 0; transition: opacity 1.6s ease; }
+  #p-sunbeam.on { opacity: .6; animation: sunbeam 9s ease-in-out infinite; }
+  @keyframes sunbeam { 0%, 100% { opacity: .5; transform: translate(0, 0); } 50% { opacity: .7; transform: translate(6px, 4px); } }
+  @media (prefers-reduced-motion: reduce) { #p-sunbeam.on { animation: none; } }`;
+  document.head.appendChild(st);
+}
 function spawn(p) { if (!reduceMotion || p.keep) P.push(p); }
 const BLINK = [205, 600];   // a window of the house across the alley
 const BLINK_SPRING = [317, 450];   // the same, in Vi's spring / winter alley
