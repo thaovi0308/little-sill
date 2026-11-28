@@ -5459,6 +5459,49 @@ function applySeasonLetter() {
 // the players' first days stay calm: the season letter waits until the welcome letter is read and a minute has passed
 setTimeout(() => setInterval(applySeasonLetter, 5000), SEA_TEST ? 3000 : 60000);
 
+// ---------------------------------------------------------------- season gifts in the room (Vi 28/11)
+// Quạt giấy (summer): set on the desk under the painting; a tap fans it gently with a cool breeze and a
+// short line to relax. Khăn len (winter): the scarf over a chair back by the desk; on rainy days or in winter, making tea or
+// lighting the candle adds a small line: the scarf warms the attic. Both are put out / away from the keepsake box.
+const FAN_BOX = [432, 1090, 96, 96], SCARF_BOX = [588, 1018, 122, 134];
+const FAN_LINES = ['Phe phẩy vài cái, gió mát lùa qua tóc. Thả lỏng đôi vai một chút nhé 🌿', 'Hít vào thật chậm theo nhịp quạt… rồi thở ra. Trời oi mấy cũng qua thôi.',
+  'Gió từ chiếc quạt nhỏ mang theo mùi giấy tre. Nghỉ tay uống ngụm nước đã nào 💧', 'Nhắm mắt lại vài giây, nghe gió quạt khẽ khàng như gió đầu hẻm chiều nay.',
+  'Chậm lại một nhịp cũng được mà. Chiếc quạt vẫn ở đây, phe phẩy cùng bạn.'];
+const fanEl = document.createElement('img'); fanEl.className = 'prop'; fanEl.id = 'p-seafan'; fanEl.alt = '';
+const scarfEl = document.createElement('img'); scarfEl.className = 'prop'; scarfEl.id = 'p-seascarf'; scarfEl.alt = '';
+$('#p-painting').before(fanEl); $('#p-lamp').after(scarfEl);
+const fanHit = document.createElement('button'); fanHit.className = 'hit'; fanHit.setAttribute('aria-label', 'Quạt giấy trên tường');
+hitsEl.append(fanHit);
+const sfst = document.createElement('style');
+sfst.textContent = `#p-seafan { transform-origin: 68% 74%; transition: opacity .6s; }
+  #p-seafan.wave { animation: seafan 1.6s ease-in-out; }
+  @keyframes seafan { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-9deg); } 45% { transform: rotate(6deg); } 70% { transform: rotate(-6deg); } 88% { transform: rotate(3deg); } }`;
+document.head.append(sfst);
+function applySeaRoom() {
+  const fan = !!(S.fanOut && S.keep.sea_fan && ITEM_IMG.sea_fan), sc = !!(S.scarfOut && S.keep.sea_scarf && ITEM_IMG.sea_scarf);
+  fanEl.style.display = fan ? '' : 'none'; fanHit.style.display = fan ? '' : 'none'; scarfEl.style.display = sc ? '' : 'none';
+  if (fan) { fanEl.src = ITEM_IMG.sea_fan; place(fanEl, ...FAN_BOX); place(fanHit, FAN_BOX[0] - 8, FAN_BOX[1] - 8, FAN_BOX[2] + 16, FAN_BOX[3] + 16); }
+  if (sc) { scarfEl.src = ITEM_IMG.sea_scarf; place(scarfEl, ...SCARF_BOX); }
+}
+let fanTurn = -1;
+fanHit.addEventListener('click', e => {
+  e.stopPropagation(); bump(fanEl, 'wave');
+  if (AC) { const t = AC.currentTime; [0, 0.42, 0.84].forEach((d, i) => noiseBurst(t + d, 0.38, 1400, 500, 0.6, 0.07 - i * 0.012, master, 'white')); }
+  fanTurn = (fanTurn + 1) % FAN_LINES.length; setTimeout(() => sayAt(FAN_BOX, FAN_LINES[fanTurn], 4600), 500);
+});
+// the scarf: rain or winter + tea / candle
+const scarfWarm = () => S.scarfOut && S.keep.sea_scarf && (S.weather === 'rain' || calSeason() === 'dong');
+function scarfLine() { if (scarfWarm()) setTimeout(() => toast('Chiếc khăn len làm căn gác ấm hẳn lên 🧣', 3400), 1800); }
+const _drinkTeaSea = drinkTea; drinkTea = function () { const r = _drinkTeaSea.apply(this, arguments); scarfLine(); return r; };
+const _actSea = act; act = function (id) { const r = _actSea.apply(this, arguments); if (id === 'incense' && S.incense) scarfLine(); return r; };
+const _useItemSea = useItem;
+useItem = function (k, row) {
+  if (k === 'sea_fan') { S.fanOut = !S.fanOut; save(); applySeaRoom(); closeNote(); SFX.paper(); if (S.fanOut) { bump(fanEl, 'wave'); toast('Treo chiếc quạt giấy lên tường rồi, chạm vào để phe phẩy nhé 🪭', 3200); } return; }
+  if (k === 'sea_scarf') { S.scarfOut = !S.scarfOut; save(); applySeaRoom(); closeNote(); SFX.paper(); if (S.scarfOut) toast('Khăn len của bác đã vắt lên thành ghế 🧣', 3000); return; }
+  return _useItemSea(k, row);
+};
+applySeaRoom();
+
 // ================================================================ small holidays (review 27/11, texts by em for Vi to edit)
 // Vi's drawings (work/cut_vi_1127_batch.py): hl_card, hl_choco, hl_bouquet, hl_tag, hl_carnation, hl_pumpkin(_lit), hl_candy, hl_cat_sit/sleep.
 // 14/2 "Ngày Của Những Lá Thư" (a heart card for anyone you hold dear), 8/3 + 20/10 (a bouquet for a woman you love),
