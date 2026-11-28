@@ -2341,11 +2341,11 @@ if (ITEM_IMG.fx_petals) document.documentElement.style.setProperty('--petal-img'
 // Vi's slanted afternoon sunbeam with floating dust: falls from the window across the sill and desk on sunny afternoons
 if (ITEM_IMG.sunbeam) {
   const sb = document.createElement('img'); sb.className = 'prop'; sb.id = 'p-sunbeam'; sb.alt = ''; sb.src = ITEM_IMG.sunbeam;
-  $('#fx').parentNode.insertBefore(sb, $('#fx')); place(sb, -60, 470, 840, 640);
+  $('#p-cat').parentNode.insertBefore(sb, $('#p-cat')); place(sb, -60, 470, 840, 640);   // Vi 28/11: beam BEHIND the cat (was washing it out)
   const st = document.createElement('style');
   st.textContent = `#p-sunbeam { pointer-events: none; mix-blend-mode: screen; opacity: 0; transition: opacity 1.6s ease; }
-  #p-sunbeam.on { opacity: .6; animation: sunbeam 9s ease-in-out infinite; }
-  @keyframes sunbeam { 0%, 100% { opacity: .5; transform: translate(0, 0); } 50% { opacity: .7; transform: translate(6px, 4px); } }
+  #p-sunbeam.on { opacity: .38; animation: sunbeam 9s ease-in-out infinite; }
+  @keyframes sunbeam { 0%, 100% { opacity: .3; transform: translate(0, 0); } 50% { opacity: .45; transform: translate(6px, 4px); } }
   @media (prefers-reduced-motion: reduce) { #p-sunbeam.on { animation: none; } }`;
   document.head.appendChild(st);
 }
