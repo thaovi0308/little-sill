@@ -48,8 +48,7 @@ FILL_OFF = {'mimosa_fold', 'portulaca2', 'portulaca1', 'sea_leaf1', 'sea_leaf2',
 for f, items in SHEETS.items():
     im, FG = load(f)
     for name, box in items: save(im, FG, name, box, close=5 if name in FILL_OFF else 7, fill=name not in FILL_OFF)
-# butterfly pea, mimosa and jasmine have no mid drawing: the sprout stands in for stage 1 (Vi's second mimosa = leaves folded when touched)
-for k in ('bpea', 'jasmine', 'mimosa'): cv2.imwrite(f'{A}/{k}1.png', cv2.imread(f'{A}/{k}0.png', cv2.IMREAD_UNCHANGED))
+# the middle (bud) stage of butterfly pea, mimosa and jasmine comes from Vi's 28/11 sheet: work/cut_buds3.py
 print('ok')
 # autumn gift picture: the three leaves together
 from PIL import Image
