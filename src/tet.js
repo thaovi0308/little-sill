@@ -66,10 +66,10 @@ function applyTet() {
     }); stageReveal(false);
   } else if (t.step === 1 && Date.now() - storyLast > 60000 && storyGate('tetLady' + t.id)) {
     t.step = 1.5; const face = `<img class="paper-img" src="${ITEM_IMG.landlady_tet}" alt="" style="max-height:9em">`;
-    showPaper(face + staged(TET.lady, `<img class="paper-img" src="${ITEM_IMG.tet_tray}" alt="" style="max-height:4.5em"><small>— Bà chủ nhà tầng dưới —</small>`), () => {
+    showPaper(face + staged(typeof tetYear2 === 'function' && tetYear2() ? HOANG.lady : TET.lady, `<img class="paper-img" src="${ITEM_IMG.tet_tray}" alt="" style="max-height:4.5em"><small>— Bà chủ nhà tầng dưới —</small>`), () => {
       t.step = 2; save(); applyTet(); toast('Khay bánh chưng, mứt gừng đặt trên bàn rồi 🧧', 3200);
     }); stageReveal(false);
-  }
+  } else if (t.step >= 2 && typeof tetSon === 'function') { tetSon(t); tetFinal2(t); }   // year 2: Hoàng comes home (lane.js)
 }
 function tapMai() {
   const t = S.tet, m = t && t.mai; if (!m) return;
@@ -98,7 +98,7 @@ function openLixi() {
 }
 function giveCouplet() {
   showPaper(`<img class="paper-img" src="${ITEM_IMG.tet_couplet}" alt="" style="max-height:8em"><p class="bub">Đủ lời chúc của cả con hẻm rồi! Bà treo giúp cháu đôi câu đối “Mừng Xuân – Như Ý” bên khung cửa nhé.</p>${ITEM_IMG.son_frame ? `<img class="paper-img" src="${ITEM_IMG.son_frame}" alt="Ảnh con trai bà bên chiếc điện thoại bàn" style="max-height:5.5em">` : ''}<p class="bub">Sáng mùng Một thằng con bà gọi về rồi cháu ạ. Bà kể cho nó nghe về căn gác của nó giờ có hoa, có mèo, có người ở. Nó bảo năm sau nhất định về, còn muốn lên gác chào cháu đấy.</p><p>${TET.couplet}</p><small>— Bà chủ nhà tầng dưới —</small>`, () => {
-    S.keep.k_couplet = 1; S.coupletOut = 1; save(); applyTet(); toast('Đôi câu đối đỏ đã treo hai bên khung cửa 🧧', 3600);
+    S.keep.k_couplet = 1; S.coupletOut = 1; S.tetDone = { id: S.tet ? S.tet.id : 'free', at: Date.now() }; save(); applyTet(); toast('Đôi câu đối đỏ đã treo hai bên khung cửa 🧧', 3600);
   });
 }
 // far fireworks over the alley on Tết nights (drawn on the sky canvas, see stepSky)

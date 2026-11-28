@@ -3,7 +3,7 @@ import sys, os, json, re; sys.path.insert(0, os.path.dirname(__file__)); from js
 G = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else '.')
 OK = ['Bà Lan', 'Hạnh', 'Khải', 'Thảo', 'Tết', 'Thất Tịch', 'lì xì', 'bánh chưng', 'mứt Tết', 'mứt gừng', 'Cốm', 'nước sâm', 'Nước sâm', 'mía lau',
       'chè đậu đỏ', 'Chè đậu đỏ', 'Chè đậu xanh', 'Chè trôi nước', 'Xôi gấc', 'gấc', 'Bánh chuối nướng', 'Bánh bò', 'bánh mì', 'mưa ngâu', 'Bắc Kim Thang',
-      'Lý Cây Đa', 'Con Cò Bé Bé', 'Grandma Tư', 'Mười Giờ', 'Trinh Nữ', 'Hồ Ngọc Đức', 'Tiếng Việt', 'Trung Thu', 'chè', 'Thất', 'Tịch']
+      'Lý Cây Đa', 'Con Cò Bé Bé', 'Kìa Con Bướm Vàng', 'Grandma Tư', 'Mười Giờ', 'Trinh Nữ', 'Hồ Ngọc Đức', 'Tiếng Việt', 'Trung Thu', 'chè', 'Thất', 'Tịch']
 def remaining(T):
     rem = {}
     for fn in sorted(os.listdir(T)):

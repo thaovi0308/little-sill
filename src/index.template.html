@@ -1652,20 +1652,19 @@ const CANDLE = { on: ['{{PROP_candle_on}}', [573, 1003, 56, 100]], off: ['{{PROP
 function applyLantern() { $('#p-lantern').src = S.lantern ? '{{PROP_lantern_on}}' : '{{PROP_lantern_off}}'; }
 place($('#p-shelf'), 530, 965, 116, 68);   // Vi's wall shelf (26/11); the lantern stands on its top board
 place($('#p-lantern'), 539, 937, 50, 46);
-const FOCUS = 25 * 60e3;
 function candleTick() {
   const el = $('#candle-t');
   if (!S.incense || !S.candleAt) { el.style.display = 'none'; return; }
-  const left = S.candleAt + FOCUS - Date.now();
+  const left = S.candleAt + focusMs() - Date.now();
   if (left <= 0) {
     S.incense = false; S.candleAt = 0; S.candleDone = (S.candleDone || 0) + 1; save(); applyCandle(); el.style.display = 'none';
     SFX.chime(0.8); setTimeout(() => SFX.chime(0.5), 900);
     const pool = ['daisy', 'daisy', 'lavender', 'lavender', 'cactus', 'fern', 'pothos'], st = S.story;
     const need = st.na === 1 && !st.naSent && !(S.keep.daisy > 0) ? 'daisy' : floNeedsSprig() ? 'lavender' : null;   // Vi 26/11: never leave a route stuck
-    const k = need || pool[Math.floor(Math.random() * pool.length)];
-    S.keep[k] = (S.keep[k] || 0) + 1; save();
-    showPaper(`<img class="paper-img" src="${ITEM_IMG[KEEP_ICON[k]]}" alt="" style="max-height:5em">Ngọn nến vừa tàn. Bạn đã chăm chú suốt 25 phút rồi đấy! Đứng dậy vươn vai, uống một ngụm nước và nghỉ ngơi 5 phút nhé.
-      <small>Phần thưởng: ${PLANTS[k].gift.toLowerCase()} đã vào hộp kỷ vật</small>`);
+    const k = need || pool[Math.floor(Math.random() * pool.length)], mins = S.focusMin || 25, fd = focusDone();
+    S.keep[k] = (S.keep[k] || 0) + (mins >= 45 ? 2 : 1); save();
+    showPaper(`<img class="paper-img" src="${ITEM_IMG[KEEP_ICON[k]]}" alt="" style="max-height:5em">Ngọn nến vừa tàn. Bạn đã chăm chú suốt ${mins} phút rồi đấy! Đứng dậy vươn vai, uống một ngụm nước và nghỉ ngơi ${fd.rest} phút nhé.${fd.list}
+      <small>Phần thưởng: ${mins >= 45 ? 'hai phần ' : ''}${PLANTS[k].gift.toLowerCase()} đã vào hộp kỷ vật</small>`);
     return;
   }
   const m = Math.floor(left / 60e3), sec = Math.floor(left / 1000) % 60;
@@ -2284,7 +2283,8 @@ function openKeepsakes() {
     ['hl_pumpkin', 'Trái bí ngô', 'Đêm Hóa Trang, đặt trên bệ cửa'], ['hl_candy', 'Giỏ kẹo', 'Thả kẹo cho tụi nhỏ dưới hẻm'],
     ['hl_cat', 'Mũ phù thủy của Bánh Quy', S.hlCostume ? 'Bánh Quy đang đội, chạm để cởi' : 'Chạm để đội cho Bánh Quy'],
     ['sea_scarf', 'Khăn len cũ của bác', 'Quà mùa đông của bác sửa đồng hồ'], ['sea_ginger', 'Mấy lát gừng tươi', 'Pha trà gừng cho ấm lòng'],
-    ['k_couplet', 'Câu đối “Mừng Xuân – Như Ý”', S.coupletOut ? 'Đang treo hai bên khung cửa, chạm để cất' : 'Chạm để treo hai bên khung cửa']]
+    ['k_couplet', 'Câu đối “Mừng Xuân – Như Ý”', S.coupletOut ? 'Đang treo hai bên khung cửa, chạm để cất' : 'Chạm để treo hai bên khung cửa'],
+    ['oil_lamp', 'Đèn dầu cũ của anh Hoàng', S.oilOut ? 'Đang đặt trên bàn, chạm để cất' : 'Chạm để đặt lên bàn']]
     .filter(([k]) => S.keep[k]).map(([k, name, hint]) =>
       `<div class="keep" data-item="${k}"><span>${ITEM_IMG[k] ? `<img src="${ITEM_IMG[k]}" alt="">` : '<b style="font-size:1.6em;width:1.6em;display:inline-block;text-align:center">🪴</b>'}${name}<span class="hint">${hint}</span></span></div>`);
   const rows = story.concat([['leaf', 'Lá phong khô (Sóc tặng)', '🍂']].concat(Object.entries(PLANTS).map(([k, P]) => [k, P.gift, P.icon]))
@@ -2608,7 +2608,8 @@ function act(id) {
       if (S.keep.k_cassette && S.radio && S.radioCh !== 'pine') { setChannel('pine'); break; }
       if (S.radio && S.radioCh === 'pine') { setRadio(false); setChannel('fm', true); toast('Tắt radio', 2000); break; }
       setRadio(!S.radio); toast(S.radio ? (S.weather === 'night' ? 'Tần Số Hẻm Hoa Giấy · 94.2 FM 📻' : 'Radio 94.2 FM 📻 (ban đêm có DJ trò chuyện)') : 'Tắt radio', 2600); break;
-    case 'incense': S.incense = !S.incense; if (S.incense) S.litOnce = 1; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle(); if (S.incense) setTimeout(() => sayAt(HITS.incense.box, flavor('candle')), 2600);
+    case 'incense': openFocus(); break;
+    case 'incense-old': S.incense = !S.incense; if (S.incense) S.litOnce = 1; S.candleAt = S.incense ? Date.now() : 0; save(); applyCandle(); if (S.incense) setTimeout(() => sayAt(HITS.incense.box, flavor('candle')), 2600);
       if (S.incense) { SFX.match(); toast('Nến cháy 25 phút: cùng ngồi làm việc, học bài nhé 🕯️ Chạm lần nữa để tắt', 3600); } else SFX.click(); break;
     case 'book': showNote(); break;
     case 'tea':

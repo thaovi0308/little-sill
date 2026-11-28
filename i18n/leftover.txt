@@ -11,6 +11,7 @@
  Thất Tịch day
  any day. ?xmas forces it for testing. Tết wins if both are on.
  books don’t like to be rushed 📖 (Mr. Khải’s advice)
+ children play “Kìa Con Bướm Vàng” (the yellow butterfly song)? I’l
  chilly, so I cooked a small pot of chè đậu đỏ — sweet red bean soup — and scoope
  ink, holding the warmth of your first Tết in the little attic on Bougainvillea L
  t + 5 * 864e5) return y; }   // 25 Chạp .. end of mùng 5
@@ -22,10 +23,15 @@
 , and at the far end of the lane, Mr. Khải’s “Old Bookstore” sign.
 , signed by the painter upstairs. Mr. Khải says: “He drew it for me. My only job 
 ----------------------------- journal (Lời nhắn): chapters the player has lived, 
+------------------------------ 1b. Ms. Hạnh: the player requests the first piece 
+-------------------------------- 2. Chuyện cả hẻm: one arc for the whole lane aft
+----------------------------------- 3. Tết year 2: Hoàng comes home (art: Vi 28/1
 ----------------------------------- mã bệ cửa: the window, its decorations, the p
 ------------------------------------- Thất Tịch: the wish on the red thread, the 
+-way replies on the clockmaker and Ms. Hạnh routes: the player writes back, the n
 // ---- Đêm Hóa Trang: the pumpkin on the sill (li
 // ---------- radio channels: Tần Số Hẻm Hoa Giấy (94.2 FM, DJ at night) ↔ the 
+// 3. Tết year 2: Bà Lan
 // From 25 Chạp to mùng 5 the alley dresses for Tết by
 // Quạt giấy (summer): set on the desk under the pa
 // far fireworks over the alley on Tết nights (drawn on the sky canvas, see s
@@ -46,6 +52,7 @@ Book borrowed from Mr. Khải
 Bowl of chè đậu đỏ
 Bánh chuối nướng
 Bắc Kim Thang
+Chuyện cả hẻm
 Chè trôi nước
 Chè đậu xanh
 Cốm the frog
@@ -54,10 +61,12 @@ Gió Đồi Thông
 Glass of nước sâm (sugarcane herbal drink)
 Hang the red Tết couplets by the window 🧧
 Hòa tấu cùng cô
+I thought he’d scold us, but Mr. Khải laughed and told us to leave the stain
 Không Khí Giáng Sinh
 Không Khí Thất Tịch
 Không Khí Tết
 Không Khí Vu Lan
+Kìa Con Bướm Vàng
 Little Na’s clumsy notes mix with Ms. Hạnh’s gentle laughter. She gives you the 
 Lý Cây Đa
 Mr. Khải
@@ -72,11 +81,14 @@ Mr. Khải’s paper bookmark
 Mrs. Khải’s pressed daisy
 Mrs. Khải’s pressed-flower album
 Ms. Hạnh
+Ms. Hạnh asked me to bring a small bunch of fl
 Ms. Hạnh must have spotted her little audience
 Ms. Hạnh opens a free piano corner every weeke
 Ms. Hạnh will play a cheerful song tonight
 Ms. Hạnh, Across the Lane
 Ms. Hạnh, across the lane
+Ms. Hạnh, for the very first lesson, could the
+Ms. Hạnh, may I request a song in advance: “Co
 Ms. Hạnh’s sheet music
 Ms. Hạnh’s window across the lane
 Một năm bên khung cửa
@@ -93,11 +105,14 @@ Thank you for your note. I’m Hạnh. I taught piano at the primary school
 The bowl of chè đậu đỏ is on your sill. Tap to eat and warm up
 The chè đậu đỏ is sweet and nutty, warming you from yo
 The lane is hung with red lanterns. Tết is here 🧧
+The next Tết
 The red Tết couplets now hang on both sides of the
 The tray of bánh chưng and candied ginger is on your desk 🧧
 There’s a paper boat from Ms. Hạnh in the mailbox at the foot of the sta
 There’s a treble clef letter from Ms. Hạnh in the mailbox 🎼
+This Tết is different, dear! My Hoàng really ca
 This afternoon the mưa ngâu came, the soft rain of the seventh mon
+This year our Tết table had everyone around it. I couldn
 Thảo is waiting for a sprig of lavender or 
 Thảo told me today that you’re a great help
 Thảo, the florist
@@ -115,35 +130,47 @@ Việc nhỏ hôm nay
 Vu Lan: 14-16 of the 7th lunar month; Thất Tịch: the 7th of the 7th lunar month. 
 What would you like to write to Ms. Hạnh?
 Xôi gấc
+Yesterday Mr. Khải from the bookshop brought over his lat
 You borrowed “${BOOKS[n].t}” 📖 Mr. Khải has set it on your table in the attic.
+You fold a paper boat and write to Ms. Hạnh:
 ],  // 5 ông Khải (thẻ mượn sách)
 across the lane, then fall silent. Ms. Hạnh, a piano teacher who has just retired
+alf the day. I’m bringing up the bánh chưng and the ginger jam first. He’ll come 
 an / ?thattich force them for testing. Tết and Giáng Sinh win.
 an: the chosen rose lies on the sill; Thất Tịch: the envelope, the thread on the 
+and I just repainted the sign for Mr. Khải’s bookshop. He did the lettering, I he
+ane sang along while they planted. Ms. Hạnh said every song was right on the beat
 a’s clumsy piano notes, mixed with Ms. Hạnh’s gentle laughter. Now and then a wro
 de the window, secretly listening. Ms. Hạnh asks you to pass her a treble clef ha
 died ginger, a crunchy peanut candy... Tết in the little attic is simple, yet so 
 e wooden-handled magnifying glass Mr. Khải uses to read the tiny print on book sp
 eck the mailbox in a little while. Ms. Hạnh has sent something 🎼
+en the hands finally moved again, Mr. Khải stood very still for a long while befo
 enth day of the seventh lunar month — Thất Tịch (The Magpie Bridge), the one nigh
 epsake box. Take the book back to Mr. Khải.
 er of the sill where the mai stands at Tết)
 from Bougainvillea Lane: word is that Thảo, the florist at the corner, is looking
 function sendClover() {   // [Gửi lại Cỏ Bốn Lá cho Minh ✉️]: an envelope gets a
 ght you up a small plate and a tray of mứt gừng, candied ginger, to share the fes
+he clockmaker will build the trellis, Thảo will choose the plants, and the painte
 ip today, and I sat next to my friend Thảo the whole way. I told her lots and lot
 iversity, Grandma! I’m coming home for Tết, so please save me a pot of sweet bean
+n the mailbox under the stairs for Ms. Hạnh ⛵
 nar dates: Vietnamese calendar (UTC+7, Hồ Ngọc Đức
 ndow across the lane glows yellow. Ms. Hạnh hasn’t opened the piano lid yet.
 ndow and meet on the bridge of light (Thất Tịch evenings)
 ne there’s a flower shop run by sweet Thảo, with all kinds of unusual seeds. When
+nt down a young plant from your sill. Thảo planted it right at the foot of the ar
 oday is Teachers’ Day! Everyone in Ms. Hạnh’s piano class put our money together 
 on sun, so it blooms right in time for Tết (Lunar New Year)!
 one in the lane! Let me hang a pair of Tết couplets, “Welcome Spring – May All Go
 orks far away and hasn’t come home for Tết in years. Now, seeing flowers and ligh
+ougainvillea Lane” sign, Minh and Mr. Khải dug the soil, and Ms. Hạnh taught us k
 ower shop, the landlady tells you about ông Khải once
 owers into the book you returned. Mr. Khải made a special “Books with Flowers” sh
+r. This year he stayed home for all of Tết, swept the yard every morning and play
 rsion work/vi_scripts_hanh_full.html). Cô Hạnh lives behind the big
+s Tết visit + the lane arc) under the seven 
 s full-moon night or under Thất Tịch
 s market seeds = Hoa Mười Giờ, ready to sow
 s shop (scene; texts by Vi, chị–em)

@@ -41,7 +41,7 @@ function openToday() {
   for (const i of [0, 1]) { const g = gardenAt(i); if (g && g.type && (i === 0 || S.garden2)) waits.push(plantStatus(i)); }
   if (mapOpen() && S.shop && S.shop.visited) { const t = shopPotsLeft(); if (t > 0) waits.push(`Tiệm hoa đầu hẻm có ${t} chậu đang khát 🪴`); }
   if (tetOn() && S.tet && S.tet.lixi < lixiReady()) waits.push('Có phong lì xì đang chờ trên bàn 🧧');
-  if (S.incense && S.candleAt) { const left = 25 * 60e3 - (Date.now() - S.candleAt); if (left > 0) waits.push(`Nến thơm còn ${Math.ceil(left / 60e3)} phút 🕯️`); }
+  if (S.incense && S.candleAt) { const left = focusMs() - (Date.now() - S.candleAt); if (left > 0) waits.push(`Nến thơm còn ${Math.ceil(left / 60e3)} phút 🕯️`); }
   openPanel(`<h3>Việc nhỏ hôm nay</h3><small style="margin:0 0 .6em">Không cần làm hết đâu, làm được việc nào hay việc ấy 🌿</small>
     <ul class="today">${tasks}</ul>
     ${waits.length ? `<h4>Đang chờ</h4><ul class="today wait">${waits.map(w => `<li>${w}</li>`).join('')}</ul>` : ''}
