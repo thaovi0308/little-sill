@@ -141,11 +141,13 @@ try { (function () { var here = document.documentElement.lang === 'en' ? 'en' : 
   :root[style*="--petal-img"] #petals i { background: var(--petal-img) center / contain no-repeat; border-radius: 0; width: calc(26px * var(--s)); height: calc(28px * var(--s)); }
   @keyframes petal { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 10% { opacity: .9; }
     50% { transform: translate(var(--sway), calc(55 * var(--vh, 1vh))) rotate(200deg); } 100% { transform: translate(calc(var(--sway) * -.5), calc(110 * var(--vh, 1vh))) rotate(420deg); opacity: .7; } }
-  #dj { position: absolute; z-index: 18; left: 4%; right: 4%; top: calc(env(safe-area-inset-top, 0px) + 10.5%); pointer-events: none; opacity: 0; transition: opacity .8s;
+  #dj { position: absolute; z-index: 18; left: 15.5%; right: 15.5%; top: calc(env(safe-area-inset-top, 0px) + 10.5%); pointer-events: none; opacity: 0; transition: opacity .8s;
     background: rgba(25,20,30,.62); color: #f6ead8; border-radius: 14px; padding: .5em .8em; font: 500 clamp(12px, calc(1.75 * var(--vh, 1vh)), 15px)/1.45 'Quicksand', sans-serif; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
   #dj { display: flex; gap: .7em; align-items: center; } #dj img { width: 4.2em; height: 4.2em; object-fit: cover; border-radius: 10px; flex: none; }
   #dj small { display: block; font-size: .78em; opacity: .65; letter-spacing: .05em; }
   #dj.show { opacity: 1; }
+  /* guide review 28/11: the room's speech bubbles stay in the room */
+  body:has(#bks.show) #vbub, body:has(#shop.show) #vbub { display: none; }
   #toast { z-index: 20; position: absolute; left: 50%; bottom: 13.5%; transform: translateX(-50%) translateY(8px);
     background: rgba(253,248,238,.94); color: #6b5540; border-radius: 18px; padding: .55em 1.1em;
     font-size: clamp(12px, calc(1.9 * var(--vh, 1vh)), 16px); font-weight: 600; width: max-content; max-width: 86%; text-align: center; line-height: 1.35; opacity: 0;
@@ -1456,7 +1458,9 @@ function stageReveal(modalAfter) {
 // only when no paper is open and the previous one appeared >45 s ago, or a paper closed >1 min ago; the next one waits its turn.
 let storyLast = 0; const storyShown = new Set();
 function storyGate(id) {
-  if (storyShown.has(id)) return true;
+  // guide review 28/11: a letter that is still open must not be shown again by the next 5-second check (it restarted the typing);
+  // the sill signals (Na's note, the bag, the sparrow, the plane) keep their 'already shown' answer
+  if (storyShown.has(id)) return !($('#note-wrap').classList.contains('show') && !/^(na|flo|old|plane|wet)/.test(id));
   if (!started || $('#note-wrap').classList.contains('show') || outsideOpen() || Date.now() - storyLast < 45000) return false;
   // pacing (review 27/11): at most 2 new story letters a day so a new player is never flooded; holidays, replies to the
   // player's own gifts and the first-day tutorial letters keep their date
@@ -1468,6 +1472,30 @@ function storyGate(id) {
   }
   storyShown.add(id); storyLast = Date.now(); return true;
 }
+// guide review 28/11: a toast that pops up by itself while a letter/panel is open waits until it closes (it covered the paper);
+// feedback for a tap inside the paper (copied, saved…) still shows at once
+const COVER = '#note-wrap.show, #amap.show, #mbox.show, #shop.show, #bks.show';
+let noteTapAt = 0, toastWait = [];
+document.addEventListener('pointerdown', e => { if (e.target.closest && e.target.closest('#note-wrap, #amap, #mbox, #shop, #bks')) noteTapAt = performance.now(); }, true);
+const covered = () => !!document.querySelector(COVER);
+const _toastNow = toast;
+toast = function (msg, ms) {
+  if (covered() && performance.now() - noteTapAt > 1500) { if (!toastWait.some(t => t[0] === msg)) toastWait.push([msg, ms]); return; }
+  return _toastNow.apply(this, arguments);
+};
+let toastBusy = 0;
+function flushToasts() {   // one waiting toast at a time, once nothing covers the room
+  if (!toastWait.length || covered() || performance.now() < toastBusy) return;
+  const [m, ms] = toastWait.shift(); _toastNow(m, ms); toastBusy = performance.now() + (ms || 1800) + 400;
+}
+setInterval(flushToasts, 700);
+const toastMO = new MutationObserver(() => {   // a paper opening over a toast that is still up: hide it, show it again after
+  const t = $('#toast');
+  if (covered() && t.classList.contains('show') && performance.now() - noteTapAt > 1500) {
+    t.classList.remove('show'); if (!toastWait.some(w => w[0] === t.textContent)) toastWait.unshift([t.textContent, 2600]);
+  }
+});
+setTimeout(() => ['#note-wrap', '#amap', '#mbox', '#shop', '#bks'].forEach(q => { const el = $(q); if (el) toastMO.observe(el, { attributes: true, attributeFilter: ['class'] }); }), 0);
 function closeNote() {
   storyLast = Math.max(storyLast, Date.now() + 15000);
   finishTyping();
