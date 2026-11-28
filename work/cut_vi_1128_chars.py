@@ -14,6 +14,7 @@ SHEETS = {
                      ('st_bread', (1000, 445, 1215, 655), 'ink')],
     'fx_items': [('fx_steam', (90, 130, 280, 530), 'soft'), ('fx_drop', (325, 245, 475, 435)), ('fx_heart', (535, 255, 735, 430)),
                  ('fx_sparkle', (770, 250, 950, 430), 'soft'), ('fx_petals', (985, 215, 1215, 455))],
+    'fx_notes': [('fx_note1', (95, 190, 295, 495), 'soft'), ('fx_note2', (355, 185, 625, 505), 'soft'), ('fx_note3', (725, 185, 925, 500), 'soft'), ('fx_note4', (1005, 135, 1185, 555), 'soft')],
 }
 for sheet, items in SHEETS.items():
     im = cv2.imread(f'{G}/src/vi_1128/{sheet}.jpg')
